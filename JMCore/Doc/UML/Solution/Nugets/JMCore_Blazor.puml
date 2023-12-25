@@ -1,0 +1,36 @@
+﻿@startuml
+package Blazor #DDDDDD {
+    object JMCoreTest_Blazor_BUnit {
+        bunit-1.18.4
+        JustMock-2023.1.117.1
+    }
+
+    object JMCore_Blazor {
+        Blazored.LocalStorage-4.3.0
+        Microsoft.AspNetCore.Localization-2.2.0
+        Telerik.UI.for.Blazor.Trial-4.1.0
+
+    }
+    
+    object JMCore_Blazor_Client {
+        Microsoft.AspNetCore.Components.WebAssembly-6.0.16
+        Microsoft.AspNetCore.Components.WebAssembly.DevServer-6.0.16
+        Microsoft.AspNetCore.Components.WebAssembly.Authentication-6.0.16
+        Microsoft.Extensions.Http-6.0.0
+    }
+    
+    object JMCore_Blazor_Server {
+        Duende.BFF-1.2.3
+        Microsoft.AspNetCore.Authentication.OpenIdConnect-6.0.16
+        Microsoft.AspNetCore.Components.WebAssembly.Server-6.0.16
+        Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore-6.0.16
+        Microsoft.AspNetCore.Mvc.NewtonsoftJson-6.0.16
+        Microsoft.Extensions.Configuration.Abstractions-6.0.0
+    }
+    
+    JMCore_Blazor_Client --> JMCore_Blazor
+    JMCore_Blazor_Server --> JMCore_Blazor
+    JMCoreTest_Blazor_BUnit --> JMCore_Blazor
+    JMCoreTest_Blazor_BUnit --> JMCore_Tests
+}
+@enduml

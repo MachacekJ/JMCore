@@ -1,0 +1,16 @@
+﻿@page "/localization/home"
+@using Microsoft.Extensions.Localization
+@using JMCore.Blazor.Components
+@using JMCoreTest.Blazor.Client.ResX
+@inject IStringLocalizer<ResX_MainLayout> LMainLayout
+
+<PageTitle>@LMainLayout[ResX_MainLayout.MenuItem_LocalizationHomeTitle]</PageTitle>
+<Testable TestId="@(nameof(LocalizationHome))">
+    <h3>@LMainLayout[ResX_MainLayout.MenuItem_LocalizationHomeTitle]</h3>
+    <p>
+        Thread.CurrentThread.CurrentCulture.LCID=<span cy-id="currentCulture">@Thread.CurrentThread.CurrentCulture.LCID</span>
+    </p>
+    <p>
+        Thread.CurrentThread.CurrentUICulture.LCID=<span cy-id="currentUICulture">@Thread.CurrentThread.CurrentUICulture.LCID</span>
+    </p>
+</Testable>

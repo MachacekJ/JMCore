@@ -1,0 +1,19 @@
+﻿@startuml
+package Core #DDDDDD {
+    object JMCore{
+    }
+    
+    object JMCore_Resources{
+        
+    }
+    object JMCore_Server{
+       }
+    
+    object JMCore_Tests {
+      
+    }
+    JMCore --> JMCore_Resources
+    JMCore_Server --> JMCore
+    JMCore_Tests --> JMCore_Server
+}
+@enduml

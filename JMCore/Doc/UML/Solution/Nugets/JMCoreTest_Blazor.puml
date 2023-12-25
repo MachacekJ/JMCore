@@ -1,0 +1,38 @@
+﻿@startuml
+package BlazorTest #DDDDDD {
+    object JMCoreTest_Blazor_Shared {
+    
+    }
+    
+    object JMCoreTest_Blazor_RazorShared {
+        Microsoft.AspNetCore.SignalR.Client-6.0.16
+        Microsoft.AspNetCore.SignalR.Client.Core-6.0.16
+    }
+    
+    object JMCoreTest_Blazor_ServerWASM {
+    
+    }
+    
+    object JMCoreTest_Blazor_Client <<Microsoft.NET.Sdk.BlazorWebAssembly>> {
+        Microsoft.AspNetCore.Components.WebAssembly-6.0.16
+        Microsoft.AspNetCore.Components.WebAssembly.DevServer-6.0.16
+        Microsoft.AspNetCore.Components.WebAssembly.Authentication-6.0.16
+    }
+    
+    object JMCoreTest_Blazor_ServerShared {
+    
+    }
+    
+    object JMCoreTest_Blazor_Server {
+    
+    }
+    
+    JMCoreTest_Blazor_Server --> JMCoreTest_Blazor_RazorShared
+    JMCoreTest_Blazor_Server --> JMCoreTest_Blazor_ServerShared
+    JMCoreTest_Blazor_ServerWASM --> JMCoreTest_Blazor_Client
+    JMCoreTest_Blazor_ServerWASM --> JMCoreTest_Blazor_ServerShared
+    JMCoreTest_Blazor_Client --> JMCoreTest_Blazor_RazorShared
+    JMCoreTest_Blazor_RazorShared --> JMCoreTest_Blazor_Shared
+    JMCoreTest_Blazor_ServerShared --> JMCoreTest_Blazor_Shared
+}
+@enduml

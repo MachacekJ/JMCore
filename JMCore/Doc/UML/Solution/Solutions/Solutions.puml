@@ -1,0 +1,14 @@
+﻿@startuml
+'https://plantuml.com/object-diagram
+!include .\\JMCore.puml
+!include .\\JMCore_Blazor.puml
+!include .\\JMCoreTest_Blazor.puml
+
+JMCore_Blazor --> JMCore
+JMCore_Blazor_Server --> JMCore_Server
+
+
+JMCoreTest_Blazor_Client --> JMCore_Blazor_Client
+JMCoreTest_Blazor_Shared --> JMCore_Blazor
+JMCoreTest_Blazor_ServerShared --> JMCore_Blazor_Server
+@enduml

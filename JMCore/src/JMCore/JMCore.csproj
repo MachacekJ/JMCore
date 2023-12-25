@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Title>JM Core</Title>
+		<Authors>Jiri Machacek</Authors>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Product>JM Core</Product>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<VersionPrefix>1.0.0</VersionPrefix>
+		<PackageVersion>1.0.0</PackageVersion>
+		<LangVersion>12</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Localizer\Providers\Models\**" />
+		<Compile Remove="Models\Account\**" />
+		<EmbeddedResource Remove="Localizer\Providers\Models\**" />
+		<EmbeddedResource Remove="Models\Account\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Services\Http\ILocalizationApiClient.cs" />
+		<Compile Remove="Services\Http\LocalizationApiClient.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="ResX\ResX_DataAnnotation.Designer.cs">
+	    <DependentUpon>ResX_DataAnnotation.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	  <Compile Update="ResX\ResX_Errors.Designer.cs">
+	    <DependentUpon>ResX_Errors.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	  <Compile Update="ResX\ResX_General.Designer.cs">
+	    <DependentUpon>ResX_General.resx</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="ResX\ResX_DataAnnotation.resx">
+	    <SubType>Designer</SubType>
+	    <LastGenOutput>ResX_DataAnnotation.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ResX\ResX_Errors.resx">
+	    <LastGenOutput>ResX_Errors.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ResX\ResX_General.resx">
+	    <LastGenOutput>ResX_General.Designer.cs</LastGenOutput>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	</ItemGroup>
+</Project>

@@ -1,0 +1,34 @@
+﻿@startuml
+package BlazorTest #DDDDDD {
+object JMCoreTest_Blazor_Shared {
+  models between server/client
+}
+object JMCoreTest_Blazor_RazorShared {
+  Main blazor razors 
+}
+
+object JMCoreTest_Blazor_WASM {
+  server for WASM
+}
+
+object JMCoreTest_Blazor_Client <<Microsoft.NET.Sdk.BlazorWebAssembly>> {
+   client wasm
+   wwwroot
+}
+object JMCoreTest_Blazor_ServerShared {
+  signalr hubs
+}
+
+object JMCoreTest_Blazor_Server {
+  Blazor server
+}
+JMCoreTest_Blazor_Server --> JMCoreTest_Blazor_RazorShared
+JMCoreTest_Blazor_Server --> JMCoreTest_Blazor_ServerShared
+JMCoreTest_Blazor_WASM --> JMCoreTest_Blazor_Client
+JMCoreTest_Blazor_WASM --> JMCoreTest_Blazor_ServerShared
+JMCoreTest_Blazor_Client --> JMCoreTest_Blazor_RazorShared
+JMCoreTest_Blazor_RazorShared --> JMCoreTest_Blazor_Shared
+JMCoreTest_Blazor_ServerShared --> JMCoreTest_Blazor_Shared
+}
+
+@enduml

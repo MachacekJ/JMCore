@@ -1,0 +1,23 @@
+﻿.jm-leftmenu {
+    background-color: $tb-kendo-hover-bg;
+    .k-link {
+        color: inherit !important;
+        background-color: inherit !important;
+    }
+
+    .k-image {
+        width: 16px
+    }
+
+    .k-level-1 {
+        padding-left: 1rem;
+    }
+
+    .k-level-selected {
+        background-color: $tb-kendo-disabled-text !important
+    }
+
+    .k-focus {
+        box-shadow: inset 0 0 0 0px !important;
+    }
+}

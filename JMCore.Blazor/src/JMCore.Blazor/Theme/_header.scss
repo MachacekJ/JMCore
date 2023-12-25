@@ -1,0 +1,54 @@
+﻿// Header
+.jm-header {
+    height: $header-height;
+    background-color: $tb-kendo-body-text;
+
+    .jm-nav-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        color: $tb-kendo-body-bg;
+    }
+
+    .jm-menu-button {
+        flex: 0 0 48px;
+        text-align: center;
+    }
+
+    .jm-div-space{
+        padding-right: 2px;
+    }
+    .jm-settings {
+        align-items: center;
+
+        & .lang-icon:hover {
+            cursor: pointer;
+        }
+
+        & .k-dropdownlist {
+            max-height: 30px;
+            margin-left: 5px;
+        }
+    }
+
+    .k-button {
+        border: none;
+        background-color: transparent;
+        background-image: none;
+        color: $tb-kendo-body-bg;
+    }
+
+    .jm-mobile-icon {
+        padding-inline: 0rem;
+    }
+
+    .k-button:hover {
+        background-color: transparent;
+    }
+
+    .jm-title {
+        flex: 1 0 auto;
+    }
+}

@@ -1,0 +1,19 @@
+﻿@inherits JMComponentBase
+@if (AppState.AppSetting.IsTest)
+{
+    <span id="@TestId">
+        @ChildContent
+    </span>
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public string TestId { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+}

@@ -1,0 +1,29 @@
+Index: testUI/Client/Program.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using JMCore.Blazor.Client;\r\nusing JMCore.Blazor.Config;\r\nusing JMCoreTest.Blazor.RazorShared;\r\nusing Microsoft.AspNetCore.Components.WebAssembly.Hosting;\r\nusing Microsoft.AspNetCore.Components.Web;\r\n\r\nvar builder = WebAssemblyHostBuilder.CreateDefault(args);\r\nbuilder.RootComponents.Add<App>(\"#rootApp\");\r\nbuilder.RootComponents.Add<HeadOutlet>(\"head::after\");\r\n\r\nvar con = new ConfigureClientBuilder(builder).SetLocalization().SetAuthentication();\r\n\r\ncon.ConfigureServices(builder.Services, builder.Configuration);\r\nJMCoreTest.Blazor.RazorShared.Program.ConfigureRazorServices(builder.Services, builder.Configuration, HybridTypeEnum.WebAssembly);\r\n\r\nvar host = builder.Build();\r\n\r\nawait con.Configure(host);\r\n\r\nawait host.RunAsync();
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/testUI/Client/Program.cs b/testUI/Client/Program.cs
+--- a/testUI/Client/Program.cs	(revision 3993df6209af93a4a3cea57810ccb8f9ebc84b3a)
++++ b/testUI/Client/Program.cs	(date 1691650189406)
+@@ -1,6 +1,9 @@
+ using JMCore.Blazor.Client;
++using JMCore.Blazor.Client.BFF;
+ using JMCore.Blazor.Config;
++using JMCoreTest.Blazor.Client;
+ using JMCoreTest.Blazor.RazorShared;
++using Microsoft.AspNetCore.Components.Authorization;
+ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+ using Microsoft.AspNetCore.Components.Web;
+ 
+@@ -13,6 +16,8 @@
+ con.ConfigureServices(builder.Services, builder.Configuration);
+ JMCoreTest.Blazor.RazorShared.Program.ConfigureRazorServices(builder.Services, builder.Configuration, HybridTypeEnum.WebAssembly);
+ 
++builder.Services.AddScoped<AuthenticationStateProvider, TestAuthenticationStateProvider>();
++
+ var host = builder.Build();
+ 
+ await con.Configure(host);

@@ -1,0 +1,30 @@
+﻿.k-drawer-container {
+    background-color: $tb-kendo-body-bg;
+    height: calc(100vh - $header-height);
+
+    .k-drawer {
+        box-shadow: 0 0 10px rgba(0,0,0,.2);
+        border-right-width: 0 !important;
+    }
+
+    .k-drawer-start {
+    }
+
+
+    .k-drawer-left {
+        min-height: calc(100% - 80px);
+    }
+}
+
+
+.k-drawer-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    font-size: 18px;
+    height: calc(100% - 0px);
+}
+
+.k-d-level {
+    display: flex;
+}

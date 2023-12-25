@@ -1,0 +1,37 @@
+﻿@inherits JMComponentBase;
+@using UserInfoItem;
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Rendering
+@using Telerik.SvgIcons
+
+<AuthorizeView>
+    <Authorized Context="identityContext">
+        <div @onclick="@(ToggleContextMenu)" class="jm-userinfo">
+            <TelerikStackLayout Orientation="StackLayoutOrientation.Horizontal">
+                <div class="jm-div-space">
+                    @identityContext.User.Identity?.Name
+                </div>
+                <TelerikSvgIcon Icon="@SvgIcon.CaretAltDown" Size="@ThemeConstants.SvgIcon.Size.Large"/>
+            </TelerikStackLayout>
+        </div>
+        
+        <TelerikContextMenu @ref="@_contextMenuRef"
+                            TItem="MenuItem"
+                            Data="@MenuItems"
+                            Selector=".jm-userinfo">
+            <Template Context="menuContext">
+                <TelerikStackLayout Orientation="StackLayoutOrientation.Vertical" Class="jm-cultureStack">
+                    @foreach (var item in menuContext)
+                    {
+                        <TelerikButton OnClick="() => MenuClick(item)" Rounded="@ThemeConstants.Button.Rounded.Small" Icon="@item.Icon" Size="@ThemeConstants.SvgIcon.Size.Large">
+                            @item.Name
+                        </TelerikButton>
+                    }
+                </TelerikStackLayout>
+            </Template>
+        </TelerikContextMenu>
+    </Authorized>
+    <NotAuthorized>
+        User not found.
+    </NotAuthorized>
+</AuthorizeView>

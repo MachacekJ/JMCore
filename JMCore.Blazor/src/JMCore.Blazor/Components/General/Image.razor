@@ -1,0 +1,18 @@
+﻿@using Telerik.SvgIcons
+@inherits JMComponentBase
+
+<TelerikButton OnClick="@OnClick" Icon="@Icon" Size="@Size" />
+
+@code {
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public ISvgIcon Icon { get; set; } = null!;
+
+    /// <summary>
+    /// Use <see cref="ThemeConstants.SvgIcon.Size"/>.
+    /// </summary>
+    [Parameter]
+    public string Size { get; set; } = ThemeConstants.SvgIcon.Size.Medium;
+}

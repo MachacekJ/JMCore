@@ -1,0 +1,58 @@
+@startuml
+title JMCache
+
+package use{
+  class JMCacheServiceExtension
+   note top: services.AddJMMemoryCache<JMCacheCategory>(options);
+   
+  interface IJMCache {
+    +IJMCacheCategories Categories { get; }
+    +TItem Get<TItem>(JMCacheKey key)
+    +TItem Set<TItem>(JMCacheKey key, TItem value, ....)
+    +bool TryGetValue<TItem>(JMCacheKey key, ref TItem value)
+    +void Remove(JMCacheKey key)
+    +void RemoveCategory(int categoryId, string prefix = null)
+  }
+}
+
+package implementation
+{
+  class JMMemoryCache implements IMemoryCache{
+  -string GetKey(JMCacheKey key)
+  }
+  class JMCacheServerCategory{
+    +{static} int DBTable => 200;
+  }
+  
+  note right of JMMemoryCache::GetKey
+    return $"C_{key.Category}_K{key.Key}";
+  end note
+  
+
+}
+
+JMMemoryCache --^ IJMCache
+JMCacheServerCategory --^ JMCacheCategory
+
+
+
+interface IJMCacheCategories {
+  +Dictionary<int, string> All
+}
+
+class JMCacheCategory{
+  +{static} int Localization => 100;
+  #void AddCategory(int idCategory, string category)
+}
+
+class JMCacheKey{
+  +int Category { get; }
+  +string Key { get; }
+  +{static} JMCacheKey Create(int category, string key)
+}
+
+IJMCache::Categories o-- IJMCacheCategories
+IJMCache ..> JMCacheKey 
+JMCacheCategory ..^ IJMCacheCategories 
+
+@enduml

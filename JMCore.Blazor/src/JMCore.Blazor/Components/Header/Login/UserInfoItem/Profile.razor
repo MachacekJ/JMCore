@@ -1,0 +1,13 @@
+﻿@using System.Security.Claims
+<h3>@Identity.Identity?.Name</h3>
+
+@code {
+    [Parameter]
+    public ClaimsPrincipal Identity { get; set; } = null!;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+
+}

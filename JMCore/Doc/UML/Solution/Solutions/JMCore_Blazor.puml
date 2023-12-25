@@ -1,0 +1,19 @@
+﻿@startuml
+package Blazor #DDDDDD {
+    object JMCore_Blazor {
+
+    }
+    object JMCore_Blazor_Client {
+    }
+    object JMCore_Blazor_Server {
+
+    }
+    object JMCoreTest_Blazor_BUnit {
+    
+    }
+    JMCore_Blazor_Client --> JMCore_Blazor
+    JMCore_Blazor_Server --> JMCore_Blazor
+    JMCoreTest_Blazor_BUnit --> JMCore_Blazor
+    JMCoreTest_Blazor_BUnit --> JMCore_Tests
+}
+@enduml

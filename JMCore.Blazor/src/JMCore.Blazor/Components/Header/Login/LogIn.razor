@@ -1,0 +1,14 @@
+﻿@inherits JMComponentBase;
+@using System.Security.Cryptography
+@using System.Text
+@using System.Security.Claims
+@using JMCore.Blazor.Services.App
+@using JMCore.Blazor.Services.App.Models
+@using Telerik.SvgIcons
+
+<TelerikButton Icon="@SvgIcon.Login" @onclick="LoginClick" Class="@_mobileIconCss" Title="Login">
+    @if (AppState.ResponsiveType == ResponsiveTypeEnum.Desktop)
+    {
+        <span>Login</span>
+    }
+</TelerikButton>

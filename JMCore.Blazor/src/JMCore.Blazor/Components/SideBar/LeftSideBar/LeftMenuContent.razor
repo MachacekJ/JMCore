@@ -1,0 +1,13 @@
+﻿@inherits JMComponentBase
+<Testable TestId="testMenuContent">
+    <TelerikPanelBar Data="_rootItems"
+                     OnCollapse="OnCollapse"
+                     OnExpand="OnExpand"
+                     ExpandedItems="_expandedItems"
+                     ExpandedItemsChanged="ExpandedItemsChanged"
+                     OnItemRender="@SelectActivePage" Class="jm-leftmenu">
+        <PanelBarBindings>
+            <PanelBarBinding ItemsField="Items"></PanelBarBinding>
+        </PanelBarBindings>
+    </TelerikPanelBar>
+</Testable>

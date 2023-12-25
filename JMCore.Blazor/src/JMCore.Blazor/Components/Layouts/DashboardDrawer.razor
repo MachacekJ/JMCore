@@ -1,0 +1,63 @@
+﻿@inherits JMComponentBase
+@using Telerik.FontIcons
+@using Telerik.SvgIcons
+@using JMCore.Blazor.Components.SideBar.LeftSideBar
+@using JMCore.Blazor.Components.SideBar.RightSideBar
+
+<div class="jm-header">
+    <div class="jm-nav-container">
+        <div class="jm-menu-button">
+            <TelerikButton Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer" />
+        </div>
+        <div class="jm-title">
+            <h1>@($"{_pageTitle}")</h1>
+        </div>
+        <div class="jm-settings">
+            @TopBar
+        </div>
+    </div>
+</div>
+<TelerikDrawer @ref="_menuDrawer" Expanded="_expanded"
+               ExpandedChanged="ExpandedChangedHandler"
+               TItem="int"
+               Data="_fakeData"
+               Mode="_mode"
+               Position="DrawerPosition.Start"
+               MiniMode="false">
+    <Template>
+        <LeftMenuContent></LeftMenuContent>
+    </Template>
+    <DrawerContent>
+        <TelerikDrawer @ref="_menuDrawer2" Expanded="false"
+                       MiniMode="false"
+                       Position="DrawerPosition.End"
+                       TItem="int"
+                       Data="_fakeData2"
+                       Mode="DrawerMode.Overlay">
+            <Template>
+                <RightMenuContent></RightMenuContent>
+            </Template>
+            <DrawerContent>
+                <TelerikGridLayout RowSpacing="6px" ColumnSpacing="10px">
+                    <GridLayoutRows>
+                        <GridLayoutRow Height="30px"></GridLayoutRow>
+                        <GridLayoutRow Height="100%"></GridLayoutRow>
+                    </GridLayoutRows>
+                    <GridLayoutColumns>
+                        <GridLayoutColumn Width="100%"></GridLayoutColumn>
+                    </GridLayoutColumns>
+                    <GridLayoutItems>
+                        <GridLayoutItem Row="1" Column="1" Class="jm-breadcrumb">
+                            <TelerikBreadcrumb Data="@_items"></TelerikBreadcrumb>
+                        </GridLayoutItem>
+                        <GridLayoutItem Row="2" Column="1" Class="jm-content">
+                            @Body
+                        </GridLayoutItem>
+                    </GridLayoutItems>
+                </TelerikGridLayout>
+            </DrawerContent>
+        </TelerikDrawer>
+    </DrawerContent>
+</TelerikDrawer>
+
+<TelerikMediaQuery Media="(max-width: 768px)" OnChange="MediaQueryChange"></TelerikMediaQuery>

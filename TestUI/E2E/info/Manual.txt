@@ -1,0 +1,1 @@
+1. goto https://googlechromelabs.github.io/chrome-for-testing/#stable

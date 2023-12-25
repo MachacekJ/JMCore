@@ -1,0 +1,22 @@
+﻿.jm-cultureChooser:hover {
+    border-color: transparent !important;
+    color: white;
+    background-color: transparent !important;
+}
+
+.jm-cultureChooser:focus-within {
+    border-color: transparent !important;
+    color: white;
+    background-color: transparent !important;
+}
+
+.jm-cultureChooser {
+    border-color: transparent !important;
+    color: white !important;
+    background-color: transparent !important;
+    margin: 10px !important;
+}
+
+.jm-cultureStack {
+    background-color: $kendo-button-bg;
+}

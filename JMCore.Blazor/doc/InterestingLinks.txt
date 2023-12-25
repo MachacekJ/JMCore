@@ -1,0 +1,6 @@
+https://github.com/chrissainty/AuthenticationWithClientSideBlazor
+
+https://www.youtube.com/playlist?list=PLOeFnOV9YBa4yaz-uIi5T4ZW3QQGHJQXi
+https://github.com/Shoogn/OAuth20Server
+
+https://github.com/Nethereum/Nethereum.Templates.Siwe/blob/main/ExampleProjectSiwe.RestApi/Controllers/AuthenticationController.cs

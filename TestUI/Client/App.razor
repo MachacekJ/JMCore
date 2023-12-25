@@ -1,0 +1,35 @@
+﻿@using JMCore.Blazor.Services.App
+@using JMCoreTest.Blazor.Client.Shared
+@using JMCore.Blazor.Components
+
+@code {
+    [Inject]
+    private IAppState AppState { get; set; } = null!;
+
+
+    private Task OnNavigateAsync(NavigationContext args)
+    {
+        AppState.SetPage(args.Path);
+        return Task.CompletedTask;
+    }
+}
+
+<CascadingAuthenticationState>
+    <Router OnNavigateAsync="@OnNavigateAsync" AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] { typeof(JMPageBase).Assembly }">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    Loading...
+                </Authorizing>
+                <NotAuthorized>
+                    <p role="alert">You are not authorized to access this resource.</p>
+                </NotAuthorized>
+            </AuthorizeRouteView>
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <PageNotFound></PageNotFound>  
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue</OriginalElement>
+  <nodes>
+    <node x="-22.0" y="423.0">4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue</node>
+    <node x="-9.0" y="30.5">4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditTable</node>
+    <node x="-14.0" y="186.0">4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.Audit</node>
+    <node x="194.0" y="241.0">4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditColumn</node>
+    <node x="189.0" y="30.5">4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditUser</node>
+  </nodes>
+  <notes>
+    <note x="-369.0" y="24.0">
+      <node>4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.Audit</node>
+      <value>PROCEDURE [dbo].[sp_SaveAudit] \n(\t@userId nvarchar(450),\n\t@userName nvarchar(256),\n\t\n\t@tableName varchar(255),\n\t@schemaName varchar(255),\n\t\n\t@pkValue bigint,\n    @pkValueString nvarchar(450),\n\t@entityState tinyint,\n\t\n\t@auditValues AS dbo.tp_AuditSaveValues READONLY,\n\t@auditId int OUTPUT\n)</value>
+      <edge>
+        <point x="-62.66666666666666" y="-93.5" />
+        <point x="17.333333333333314" y="161.0" />
+        <point x="-199.0" y="161.0" />
+        <point x="0.0" y="56.0" />
+      </edge>
+    </note>
+    <note x="-81.0" y="-138.0">
+      <node>4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditTable</node>
+      <value>VIEW [dbo].[vw_Audit]</value>
+      <edge>
+        <point x="0.0" y="-49.5" />
+        <point x="0.0" y="56.0" />
+      </edge>
+    </note>
+    <note x="-385.0" y="223.5">
+      <node>4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue</node>
+      <value>TYPE [dbo].[tp_AuditSaveValues] AS TABLE(\n\t[AuditColumnId] [int] NOT NULL,\n\t[OldValueString] [nvarchar](max) NULL,\n\t[NewValueString] [nvarchar](max) NULL,\n\t[OldValueInt] [int] NULL,\n\t[NewValueInt] [int] NULL,\n\t[OldValueLong] [bigint] NULL,\n\t[NewValueLong] [bigint] NULL,\n\t[OldValueBool] [bit] NULL,\n\t[NewValueBool] [bit] NULL\n)</value>
+      <edge>
+        <point x="-68.0" y="-137.5" />
+        <point x="12.0" y="398.0" />
+        <point x="-209.5" y="398.0" />
+        <point x="0.0" y="56.0" />
+      </edge>
+    </note>
+  </notes>
+  <edges>
+    <edge source="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue" target="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditColumn" relationship="REFERENCES">
+      <point x="68.0" y="-137.5" />
+      <point x="148.0" y="398.0" />
+      <point x="282.0" y="398.0" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.Audit" target="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditUser" relationship="REFERENCES">
+      <point x="62.66666666666666" y="-93.5" />
+      <point x="142.66666666666663" y="161.0" />
+      <point x="272.5" y="161.0" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.Audit" target="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditTable" relationship="REFERENCES">
+      <point x="0.0" y="-93.5" />
+      <point x="0.0" y="49.5" />
+    </edge>
+    <edge source="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue" target="4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.Audit" relationship="REFERENCES">
+      <point x="0.0" y="-137.5" />
+      <point x="0.0" y="93.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0128504672897196" showDependencies="false" x="2.4999999999998863" y="290.0" />
+  <SelectedNodes>
+    <node>4795e84e-ce17-4e60-b60a-852775272edb.TABLE:empty.dbo.AuditValue</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

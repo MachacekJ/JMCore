@@ -1,5 +1,5 @@
 # About solutions
-POC for .NET 8 and Blazor and not ready for production !!!
+POC for .NET 8 and Blazor and not ready for production !!! This is a "private" project and some parts/ideas of the code may be ported to productions in other projects. 
 
 ![app.png](Doc%2Fimg%2Fapp.png)
 ![appMobile.png](Doc%2Fimg%2FappMobile.png)
@@ -18,6 +18,7 @@ POC for .NET 8 and Blazor and not ready for production !!!
 - Localizations
   - server
   - client
+- Telerik
 - xUnit
 - Moq
 - BUnit

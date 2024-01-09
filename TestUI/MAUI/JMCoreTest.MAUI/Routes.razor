@@ -1,0 +1,38 @@
+﻿@using JMCore.Blazor.Services.App
+@using JMCore.Blazor
+
+    <Router OnNavigateAsync="@OnNavigateAsync" AppAssembly="@typeof(MauiProgram).Assembly" AdditionalAssemblies="new[] { typeof(JMPageBase).Assembly }">
+        <Found Context="routeData">
+            @* <RouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)"/> *@
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(Components.Layout.MainLayout)">
+            
+   
+                <NotAuthorized>
+                    Not AUU
+                </NotAuthorized>
+            </AuthorizeRouteView>
+
+        </Found>
+        <NotFound>
+            <CascadingAuthenticationState>
+                <LayoutView Layout="@typeof(Components.Layout.MainLayout)">
+                    <p>Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </CascadingAuthenticationState>
+        </NotFound>
+    </Router>
+
+
+@code {
+
+    [Inject]
+    private IAppState AppState { get; set; } = null!;
+
+
+    private Task OnNavigateAsync(NavigationContext args)
+    {
+        AppState.SetPage(args.Path);
+        return Task.CompletedTask;
+    }
+
+}

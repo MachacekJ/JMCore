@@ -2,27 +2,27 @@
 @using JMCore.Blazor.Services.App
 @using JMCore.Blazor.Components.Header.Login
 
-<AuthorizeView>
-    <Authorized>
-        <TelerikGridLayout HorizontalAlign="GridLayoutHorizontalAlign.Right" VerticalAlign="GridLayoutVerticalAlign.Center" RowSpacing="6px" ColumnSpacing="10px">
-            <GridLayoutRows>
-                <GridLayoutRow Height="35px"></GridLayoutRow>
-            </GridLayoutRows>
-            <GridLayoutColumns>
-                <GridLayoutColumn></GridLayoutColumn>
-                <GridLayoutColumn></GridLayoutColumn>
-            </GridLayoutColumns>
-            <GridLayoutItems>
-                <GridLayoutItem Row="1" Column="1">
-                    <UserInfo></UserInfo>
-                </GridLayoutItem>
-                <GridLayoutItem Row="1" Column="2">
-                    <LogOut></LogOut>
-                </GridLayoutItem>
-            </GridLayoutItems>
-        </TelerikGridLayout>
-    </Authorized>
-    <NotAuthorized>
+@* <AuthorizeView> *@
+@*     <Authorized> *@
+    @*     <TelerikGridLayout HorizontalAlign="GridLayoutHorizontalAlign.Right" VerticalAlign="GridLayoutVerticalAlign.Center" RowSpacing="6px" ColumnSpacing="10px"> *@
+    @*         <GridLayoutRows> *@
+    @*             <GridLayoutRow Height="35px"></GridLayoutRow> *@
+    @*         </GridLayoutRows> *@
+    @*         <GridLayoutColumns> *@
+    @*             <GridLayoutColumn></GridLayoutColumn> *@
+    @*             <GridLayoutColumn></GridLayoutColumn> *@
+    @*         </GridLayoutColumns> *@
+    @*         <GridLayoutItems> *@
+    @*             <GridLayoutItem Row="1" Column="1"> *@
+    @*                 <UserInfo></UserInfo> *@
+    @*             </GridLayoutItem> *@
+    @*             <GridLayoutItem Row="1" Column="2"> *@
+    @*                 <LogOut></LogOut> *@
+    @*             </GridLayoutItem> *@
+    @*         </GridLayoutItems> *@
+    @*     </TelerikGridLayout> *@
+    @* </Authorized> *@
+    @* <NotAuthorized> *@
         <TelerikGridLayout HorizontalAlign="GridLayoutHorizontalAlign.Right" VerticalAlign="GridLayoutVerticalAlign.Center" RowSpacing="6px" ColumnSpacing="10px">
             <GridLayoutRows>
                 <GridLayoutRow Height="35px"></GridLayoutRow>
@@ -44,5 +44,5 @@
                 </GridLayoutItem>
             </GridLayoutItems>
         </TelerikGridLayout>
-    </NotAuthorized>
-</AuthorizeView>
+@*     </NotAuthorized> *@
+@* </AuthorizeView> *@

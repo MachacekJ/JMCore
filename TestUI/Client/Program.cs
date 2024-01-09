@@ -12,11 +12,11 @@ using JMCoreTest.Blazor.Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Autofac;
 using JMCore.Blazor;
+using JMCore.Blazor.Localization;
 using JMCore.Client.CQRS.Http;
 using JMCore.Blazor.Services.Page;
 using JMCore.Blazor.Services.Page.Implementations;
 using JMCore.Client.Services.Logger;
-using JMCoreTest.Blazor.Client.Localization;
 using Telerik.Blazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -28,7 +28,7 @@ builder.Logging.AddProvider(new InMemoryLoggingProvider());
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.TryAddSingleton<AuthenticationStateProvider, HostAuthenticationStateProvider>();
-builder.Services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
+//builder.Services.TryAddSingleton(sp => (HostAuthenticationStateProvider)sp.GetRequiredService<AuthenticationStateProvider>());
 builder.Services.AddTransient<AuthorizedHandler>();
 
 builder.RootComponents.Add<App>("#app");

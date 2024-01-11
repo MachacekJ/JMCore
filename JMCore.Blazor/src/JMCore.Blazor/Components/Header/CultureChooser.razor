@@ -1,9 +1,7 @@
 ﻿@using Telerik.Blazor.Components.Menu
-@using JMCore.Blazor.Components.General
 @using JMCore.Blazor.Services.App.Models
 @inherits JMComponentBase
 <Testable TestId=@(nameof(CultureChooser))>
-    <div class="lang-icon" @onclick="ShowContextMenu">
-        <Image Icon="@_value.Icon" Size="@ThemeConstants.SvgIcon.Size.Large"></Image>
-    </div>
+    <TelerikButton FillMode="flat" Icon="@_value.Icon" @onclick="ShowContextMenu">
+    </TelerikButton>
 </Testable>

@@ -6,7 +6,7 @@
 @using JMCore.Blazor.Services.App.Models
 @using Telerik.SvgIcons
 
-<TelerikButton Icon="@SvgIcon.Login" @onclick="LoginClick" Class="@_mobileIconCss" Title="Login">
+<TelerikButton FillMode="flat" Icon="@SvgIcon.Login" @onclick="LoginClick">
     @if (AppState.ResponsiveType == ResponsiveTypeEnum.Desktop)
     {
         <span>Login</span>

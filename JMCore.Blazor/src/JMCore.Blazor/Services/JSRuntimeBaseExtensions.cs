@@ -33,4 +33,9 @@ public static class JSRuntimeBaseExtensions
         await js.InvokeVoidAsync("cookieStorage.set",
             $".AspNetCore.Culture={escapedCulture}; max-age=2592000;path=/");
     }
+
+    public static async Task<string> GetAntiforgeryToken(this IJSRuntime js)
+    {
+        return await js.InvokeAsync<string>("getAntiForgeryToken");
+    }
 }

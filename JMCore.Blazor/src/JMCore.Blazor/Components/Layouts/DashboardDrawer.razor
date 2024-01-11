@@ -3,20 +3,9 @@
 @using Telerik.SvgIcons
 @using JMCore.Blazor.Components.SideBar.LeftSideBar
 @using JMCore.Blazor.Components.SideBar.RightSideBar
+@using JMCore.Blazor.Components.Header.Login
+@using JMCore.Blazor.Components.Header
 
-<div class="jm-header">
-    <div class="jm-nav-container">
-        <div class="jm-menu-button">
-            <TelerikButton Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer" />
-        </div>
-        <div class="jm-title">
-            <h1>@($"{_pageTitle}")</h1>
-        </div>
-        <div class="jm-settings">
-            @TopBar
-        </div>
-    </div>
-</div>
 <TelerikDrawer @ref="_menuDrawer" Expanded="_expanded"
                ExpandedChanged="ExpandedChangedHandler"
                TItem="int"
@@ -25,6 +14,11 @@
                Position="DrawerPosition.Start"
                MiniMode="false">
     <Template>
+        <TelerikAppBar PositionMode="AppBarPositionMode.Static" Class="jm-content-app-bar">
+            <AppBarSection>
+                E2E Testing
+            </AppBarSection>
+        </TelerikAppBar>
         <LeftMenuContent></LeftMenuContent>
     </Template>
     <DrawerContent>
@@ -38,6 +32,28 @@
                 <RightMenuContent></RightMenuContent>
             </Template>
             <DrawerContent>
+                <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
+                    <AppBarSection>
+                        <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
+                    </AppBarSection>
+
+                    <AppBarSpacer/>
+
+                    <AppBarSection>
+                        <Register></Register>
+                    </AppBarSection>
+
+                    <AppBarSeparator/>
+
+                    <AppBarSection>
+                        <LogIn></LogIn>
+                    </AppBarSection>
+
+                    <AppBarSection>
+                        <CultureChooser/>
+                    </AppBarSection>
+
+                </TelerikAppBar>
                 <TelerikGridLayout RowSpacing="6px" ColumnSpacing="10px">
                     <GridLayoutRows>
                         <GridLayoutRow Height="30px"></GridLayoutRow>
@@ -51,7 +67,9 @@
                             <TelerikBreadcrumb Data="@_items"></TelerikBreadcrumb>
                         </GridLayoutItem>
                         <GridLayoutItem Row="2" Column="1" Class="jm-content">
-                            @Body
+                            <div class="jm-content-child">
+                                @Body
+                            </div>
                         </GridLayoutItem>
                     </GridLayoutItems>
                 </TelerikGridLayout>

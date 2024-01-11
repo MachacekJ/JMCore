@@ -1,0 +1,12 @@
+//https://www.telerik.com/design-system/docs/themes/theme-material/theme-variables/#color-palette
+@import 'telerik/tokens';
+@import '@progress/kendo-theme-material/dist/all';
+@import 'telerik/overrides';
+
+@import "mixins";
+@import "main";
+@import "../../Components/Layouts/DashboardDrawer.razor.scss";
+@import "../../Components/SideBar/LeftSideBar/LeftMenuContent.razor.scss";
+
+@import "../../Components/Header/Login/UserInfo.razor.scss";
+@import "../../Components/Header/CultureChooser.razor.scss";

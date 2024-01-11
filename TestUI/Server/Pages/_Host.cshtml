@@ -12,16 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Web for E2E testing (loading) ...</title>
     <base href="~/"/>
-    <link href="_content/JMCore.Blazor/css/fonts/roboto/roboto.css" rel="stylesheet">
-    <link rel="stylesheet" href="_content/JMCore.Blazor/css/main.css"/>
-    <link rel="stylesheet" href="app.css"/>
+    <link href="_content/JMCore.Blazor/index.css" rel="stylesheet" />
 
     <script src="_content/Telerik.UI.for.Blazor.Trial/js/telerik-blazor.js" defer></script>
-    <script src="_content/JMCore.Blazor/js/interop.js"></script>
-    <script src="app.js"></script>
-
-    <link href="manifest.json" rel="manifest"/>
-    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png"/>
+    <script src="_content/JMCore.Blazor/index.js"></script>
 </head>
 <body>
 
@@ -33,7 +27,7 @@
     </div>
 </div>
 
-<div id="blazor-error-ui">
+<div class="blazor-error-ui">
     <environment include="Staging,Production">
         An error has occurred. This application may no longer respond until reloaded.
     </environment>
@@ -45,7 +39,6 @@
 </div>
 
 <script src="_framework/blazor.webassembly.js"></script>
-<script src="_content/JMCore.Blazor/js/antiForgeryToken.js"></script>
 @Html.AntiForgeryToken()
 </body>
 </html>

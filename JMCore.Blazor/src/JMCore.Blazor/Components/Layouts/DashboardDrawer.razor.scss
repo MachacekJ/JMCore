@@ -1,0 +1,37 @@
+﻿.k-drawer-container {
+  //background-color: $tb-kendo-body-bg;
+  height: calc(100vh);
+
+  .k-drawer {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    border-right-width: 0 !important;
+  }
+
+  // .k-drawer-start {}
+
+
+  // .k-drawer-left {
+  //   min-height: 100%;
+  // }
+}
+
+
+.jm-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  height: calc(100vh - #{$app-bar-height + $breadcrumb-height});
+}
+
+.jm-content-child {
+  padding-left: 10px;
+ // min-height: calc(100vh - #{$app-bar-height + $breadcrumb-height});
+}
+
+.jm-content-app-bar {
+  height: $app-bar-height;
+}
+
+.jm-breadcrumb {
+  height: $breadcrumb-height;
+}

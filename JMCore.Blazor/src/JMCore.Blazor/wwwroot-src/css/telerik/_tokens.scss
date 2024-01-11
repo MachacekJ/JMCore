@@ -1,0 +1,93 @@
+// Compatible with @progress/kendo-theme-material v.7.0.0
+
+
+$tb-adjust-contrast: true;
+$tb-kendo-border-radius: 4px;
+$tb-primary-palette-name: teal;
+$tb-secondary-palette-name: orange;
+$tb-theme-type: light;
+$tb-kendo-body-bg: #ffffff;
+$tb-kendo-series-a: #9c27b0;
+$tb-kendo-series-b: #2196f3;
+$tb-kendo-series-c: #009688;
+$tb-kendo-series-d: #ffeb3b;
+$tb-kendo-series-e: #f44336;
+$tb-kendo-series-f: #4caf50;
+
+$tb-box-shadow-depth-2: 0px 1px 5px 0px #00000033, 0px 3px 1px 0px #0000001f, 0px 2px 2px 0px #00000024;
+$tb-box-shadow-depth-3: 0px 1px 8px 0px #00000033, 0px 3px 3px 0px #0000001f, 0px 3px 4px 0px #00000024;
+$tb-box-shadow-depth-4: 0px 2px 4px 0px #00000033, 0px 1px 10px 0px #0000001f, 0px 4px 5px 0px #00000024;
+$tb-box-shadow-depth-5: 0px 3px 5px 0px #00000033, 0px 1px 18px 0px #0000001f, 0px 6px 10px 0px #00000024;
+
+$adjust-contrast: $tb-adjust-contrast;
+$kendo-border-radius: $tb-kendo-border-radius;
+$primary-palette-name: $tb-primary-palette-name;
+$secondary-palette-name: $tb-secondary-palette-name;
+$theme-type: $tb-theme-type;
+$kendo-body-bg: $tb-kendo-body-bg;
+$kendo-series-a: $tb-kendo-series-a;
+$kendo-series-b: $tb-kendo-series-b;
+$kendo-series-c: $tb-kendo-series-c;
+$kendo-series-d: $tb-kendo-series-d;
+$kendo-series-e: $tb-kendo-series-e;
+$kendo-series-f: $tb-kendo-series-f;
+$box-shadow-depth-2: $tb-box-shadow-depth-2;
+$box-shadow-depth-3: $tb-box-shadow-depth-3;
+$box-shadow-depth-4: $tb-box-shadow-depth-4;
+$box-shadow-depth-5: $tb-box-shadow-depth-5;
+    $kendo-font-family: Roboto, "Helvetica Neue", sans-serif;
+    $kendo-font-size: 14px;
+    $kendo-font-weight-normal: 400;
+    $kendo-line-height: 2;
+    
+$enable-gradients: true;
+
+$tb-typography: (
+  kendo-default-typography: (
+      font-family: 'Roboto, "Helvetica Neue", sans-serif',
+      font-size: 14px,
+      font-weight: 400,
+      line-height: 2,
+  ),
+);
+
+@mixin typography-classes ($typography) {
+  @each $selector, $property in $typography {
+    &-#{$selector} {
+      @each $propName, $propValue in $property {
+        #{$propName}: #{$propValue};
+      }
+    } &-#{$selector}-important {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue !important;
+      }
+    }
+  }
+}
+
+$tb-effects: (
+  box-shadow-depth-2: (
+      box-shadow: (0px 1px 5px 0px #00000033, 0px 3px 1px 0px #0000001f, 0px 2px 2px 0px #00000024),  ),
+  box-shadow-depth-3: (
+      box-shadow: (0px 1px 8px 0px #00000033, 0px 3px 3px 0px #0000001f, 0px 3px 4px 0px #00000024),  ),
+  box-shadow-depth-4: (
+      box-shadow: (0px 2px 4px 0px #00000033, 0px 1px 10px 0px #0000001f, 0px 4px 5px 0px #00000024),  ),
+  box-shadow-depth-5: (
+      box-shadow: (0px 3px 5px 0px #00000033, 0px 1px 18px 0px #0000001f, 0px 6px 10px 0px #00000024),  ),
+  tb-internal-none-effects: (
+      box-shadow: (none), filter: (none), backdrop-filter: (none),  ),
+);
+
+@mixin effects-classes ($effects) {
+  @each $selector, $property in $effects {
+    &-#{$selector} {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue;
+      }
+    } &-#{$selector}-important {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue !important;
+      }
+    }
+  }
+}

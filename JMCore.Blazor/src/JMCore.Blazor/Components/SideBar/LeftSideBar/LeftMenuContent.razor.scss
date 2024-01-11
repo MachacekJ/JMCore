@@ -1,5 +1,6 @@
 ﻿.jm-leftmenu {
-    background-color: $tb-kendo-hover-bg;
+    background-color: $kendo-color-primary;
+    color: $kendo-color-primary-contrast;
     .k-link {
         color: inherit !important;
         background-color: inherit !important;
@@ -14,7 +15,7 @@
     }
 
     .k-level-selected {
-        background-color: $tb-kendo-disabled-text !important
+       background-color: $kendo-color-secondary !important
     }
 
     .k-focus {

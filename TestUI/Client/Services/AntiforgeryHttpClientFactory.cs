@@ -1,4 +1,5 @@
-﻿using JMCore.Client.Services.Http;
+﻿using JMCore.Blazor.Services;
+using JMCore.Client.Services.Http;
 using Microsoft.JSInterop;
 
 namespace JMCoreTest.Blazor.Client.Services;
@@ -27,7 +28,7 @@ public class AntiforgeryHttpClientFactory : IJMHttpClientFactory
     }
     private async Task<HttpClient> CreateClientAsync(string clientName)
     {
-        var token = await _jSRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        var token = await _jSRuntime.GetAntiforgeryToken();
 
         var client = _httpClientFactory.CreateClient(clientName);
         client.DefaultRequestHeaders.Add("X-XSRF-TOKEN", token);

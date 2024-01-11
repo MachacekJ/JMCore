@@ -7,7 +7,7 @@
 @using JMCore.Blazor.Components.SvgIcons
 @using JMCore.Blazor.Services.App.Models
 
-<TelerikButton Icon="@SvgMyIcons.SignUp" OnClick="RegisterClick" Class="@_mobileIconCss">
+<TelerikButton FillMode="flat" Icon="@SvgMyIcons.SignUp" OnClick="RegisterClick">
     @if (AppState.ResponsiveType == ResponsiveTypeEnum.Desktop)
     {
         <span>Register</span>

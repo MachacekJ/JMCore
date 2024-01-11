@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime JsRuntime
+﻿@using JMCore.Blazor.Services
+@inject IJSRuntime JsRuntime
 
 <input type="hidden" id="__RequestVerificationToken"
        name="__RequestVerificationToken" value="@GetToken()">
@@ -9,7 +10,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _token = await JsRuntime.InvokeAsync<string>("getAntiForgeryToken");
+        _token = await JsRuntime.GetAntiforgeryToken();
     }
 
     private string GetToken()

@@ -18,7 +18,7 @@ public partial class DashboardDrawer : JMComponentBase, IDisposable
     private DrawerMode _mode = DrawerMode.Push;
     private List<int> _fakeData = new() { 0 };
     private List<int> _fakeData2 = new() { 0 };
-    [Parameter] public RenderFragment? TopBar { get; set; }
+    //[Parameter] public RenderFragment? TopBar { get; set; }
 
     [Parameter] public RenderFragment? Body { get; set; }
 

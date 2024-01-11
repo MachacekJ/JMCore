@@ -22,6 +22,28 @@
         <LeftMenuContent></LeftMenuContent>
     </Template>
     <DrawerContent>
+         <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
+                            <AppBarSection>
+                                <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
+                            </AppBarSection>
+        
+                            <AppBarSpacer/>
+        
+                            <AppBarSection>
+                                <Register></Register>
+                            </AppBarSection>
+        
+                            <AppBarSeparator/>
+        
+                            <AppBarSection>
+                                <LogIn></LogIn>
+                            </AppBarSection>
+        
+                            <AppBarSection>
+                                <CultureChooser/>
+                            </AppBarSection>
+        
+                        </TelerikAppBar>
         <TelerikDrawer @ref="_menuDrawer2" Expanded="false"
                        MiniMode="false"
                        Position="DrawerPosition.End"
@@ -32,28 +54,6 @@
                 <RightMenuContent></RightMenuContent>
             </Template>
             <DrawerContent>
-                <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
-                    <AppBarSection>
-                        <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
-                    </AppBarSection>
-
-                    <AppBarSpacer/>
-
-                    <AppBarSection>
-                        <Register></Register>
-                    </AppBarSection>
-
-                    <AppBarSeparator/>
-
-                    <AppBarSection>
-                        <LogIn></LogIn>
-                    </AppBarSection>
-
-                    <AppBarSection>
-                        <CultureChooser/>
-                    </AppBarSection>
-
-                </TelerikAppBar>
                 <TelerikGridLayout RowSpacing="6px" ColumnSpacing="10px">
                     <GridLayoutRows>
                         <GridLayoutRow Height="30px"></GridLayoutRow>

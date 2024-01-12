@@ -3,6 +3,7 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 
 ![app.png](Doc%2Fimg%2Fapp.png)
 ![appMobile.png](Doc%2Fimg%2FappMobile.png)
+![Android.png](Doc%2Fimg%2FAndroid.png)
 
 ## Technologies
 ### Backend
@@ -32,6 +33,9 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 containerBuilder.RegisterGeneric(typeof(HttpAuthorizedHandler<>)).AsImplementedInterfaces();
 containerBuilder.RegisterGeneric(typeof(HttpNonAuthorizedHandler<>)).AsImplementedInterfaces();
 ```
+### MAUI - total experiment
+- Blazor Hybrid - UI works 
+- more in branch MAUI
 
 ### Testing
 - xUnit

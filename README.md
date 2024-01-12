@@ -1,6 +1,8 @@
 # About solutions
 POC for .NET 8 and Blazor and not ready for production !!! This is a "private" project and some parts/ideas of the code may be ported to productions in other projects. 
 
+[https://jmcore.azurewebsites.net](https://jmcore.azurewebsites.net/localization/detail)
+
 ### Web
 ![app.png](Doc%2Fimg%2Fapp.png)
 

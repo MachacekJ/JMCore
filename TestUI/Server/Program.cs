@@ -71,7 +71,7 @@ services.AddAuthentication(options =>
 
 services.AddControllersWithViews(options =>
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
-); //.AddNewtonsoftJson();
+);
 
 services.AddRazorPages().AddMvcOptions(options =>
 {

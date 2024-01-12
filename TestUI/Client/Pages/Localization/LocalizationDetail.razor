@@ -4,21 +4,17 @@
 @using JMCoreTest.Blazor.Shared.Models
 @using JMCore.Client.CQRS.Http
 @using JMCore.Client.Services.Http
-@using JMCore.Models.BaseRR
 @using JMCoreTest.Blazor.Shared.Controllers.HttpTestController
-@using Telerik.Blazor.Services
 @inherits JMComponentBase
-@inject ITelerikStringLocalizer Localizer
-<h3>Detail</h3>
 
-<TelerikGrid Height="550px" FilterMode="@GridFilterMode.FilterMenu"
+<TelerikGrid Class="jm-content-height" FilterMode="@GridFilterMode.FilterMenu"
              Sortable="true" Pageable="true" Groupable="true" PageSize="20"
              TItem="@WeatherForecast" OnRead="@ReadItems">
     <GridColumns>
         <GridColumn Field="Id" FieldType="@(typeof(int))" Title="Id" Width="100px" Groupable="false" />
         <GridColumn Field="Date" FieldType="@(typeof(DateTime))">
             <Template>
-                @((context as WeatherForecast).Date.ToString("dddd, dd MMM yyyy"))
+                @((context as WeatherForecast)!.Date.ToString("dddd, dd MMM yyyy"))
             </Template>
         </GridColumn>
         <GridColumn Field="TemperatureC" FieldType="@(typeof(int))" Title="Temp. C" />

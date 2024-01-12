@@ -1,18 +1,14 @@
-﻿.k-drawer-container {
-  //background-color: $tb-kendo-body-bg;
+﻿.jm-content-drawer-main {
   height: calc(100vh);
+  
+  .k-drawer-start {
+    background-color: $kendo-color-primary;
+  }
 
   .k-drawer {
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     border-right-width: 0 !important;
   }
-
-  // .k-drawer-start {}
-
-
-  // .k-drawer-left {
-  //   min-height: 100%;
-  // }
 }
 
 
@@ -20,12 +16,15 @@
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
-  height: calc(100vh - #{$app-bar-height + $breadcrumb-height});
+  height: $content-height;
 }
 
 .jm-content-child {
-  padding-left: 10px;
- // min-height: calc(100vh - #{$app-bar-height + $breadcrumb-height});
+  padding: 0px $content-padding $content-padding $content-padding;
+}
+
+.jm-content-height {
+  height: $content-height-child;
 }
 
 .jm-content-app-bar {
@@ -34,4 +33,10 @@
 
 .jm-breadcrumb {
   height: $breadcrumb-height;
+}
+
+.jm-content-logo {
+  h2 { 
+    margin: 0;
+  }
 }

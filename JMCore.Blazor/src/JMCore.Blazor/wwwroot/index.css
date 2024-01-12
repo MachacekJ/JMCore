@@ -40630,9 +40630,11 @@ body {
     right: 0.75rem;
     top: 0.5rem; }
 
-.k-drawer-container {
+.jm-content-drawer-main {
   height: calc(100vh); }
-  .k-drawer-container .k-drawer {
+  .jm-content-drawer-main .k-drawer-start {
+    background-color: #00695c; }
+  .jm-content-drawer-main .k-drawer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-right-width: 0 !important; }
 
@@ -40640,16 +40642,22 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
-  height: calc(100vh - 110px); }
+  height: calc(100vh - 90px); }
 
 .jm-content-child {
-  padding-left: 10px; }
+  padding: 0px 10px 10px 10px; }
+
+.jm-content-height {
+  height: calc(100vh - 100px); }
 
 .jm-content-app-bar {
   height: 54px; }
 
 .jm-breadcrumb {
-  height: 56px; }
+  height: 36px; }
+
+.jm-content-logo h2 {
+  margin: 0; }
 
 .jm-leftmenu {
   background-color: #00695c;

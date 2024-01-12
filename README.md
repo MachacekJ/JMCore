@@ -5,6 +5,7 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 ![appMobile.png](Doc%2Fimg%2FappMobile.png)
 
 ## Technologies
+### Backend
 - .NET 8
 - MSSQL
 - Blazor WASM
@@ -14,21 +15,30 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 - OAuth2
 - MediatR
   - IPipelineBehavior
-- Logging
+- Logging - Serilog
 - Localizations
-  - server
-  - client
+
+### Frontend
+- fully responsive
+- SCSS
 - Telerik
-- xUnit
-- Moq
-- BUnit
-- Selenium
-- Autofac 
-  - mainly for registration open generic type for MediatR -> IRequest, 
+- Localization
+- Logging
+  - via MediatR - in memory
+  - TODO - send log information to Server
+- Autofac
+  - mainly for registration open generic type for MediatR -> IRequest,
 ```
 containerBuilder.RegisterGeneric(typeof(HttpAuthorizedHandler<>)).AsImplementedInterfaces();
 containerBuilder.RegisterGeneric(typeof(HttpNonAuthorizedHandler<>)).AsImplementedInterfaces();
 ```
+
+### Testing
+- xUnit
+- Moq
+- BUnit
+- Selenium for E2E testing
+
 ### TODO to be production ready:
 - Better code comments
 - Better documentation

@@ -12,38 +12,39 @@
                Data="_fakeData"
                Mode="_mode"
                Position="DrawerPosition.Start"
-               MiniMode="false">
+               MiniMode="false"
+               Class="jm-content-drawer-main">
     <Template>
         <TelerikAppBar PositionMode="AppBarPositionMode.Static" Class="jm-content-app-bar">
-            <AppBarSection>
-                E2E Testing
+            <AppBarSection Class="jm-content-logo">
+                <h2>E2E Testing</h2>
             </AppBarSection>
         </TelerikAppBar>
         <LeftMenuContent></LeftMenuContent>
     </Template>
     <DrawerContent>
-         <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
-                            <AppBarSection>
-                                <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
-                            </AppBarSection>
-        
-                            <AppBarSpacer/>
-        
-                            <AppBarSection>
-                                <Register></Register>
-                            </AppBarSection>
-        
-                            <AppBarSeparator/>
-        
-                            <AppBarSection>
-                                <LogIn></LogIn>
-                            </AppBarSection>
-        
-                            <AppBarSection>
-                                <CultureChooser/>
-                            </AppBarSection>
-        
-                        </TelerikAppBar>
+        <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
+            <AppBarSection>
+                <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
+            </AppBarSection>
+
+            <AppBarSpacer/>
+
+            <AppBarSection>
+                <Register></Register>
+            </AppBarSection>
+
+            <AppBarSeparator/>
+
+            <AppBarSection>
+                <LogIn></LogIn>
+            </AppBarSection>
+
+            <AppBarSection>
+                <CultureChooser/>
+            </AppBarSection>
+
+        </TelerikAppBar>
         <TelerikDrawer @ref="_menuDrawer2" Expanded="false"
                        MiniMode="false"
                        Position="DrawerPosition.End"

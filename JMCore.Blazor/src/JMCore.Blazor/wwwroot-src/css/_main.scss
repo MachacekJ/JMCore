@@ -1,6 +1,8 @@
 $app-bar-height: 54px;
-$breadcrumb-height: 56px; 
-
+$breadcrumb-height: 36px;
+$content-padding: 10px;
+$content-height: calc(100vh - #{$app-bar-height + $breadcrumb-height});
+$content-height-child: calc(100vh - #{$app-bar-height + $breadcrumb-height + $content-padding});
 body {
   margin: 0px;
 }

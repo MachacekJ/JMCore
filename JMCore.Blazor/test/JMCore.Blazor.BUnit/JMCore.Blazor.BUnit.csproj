@@ -36,6 +36,10 @@
 	  <ProjectReference Include="..\..\src\JMCore.Blazor\JMCore.Blazor.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ComponentsT\GeneralT\" />
+	</ItemGroup>
+
 
 
 </Project>

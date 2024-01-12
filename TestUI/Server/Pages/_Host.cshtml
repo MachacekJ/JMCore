@@ -12,19 +12,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Web for E2E testing (loading) ...</title>
     <base href="~/"/>
-    <link href="_content/JMCore.Blazor/index.css" rel="stylesheet" />
-
+    <link href="_content/JMCore.Blazor/index.css" rel="stylesheet"/>
     <script src="_content/Telerik.UI.for.Blazor.Trial/js/telerik-blazor.js" defer></script>
     <script src="_content/JMCore.Blazor/index.js"></script>
 </head>
 <body>
 
+<style>
+    .linear-progress {
+        background: silver;
+        width: 50vw;
+        margin: 20% auto;
+        height: 1rem;
+        border-radius: 10rem;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .linear-progress:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: #00695c;
+        scale: var(--blazor-load-percentage, 0%) 100%;
+        transform-origin: left top;
+        transition: scale ease-out 0.5s;
+    }
+</style>
+
 <div id="app">
-    <div class="spinner d-flex align-items-center justify-content-center spinner">
-        <div class="spinner-border text-success" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
+    <div class="linear-progress"></div>
 </div>
 
 <div class="blazor-error-ui">

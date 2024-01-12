@@ -45,8 +45,8 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
         var service = serviceScope.ServiceProvider;
         service.ConfigureJMDbAsync().Wait();
 
-        if (_isLocalization)
-            service.UseJMServerLocalization().Wait();
+        //if (_isLocalization)
+          //  service.UseJMServerLocalization().Wait();
     }
 
     public ConfigureServerBuilder SetDb(Action<JMDbContextConfiguration>? configureAction = null)

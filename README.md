@@ -1,8 +1,13 @@
 # About solutions
 POC for .NET 8 and Blazor and not ready for production !!! This is a "private" project and some parts/ideas of the code may be ported to productions in other projects. 
 
+### Web
 ![app.png](Doc%2Fimg%2Fapp.png)
+
+### Fully responsive
 ![appMobile.png](Doc%2Fimg%2FappMobile.png)
+
+### MAUI Android
 ![Android.png](Doc%2Fimg%2FAndroid.png)
 
 ## Technologies

@@ -4,6 +4,7 @@ using JMCore.CQRS.JMCache.CacheSave;
 using JMCore.Server.DB.Abstract;
 using JMCore.Server.DB.Audit;
 using JMCore.Server.DB.DbContexts.BasicStructure.Models;
+using JMCore.Server.DB.DbContexts.BasicStructure.Scripts.MSSQL;
 using JMCore.Server.Services.JMCache;
 using JMCore.Services.JMCache;
 using MediatR;
@@ -20,7 +21,7 @@ public class BasicDbContext : DbContextBase, IBasicDbContext
 {
     private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
 
-    public override DbScriptBase SqlScripts => new Scripts.ScriptRegistrations();
+    public override DbScriptBase SqlScripts => new Scripts.Postgres.ScriptRegistrations();
     public override string DbContextName => GetType().Name;
 
     private readonly ILogger<BasicDbContext> _logger;

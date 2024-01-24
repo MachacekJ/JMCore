@@ -1,0 +1,31 @@
+﻿version: "3.8"
+name: postgres
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jiri.machacek@machysoft.cz
+      PGADMIN_DEFAULT_PASSWORD: Heslo1234.
+      PGADMIN_LISTEN_PORT: 8001
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  local_pgdata:
+  pgadmin-data:

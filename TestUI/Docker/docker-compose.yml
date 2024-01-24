@@ -1,0 +1,20 @@
+﻿version: '3'
+services:
+  listenwordapp:
+    build: .
+    container_name: listenword-app
+    profiles:
+      - app
+    networks:
+      - listenword
+    ports:
+      - 6000:80
+      - 6001:443
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "6001"
+      ASPNETCORE_ENVIRONMENT: "Docker"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "Heslo1234."
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/root/.aspnet/https/ListenWord.Server.pfx"
+    volumes:
+      - ${USERPROFILE}\.aspnet\https\ListenWord.Server.pfx:/root/.aspnet/https/ListenWord.Server.pfx

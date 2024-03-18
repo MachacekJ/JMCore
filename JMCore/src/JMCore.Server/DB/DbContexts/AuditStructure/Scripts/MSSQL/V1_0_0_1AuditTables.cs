@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.AuditStructure.Scripts
+namespace JMCore.Server.DB.DbContexts.AuditStructure.Scripts.MSSQL
 {
     // ReSharper disable once InconsistentNaming
     public class V1_0_0_1AuditTables : DbVersionScriptsBase

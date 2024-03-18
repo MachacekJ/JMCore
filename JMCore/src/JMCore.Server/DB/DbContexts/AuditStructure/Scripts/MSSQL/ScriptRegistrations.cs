@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.AuditStructure.Scripts
+namespace JMCore.Server.DB.DbContexts.AuditStructure.Scripts.MSSQL
 {
     public class ScriptRegistrations : DbScriptBase
     {

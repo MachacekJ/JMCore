@@ -4,6 +4,7 @@ using JMCore.Server.DB.Abstract;
 using JMCore.Server.DB.Audit;
 using JMCore.Server.DB.DbContexts.AuditStructure.Models;
 using JMCore.Server.DB.DbContexts.AuditStructure.Scripts;
+using JMCore.Server.DB.DbContexts.AuditStructure.Scripts.MSSQL;
 using JMCore.Server.Services.JMCache;
 using JMCore.Services.JMCache;
 using MediatR;

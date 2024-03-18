@@ -13,84 +13,118 @@ namespace JMCore.TestsIntegrations.ServerT.DbT;
 /// </summary>
 public class DbBaseT : ServerTestBaseT
 {
-    private MasterDb _masterDb = null!;
-
-    protected string ConnectionString { get; set; } = null!;
-    protected string DevDatabaseName { get; set; } = null!;
+  private const string DbNameRemove = "JMCore_TestsIntegrations_ServerT_DbT_";
+  private string _dbName = null!;
+  
+  private MasterDb _masterDb = null!;
+  
+  protected string ConnectionString { get; set; } = null!;
+  private string MasterConnectionString { get; set; } = null!;
+  
+  protected override void RegisterServices(ServiceCollection sc)
+  {
+    _dbName = TestData.TestName.Replace(DbNameRemove, string.Empty).ToLower();
     
-    protected override void RegisterServices(ServiceCollection sc)
-    {
-        base.RegisterServices(sc);
-        ConnectionString = Configuration["TestSettings:ConnectionString"] ?? throw new InvalidOperationException();
-        DevDatabaseName = Configuration["TestSettings:DevDatabaseName"] ?? throw new InvalidOperationException();
-        sc.AddJMMemoryCache<JMCacheServerCategory>();
-        sc.AddDbContext<MasterDb>(opt => opt.UseSqlServer(string.Format(ConnectionString, "master")));
-    }
+    base.RegisterServices(sc);
+    ConnectionString = string.Format(Configuration["TestSettings:ConnectionString"] ?? throw new InvalidOperationException(), _dbName);
+    MasterConnectionString =  string.Format(Configuration["TestSettings:ConnectionString"] ?? throw new InvalidOperationException(), "postgres");
+    sc.AddJMMemoryCache<JMCacheServerCategory>();
+    //sc.AddDbContext<MasterDb>(opt => opt.UseSqlServer(string.Format(ConnectionString, "master")));
+    sc.AddDbContext<MasterDb>(opt => opt.UseNpgsql(MasterConnectionString));
+  }
 
-    protected override async Task GetServicesAsync(IServiceProvider sp)
-    {
-        await base.GetServicesAsync(sp);
-        _masterDb = sp.GetService<MasterDb>() ?? throw new ArgumentException($"{nameof(DbBaseT)}.{nameof(MasterDb)} is null.");
-        NewSqlDatabaseAsync();
-    }
+  protected override async Task GetServicesAsync(IServiceProvider sp)
+  {
+    await base.GetServicesAsync(sp);
+    _masterDb = sp.GetService<MasterDb>() ?? throw new ArgumentException($"{nameof(DbBaseT)}.{nameof(MasterDb)} is null.");
+    NewPGDatabase();
+  }
 
-    protected override async Task FinishedTestAsync()
-    {
-        DropDatabaseAsync();
-        await base.FinishedTestAsync();
-    }
-    
-    private void NewSqlDatabaseAsync()
-    {
-        string dbname = TestData.TestName;
-        string sql = @"
+  protected override async Task FinishedTestAsync()
+  {
+    DropPGDatabaseAsync();
+    await base.FinishedTestAsync();
+  }
+
+  private void NewPGDatabase()
+  {
+    string sql = @"
+DROP DATABASE IF EXISTS " + _dbName + @" WITH (FORCE);
+
+CREATE DATABASE " + _dbName + @"
+    WITH OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+ ";
+
+
+    _masterDb.Database.ExecuteSqlRaw(sql);
+
+
+    Log.LogInformation("Database '{Dbname}' has been created", _dbName);
+  }
+
+  // ReSharper disable once UnusedMember.Local
+  private void NewSqlDatabaseAsync()
+  {
+    string sql = @"
 IF EXISTS 
    (
      SELECT name FROM master.dbo.sysdatabases 
-    WHERE name = N'" + dbname + @"'
+    WHERE name = N'" + _dbName + @"'
     )
 BEGIN
-   ALTER DATABASE " + dbname + @" SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-   DROP DATABASE [" + dbname + @"];
+   ALTER DATABASE " + _dbName + @" SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+   DROP DATABASE [" + _dbName + @"];
 END
 
-CREATE DATABASE " + dbname + "; ";
+CREATE DATABASE " + _dbName + "; ";
 
 
-        _masterDb.Database.ExecuteSqlRaw(sql);
+    _masterDb.Database.ExecuteSqlRaw(sql);
 
 
-        Log.LogInformation("Database '{Dbname}' has been created", dbname);
-    }
+    Log.LogInformation("Database '{Dbname}' has been created", _dbName);
+  }
 
-    private void DropDatabaseAsync()
+  private void DropPGDatabaseAsync()
+  {
+    if (TestData.TestEnvironmentType == TestEnvironmentTypeEnum.Dev) 
+      return;
+    
+    var sql = "DROP DATABASE IF EXISTS " + _dbName + " WITH (FORCE);";
+    _masterDb.Database.ExecuteSqlRaw(sql);
+
+    Log.LogInformation("Database '{Dbname}' has been deleted", _dbName);
+  }
+
+  // ReSharper disable once UnusedMember.Local
+  private void DropSqlDatabaseAsync()
+  {
+    if (TestData.TestEnvironmentType != TestEnvironmentTypeEnum.Dev)
     {
-        if (TestData.TestEnvironmentType != TestEnvironmentTypeEnum.Dev)
-        {
-            string dbname = TestData.TestName;
-
-            var sql = @"
+      var sql = @"
 IF EXISTS 
    (
      SELECT name FROM master.dbo.sysdatabases 
-    WHERE name = N'" + dbname + @"'
+    WHERE name = N'" + _dbName + @"'
     )
 BEGIN
-   ALTER DATABASE " + dbname + @" SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-   DROP DATABASE [" + dbname + @"];
+   ALTER DATABASE " + _dbName + @" SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+   DROP DATABASE [" + _dbName + @"];
 END
 
 ";
-            _masterDb.Database.ExecuteSqlRaw(sql);
+      _masterDb.Database.ExecuteSqlRaw(sql);
 
-            Log.LogInformation("Database '{Dbname}' has been deleted", dbname);
-        }
+      Log.LogInformation("Database '{Dbname}' has been deleted", _dbName);
     }
+  }
 }
 
 public class MasterDb : DbContext
 {
-    public MasterDb(DbContextOptions<MasterDb> options) : base(options)
-    {
-    }
+  public MasterDb(DbContextOptions<MasterDb> options) : base(options)
+  {
+  }
 }

@@ -4,7 +4,6 @@ using JMCore.CQRS.JMCache.CacheSave;
 using JMCore.Server.DB.Abstract;
 using JMCore.Server.DB.Audit;
 using JMCore.Server.DB.DbContexts.BasicStructure.Models;
-using JMCore.Server.DB.DbContexts.BasicStructure.Scripts.MSSQL;
 using JMCore.Server.Services.JMCache;
 using JMCore.Services.JMCache;
 using MediatR;

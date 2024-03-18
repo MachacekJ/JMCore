@@ -12,7 +12,7 @@ public class BasicStructureBaseT : DbBaseT
     protected override void RegisterServices(ServiceCollection sc)
     {
         base.RegisterServices(sc);
-        sc.AddJMDb(string.Format(ConnectionString, TestData.TestName));
+        sc.AddJMDb(ConnectionString);
     }
 
     protected override async Task GetServicesAsync(IServiceProvider sp)

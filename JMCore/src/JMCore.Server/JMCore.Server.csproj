@@ -18,6 +18,12 @@
 	  <Compile Remove="Controllers\**" />
 	  <EmbeddedResource Remove="Controllers\**" />
 	  <None Remove="Controllers\**" />
+	  <Compile Remove="DB\DbContexts\BasicStructure\Scripts\MSSQL\**" />
+	  <EmbeddedResource Remove="DB\DbContexts\BasicStructure\Scripts\MSSQL\**" />
+	  <None Remove="DB\DbContexts\BasicStructure\Scripts\MSSQL\**" />
+	  <Compile Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
+	  <EmbeddedResource Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
+	  <None Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,14 +32,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Mailjet.Api" Version="3.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>

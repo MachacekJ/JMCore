@@ -20,19 +20,17 @@ namespace JMCore.Server.DB.DbContexts.BasicStructure.Scripts.Postgres
 
                 List<string> l = new ();
                 l.Add(@"
-CREATE TABLE IF NOT EXISTS public.""Setting""
+create table if not exists public.""Setting""
 (
-    ""Id"" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    ""Key"" character varying(100) COLLATE pg_catalog.""default"" NOT NULL,
-    ""Value"" character varying COLLATE pg_catalog.""default"" NOT NULL,
-    ""IsSystem"" bit(1),
-    CONSTRAINT ""Setting_pkey"" PRIMARY KEY (""Id"")
-)
+    ""Id""       integer generated always as identity
+        primary key,
+    ""Key""      varchar(100) not null,
+    ""Value""    varchar      not null,
+    ""IsSystem"" boolean
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.""Setting""
-    OWNER to postgres;
+alter table public.""Setting""
+    owner to postgres;
 ");
 
 

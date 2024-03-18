@@ -16,7 +16,7 @@ public class LocalizeStructureBaseT : DbBaseT
     {
         var supportedCulture =  Server.ResX.ResXRegister.SupportedCultures;
         base.RegisterServices(sc);
-        sc.AddJMDb(string.Format(ConnectionString, TestData.TestName), o =>
+        sc.AddJMDb(ConnectionString, o =>
         {
             o.LanguageStructure = true;
         });

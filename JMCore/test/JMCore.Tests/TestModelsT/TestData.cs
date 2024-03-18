@@ -47,5 +47,6 @@ public class TestData
                 throw new Exception("TestName is null. Set TestId.");
             return _replaceLetter.Aggregate(_testName, (current, letter) => current.Replace(letter, "_"));
         }
+        set => _testName = value;
     }
 }

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JMCore.Server.DB.DbContexts.AuditStructure.Models;
 
-//[Table("vw_Audit")]
 public class Audit_VwAuditEntity
 {
     [Key]

@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts
+namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts.MSSQL
 {
     // ReSharper disable once InconsistentNaming
     public class V1_0_0_03Index_MsgId : DbVersionScriptsBase

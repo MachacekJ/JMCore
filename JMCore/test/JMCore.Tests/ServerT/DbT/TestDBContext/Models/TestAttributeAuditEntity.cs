@@ -7,12 +7,22 @@ using JMCore.Server.DB.Audit;
 namespace JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 
 [Auditable]
-[Table("TestAttributeAudit")]
+[Table("test_attribute_audit")]
 public class TestAttributeAuditEntity
 {
-    [Key] public int Id { get; set; }
-    public string Name { get; set; } = null!;
+  [Key]
+  [Column("test_attribute_audit_id")]
+  public int Id { get; set; }
 
-    [NotAuditable] public string NotAuditableColumn { get; set; } = null!;
-    public DateTime Created { get; set; }
+  [Column("name")]
+  [MaxLength(50)]
+  public string Name { get; set; } = null!;
+
+  [NotAuditable]
+  [Column("not_auditable_column")]
+  [MaxLength(50)]
+  public string NotAuditableColumn { get; set; } = null!;
+  
+  [Column("created")]
+  public DateTime Created { get; set; }
 }

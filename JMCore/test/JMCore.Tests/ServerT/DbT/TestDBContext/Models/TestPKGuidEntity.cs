@@ -8,9 +8,13 @@ using JMCore.Server.DB.Audit;
 namespace JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 
 [Auditable]
-[Table("TestPKGuid")]
+[Table("test_pk_guid")]
 public class TestPKGuidEntity
 {
-    [Key] public Guid Id { get; set; }
-    public string Name { get; set; } = null!;
+  [Key]
+  [Column("test_pk_guid_id")]
+  public Guid Id { get; set; }
+  
+  [Column("name")]
+  public string Name { get; set; } = null!;
 }

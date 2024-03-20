@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace JMCore.TestsIntegrations.ServerT.DbT;
 
 /// <summary>
-/// Working with mssql database
+/// Working with postgres database (msssql oboslete).
 /// </summary>
 public class DbBaseT : ServerTestBaseT
 {

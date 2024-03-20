@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-// ReSharper disable PropertyCanBeMadeInitOnly.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace JMCore.Server.DB.DbContexts.AuditStructure.Models;
 
-[Table("AuditColumn")]
+[Table("audit_column")]
 public class AuditColumnEntity
 {
-    [Key] public int Id { get; set; }
-    public int AuditTableId { get; set; }
+  [Key]
+  [Column("audit_column_id")]
+  public int Id { get; set; }
 
-    [MaxLength(255)]
-    public string ColumnName { get; set; } = null!;
+  [Column("audit_table_id")]
+  public int AuditTableId { get; set; }
 
-    [ForeignKey("AuditTableId")]
-    public AuditTableEntity AuditTable { get; set; } = null!;
+  [Column("column_name")]
+  [MaxLength(255)]
+  public string ColumnName { get; set; } = null!;
+
+  [ForeignKey("AuditTableId")]
+  public AuditTableEntity AuditTable { get; set; } = null!;
 }

@@ -2,15 +2,18 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using JMCore.Server.DB.Audit;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable PropertyCanBeMadeInitOnly.Global
-
 namespace JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 
 [Auditable]
-[Table("TestPKString")]
+[Table("test_pk_string")]
 public class TestPKStringEntity
 {
-    [Key] public string Id { get; set; } = null!;
-    public string Name { get; set; } = null!;
+  [Key]
+  [Column("test_pk_string_id")]
+  [MaxLength(50)]
+  public string Id { get; set; } = null!;
+
+  [Column("name")]
+  [MaxLength(20)]
+  public string Name { get; set; } = null!;
 }

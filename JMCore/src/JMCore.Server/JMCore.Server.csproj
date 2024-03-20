@@ -24,6 +24,9 @@
 	  <Compile Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
 	  <EmbeddedResource Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
 	  <None Remove="DB\DbContexts\AuditStructure\Scripts\MSSQL\**" />
+	  <Compile Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
+	  <EmbeddedResource Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
+	  <None Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
 	</ItemGroup>
 
 	<ItemGroup>

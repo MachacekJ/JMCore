@@ -8,8 +8,16 @@ namespace JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 [Table("TestManualAudit")]
 public class TestManualAuditEntity
 {
-    [Key] public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string NotAuditableColumn { get; set; } = null!;
-    public DateTime Created { get; set; }
+  [Key]
+  [Column("test_manual_audit_id")]
+  public int Id { get; set; }
+  
+  [Column("name")]
+  public string Name { get; set; } = null!;
+  
+  [Column("not_auditable_column")]
+  public string NotAuditableColumn { get; set; } = null!;
+  
+  [Column("created")]
+  public DateTime Created { get; set; }
 }

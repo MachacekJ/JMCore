@@ -2,33 +2,39 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 namespace JMCore.Server.DB.DbContexts.AuditStructure.Models;
 
-[Table("Audit")]
+[Table("audit")]
 public class AuditEntity
 {
-    [Key]
-    public long Id { get; set; }
+  [Key]
+  [Column("audit_id")]
+  public long Id { get; set; }
 
-    public int AuditTableId { get; set; }
-    public long? PKValue { get; set; }
+  [Column("audit_table_id")]
+  public int AuditTableId { get; set; }
 
-    [MaxLength(450)]
-    public string? PKValueString { get; set; }
-    public int? AuditUserId { get; set; }
+  [Column("pk_value")]
+  public long? PKValue { get; set; }
 
-    public DateTime DateTime { get; set; }
-    public EntityState EntityState { get; set; }
+  [Column("pk_value_string")]
+  [MaxLength(450)]
+  public string? PKValueString { get; set; }
 
-    [ForeignKey("AuditTableId")]
-    public AuditTableEntity AuditTable { get; set; } = null!;
+  [Column("audit_user_id")]
+  public int? AuditUserId { get; set; }
 
-    [ForeignKey("AuditUserId")]
-    public AuditUserEntity User { get; set; } = null!;
+  [Column("date_time")]
+  public DateTime DateTime { get; set; }
 
-    public ICollection<AuditValueEntity> AuditValues { get; set; } = null!;
+  [Column("entity_state")]
+  public EntityState EntityState { get; set; }
+
+  [ForeignKey("AuditTableId")]
+  public AuditTableEntity AuditTable { get; set; } = null!;
+
+  [ForeignKey("AuditUserId")]
+  public AuditUserEntity User { get; set; } = null!;
+
+  public ICollection<AuditValueEntity> AuditValues { get; set; } = null!;
 }

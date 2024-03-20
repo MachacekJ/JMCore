@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="JMCoreTestBlazorServer@localhost" uuid="0b23b78c-dd54-4081-b9b7-eb47a0df07a3">
+    <data-source source="LOCAL" name="AA@localhost" uuid="b38a378e-fb9f-49ae-8d1f-b889ebd6f656">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/JMCoreTestBlazorServer</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/AA</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="auditstructuret_auditvaluest__alltypes_d__0@localhost" uuid="9bcff6d0-ad50-42e8-8a31-3fa780a30845">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/auditstructuret_auditvaluest__alltypes_d__0</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

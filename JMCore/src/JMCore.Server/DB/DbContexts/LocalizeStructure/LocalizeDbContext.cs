@@ -3,6 +3,7 @@ using JMCore.Localizer.Storage;
 using JMCore.Server.DB.Abstract;
 using JMCore.Server.DB.DbContexts.LocalizeStructure.Models;
 using JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts;
+using JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts.Postgres;
 using JMCore.Server.Localizer;
 using JMCore.Server.ResX;
 using MediatR;

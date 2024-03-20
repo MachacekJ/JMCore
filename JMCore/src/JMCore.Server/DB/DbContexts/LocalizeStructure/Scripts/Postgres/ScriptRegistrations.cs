@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts
+namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts.Postgres
 {
     public class ScriptRegistrations : DbScriptBase
     {
@@ -10,8 +10,6 @@ namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Scripts
             {
                 var all = new List<DbVersionScriptsBase>();
                 all.Add(new V1_0_0_01LocalizationTable());
-                all.Add(new V1_0_0_02Index_Scope());
-                all.Add(new V1_0_0_03Index_MsgId());
                 return all;
             }
         }

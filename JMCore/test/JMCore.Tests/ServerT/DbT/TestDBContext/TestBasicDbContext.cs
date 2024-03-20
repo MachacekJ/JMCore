@@ -2,6 +2,7 @@
 using JMCore.Server.DB.Audit;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Scripts;
+using JMCore.Tests.ServerT.DbT.TestDBContext.Scripts.Postgres;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

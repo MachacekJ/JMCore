@@ -20,17 +20,14 @@ namespace JMCore.Server.DB.DbContexts.BasicStructure.Scripts.Postgres
 
                 List<string> l = new ();
                 l.Add(@"
-create table if not exists public.""Setting""
+CREATE TABLE setting
 (
-    ""Id""       integer generated always as identity
-        primary key,
-    ""Key""      varchar(100) not null,
-    ""Value""    varchar      not null,
-    ""IsSystem"" boolean
+    setting_id INT GENERATED ALWAYS AS IDENTITY
+        PRIMARY KEY,
+    key VARCHAR(100) NOT NULL,
+    value VARCHAR NOT NULL,
+    is_system BOOL
 );
-
-alter table public.""Setting""
-    owner to postgres;
 ");
 
 

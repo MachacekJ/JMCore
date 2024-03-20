@@ -49,6 +49,7 @@
 		<None Update="appsettings.Test.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,5 +65,10 @@
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	  <EmbeddedResource Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 	</ItemGroup>
 </Project>

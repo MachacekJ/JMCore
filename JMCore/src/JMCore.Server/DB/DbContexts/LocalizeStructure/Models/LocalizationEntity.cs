@@ -4,26 +4,34 @@ using JMCore.Localizer;
 
 namespace JMCore.Server.DB.DbContexts.LocalizeStructure.Models;
 
-[Table("Localization")]
+[Table("localization")]
 public class LocalizationEntity : ILocalizationRecord
 {
-    [Key]
-    public int Id { get; set; }
+  [Key]
+  [Column("localization_id")]
+  public int Id { get; set; }
 
-    [MaxLength(255)] public string MsgId { get; set; } = null!;
+  [Column("msgid")]
+  [MaxLength(255)]
+  public string MsgId { get; set; } = null!;
 
+  [Column("translation")]
+  public string Translation { get; set; } = null!;
 
-    public string Translation { get; set; } = null!;
+  [Column("lcid")]
+  public int Lcid { get; set; }
 
-    public int Lcid { get; set; }
+  [Column("contextid")]
+  public string ContextId { get; set; } = null!;
 
-    public string ContextId { get; set; } = null!;
+  [Column("scope")]
+  public LocalizationScopeEnum Scope { get; set; }
 
-    public LocalizationScopeEnum Scope { get; set; }
+  [Column("changed")]
+  public DateTime? Changed { get; set; }
 
-    public DateTime? Changed { get; set; }
-    public void SetTranslation(string newTranslation)
-    {
-        Translation = newTranslation;
-    }
+  public void SetTranslation(string newTranslation)
+  {
+    Translation = newTranslation;
+  }
 }

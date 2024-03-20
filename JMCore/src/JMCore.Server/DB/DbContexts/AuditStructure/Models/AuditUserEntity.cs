@@ -6,10 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace JMCore.Server.DB.DbContexts.AuditStructure.Models;
 
-[Table("AuditUser")]
+[Table("audit_user")]
 public class AuditUserEntity
 {
-    [Key] public int Id { get; set; }
-    public string UserId { get; set; } = null!;
-    public string? UserName { get; set; }
+  [Key]
+  [Column("audit_user_id")]
+  public int Id { get; set; }
+
+  [Column("user_id")]
+  [MaxLength(450)]
+  public string UserId { get; set; } = null!;
+  
+  [Column("user_name")]
+  [MaxLength(255)]
+  public string? UserName { get; set; }
 }

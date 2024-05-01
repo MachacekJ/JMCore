@@ -3,7 +3,6 @@ using FluentAssertions;
 using JMCore.Blazor.Components.Header;
 using JMCore.Blazor.Components.SideBar.RightSideBar;
 using JMCoreTest.Blazor.Client;
-using JMCoreTest.Blazor.E2E;
 using OpenQA.Selenium;
 
 namespace JMCoreTest.Blazor.EE.ComponentsT.HeaderT;

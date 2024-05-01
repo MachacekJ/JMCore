@@ -1,5 +1,4 @@
-﻿using JMCore.Blazor.Components.Header;
-using JMCore.Blazor.Services.App;
+﻿using JMCore.Blazor.Services.App;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;

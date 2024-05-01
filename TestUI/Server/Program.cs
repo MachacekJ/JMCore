@@ -1,7 +1,5 @@
-﻿using JMCore.Server;
-using JMCore.Server.Services.Email;
+﻿using JMCore.Server.Services.Email;
 using JMCoreTest.Blazor.Server.Configuration;
-using JMCoreTest.Blazor.Server.ResX;
 using JMCoreTest.Blazor.Server.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -19,15 +17,15 @@ var env = builder.Environment;
 configuration.AddJsonFile("appsettings.Test.json", true, true);
 services.Configure<E2EConfiguration>(configuration.GetSection("E2E"));
 
-var configServerBuilder = new ConfigureServerBuilder(configuration, env)
-    .SetDb(o =>
-    {
-        o.LanguageStructure = true;
-        o.AuditStructure = true;
-    })
-    .SetLocalization(ResXInfrastructure.RegisterResX());
+// var configServerBuilder = new ConfigureServerBuilder(configuration, env)
+//     .SetDb(o =>
+//     {
+//         o.LanguageStructure = true;
+//         o.AuditStructure = true;
+//     })
+//     .SetLocalization(ResXInfrastructure.RegisterResX());
 
-configServerBuilder.ConfigureServerServices(services);
+//configServerBuilder.ConfigureServerServices(services);
 
 
 services.AddScoped<IEmailSenderJM, MemoryEmailSender>();
@@ -82,7 +80,7 @@ services.AddRazorPages().AddMvcOptions(options =>
 });
 
 var app = builder.Build();
-configServerBuilder.ConfigureServer(app);
+//configServerBuilder.ConfigureServer(app);
 if (env.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

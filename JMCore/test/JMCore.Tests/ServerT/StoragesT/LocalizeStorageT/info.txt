@@ -1,0 +1,1 @@
+﻿Another unit tests are included to LocalizeT.

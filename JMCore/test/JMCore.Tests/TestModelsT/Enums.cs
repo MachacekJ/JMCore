@@ -9,10 +9,10 @@ public enum TestEnvironmentTypeEnum
     /// <summary>
     /// This test will be ran every time.
     /// </summary>
-    Core = 1,
+    Core = 1 << 0,
 
     /// <summary>
     /// Test for quicker development. Auxiliary test.
     /// </summary>
-    Dev = 2
+    Dev = 1 << 1
 }

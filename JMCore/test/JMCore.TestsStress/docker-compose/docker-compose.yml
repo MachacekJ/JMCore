@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:latest
     container_name: postgres
-    restart: no
+    restart: always
     ports:
       - "5432:5432"
     environment:
@@ -16,7 +16,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: pgadmin4
-    restart: no
+    restart: always
     ports:
       - "5433:5433"
     environment:
@@ -25,17 +25,7 @@ services:
       PGADMIN_LISTEN_PORT: 5433
     volumes:
       - jmcore_pgadmin:/var/lib/pgadmin
-  mongo:
-    image: mongo:latest
-    restart: "no"
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: mongodb
-    volumes:
-      - jmcore-mongodata:/data/db
+
 volumes:
   jmcore_pgdata:
   jmcore_pgadmin:
-  jmcore-mongodata:  

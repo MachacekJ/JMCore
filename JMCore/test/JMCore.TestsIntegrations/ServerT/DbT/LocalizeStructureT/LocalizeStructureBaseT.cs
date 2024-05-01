@@ -1,7 +1,7 @@
 ﻿using JMCore.Localizer;
-using JMCore.Server.DB;
-using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using JMCore.Server.Localizer;
+using JMCore.Server.Storages;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;

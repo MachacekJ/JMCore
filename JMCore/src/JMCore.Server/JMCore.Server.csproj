@@ -46,6 +46,7 @@
 
 	<ItemGroup>
 		<Folder Include="Docs\Localization\" />
+		<Folder Include="Storages\DB\" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using JMCore.Server.DB.Audit;
+using JMCore.Server.Storages.Audit;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable once PropertyCanBeMadeInitOnly.Global

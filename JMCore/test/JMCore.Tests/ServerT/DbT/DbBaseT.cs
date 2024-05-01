@@ -1,5 +1,5 @@
-﻿using JMCore.Server.DB.DbContexts.BasicStructure;
-using JMCore.Server.Services.JMCache;
+﻿using JMCore.Server.Services.JMCache;
+using JMCore.Server.Storages.DbContexts.BasicStructure;
 using JMCore.Services.JMCache;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,4 @@
-﻿using JMCore.Server.DB.Abstract;
+﻿using JMCore.Server.Storages.Abstract;
 
 namespace JMCore.Server.CQRS.DB.BasicStructure.SettingGet
 {

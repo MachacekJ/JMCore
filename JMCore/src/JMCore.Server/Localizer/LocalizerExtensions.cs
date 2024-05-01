@@ -1,6 +1,6 @@
 ﻿using JMCore.Localizer.Storage;
-using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using JMCore.Server.ResX;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 

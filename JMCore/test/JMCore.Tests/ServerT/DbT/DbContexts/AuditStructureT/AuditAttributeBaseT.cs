@@ -1,4 +1,4 @@
-﻿using JMCore.Server.DB.Audit;
+﻿using JMCore.Server.Storages.Audit;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.DbT.DbContexts.AuditStructureT;

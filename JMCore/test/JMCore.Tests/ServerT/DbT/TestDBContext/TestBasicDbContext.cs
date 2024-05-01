@@ -1,5 +1,5 @@
-﻿using JMCore.Server.DB.Abstract;
-using JMCore.Server.DB.Audit;
+﻿using JMCore.Server.Storages.Abstract;
+using JMCore.Server.Storages.Audit;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Scripts;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Scripts.Postgres;

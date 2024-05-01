@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using JMCore.CQRS.JMCache.CacheGet;
-using JMCore.Server.DB.DbContexts.BasicStructure.Models;
 using JMCore.Server.Services.JMCache;
+using JMCore.Server.Storages.DbContexts.BasicStructure.Models;
 using JMCore.Services.JMCache;
 using Xunit;
 

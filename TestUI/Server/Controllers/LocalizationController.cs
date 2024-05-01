@@ -1,7 +1,6 @@
 ﻿using JMCore.Localizer;
 using JMCore.Server.Controllers;
-using JMCore.Server.DB.DbContexts.LocalizeStructure;
-using JMCore.Server.DB.DbContexts.LocalizeStructure.Models;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure;
 using JMCoreTest.Blazor.Shared.Controllers.LocalizationController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

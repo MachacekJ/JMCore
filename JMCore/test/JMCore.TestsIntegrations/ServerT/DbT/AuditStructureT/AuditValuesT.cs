@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using FluentAssertions;
-using JMCore.Server.DB.DbContexts.AuditStructure;
+using JMCore.Server.Storages.DbContexts.AuditStructure;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Events;

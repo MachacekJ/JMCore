@@ -1,4 +1,4 @@
-﻿using JMCore.Server.DB.Abstract;
+﻿using JMCore.Server.Storages.Abstract;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 
 namespace JMCore.Tests.ServerT.DbT.TestDBContext;

@@ -1,9 +1,9 @@
 ﻿using JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
-using JMCore.Server.DB;
-using JMCore.Server.DB.Abstract;
-using JMCore.Server.DB.Audit;
-using JMCore.Server.DB.DbContexts.AuditStructure;
-using JMCore.Server.DB.DbContexts.BasicStructure;
+using JMCore.Server.Storages;
+using JMCore.Server.Storages.Abstract;
+using JMCore.Server.Storages.Audit;
+using JMCore.Server.Storages.DbContexts.AuditStructure;
+using JMCore.Server.Storages.DbContexts.BasicStructure;
 using JMCore.Tests.ServerT.DbT.TestDBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

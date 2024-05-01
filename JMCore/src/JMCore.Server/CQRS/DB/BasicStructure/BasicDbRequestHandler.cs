@@ -1,4 +1,4 @@
-﻿using JMCore.Server.DB.DbContexts.BasicStructure;
+﻿using JMCore.Server.Storages.DbContexts.BasicStructure;
 using MediatR;
 
 namespace JMCore.Server.CQRS.DB.BasicStructure

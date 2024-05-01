@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using System.Resources;
 using JMCore.Localizer;
-using JMCore.Server.DB;
-using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using JMCore.Server.Localizer;
 using JMCore.Server.ResX;
+using JMCore.Server.Storages;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure;
 using JMCore.Services.JMCache;
 using JMCore.Tests.ServerT.LocalizeT.ResX;
 using Microsoft.AspNetCore.Builder;

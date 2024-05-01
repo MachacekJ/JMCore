@@ -1,6 +1,6 @@
-﻿using JMCore.Server.DB;
-using JMCore.Server.DB.Audit;
-using JMCore.Server.DB.DbContexts.AuditStructure;
+﻿using JMCore.Server.Storages;
+using JMCore.Server.Storages.Audit;
+using JMCore.Server.Storages.DbContexts.AuditStructure;
 using JMCore.Tests.ServerT.DbT.DbContexts.AuditStructureT;
 using JMCore.Tests.ServerT.DbT.TestDBContext;
 using Microsoft.Extensions.DependencyInjection;

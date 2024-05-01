@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using JMCore.Server.DB.Audit;
+using JMCore.Server.Storages.Audit;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 

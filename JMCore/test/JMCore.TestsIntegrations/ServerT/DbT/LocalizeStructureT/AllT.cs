@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using FluentAssertions;
 using JMCore.Localizer;
-using JMCore.Server.DB.DbContexts.LocalizeStructure.Models;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure.Models;
 using JMCore.Tests.ServerT.LocalizeT;
 using Microsoft.EntityFrameworkCore;
 using Xunit;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using JMCore.Server.DB.Audit;
+using JMCore.Server.Storages.Audit;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

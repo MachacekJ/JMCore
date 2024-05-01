@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using FluentAssertions;
-using JMCore.Server.DB.DbContexts.AuditStructure;
 using JMCore.Tests.ServerT.DbT.TestDBContext.Models;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Events;
 using Serilog.Sinks.InMemory.Assertions;
 using Xunit;
 using System.Text.Json;
+using JMCore.Server.Storages.DbContexts.AuditStructure;
 
 namespace JMCore.Tests.ServerT.DbT.DbContexts.AuditStructureT;
 

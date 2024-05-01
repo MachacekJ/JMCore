@@ -1,5 +1,5 @@
-﻿using JMCore.Server.DB;
-using JMCore.Server.DB.DbContexts.BasicStructure;
+﻿using JMCore.Server.Storages;
+using JMCore.Server.Storages.DbContexts.BasicStructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.TestsIntegrations.ServerT.DbT.BasicStructureT;

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using FluentAssertions;
 using JMCore.Localizer;
-using JMCore.Server.DB.DbContexts.LocalizeStructure.Models;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure;
+using JMCore.Server.Storages.DbContexts.LocalizeStructure.Models;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ public class LocalizeDbContextT : LocalizeStructureBaseT
     protected override async Task GetServicesAsync(IServiceProvider sp)
     {
         await base.GetServicesAsync(sp);
-        _localizeDb = sp.GetService<ILocalizeDbContext>() ?? throw new ArgumentException($"{nameof(Server.DB.DbContexts.LocalizeStructure.LocalizeDbContext)} is null.");
+        _localizeDb = sp.GetService<ILocalizeDbContext>() ?? throw new ArgumentException($"{nameof(Server.Storages.DbContexts.LocalizeStructure.LocalizeDbContext)} is null.");
     }
 
     [Fact]

@@ -1,14 +1,13 @@
 ﻿using System.Reflection;
 using JMCore.Blazor.Services.Page.Interfaces;
-using JMCore.Blazor.Services.Page.Models;
 using JMCore.Tests;
-using JMCoreTest.Blazor.E2E.Configuration;
+using JMCoreTest.Blazor.EE.Configuration;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace JMCoreTest.Blazor.E2E;
+namespace JMCoreTest.Blazor.EE;
 
 //https://www.softwaretestinghelp.com/file-upload-in-selenium/
 //https://www.selenium.dev/documentation/webdriver/getting_started/install_library/

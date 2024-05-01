@@ -1,5 +1,5 @@
 
-namespace Blazor.BFF.OpenIddict.Server;
+namespace JMCoreTest.Blazor.Server;
 
 public static class SecurityHeadersDefinitions
 {

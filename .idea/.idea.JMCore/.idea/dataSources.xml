@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="auditstructuret_auditvaluest__alltypes_d__0@localhost" uuid="9bcff6d0-ad50-42e8-8a31-3fa780a30845">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/auditstructuret_auditvaluest__alltypes_d__0</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="@localhost" uuid="8b993743-22e9-4e44-8a4f-b84d24de7308">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>

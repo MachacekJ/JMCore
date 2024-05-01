@@ -1,16 +1,6 @@
 ﻿using System.Globalization;
-using JMCore.Blazor.Components.SvgIcons;
-using JMCore.Blazor.CQRS.Analytics;
-using JMCore.Blazor.CQRS.Analytics.Models;
-using JMCore.Blazor.Services;
-using JMCore.Blazor.Services.App;
 using JMCore.Blazor.Services.App.Models;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
-using Telerik.Blazor.Components;
-using Telerik.SvgIcons;
 
 namespace JMCore.Blazor.Components.Header;
 

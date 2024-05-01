@@ -1,15 +1,12 @@
-﻿using JMCore.Server.Storages.DbContexts.BasicStructure;
+﻿using JMCore.Server.Configuration.Storage;
 
 namespace JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
 
-public class SettingSaveHandler : BasicDbRequestHandler<SettingSaveCommand>
+public class SettingSaveHandler(IStorageResolver storageResolver) : BasicDbRequestHandler<SettingSaveCommand>(storageResolver)
 {
-    public SettingSaveHandler(IBasicDbContext basicDbContext) : base(basicDbContext)
-    {
-    }
-
-    public override async Task Handle(SettingSaveCommand request, CancellationToken cancellationToken)
-    {
-        await BasicDbContext.Setting_SaveAsync(request.Key, request.Value, request.IsSystem);
-    }
+  public override async Task Handle(SettingSaveCommand request, CancellationToken cancellationToken)
+  {
+    List<Task> task = [..BasicDbWriteContexts(request.StorageType).Select(context => context.Setting_SaveAsync(request.Key, request.Value, request.IsSystem))];
+    await Task.WhenAll(task);
+  }
 }

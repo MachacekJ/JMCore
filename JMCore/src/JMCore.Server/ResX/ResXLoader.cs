@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Resources;
 using JMCore.Localizer;
-using JMCore.Server.Storages.DbContexts.LocalizeStructure.Models;
+using JMCore.Server.Storages.Modules.LocalizeModule.Models;
 
 namespace JMCore.Server.ResX;
 

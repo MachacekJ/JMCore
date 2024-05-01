@@ -1,7 +1,6 @@
-﻿using JMCore.Blazor.Services.Page.Interfaces;
-using JMCore.Blazor.Services.Page.Models;
+﻿using JMCore.Blazor.Services.Page.Models;
 
-namespace JMCore.Blazor.Services.Page;
+namespace JMCore.Blazor.Services.Page.Interfaces;
 
 public interface IPageManager
 {

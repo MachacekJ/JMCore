@@ -18,11 +18,11 @@ services:
     container_name: pgadmin4
     restart: no
     ports:
-      - "5433:5433"
+      - "5434:5433"
     environment:
       PGADMIN_DEFAULT_EMAIL: jiri.machacek@machysoft.cz
       PGADMIN_DEFAULT_PASSWORD: Heslo1234.
-      PGADMIN_LISTEN_PORT: 5433
+      PGADMIN_LISTEN_PORT: 5434
     volumes:
       - jmcore_pgadmin:/var/lib/pgadmin
   mongo:
@@ -35,6 +35,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongodb
     volumes:
       - jmcore-mongodata:/data/db
+   
 volumes:
   jmcore_pgdata:
   jmcore_pgadmin:

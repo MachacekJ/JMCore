@@ -1,5 +1,4 @@
 ﻿using JMCore.Services.JMCache;
-using MediatR;
 
 namespace JMCore.CQRS.JMCache.CacheGet;
 

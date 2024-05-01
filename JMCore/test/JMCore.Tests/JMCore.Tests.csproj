@@ -12,7 +12,7 @@
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="FluentAssertions" Version="6.12.0" />
 		<PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="Moq" Version="4.20.70" />
@@ -38,6 +38,7 @@
 		<Folder Include="ClientT\ServicesT\" />
 		<Folder Include="Logs\" />
 		<Folder Include="ServerT\ControllersT\" />
+		<Folder Include="ServerT\StoragesT\Impl\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -50,6 +51,8 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+		<None Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+		<None Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -66,9 +69,13 @@
 	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	  <EmbeddedResource Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+	  <EmbeddedResource Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+	  <EmbeddedResource Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+	  <Compile Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+	  <Compile Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
 	</ItemGroup>
 </Project>

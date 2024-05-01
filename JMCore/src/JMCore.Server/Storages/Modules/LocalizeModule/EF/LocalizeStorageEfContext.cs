@@ -1,0 +1,84 @@
+﻿using JMCore.Localizer;
+using JMCore.Localizer.Storage;
+using JMCore.Server.Configuration.Localization;
+using JMCore.Server.ResX;
+using JMCore.Server.Storages.Base.EF;
+using JMCore.Server.Storages.Modules.LocalizeModule.Models;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+
+namespace JMCore.Server.Storages.Modules.LocalizeModule.EF;
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
+
+public abstract class LocalizeStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizeStorageEfContext> logger)
+  : DbContextBase(options, mediator, logger), ILocalizeStorageModule
+{
+
+  public DbSet<LocalizationEntity> Localizations { get; set; }
+
+  private readonly ScriptRegistrations _dbSqlScript = new();
+
+  public override DbScriptBase SqlScripts => _dbSqlScript;
+
+  public override string ModuleName => nameof(ILocalizeStorageModule);
+
+
+  #region Localization Table
+
+  public async Task<string> SyncResXItemAsync(ILocalizationRecord loc)
+  {
+    var item = await Localizations.SingleOrDefaultAsync(a =>
+      a.MsgId == loc.MsgId &&
+      a.ContextId == loc.ContextId &&
+      a.Lcid == loc.Lcid);
+
+    if (item == null)
+    {
+      item = new LocalizationEntity();
+      Localizations.Add(item);
+    }
+    else
+    {
+      if (item.Changed != null)
+        return item.Translation;
+    }
+
+    // Not rewrite custom db translation.
+    if ((item.Translation != loc.Translation || item.Scope != loc.Scope) && item.Changed == null)
+    {
+      item.Translation = loc.Translation;
+      item.MsgId = loc.MsgId;
+      item.ContextId = loc.ContextId;
+      item.Scope = loc.Scope;
+      item.Lcid = loc.Lcid;
+      item.Changed = loc.Changed;
+      await SaveChangesAsync();
+    }
+
+    loc.Id = item.Id;
+    return item.Translation;
+  }
+
+  public async Task ChangeTranslationAsync(int idEntity, string newTranslation)
+  {
+    var item = await Localizations.SingleAsync(a => a.Id == idEntity);
+    item.Changed = DateTime.UtcNow;
+    item.Translation = newTranslation;
+    await SaveChangesAsync();
+
+    await LocalizerExtensions.LoadLocalizationStorageAsync(resxOptions, this, localizationProvider);
+  }
+
+  public async Task<List<LocalizationEntity>> ClientLocalizations(int lcid, DateTime? lastSync)
+  {
+    if (lastSync == null)
+      return await Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Client)).ToListAsync();
+
+    return await Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Client) && l.Changed != null && l.Changed > lastSync).ToListAsync();
+  }
+
+  #endregion
+}

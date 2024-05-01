@@ -1,5 +1,4 @@
 ﻿using JMCore.Blazor;
-using Microsoft.AspNetCore.Components;
 using Telerik.Blazor.Components;
 
 namespace JMCoreTest.Blazor.Client.Pages;

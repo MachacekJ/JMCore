@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 using JMCore.CQRS.JMCache.CacheGet;
 using JMCore.Server.DB.DbContexts.BasicStructure.Models;
 using JMCore.Server.Services.JMCache;
@@ -15,27 +16,30 @@ public class SettingsT : BasicStructureBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            await Db.Setting_SaveAsync("testkey", "10", true);
+            await PGDb.Setting_SaveAsync("testkey", "10", true);
 
-            var val = await Db.Setting_GetAsync("testkey");
+            var val = await PGDb.Setting_GetAsync("testkey");
 
             Assert.True(val == "10");
 
-            await Db.Setting_SaveAsync("testkey", "12", true);
+            await PGDb.Setting_SaveAsync("testkey", "12", true);
 
-            var val2 = await Db.Setting_GetAsync("testkey");
-
+            var val2 = await PGDb.Setting_GetAsync("testkey");
+            
             Assert.True(val2 == "12");
 
-            var keyCache = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
+            var keyCache = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(ISettingEntity));
             var cacheValue = await Mediator.Send(new CacheGetQuery(keyCache));
-            var mem = cacheValue!.Value as List<SettingEntity>;
+            var mem2 = cacheValue!.Value as IList;
+            var mem = mem2?.Cast<ISettingEntity>().ToList();
+            
+            
             Assert.True(mem != null && mem.First(a => a.Key == "testkey").Value == "12");
 
             Exception? isError = null;
             try
             {
-                await Db.Setting_GetAsync("testkey3");
+                await PGDb.Setting_GetAsync("testkey3");
             }
             catch (Exception ex)
             {

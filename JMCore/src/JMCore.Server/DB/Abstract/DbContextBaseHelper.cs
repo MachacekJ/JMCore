@@ -102,7 +102,7 @@ public class DbContextBaseHelper
         var res = true;
         try
         {
-            var isSettingTable = await _mediator.Send(new SettingGetQuery(DbContextBase.DbContextVersionKeyPrefix + nameof(BasicDbContext)));
+            var isSettingTable = await _mediator.Send(new SettingGetQuery(DbContextBase.DbContextVersionKeyPrefix + nameof(IBasicDbContext)));
             res = isSettingTable == null;
         }
         catch

@@ -19,15 +19,15 @@ var env = builder.Environment;
 configuration.AddJsonFile("appsettings.Test.json", true, true);
 services.Configure<E2EConfiguration>(configuration.GetSection("E2E"));
 
-var configServerBuilder = new ConfigureServerBuilder(configuration, env)
-    .SetDb(o =>
-    {
-        o.LanguageStructure = true;
-        o.AuditStructure = true;
-    })
-    .SetLocalization(ResXInfrastructure.RegisterResX());
-
-configServerBuilder.ConfigureServerServices(services);
+// var configServerBuilder = new ConfigureServerBuilder(configuration, env)
+//     .SetDb(o =>
+//     {
+//         o.LanguageStructure = true;
+//         o.AuditStructure = true;
+//     })
+//     .SetLocalization(ResXInfrastructure.RegisterResX());
+//
+// configServerBuilder.ConfigureServerServices(services);
 
 
 services.AddScoped<IEmailSenderJM, MemoryEmailSender>();
@@ -82,7 +82,7 @@ services.AddRazorPages().AddMvcOptions(options =>
 });
 
 var app = builder.Build();
-configServerBuilder.ConfigureServer(app);
+//configServerBuilder.ConfigureServer(app);
 if (env.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();

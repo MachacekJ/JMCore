@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using JMCore.Server.DB.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.DB;
 
-public interface IJMDbContextConfiguration
+
+
+public class DBB(Type type)
 {
-    bool LanguageStructure { get; set; }
-    bool AuditStructure { get; set; }
-    ServiceCollection AllDbContext { get; set; }
+   public string Name { get; } = type.Name;
+   public Type Type { get; } = type;
 }

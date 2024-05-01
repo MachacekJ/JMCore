@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.BasicStructure.Scripts.Postgres
+namespace JMCore.Server.DataStorages.PG.BasicStructure.Scripts
 {
     // ReSharper disable once InconsistentNaming
     public class V1_0_0_1SettingsTable : DbVersionScriptsBase

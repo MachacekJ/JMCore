@@ -1,0 +1,33 @@
+﻿version: "3.8"
+name: jmcore-integration-test
+services:
+  db:
+    image: postgres:latest
+    container_name: jmcore-integration-test-postgres
+    expose:
+      - "6432"
+    ports:
+      - "6432:6432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - jmcore_integration_test_pgdata:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: jmcore-integration-test-pgadmin4
+    expose:
+      - "6433"
+    ports:
+      - "6433:6433"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: jiri.machacek@machysoft.cz
+      PGADMIN_DEFAULT_PASSWORD: Heslo1234.
+      PGADMIN_LISTEN_PORT: 6433
+    volumes:
+      - jmcore_integration_test_pgadmin:/var/lib/pgadmin
+
+volumes:
+  jmcore_integration_test_pgdata:
+  jmcore_integration_test_pgadmin:

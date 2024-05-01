@@ -39,8 +39,8 @@ public class AuditValuesT : AuditAttributeBaseT
                 VarBinary2 = new byte[AuditDbContext.MaxStringSize],
                 VarChar2 = "říkám já řřČŘÉÍÁ"
             };
-            await TestBasicDbContext.TestValueTypes.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestValueTypes.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             LogInMemorySink.Should().HaveMessage("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}")
                 .Appearing().Once().WithLevel(LogEventLevel.Error);

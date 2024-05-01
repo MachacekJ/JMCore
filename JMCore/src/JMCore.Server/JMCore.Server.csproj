@@ -27,6 +27,7 @@
 	  <Compile Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
 	  <EmbeddedResource Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
 	  <None Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
+	  <Compile Remove="DB\JMDbContextConfiguration.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,13 +39,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="DB\DbContexts\BasicStructure\Scripts\" />
 		<Folder Include="Docs\Localization\" />
 	</ItemGroup>
 
@@ -84,6 +85,12 @@
 	    <LastGenOutput>ResX_General.Designer.cs</LastGenOutput>
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="JMCore.Server">
+	    <HintPath>..\..\test\JMCore.Tests\bin\Debug\net8.0\JMCore.Server.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 </Project>

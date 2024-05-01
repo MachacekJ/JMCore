@@ -12,7 +12,7 @@ public class UpdateDbT : BasicStructureBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var res = await Db.Settings.CountAsync();
+            var res = await PGDb.Settings.CountAsync();
             Assert.True(res > 0);
         });
     }

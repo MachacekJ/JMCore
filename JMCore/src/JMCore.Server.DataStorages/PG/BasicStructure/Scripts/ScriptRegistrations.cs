@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.DB.Abstract;
 
-namespace JMCore.Server.DB.DbContexts.BasicStructure.Scripts.Postgres
+namespace JMCore.Server.DataStorages.PG.BasicStructure.Scripts
 {
     public class ScriptRegistrations : DbScriptBase
     {

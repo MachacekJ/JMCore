@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JMCore.Tests.ServerT.DbT.TestDBContext;
 
-public class TestBasicDbContext : DbContextBase, ITestBasicDbContext
+public class TestBasicPGDbContext : DbContextBase, ITestBasicDbContext
 {
     public DbSet<TestEntity> Tests { get; set; } = null!;
 
@@ -27,7 +27,7 @@ public class TestBasicDbContext : DbContextBase, ITestBasicDbContext
     public override DbScriptBase SqlScripts => new ScriptRegistrations();
     public override string DbContextName => GetType().Name;
 
-    public TestBasicDbContext(DbContextOptions<TestBasicDbContext> options, IMediator mediator, ILogger<TestBasicDbContext> logger, IAuditDbService auditService) : base(options, mediator, logger, auditService)
+    public TestBasicPGDbContext(DbContextOptions<TestBasicPGDbContext> options, IMediator mediator, ILogger<TestBasicPGDbContext> logger, IAuditDbService auditService) : base(options, mediator, logger, auditService)
     {
     }
 

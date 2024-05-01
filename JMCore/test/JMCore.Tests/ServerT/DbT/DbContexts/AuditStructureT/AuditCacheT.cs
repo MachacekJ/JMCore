@@ -32,8 +32,8 @@ public class AuditCacheT : AuditAttributeBaseT
 
             // Act 1
             LogInMemorySink.Dispose();
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 1
             LogInMemorySink
@@ -54,7 +54,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameNew;
 
             // Act 2
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 2
             LogInMemorySink
@@ -83,7 +83,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameOld;
 
             // Act 3
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 3
             LogInMemorySink
@@ -131,8 +131,8 @@ public class AuditCacheT : AuditAttributeBaseT
 
             // Act 1
             LogInMemorySink.Dispose();
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 1
             LogInMemorySink
@@ -153,7 +153,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameNew;
 
             // Act 2
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 2
             LogInMemorySink
@@ -180,7 +180,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameOld;
 
             // Act 3
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 3
             LogInMemorySink
@@ -230,8 +230,8 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 1
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 1
             LogInMemorySink
@@ -264,7 +264,7 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 2
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 2
             LogInMemorySink
@@ -292,7 +292,7 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 3 -!!! Only column Name was changed.
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 3
             LogInMemorySink
@@ -339,7 +339,7 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 4
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert 4
             LogInMemorySink

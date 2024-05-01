@@ -8,7 +8,7 @@ public class AuditAttributeBaseT : AuditStructureBaseT
     protected override void RegisterServices(ServiceCollection sc)
     {
         base.RegisterServices(sc);
-        var auditConfiguration = new AuditDbConfiguration();
-        sc.AddSingleton<IAuditDbConfiguration>(auditConfiguration);
+        var auditConfiguration = new AuditEntitiesConfiguration();
+        sc.AddSingleton<IAuditEntitiesConfiguration>(auditConfiguration);
     }
 }

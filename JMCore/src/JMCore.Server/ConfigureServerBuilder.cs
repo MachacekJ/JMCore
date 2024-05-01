@@ -15,7 +15,7 @@ namespace JMCore.Server;
 
 public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnvironment environment)
 {
-    private Action<JMDbContextConfiguration>? _dbConfig;
+    private Action<IJMDbContextConfiguration>? _dbConfig;
     private bool _isDb;
     private bool _isLocalization;
 
@@ -43,13 +43,13 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
 
         using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
         var service = serviceScope.ServiceProvider;
-        service.ConfigureJMDbAsync().Wait();
+        //service.ConfigureJMDbAsync().Wait();
 
         //if (_isLocalization)
           //  service.UseJMServerLocalization().Wait();
     }
 
-    public ConfigureServerBuilder SetDb(Action<JMDbContextConfiguration>? configureAction = null)
+    public ConfigureServerBuilder SetDb(Action<IJMDbContextConfiguration>? configureAction = null)
     {
         _dbConfig = configureAction;
         _isDb = true;
@@ -69,7 +69,7 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
         var connectionString = Configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentException("DefaultConnection is null.");
 
         services.AddJMMemoryCache<JMCacheServerCategory>();
-        services.AddJMDb(connectionString, (o) => { _dbConfig?.Invoke(o); });
+       // services.AddJMStorage(connectionString, (o) => { _dbConfig?.Invoke(o); });
         if (Environment.IsDevelopment())
         {
             services.AddDatabaseDeveloperPageExceptionFilter();

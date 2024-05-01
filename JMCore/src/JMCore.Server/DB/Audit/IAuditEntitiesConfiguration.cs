@@ -1,6 +1,6 @@
 ﻿namespace JMCore.Server.DB.Audit;
 
-public interface IAuditDbConfiguration
+public interface IAuditEntitiesConfiguration
 {
     /// <summary>
     /// Primary use <see cref="AuditableAttribute"/>

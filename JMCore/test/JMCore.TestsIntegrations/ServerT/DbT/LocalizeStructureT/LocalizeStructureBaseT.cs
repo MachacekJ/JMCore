@@ -1,4 +1,5 @@
 ﻿using JMCore.Localizer;
+using JMCore.Server.DataStorages;
 using JMCore.Server.DB;
 using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using JMCore.Server.Localizer;
@@ -16,7 +17,7 @@ public class LocalizeStructureBaseT : DbBaseT
     {
         var supportedCulture =  Server.ResX.ResXRegister.SupportedCultures;
         base.RegisterServices(sc);
-        sc.AddJMDb(ConnectionString, o =>
+        sc.AddJMStorage(ConnectionString, o =>
         {
             o.LanguageStructure = true;
         });

@@ -22,11 +22,11 @@ public class AuditAttributeT : AuditAttributeBaseT
                 Created = testDateTime,
                 Name = testName,
             };
-            await TestBasicDbContext.Tests.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.Tests.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert.
-            Assert.True(await TestBasicDbContext.Tests.CountAsync() == 1);
+            Assert.True(await TestBasicPGDbContext.Tests.CountAsync() == 1);
             var isAudit = await AuditDbContext.Audits
                 .Include(a => a.AuditTable)
                 .CountAsync(ae => ae.AuditTable.TableName == nameof(TestEntity));
@@ -51,11 +51,11 @@ public class AuditAttributeT : AuditAttributeBaseT
                 NotAuditableColumn = "Audit"
             };
 
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert.
-            Assert.True(TestBasicDbContext.TestAttributeAudits.Count() == 1);
+            Assert.True(TestBasicPGDbContext.TestAttributeAudits.Count() == 1);
 
             var isAudit = await AuditDbContext.Audits
                 .Include(a => a.AuditTable)
@@ -99,14 +99,14 @@ public class AuditAttributeT : AuditAttributeBaseT
                 NotAuditableColumn = "Audit"
             };
 
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             item.Name = testNameNew;
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert.
-            Assert.True(TestBasicDbContext.TestAttributeAudits.Count() == 1);
+            Assert.True(TestBasicPGDbContext.TestAttributeAudits.Count() == 1);
 
             var isAudit = await AuditDbContext.Audits
                 .Include(a => a.AuditTable)
@@ -159,17 +159,17 @@ public class AuditAttributeT : AuditAttributeBaseT
                 NotAuditableColumn = "Audit"
             };
 
-            TestBasicDbContext.TestAttributeAudits.Add(item);
+            TestBasicPGDbContext.TestAttributeAudits.Add(item);
             // ReSharper disable once MethodHasAsyncOverload
-            TestBasicDbContext.SaveChanges();
+            TestBasicPGDbContext.SaveChanges();
 
             item.Name = testNameNew;
             item.Created = testDateTimeNew;
             // ReSharper disable once MethodHasAsyncOverload
-            TestBasicDbContext.SaveChanges();
+            TestBasicPGDbContext.SaveChanges();
 
             // Assert.
-            Assert.True(TestBasicDbContext.TestAttributeAudits.Count() == 1);
+            Assert.True(TestBasicPGDbContext.TestAttributeAudits.Count() == 1);
 
             var isAudit = await AuditDbContext.Audits
                 .Include(a => a.AuditTable)
@@ -225,14 +225,14 @@ public class AuditAttributeT : AuditAttributeBaseT
                 NotAuditableColumn = "Audit"
             };
 
-            await TestBasicDbContext.TestAttributeAudits.AddAsync(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            await TestBasicPGDbContext.TestAttributeAudits.AddAsync(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
-            TestBasicDbContext.TestAttributeAudits.Remove(item);
-            await TestBasicDbContext.SaveChangesAsync();
+            TestBasicPGDbContext.TestAttributeAudits.Remove(item);
+            await TestBasicPGDbContext.SaveChangesAsync();
 
             // Assert.
-            Assert.True(!TestBasicDbContext.TestAttributeAudits.Any());
+            Assert.True(!TestBasicPGDbContext.TestAttributeAudits.Any());
 
             var isAudit = await AuditDbContext.Audits
                 .Include(a => a.AuditTable)

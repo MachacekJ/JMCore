@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Resources;
 using JMCore.Localizer;
+using JMCore.Server.DataStorages;
+using JMCore.Server.DataStorages.PG;
 using JMCore.Server.DB;
 using JMCore.Server.DB.DbContexts.LocalizeStructure;
 using JMCore.Server.Localizer;
@@ -28,7 +30,7 @@ public class LocalizeBaseT : ServerTestBaseT
         sc.AddDbContext<LocalizeDbContext>(opt => opt.UseInMemoryDatabase(GetDbName()));
         sc.AddScoped<ILocalizeDbContext, LocalizeDbContext>();
 
-        var option = new JMDbContextConfiguration(sc, string.Empty)
+        var option = new JMPGDbContextConfiguration(sc, string.Empty)
         {
             LanguageStructure = true
         };

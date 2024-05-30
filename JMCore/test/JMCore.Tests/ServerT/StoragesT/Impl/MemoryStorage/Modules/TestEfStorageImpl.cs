@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JMCore.Tests.ServerT.StoragesT.Impl.MemoryStorage.Modules;
 
-public class TestStorageEfStorageImpl(DbContextOptions options, IMediator mediator, ILogger<TestStorageEfContext> logger, IAuditDbService auditService) : TestStorageEfContext(options, mediator, logger, auditService)
+public class TestEfStorageImpl(DbContextOptions options, IMediator mediator, ILogger<TestStorageEfContext> logger, IAuditDbService auditService) : TestStorageEfContext(options, mediator, logger, auditService)
 {
   public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;
 }

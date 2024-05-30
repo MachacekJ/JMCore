@@ -27,7 +27,7 @@ public class AuditCacheT : AuditAttributeBaseT
             };
             (UserProvider as TestAuditUserProvider)!.SetContext(TestAuditUserTypeEnum.Admin);
             var userId = UserProvider.GetUser().userId;
-            var auditUserCacheKey = AuditEfStorageImpl.AuditUserCacheKey(userId);
+            var auditUserCacheKey = AuditEfStorageEfContext.AuditUserCacheKey(userId);
             var auditUserCacheKeyString = auditUserCacheKey.ToString();
 
             // Act 1
@@ -115,7 +115,7 @@ public class AuditCacheT : AuditAttributeBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var auditTableCacheKey = AuditEfStorageImpl.AuditTableCacheKey(tableName, null);
+            var auditTableCacheKey = AuditEfStorageEfContext.AuditTableCacheKey(tableName, null);
             var auditTableCacheKeyString = auditTableCacheKey.ToString();
             var testDateTime = DateTime.Now;
             const string testNameOld = "AuditTest";
@@ -211,8 +211,8 @@ public class AuditCacheT : AuditAttributeBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var auditTableId = await AuditEfStorageImpl.GetAuditTableIdAsync(nameof(TestAttributeAuditEntity), null);
-            var auditColumnCacheKey = AuditEfStorageImpl.AuditColumnCacheKey(auditTableId);
+            var auditTableId = await AuditEfStorageEfContext.GetAuditTableIdAsync(nameof(TestAttributeAuditEntity), null);
+            var auditColumnCacheKey = AuditEfStorageEfContext.AuditColumnCacheKey(auditTableId);
             var auditColumnCacheKeyString = auditColumnCacheKey.ToString();
 
             var testDateTime = DateTime.Now;
@@ -328,11 +328,11 @@ public class AuditCacheT : AuditAttributeBaseT
             // ------- Test 4 ------------
             // Arrange 4
             // Assert delete audit column
-            var columnEntities = AuditEfStorageImpl.AuditColumns.Where(a => a.ColumnName == "Name").ToList();
-            var auditEntities = AuditEfStorageImpl.Audits.Where(a => a.AuditTableId == columnEntities.First().AuditTableId).ToList();
-            AuditEfStorageImpl.Audits.RemoveRange(auditEntities);
-            AuditEfStorageImpl.AuditColumns.RemoveRange(columnEntities);
-            await AuditEfStorageImpl.SaveChangesAsync();
+            var columnEntities = AuditEfStorageEfContext.AuditColumns.Where(a => a.ColumnName == "Name").ToList();
+            var auditEntities = AuditEfStorageEfContext.Audits.Where(a => a.AuditTableId == columnEntities.First().AuditTableId).ToList();
+            AuditEfStorageEfContext.Audits.RemoveRange(auditEntities);
+            AuditEfStorageEfContext.AuditColumns.RemoveRange(columnEntities);
+            await AuditEfStorageEfContext.SaveChangesAsync();
 
             await Mediator.Send(new CacheRemoveCommand(auditColumnCacheKey));
             item.Name = testNameNew;

@@ -45,7 +45,7 @@ public class AuditValuesT : AuditAttributeBaseT
             LogInMemorySink.Should().HaveMessage("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}")
                 .Appearing().Once().WithLevel(LogEventLevel.Error);
 
-            var auditItem = AuditEfStorageImpl.VwAudits().Where(a => a.TableName == nameof(TestValueTypeEntity) && a.EntityState == EntityState.Added).ToList();
+            var auditItem = AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == nameof(TestValueTypeEntity) && a.EntityState == EntityState.Added).ToList();
             
             // 17 fields + 1 Id
             auditItem.Should().HaveCount(18);

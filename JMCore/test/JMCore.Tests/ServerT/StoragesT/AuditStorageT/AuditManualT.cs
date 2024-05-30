@@ -44,7 +44,7 @@ public class AuditManualT : AuditStorageBaseT
 
             // Assert.
             Assert.True(await TestStorageEfContext.Tests.CountAsync() == 1);
-            var isAudit = await AuditEfStorageImpl.Audits
+            var isAudit = await AuditEfStorageEfContext.Audits
                 .Include(a => a.AuditTable)
                 .CountAsync(ae => ae.AuditTable.TableName == "Test");
             Assert.Equal(0, isAudit);
@@ -75,13 +75,13 @@ public class AuditManualT : AuditStorageBaseT
             // Assert.
             Assert.True(TestStorageEfContext.TestManualAudits.Count() == 1);
 
-            var isAudit = await AuditEfStorageImpl.Audits
+            var isAudit = await AuditEfStorageEfContext.Audits
                 .Include(a => a.AuditTable)
                 .CountAsync(ae => ae.AuditTable.TableName == nameof(TestManualAuditEntity));
 
             Assert.Equal(1, isAudit);
 
-            var auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName ==  nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
+            var auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName ==  nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
             Assert.Equal(3, auditValues.Count);
             var aid = auditValues.FirstOrDefault(a => a.ColumnName == "Id");
             var aName = auditValues.FirstOrDefault(a => a.ColumnName == "Name");
@@ -128,13 +128,13 @@ public class AuditManualT : AuditStorageBaseT
             // Assert.
             Assert.True(TestStorageEfContext.TestManualAudits.Count() == 1);
 
-            var isAudit = await AuditEfStorageImpl.Audits
+            var isAudit = await AuditEfStorageEfContext.Audits
                 .Include(a => a.AuditTable)
                 .CountAsync(ae => ae.AuditTable.TableName == nameof(TestManualAuditEntity));
 
             Assert.Equal(2, isAudit);
 
-            var auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
+            var auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
             Assert.Equal(5, auditValues.Count);
             var aid = auditValues.FirstOrDefault(a => a.ColumnName == "Id" && a.EntityState == EntityState.Added);
             var aName = auditValues.FirstOrDefault(a => a.ColumnName == "Name" && a.EntityState == EntityState.Added);
@@ -190,13 +190,13 @@ public class AuditManualT : AuditStorageBaseT
             // Assert.
             Assert.True(!TestStorageEfContext.TestManualAudits.Any());
 
-            var isAudit = await AuditEfStorageImpl.Audits
+            var isAudit = await AuditEfStorageEfContext.Audits
                 .Include(a => a.AuditTable)
                 .CountAsync(ae => ae.AuditTable.TableName == nameof(TestManualAuditEntity));
 
             Assert.Equal(2, isAudit);
 
-            var auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
+            var auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == nameof(TestManualAuditEntity) && a.PKValue == item.Id).ToListAsync();
             Assert.Equal(6, auditValues.Count);
             var aid = auditValues.FirstOrDefault(a => a.ColumnName == "Id" && a.EntityState == EntityState.Added);
             var aName = auditValues.FirstOrDefault(a => a.ColumnName == "Name" && a.EntityState == EntityState.Added);

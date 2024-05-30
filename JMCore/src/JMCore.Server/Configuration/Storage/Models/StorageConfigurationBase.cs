@@ -4,15 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.Configuration.Storage.Models;
 
-public abstract class StorageConfigurationItem(StorageNativeModuleTypeEnum registerCoreNativeModules, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
+public abstract class StorageConfigurationBase(IEnumerable<string> requiredStorageModules, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
 {
-  protected readonly StorageNativeModuleTypeEnum RegisterCoreNativeModules = registerCoreNativeModules;
-  public abstract StorageTypeEnum StorageType { get; }
-  public abstract void RegisterServices(IServiceCollection services);
-  public abstract Task ConfigureServices(IServiceProvider serviceProvider);
-
-
   private readonly Dictionary<string, object> _implementations = [];
+  protected readonly IEnumerable<string> RequiredStorageModules = requiredStorageModules;
+  public abstract void RegisterServices(IServiceCollection services);
+  public abstract StorageTypeEnum StorageType { get; }
+  public abstract Task ConfigureServices(IServiceProvider serviceProvider);
 
   public StorageModeEnum StorageMode => storageMode;
 

@@ -1,6 +1,6 @@
 ﻿using JMCore.Localizer;
 using JMCore.Server.Controllers;
-using JMCore.Server.Storages.Modules.LocalizeModule;
+using JMCore.Server.Storages.Modules.LocalizationModule;
 using JMCoreTest.Blazor.Shared.Controllers.LocalizationController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +12,9 @@ namespace JMCoreTest.Blazor.Server.Controllers;
 public class LocalizationController : BaseController<LocalizationController>
 {
     private readonly ILogger<LocalizationController> _logger;
-    private readonly ILocalizeStorageModule _db;
+    private readonly ILocalizationStorageModule _db;
 
-    public LocalizationController(ILogger<LocalizationController> logger, ILocalizeStorageModule db) : base(logger)
+    public LocalizationController(ILogger<LocalizationController> logger, ILocalizationStorageModule db) : base(logger)
     {
         _logger = logger;
         _db = db;

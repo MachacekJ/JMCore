@@ -2,7 +2,7 @@
 using System.Reflection;
 using FluentAssertions;
 using JMCore.Localizer;
-using JMCore.Server.Storages.Modules.LocalizeModule.Models;
+using JMCore.Server.Storages.Modules.LocalizationModule.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -52,7 +52,7 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
             await LocalizationEfStorageImpl.SaveChangesAsync();
 
             // Act.
-            var result = await LocalizeStorageModule.ClientLocalizations(1033, null);
+            var result = await LocalizationStorageModule.ClientLocalizations(1033, null);
 
             //Assert
             // One item is server scope
@@ -104,7 +104,7 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
             await LocalizationEfStorageImpl.SaveChangesAsync();
 
             // Act.
-            var result = await LocalizeStorageModule.ClientLocalizations(1033, checkDate);
+            var result = await LocalizationStorageModule.ClientLocalizations(1033, checkDate);
 
             //Assert
             result.Where(a => a.ContextId == FakeContext).Should().HaveCount(count);
@@ -123,7 +123,7 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
             var item = allItems.First(a => a is { MsgId: "TestClientF", Lcid: 1033 });
 
             // Act
-            await LocalizeStorageModule.ChangeTranslationAsync(item.Id, newTans);
+            await LocalizationStorageModule.ChangeTranslationAsync(item.Id, newTans);
 
             // Assert
             ResXTestClient["TestClientF"].ToString().Should().Be(newTans);

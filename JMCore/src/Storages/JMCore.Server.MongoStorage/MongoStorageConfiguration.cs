@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.MongoStorage;
 
-public class MongoStorageConfiguration(string connectionString, string dbName, StorageNativeModuleTypeEnum coreNativeModuleName) : StorageConfigurationItem(coreNativeModuleName)
+public class MongoStorageConfiguration(string connectionString, string dbName, IEnumerable<string> requiredStorageModules) : StorageConfigurationBase(requiredStorageModules)
 {
   public override StorageTypeEnum StorageType { get; } = StorageTypeEnum.Mongo;
   public override void RegisterServices(IServiceCollection services)

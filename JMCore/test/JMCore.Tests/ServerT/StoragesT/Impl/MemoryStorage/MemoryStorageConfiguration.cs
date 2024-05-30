@@ -2,7 +2,7 @@
 using JMCore.Server.Storages.Modules;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Server.Storages.Modules.LocalizeModule;
+using JMCore.Server.Storages.Modules.LocalizationModule;
 using JMCore.Tests.ServerT.StoragesT.Impl.MemoryStorage.Modules;
 using JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule;
 using Microsoft.EntityFrameworkCore;
@@ -10,47 +10,60 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.StoragesT.Impl.MemoryStorage;
 
-public class MemoryStorageConfiguration(string connectionString, StorageNativeModuleTypeEnum registerCoreNativeModules) : StorageConfigurationItem(registerCoreNativeModules)
+public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModules) : StorageConfigurationBase(requiredStorageModules)
 {
+  private readonly string _connectionString = "memory";
   public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;
 
   public override void RegisterServices(IServiceCollection services)
   {
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.BasicModule))
+    services.AddDbContext<BasicEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
+    services.AddSingleton<IBasicStorageModule, BasicEfStorageImpl>();
+    foreach (var requiredStorageModule in RequiredStorageModules)
     {
-      services.AddDbContext<BasicEfStorageImpl>(opt => opt.UseInMemoryDatabase(connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
-      services.AddSingleton<IBasicStorageModule, BasicEfStorageImpl>();
-    }
-
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.AuditModule))
-    {
-      services.AddDbContext<AuditEfStorageImpl>(opt => opt.UseInMemoryDatabase(connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
-      services.AddSingleton<IAuditStorageModule, AuditEfStorageImpl>();
-    }
-
-
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.LocalizeModule))
-    {
-      services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseInMemoryDatabase(connectionString + nameof(ILocalizeStorageModule) + Guid.NewGuid()));
-      services.AddSingleton<ILocalizeStorageModule, LocalizationEfStorageImpl>();
-    }
-
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.UnitTestModule))
-    {
-      services.AddDbContext<TestStorageEfStorageImpl>(opt => opt.UseInMemoryDatabase(connectionString + nameof(ILocalizeStorageModule) + Guid.NewGuid()));
-      services.AddSingleton<ITestStorageModule, TestStorageEfStorageImpl>();
+      switch (requiredStorageModule)
+      {
+        case nameof(IBasicStorageModule):
+          break;
+        case nameof(IAuditStorageModule):
+          services.AddDbContext<AuditEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<IAuditStorageModule, AuditEfStorageImpl>();
+          break;
+        case nameof(ILocalizationStorageModule):
+          services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<ILocalizationStorageModule, LocalizationEfStorageImpl>();
+          break;
+        case nameof(ITestStorageModule):
+          services.AddDbContext<TestEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<ITestStorageModule, TestEfStorageImpl>();
+          break;
+        default:
+          throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");
+      }
     }
   }
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.BasicModule))
-      await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicEfStorageImpl>(serviceProvider);
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.AuditModule))
-      await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditEfStorageImpl>(serviceProvider);
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.LocalizeModule))
-      await ConfigureEfSqlServiceLocal<ILocalizeStorageModule, LocalizationEfStorageImpl>(serviceProvider);
-    if (RegisterCoreNativeModules.HasFlag(StorageNativeModuleTypeEnum.UnitTestModule))
-      await ConfigureEfSqlServiceLocal<ITestStorageModule, TestStorageEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicEfStorageImpl>(serviceProvider);
+    foreach (var requiredStorageModule in RequiredStorageModules)
+    {
+      switch (requiredStorageModule)
+      {
+        case nameof(IBasicStorageModule):
+          break;
+        case nameof(IAuditStorageModule):
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditEfStorageImpl>(serviceProvider);
+          break;
+        case nameof(ILocalizationStorageModule):
+          await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationEfStorageImpl>(serviceProvider);
+          break;
+        case nameof(ITestStorageModule):
+          await ConfigureEfSqlServiceLocal<ITestStorageModule, TestEfStorageImpl>(serviceProvider);
+          break;
+        default:
+          throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");
+      }
+    }
   }
 }

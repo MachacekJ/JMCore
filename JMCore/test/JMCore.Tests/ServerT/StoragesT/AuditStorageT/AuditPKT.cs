@@ -35,7 +35,7 @@ public class AuditPKT : AuditAttributeBaseT
 
             // Assert 1
             Assert.True(await TestStorageEfContext.TestPKGuid.CountAsync() == 1);
-            var auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == tableGuidName && a.PKValueString == item.Id.ToString()).ToListAsync();
+            var auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == tableGuidName && a.PKValueString == item.Id.ToString()).ToListAsync();
             auditValues.Count.Should().Be(2);
             auditValues.Single(a => a.NewValueGuid == item.Id).NewValueGuid.Should().Be(item.Id);
 
@@ -46,7 +46,7 @@ public class AuditPKT : AuditAttributeBaseT
             await TestStorageEfContext.SaveChangesAsync();
             
             // Assert 2
-            auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == tableGuidName && a.PKValueString == item.Id.ToString()).ToListAsync();
+            auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == tableGuidName && a.PKValueString == item.Id.ToString()).ToListAsync();
             auditValues.Count(a=>a.PKValueString == item.Id.ToString()).Should().Be(3);
             
         });
@@ -73,7 +73,7 @@ public class AuditPKT : AuditAttributeBaseT
 
             // Assert 1
             Assert.True(await TestStorageEfContext.TestPKString.CountAsync() == 1);
-            var auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == tableStringName && a.PKValueString == item.Id).ToListAsync();
+            var auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == tableStringName && a.PKValueString == item.Id).ToListAsync();
             auditValues.Count.Should().Be(2);
             auditValues.Single(a => a.NewValueString == item.Id).NewValueString.Should().Be(item.Id);
 
@@ -84,7 +84,7 @@ public class AuditPKT : AuditAttributeBaseT
             await TestStorageEfContext.SaveChangesAsync();
             
             // Assert 2
-            auditValues = await AuditEfStorageImpl.VwAudits().Where(a => a.TableName == tableStringName && a.PKValueString == item.Id).ToListAsync();
+            auditValues = await AuditEfStorageEfContext.VwAudits().Where(a => a.TableName == tableStringName && a.PKValueString == item.Id).ToListAsync();
             auditValues.Count(a=>a.PKValueString == item.Id).Should().Be(3);
         });
     }

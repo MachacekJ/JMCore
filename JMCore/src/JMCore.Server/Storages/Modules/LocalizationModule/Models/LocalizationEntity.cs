@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using JMCore.Localizer;
 
-namespace JMCore.Server.Storages.Modules.LocalizeModule.Models;
+namespace JMCore.Server.Storages.Modules.LocalizationModule.Models;
 
 [Table("localization")]
 public class LocalizationEntity : ILocalizationRecord

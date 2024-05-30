@@ -14,7 +14,10 @@ public class BasicStructureBaseT : DbBaseT
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorResolver.RegisterStorage(sc, new PGStorageConfiguration(ConnectionStringPG, StorageNativeModuleTypeEnum.BasicModule));
+    StorResolver.RegisterStorage(sc, new PGStorageConfiguration(ConnectionStringPG, new[]
+    {
+      nameof(IBasicStorageModule)
+    }));
     //StorResolver.RegisterStorage(sc, new MemoryStorageConfiguration("test"));
     //StorResolver.RegisterStorage(sc, new MongoStorageConfiguration(ConnectionStringMongo, DbName));
   }
@@ -22,6 +25,6 @@ public class BasicStructureBaseT : DbBaseT
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    AllDbStorages = StorResolver.StorageModuleImplementations<IBasicStorageModule>();
+    AllDbStorages = StorResolver.AllStorageModuleImplementations<IBasicStorageModule>();
   }
 }

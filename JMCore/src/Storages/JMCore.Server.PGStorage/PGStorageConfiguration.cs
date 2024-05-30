@@ -1,15 +1,14 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.PGStorage.BasicModule;
-using JMCore.Server.Storages.Modules;
 using JMCore.Server.Storages.Modules.BasicModule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.PGStorage;
 
-public class PGStorageConfiguration(string connectionString, StorageNativeModuleTypeEnum coreNativeModuleName) : StorageConfigurationItem(coreNativeModuleName)
+public class PGStorageConfiguration(string connectionString, IEnumerable<string> requiredStorageModules) : StorageConfigurationBase(requiredStorageModules)
 {
-  public override StorageTypeEnum StorageType { get; } = StorageTypeEnum.Postgres;
+  public override StorageTypeEnum StorageType => StorageTypeEnum.Postgres;
 
   public override void RegisterServices(IServiceCollection services)
   {

@@ -3,18 +3,17 @@ using JMCore.Localizer.Storage;
 using JMCore.Server.Configuration.Localization;
 using JMCore.Server.ResX;
 using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules.LocalizeModule.Models;
+using JMCore.Server.Storages.Modules.LocalizationModule.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-
-namespace JMCore.Server.Storages.Modules.LocalizeModule.EF;
+namespace JMCore.Server.Storages.Modules.LocalizationModule.EF;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
-public abstract class LocalizeStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizeStorageEfContext> logger)
-  : DbContextBase(options, mediator, logger), ILocalizeStorageModule
+public abstract class LocalizationStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
+  : DbContextBase(options, mediator, logger), ILocalizationStorageModule
 {
 
   public DbSet<LocalizationEntity> Localizations { get; set; }
@@ -23,7 +22,7 @@ public abstract class LocalizeStorageEfContext(DbContextOptions options, IMediat
 
   public override DbScriptBase SqlScripts => _dbSqlScript;
 
-  public override string ModuleName => nameof(ILocalizeStorageModule);
+  public override string ModuleName => nameof(ILocalizationStorageModule);
 
 
   #region Localization Table

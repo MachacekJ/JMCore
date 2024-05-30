@@ -5,8 +5,8 @@ namespace JMCore.Server.Configuration.Storage;
 
 public interface IStorageResolver
 {
-  void RegisterStorage(IServiceCollection sc, StorageConfigurationItem storageModule);
+  void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule);
   Task ConfigureStorages(IServiceProvider sp);
-  T StorageModuleImplementation<T>(StorageTypeEnum storageType, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
-  List<T> StorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
+  T FirstStorageModuleImplementation<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
+  List<T> AllStorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
 }

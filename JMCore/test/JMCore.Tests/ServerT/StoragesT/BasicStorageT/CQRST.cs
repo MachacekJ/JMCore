@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingGet;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingGet;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingSave;
 using Xunit;
 
 namespace JMCore.Tests.ServerT.StoragesT.BasicStorageT;
@@ -17,8 +16,8 @@ namespace JMCore.Tests.ServerT.StoragesT.BasicStorageT;
             var method = MethodBase.GetCurrentMethod();
             await RunTestAsync(method, async () =>
             {
-                await Mediator.Send(new SettingSaveCommand(StorageTypeEnum.Memory, key, value));
-                var result = await Mediator.Send(new SettingGetQuery(StorageTypeEnum.Memory, key));
+                await Mediator.Send(new SettingSaveCommand(key, value));
+                var result = await Mediator.Send(new SettingGetQuery(key));
 
                 Assert.Equal(value, result);
             });

@@ -40,6 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Logs\" />
 	  <Folder Include="ServerT\ServicesT\EmailT\" />
 	  <Folder Include="ServerT\ServicesT\SMST\" />
 	</ItemGroup>

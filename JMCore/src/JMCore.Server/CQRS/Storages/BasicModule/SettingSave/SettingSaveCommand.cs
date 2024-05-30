@@ -1,7 +1,7 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Storages.Base.EF;
 
-namespace JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
+namespace JMCore.Server.CQRS.Storages.BasicModule.SettingSave;
 
 /// <summary>
 /// 
@@ -12,8 +12,12 @@ namespace JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
 /// <param name="isSystem"></param>
 public class SettingSaveCommand(StorageTypeEnum storageType, string key, string value, bool isSystem = false) : IDbRequest
 {
-    public StorageTypeEnum StorageType { get; } = storageType;
-    public string Key { get; } = key;
-    public string Value { get; } = value;
-    public bool IsSystem { get; } = isSystem;
+  public StorageTypeEnum StorageType { get; } = storageType;
+  public string Key { get; } = key;
+  public string Value { get; } = value;
+  public bool IsSystem { get; } = isSystem;
+
+  public SettingSaveCommand(string key, string value, bool isSystem = false) : this(StorageTypeEnum.AllRegistered, key, value, isSystem)
+  {
+  }
 }

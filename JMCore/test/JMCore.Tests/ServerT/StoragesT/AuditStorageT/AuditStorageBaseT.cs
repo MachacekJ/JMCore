@@ -1,10 +1,9 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Base.Audit.Configuration;
 using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
-using JMCore.Server.Storages.Modules;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.AuditModule.EF;
+using JMCore.Server.Storages.Modules.BasicModule;
 using JMCore.Tests.ServerT.StoragesT.Impl.MemoryStorage;
 using JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,18 +12,14 @@ namespace JMCore.Tests.ServerT.StoragesT.AuditStorageT;
 
 public class AuditStorageBaseT : DbBaseT
 {
-  protected IAuditStorageModule AuditStorageModule = null!;
-  protected AuditStorageEfContext AuditEfStorageImpl = null!;
-
-  protected ITestStorageModule TestStorageModule = null!;
+  protected AuditStorageEfContext AuditEfStorageEfContext = null!;
   protected TestStorageEfContext TestStorageEfContext = null!;
-
   protected IAuditUserProvider UserProvider = null!;
 
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorResolver.RegisterStorage(sc, new MemoryStorageConfiguration("memory", StorageNativeModuleTypeEnum.BasicModule | StorageNativeModuleTypeEnum.AuditModule | StorageNativeModuleTypeEnum.UnitTestModule));
+    StorResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
     sc.AddScoped<IAuditDbService, AuditDbService>();
   }
@@ -32,11 +27,11 @@ public class AuditStorageBaseT : DbBaseT
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    AuditStorageModule = StorResolver.StorageModuleImplementation<IAuditStorageModule>(StorageTypeEnum.Memory); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
-    AuditEfStorageImpl = (AuditStorageModule as AuditStorageEfContext) ?? throw new ArgumentException();
+    var auditStorageModule = StorResolver.FirstStorageModuleImplementation<IAuditStorageModule>(StorageTypeEnum.Memory);
+    AuditEfStorageEfContext = (auditStorageModule as AuditStorageEfContext) ?? throw new ArgumentException();
 
-    TestStorageModule = StorResolver.StorageModuleImplementation<ITestStorageModule>(StorageTypeEnum.Memory); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
-    TestStorageEfContext = (TestStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
+    var testStorageModule = StorResolver.FirstStorageModuleImplementation<ITestStorageModule>(StorageTypeEnum.Memory);
+    TestStorageEfContext = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
 
     UserProvider = sp.GetService<IAuditUserProvider>() ?? throw new ArgumentException($"{nameof(IAuditUserProvider)} is null.");
   }

@@ -5,9 +5,9 @@ namespace JMCore.Server.Configuration.Storage;
 
 public class StorageResolver : IStorageResolver
 {
-  private readonly List<StorageConfigurationItem> _allStorageModules = [];
+  private readonly List<StorageConfigurationBase> _allStorageModules = [];
 
-  public void RegisterStorage(IServiceCollection sc, StorageConfigurationItem storageModule)
+  public void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule)
   {
     _allStorageModules.Add(storageModule);
     storageModule.RegisterServices(sc);
@@ -21,7 +21,7 @@ public class StorageResolver : IStorageResolver
     }
   }
 
-  public T StorageModuleImplementation<T>(StorageTypeEnum storageType, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
+  public T FirstStorageModuleImplementation<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
   {
     var storageImplementation = _allStorageModules.Where(sm => storageType.HasFlag(sm.StorageType) && sm.StorageMode.HasFlag(storageMode))
       .Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>()
@@ -33,7 +33,7 @@ public class StorageResolver : IStorageResolver
     throw new Exception($"Storage module '{typeof(T).Name}' has no registered implementation.");
   }
   
-  public List<T> StorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
+  public List<T> AllStorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
   {
     var ab = _allStorageModules.Where(sm =>  storageType.HasFlag(sm.StorageType) &&  sm.StorageMode.HasFlag(storageMode)).Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>().ToList();
     if (ab.Count > 0)

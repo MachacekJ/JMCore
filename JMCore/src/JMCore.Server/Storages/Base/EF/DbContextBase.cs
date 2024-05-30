@@ -3,14 +3,12 @@ using JMCore.CQRS.JMCache.CacheGet;
 using JMCore.CQRS.JMCache.CacheRemove;
 using JMCore.CQRS.JMCache.CacheSave;
 using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingGet;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingGet;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingSave;
 using JMCore.Server.Services.JMCache;
-using JMCore.Server.Storages.Base.Audit;
 using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Server.Storages.Modules.BasicModule.EF;
 using JMCore.Server.Storages.Modules.BasicModule.Models;
 using JMCore.Services.JMCache;
 using MediatR;
@@ -149,12 +147,7 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     var allVersions = SqlScripts.AllVersions.ToList();
 
     var lastVersion = new Version("0.0.0.0");
-    if (await DbIsEmpty())
-    {
-      // if (StorageVersionKey != StorageVersionBaseSettingKey)
-      //   throw new Exception($"{nameof(BasicStorageModuleEfContext)} must be implemented first.");
-    }
-    else
+    if (!await DbIsEmpty())
     {
       var ver = await Mediator.Send(new SettingGetQuery(StorageType, StorageVersionKey));
       if (ver != null)
@@ -220,14 +213,6 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     return res;
   }
 
-
-  //
-  // public async Task UpdateDbAsync()
-  // {
-  //   await _dbContextHelper.UpdateDbAsync(AfterUpdateAsync);
-  // }
-
-
   /// <summary>
   /// Resolves problem with this situation. We have settings table where is audit on and audit structure is not created yet.
   /// In this case is audit will be skipped.  
@@ -237,9 +222,9 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     if (_auditService == null)
       return false;
 
-    return true;
-    // var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageType, AuditSettingKey));
+    // return true;
+    var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageType, AuditSettingKey));
 
-    //   return !string.IsNullOrEmpty(isAuditTable);
+    return !string.IsNullOrEmpty(isAuditTable);
   }
 }

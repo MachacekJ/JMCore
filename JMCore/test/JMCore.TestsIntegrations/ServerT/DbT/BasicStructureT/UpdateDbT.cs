@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using FluentAssertions;
 using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingGet;
-using JMCore.Server.CQRS.DB.BasicStructure.SettingSave;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingGet;
+using JMCore.Server.CQRS.Storages.BasicModule.SettingSave;
 using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.DbT.BasicStructureT;

@@ -2,7 +2,7 @@
 using JMCore.Server.Configuration.Storage;
 using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.ResX;
-using JMCore.Server.Storages.Modules.LocalizeModule;
+using JMCore.Server.Storages.Modules.LocalizationModule;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -18,10 +18,10 @@ public static class LocalizerExtensions
   public static async Task UseJMServerLocalization(this IServiceProvider service)
   {
     var storageResolver = service.GetService<IStorageResolver>()
-                          ?? throw new ArgumentException($"Service for {nameof(ILocalizeStorageModule)} not found.");
+                          ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
-    var localizeStorageModule = storageResolver.StorageModuleImplementation<ILocalizeStorageModule>(StorageTypeEnum.Memory)
-                                ?? throw new ArgumentException($"Service for {nameof(ILocalizeStorageModule)} not found.");
+    var localizeStorageModule = storageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>(StorageTypeEnum.Memory)
+                                ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
     var localizationProvider = service.GetService<ILocalizationStorage>()
                                ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorage)} not found.");
@@ -35,7 +35,7 @@ public static class LocalizerExtensions
   /// <summary>
   /// Combine resX as default and EF as source of translations.
   /// </summary>
-  public static async Task LoadLocalizationStorageAsync(IOptions<ResXLocalizationOptions> options, ILocalizeStorageModule db, ILocalizationStorage localizationProvider)
+  public static async Task LoadLocalizationStorageAsync(IOptions<ResXLocalizationOptions> options, ILocalizationStorageModule db, ILocalizationStorage localizationProvider)
   {
     var rexOptions = options.Value;
 

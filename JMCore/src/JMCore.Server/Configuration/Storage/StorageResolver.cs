@@ -1,4 +1,5 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
+using JMCore.Server.Storages.Modules.BasicModule;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.Configuration.Storage;
@@ -6,6 +7,11 @@ namespace JMCore.Server.Configuration.Storage;
 public class StorageResolver : IStorageResolver
 {
   private readonly List<StorageConfigurationBase> _allStorageModules = [];
+
+  public void RegisterServices(IServiceCollection services)
+  {
+    services.AddMediatR((c) => { c.RegisterServicesFromAssemblyContaining(typeof(IBasicStorageModule)); });
+  }
 
   public void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule)
   {

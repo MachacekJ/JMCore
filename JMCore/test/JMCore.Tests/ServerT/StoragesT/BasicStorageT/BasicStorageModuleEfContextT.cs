@@ -13,12 +13,12 @@ public class BasicStorageModuleEfContextT : DbBaseT
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule) }));
+    StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule) }));
   }
 
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    Db = StorResolver.FirstStorageModuleImplementation<IBasicStorageModule>(StorageTypeEnum.Memory);
+    Db = StorageResolver.FirstStorageModuleImplementation<IBasicStorageModule>(StorageTypeEnum.Memory);
   }
 }

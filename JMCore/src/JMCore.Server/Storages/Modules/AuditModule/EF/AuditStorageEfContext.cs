@@ -55,7 +55,7 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
       NewValueGuid = a.NewValueGuid
     });
 
-  public override DbScriptBase SqlScripts => _dbSqlScript;
+  public override DbScriptBase UpdateScripts => _dbSqlScript;
   public override string ModuleName => nameof(IAuditStorageModule);
 
 

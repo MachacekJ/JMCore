@@ -3,5 +3,5 @@
 public interface IDbContextBase
 {
   Task Init();
-  DbScriptBase SqlScripts { get; }
+  DbScriptBase UpdateScripts { get; }
 }

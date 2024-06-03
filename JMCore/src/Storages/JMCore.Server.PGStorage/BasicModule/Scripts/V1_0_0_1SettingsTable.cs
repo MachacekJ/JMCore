@@ -2,24 +2,18 @@
 
 namespace JMCore.Server.PGStorage.BasicModule.Scripts
 {
-    // ReSharper disable once InconsistentNaming
-    public class V1_0_0_1SettingsTable : DbVersionScriptsBase
+  // ReSharper disable once InconsistentNaming
+  public class V1_0_0_1SettingsTable : DbVersionScriptsBase
+  {
+    public override Version Version => new("1.0.0.1");
+
+    public override List<string> AllScripts
     {
-        public override Version Version
-        {
-            get
-            {
-                return new Version("1.0.0.1");
-            }
-        }
-
-        public override List<string> AllScripts
-        {
-            get
-            {
-
-                List<string> l = new ();
-                l.Add(@"
+      get
+      {
+        List<string> l =
+        [
+          @"
 CREATE TABLE setting
 (
     setting_id INT GENERATED ALWAYS AS IDENTITY
@@ -28,11 +22,13 @@ CREATE TABLE setting
     value VARCHAR NOT NULL,
     is_system BOOL
 );
-");
+"
+
+        ];
 
 
-                return l;
-            }
-        }
+        return l;
+      }
     }
+  }
 }

@@ -28,7 +28,7 @@ public abstract class TestBaseT
 
     protected string RootDir { get; set; } = string.Empty;
 
-    protected virtual async Task RunTestAsync(MemberInfo? method, Func<Task> testCode)
+    protected async Task RunTestAsync(MemberInfo? method, Func<Task> testCode)
     {
         if (method == null)
             throw new ArgumentException($"Method name is null {nameof(RunTestAsync)}");

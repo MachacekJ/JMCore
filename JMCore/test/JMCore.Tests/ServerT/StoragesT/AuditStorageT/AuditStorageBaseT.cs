@@ -19,7 +19,7 @@ public class AuditStorageBaseT : DbBaseT
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
+    StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
     sc.AddScoped<IAuditDbService, AuditDbService>();
   }
@@ -27,10 +27,10 @@ public class AuditStorageBaseT : DbBaseT
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    var auditStorageModule = StorResolver.FirstStorageModuleImplementation<IAuditStorageModule>(StorageTypeEnum.Memory);
+    var auditStorageModule = StorageResolver.FirstStorageModuleImplementation<IAuditStorageModule>(StorageTypeEnum.Memory);
     AuditEfStorageEfContext = (auditStorageModule as AuditStorageEfContext) ?? throw new ArgumentException();
 
-    var testStorageModule = StorResolver.FirstStorageModuleImplementation<ITestStorageModule>(StorageTypeEnum.Memory);
+    var testStorageModule = StorageResolver.FirstStorageModuleImplementation<ITestStorageModule>(StorageTypeEnum.Memory);
     TestStorageEfContext = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
 
     UserProvider = sp.GetService<IAuditUserProvider>() ?? throw new ArgumentException($"{nameof(IAuditUserProvider)} is null.");

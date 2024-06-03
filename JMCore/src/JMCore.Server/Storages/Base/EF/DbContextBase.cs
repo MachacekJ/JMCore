@@ -43,7 +43,7 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     Mediator = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
   }
 
-  public abstract DbScriptBase SqlScripts { get; }
+  public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeEnum StorageType { get; }
   public abstract string ModuleName { get; }
 
@@ -144,9 +144,11 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
 
   public async Task Init()
   {
-    var allVersions = SqlScripts.AllVersions.ToList();
+    var allVersions = UpdateScripts.AllVersions.ToList();
 
     var lastVersion = new Version("0.0.0.0");
+    
+    // Get the latest implemented version, if any.
     if (!await DbIsEmpty())
     {
       var ver = await Mediator.Send(new SettingGetQuery(StorageType, StorageVersionKey));

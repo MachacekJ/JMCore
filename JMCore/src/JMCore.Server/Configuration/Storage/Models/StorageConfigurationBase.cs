@@ -1,5 +1,4 @@
 ﻿using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Server.Configuration.Storage.Models;
@@ -8,11 +7,21 @@ public abstract class StorageConfigurationBase(IEnumerable<string> requiredStora
 {
   private readonly Dictionary<string, object> _implementations = [];
   protected readonly IEnumerable<string> RequiredStorageModules = requiredStorageModules;
-  public abstract void RegisterServices(IServiceCollection services);
+  
   public abstract StorageTypeEnum StorageType { get; }
-  public abstract Task ConfigureServices(IServiceProvider serviceProvider);
-
   public StorageModeEnum StorageMode => storageMode;
+
+  public abstract void RegisterServices(IServiceCollection services);
+
+  public abstract Task ConfigureServices(IServiceProvider serviceProvider);
+  
+  public T? StorageModuleImplementation<T>()
+  {
+    var storageName = typeof(T).Name;
+    if (!_implementations.TryGetValue(storageName, out var implementation))
+      return default;
+    return (T)implementation;
+  }
 
   protected async Task ConfigureEfSqlServiceLocal<TInterface, TImpl>(IServiceProvider serviceProvider) where TImpl : IDbContextBase
   {
@@ -31,13 +40,5 @@ public abstract class StorageConfigurationBase(IEnumerable<string> requiredStora
     {
       throw new Exception($"Cannot configure '{name}' storage", e);
     }
-  }
-
-  public T? StorageModuleImplementation<T>()
-  {
-    var storageName = typeof(T).Name;
-    if (!_implementations.TryGetValue(storageName, out var implementation))
-      return default;
-    return (T)implementation;
   }
 }

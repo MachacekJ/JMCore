@@ -20,7 +20,7 @@ public abstract class LocalizationStorageEfContext(DbContextOptions options, IMe
 
   private readonly ScriptRegistrations _dbSqlScript = new();
 
-  public override DbScriptBase SqlScripts => _dbSqlScript;
+  public override DbScriptBase UpdateScripts => _dbSqlScript;
 
   public override string ModuleName => nameof(ILocalizationStorageModule);
 

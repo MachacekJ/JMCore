@@ -44,7 +44,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Configuration\DB\Models\" />
 		<Folder Include="Docs\Localization\" />
 	</ItemGroup>
 

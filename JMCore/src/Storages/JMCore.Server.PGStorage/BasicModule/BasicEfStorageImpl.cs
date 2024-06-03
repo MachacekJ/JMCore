@@ -1,5 +1,4 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Base.Audit;
 using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.EF;
 using JMCore.Server.Storages.Modules.BasicModule.EF;
@@ -11,16 +10,16 @@ using ScriptRegistrations = JMCore.Server.PGStorage.BasicModule.Scripts.ScriptRe
 
 namespace JMCore.Server.PGStorage.BasicModule;
 
-public class BasicEfStorage : BasicStorageEfContext
+public class BasicEfStorageImpl : BasicStorageEfContext
 {
-  public override DbScriptBase SqlScripts => new ScriptRegistrations();
+  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   public override StorageTypeEnum StorageType => StorageTypeEnum.Postgres;
 
-  public BasicEfStorage(DbContextOptions<BasicEfStorage> options, IMediator mediator, ILogger<BasicEfStorage> logger) : base(options, mediator, logger)
+  public BasicEfStorageImpl(DbContextOptions<BasicEfStorageImpl> options, IMediator mediator, ILogger<BasicEfStorageImpl> logger) : base(options, mediator, logger)
   {
   }
 
-  public BasicEfStorage(DbContextOptions<BasicEfStorage> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicEfStorage> logger) : base(options, mediator, auditService, logger)
+  public BasicEfStorageImpl(DbContextOptions<BasicEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicEfStorageImpl> logger) : base(options, mediator, auditService, logger)
   {
   }
   protected override void OnModelCreating(ModelBuilder modelBuilder)

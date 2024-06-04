@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using JMCore.Extensions;
 using JMCore.Server.Configuration.Storage;
 using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Services.JMCache;
@@ -17,15 +18,27 @@ public class StorageBaseT : ServerTestBaseT
   private const string DbNameRemove = "JMCore_TestsIntegrations_ServerT_DbT_";
   private readonly List<IStorageRegistrationT> _allStorages = [];
 
-  private IStorageResolver _storageResolver = null!;
+  protected IStorageResolver StorageResolver = null!;
   private StorageTypeEnum _storageType = StorageTypeEnum.AllRegistered;
 
   private string DbName { get; set; } = null!;
 
-  protected async Task RunTestAsync2(StorageTypeEnum storageType, MemberInfo? method, Func<Task> testCode)
+  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<Task> testCode)
   {
     _storageType = storageType;
     await RunTestAsync(method, testCode);
+  }
+  
+  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
+  {
+    _storageType = storageType;
+    await RunTestAsync(method, async () =>
+    {
+      foreach (var storageTypeLocal in GetAllStorageType(storageType))
+      {
+        await testCode(storageTypeLocal);
+      }
+    });
   }
 
   protected override void RegisterServices(ServiceCollection sc)
@@ -33,8 +46,11 @@ public class StorageBaseT : ServerTestBaseT
     base.RegisterServices(sc);
     DbName = TestData.TestName.Replace(DbNameRemove, string.Empty).ToLower();
     
-    _storageResolver = new StorageResolver();
-    sc.AddSingleton(_storageResolver);
+    StorageResolver = new StorageResolver();
+    sc.AddSingleton(StorageResolver);
+    
+    if (_storageType.HasFlag(StorageTypeEnum.Memory))
+      _allStorages.Add(new MemoryStorageRegistrationT());
     
     if (_storageType.HasFlag(StorageTypeEnum.Postgres))
       _allStorages.Add(new PGStorageRegistrationT(DbName));
@@ -44,10 +60,10 @@ public class StorageBaseT : ServerTestBaseT
     
     foreach (var storage in _allStorages)
     {
-      storage.RegisterServices(sc, Configuration, _storageResolver);
+      storage.RegisterServices(sc, Configuration, StorageResolver);
     }
     
-    _storageResolver.RegisterServices(sc);
+    StorageResolver.RegisterServices(sc);
     sc.AddJMMemoryCache<JMCacheServerCategory>();
   }
 
@@ -58,7 +74,7 @@ public class StorageBaseT : ServerTestBaseT
     {
       storage.GetServices(sp);
     }
-    await _storageResolver.ConfigureStorages(sp);
+    await StorageResolver.ConfigureStorages(sp);
    
   }
 
@@ -70,7 +86,13 @@ public class StorageBaseT : ServerTestBaseT
     }
     await base.FinishedTestAsync();
   }
- 
+
+  protected IEnumerable<StorageTypeEnum> GetAllStorageType(StorageTypeEnum storageType)
+  {
+    return storageType.ToValues();
+  }
+
+
 }
 
 public class MasterDb(DbContextOptions<MasterDb> options) : DbContext(options);

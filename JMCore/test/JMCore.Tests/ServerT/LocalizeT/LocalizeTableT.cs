@@ -41,13 +41,13 @@ public class LocalizeTableT : LocalizeBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var allServer = await LocalizationEfStorageImpl.Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Server)).ToListAsync();
+            var allServer = await LocalizationMemoryEfStorageImpl.Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Server)).ToListAsync();
             Assert.True(allServer.Count() > 10);
             Assert.True(allServer.Count(a => a.MsgId == "TestClientF") == 0);
             Assert.True(allServer.Count(a => a.MsgId == "TestServerF" && a.Lcid == 1033) == 1);
             Assert.True(allServer.Count(a => a.MsgId == "TestBothF" && a.Lcid == 1033) == 1);
 
-            var allClient = await LocalizationEfStorageImpl.Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Client)).ToListAsync();
+            var allClient = await LocalizationMemoryEfStorageImpl.Localizations.Where(l => l.Scope.HasFlag(LocalizationScopeEnum.Client)).ToListAsync();
             Assert.True(allClient.Count() > 10);
             Assert.True(allClient.All(a => a.MsgId != "TestServerF"));
             Assert.True(allClient.Count(a => a.MsgId == "TestClientF" && a.Lcid == 1033) == 1);

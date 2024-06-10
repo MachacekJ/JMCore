@@ -1,33 +1,54 @@
-﻿// using JMCore.Server.Configuration.DB;
-// using JMCore.Server.StorageModules.DB.Audit;
-// using JMCore.Tests.ServerT.DbT.DbContexts.AuditStructureT;
-// using JMCore.Tests.ServerT.DbT.TestDBContext;
-// using Microsoft.Extensions.DependencyInjection;
-//
-// namespace JMCore.TestsIntegrations.ServerT.DbT.AuditStructureT;
-//
-// public class AuditStructureBaseT : DbBaseT
-// {
-//     protected AuditDbContext AuditDbContext = null!;
-//     protected TestBasicDbContext TestBasicDbContext = null!;
-//
-//
-//     protected override void RegisterServices(ServiceCollection sc)
-//     {
-//         base.RegisterServices(sc);
-//         sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
-//         sc.AddJMDb(string.Format(ConnectionString, TestData.TestName), (o) =>
-//         {
-//             o.AuditStructure = true;
-//             o.AddJMDbContext<ITestBasicDbContext, TestBasicDbContext>();
-//         });
-//     }
-//
-//     protected override async Task GetServicesAsync(IServiceProvider sp)
-//     {
-//         await base.GetServicesAsync(sp);
-//         await sp.ConfigureJMDbAsync();
-//         AuditDbContext = sp.GetService<AuditDbContext>() ?? throw new ArgumentException($"{nameof(AuditDbContext)} is null.");
-//         TestBasicDbContext = sp.GetService<TestBasicDbContext>() ?? throw new ArgumentException($"{nameof(TestBasicDbContext)} is null.");
-//     }
-// }
+﻿using JMCore.Server.Configuration.Storage.Models;
+using JMCore.Server.Storages.Base.Audit.Configuration;
+using JMCore.Server.Storages.Base.Audit.EF;
+using JMCore.Server.Storages.Base.Audit.UserProvider;
+using JMCore.Server.Storages.Modules.AuditModule;
+using JMCore.Server.Storages.Modules.BasicModule;
+using JMCore.Tests.ServerT.StoragesT.AuditStorageT;
+using JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule;
+using JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule.Models;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace JMCore.TestsIntegrations.ServerT.StoragesT.AuditStructureT;
+
+public class AuditStructureBaseT : StorageBaseT
+{
+  protected static StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
+
+  protected override IEnumerable<string> RequiredBaseStorageModules => new[]
+  {
+    nameof(IBasicStorageModule),
+    nameof(IAuditStorageModule),
+    nameof(ITestStorageModule)
+  };
+
+  protected override void RegisterServices(ServiceCollection sc)
+  {
+    base.RegisterServices(sc);
+    sc.AddScoped<IAuditConfiguration, AuditConfiguration>();
+    sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
+    sc.AddScoped<IAuditDbService, AuditDbService>();
+  }
+
+  protected IAuditStorageModule GetAuditStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstStorageModuleImplementation<IAuditStorageModule>(storageType);
+  protected ITestStorageModule GetTestStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstStorageModuleImplementation<ITestStorageModule>(storageType);
+
+  protected string GetAuditTableName(StorageTypeEnum storageType, string entityName)
+  {
+    return storageType switch
+    {
+      StorageTypeEnum.Memory => entityName,
+      StorageTypeEnum.Postgres => entityName switch
+      {
+        nameof(TestEntity) => "test",
+        nameof(TestAttributeAuditEntity) => "test_attribute_audit",
+        nameof(TestManualAuditEntity) => "test_manual_audit",
+        nameof(TestValueTypeEntity) => "test_value_type",
+        nameof(TestPKGuidEntity) => "test_pk_guid",
+        nameof(TestPKStringEntity) => "test_pk_string",
+        _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
+      },
+      _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
+    };
+  }
+}

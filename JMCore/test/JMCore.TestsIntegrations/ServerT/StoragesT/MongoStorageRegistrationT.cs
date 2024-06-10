@@ -11,7 +11,7 @@ public class MongoStorageRegistrationT(string dbName): IStorageRegistrationT
   private ILogger<MongoStorageRegistrationT> _log = null!;
   private string ConnectionStringMongo { get; set; } = null!;
 
-  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IStorageResolver storageResolver)
+  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IEnumerable<string> requiredBaseStorageModules, IStorageResolver storageResolver)
   {
     ConnectionStringMongo = configuration["TestSettings:ConnectionStringMongo"] ?? throw new InvalidOperationException();
   }

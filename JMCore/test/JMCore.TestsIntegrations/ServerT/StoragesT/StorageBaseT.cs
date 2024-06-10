@@ -3,18 +3,21 @@ using JMCore.Extensions;
 using JMCore.Server.Configuration.Storage;
 using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Services.JMCache;
+using JMCore.Server.Storages.Base.Audit.Configuration;
+using JMCore.Server.Storages.Base.Audit.EF;
+using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Services.JMCache;
 using JMCore.Tests.ServerT;
+using JMCore.Tests.ServerT.StoragesT.AuditStorageT;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT;
 
-/// <summary>
-/// Working with postgres database (msssql oboslete).
-/// </summary>
-public class StorageBaseT : ServerTestBaseT
+public abstract class StorageBaseT : ServerTestBaseT
 {
+  protected abstract IEnumerable<string> RequiredBaseStorageModules { get; }
+
   private const string DbNameRemove = "JMCore_TestsIntegrations_ServerT_DbT_";
   private readonly List<IStorageRegistrationT> _allStorages = [];
 
@@ -28,13 +31,14 @@ public class StorageBaseT : ServerTestBaseT
     _storageType = storageType;
     await RunTestAsync(method, testCode);
   }
-  
+
   protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
   {
     _storageType = storageType;
     await RunTestAsync(method, async () =>
     {
-      foreach (var storageTypeLocal in GetAllStorageType(storageType))
+      var aa = GetAllStorageType(storageType).ToList();
+      foreach (var storageTypeLocal in aa)
       {
         await testCode(storageTypeLocal);
       }
@@ -45,24 +49,24 @@ public class StorageBaseT : ServerTestBaseT
   {
     base.RegisterServices(sc);
     DbName = TestData.TestName.Replace(DbNameRemove, string.Empty).ToLower();
-    
+
     StorageResolver = new StorageResolver();
     sc.AddSingleton(StorageResolver);
-    
+
     if (_storageType.HasFlag(StorageTypeEnum.Memory))
       _allStorages.Add(new MemoryStorageRegistrationT());
-    
+
     if (_storageType.HasFlag(StorageTypeEnum.Postgres))
       _allStorages.Add(new PGStorageRegistrationT(DbName));
 
     if (_storageType.HasFlag(StorageTypeEnum.Mongo))
       _allStorages.Add(new MongoStorageRegistrationT(DbName));
-    
+
     foreach (var storage in _allStorages)
     {
-      storage.RegisterServices(sc, Configuration, StorageResolver);
+      storage.RegisterServices(sc, Configuration, RequiredBaseStorageModules, StorageResolver);
     }
-    
+
     StorageResolver.RegisterServices(sc);
     sc.AddJMMemoryCache<JMCacheServerCategory>();
   }
@@ -74,8 +78,8 @@ public class StorageBaseT : ServerTestBaseT
     {
       storage.GetServices(sp);
     }
+
     await StorageResolver.ConfigureStorages(sp);
-   
   }
 
   protected override async Task FinishedTestAsync()
@@ -84,15 +88,14 @@ public class StorageBaseT : ServerTestBaseT
     {
       storage.FinishedTest();
     }
+
     await base.FinishedTestAsync();
   }
 
   protected IEnumerable<StorageTypeEnum> GetAllStorageType(StorageTypeEnum storageType)
   {
-    return storageType.ToValues();
+    return storageType.ToValues().Where(a => (a & StorageTypeEnum.AllRegistered) != StorageTypeEnum.AllRegistered);
   }
-
-
 }
 
 public class MasterDb(DbContextOptions<MasterDb> options) : DbContext(options);

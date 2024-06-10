@@ -14,8 +14,8 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
 
   public override void RegisterServices(IServiceCollection services)
   {
-    services.AddDbContext<BasicEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
-    services.AddSingleton<IBasicStorageModule, BasicEfStorageImpl>();
+    services.AddDbContext<BasicPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
+    services.AddSingleton<IBasicStorageModule, BasicPGEfStorageImpl>();
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -23,26 +23,20 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          services.AddDbContext<AuditEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
-          services.AddSingleton<IAuditStorageModule, AuditEfStorageImpl>();
+          services.AddDbContext<AuditPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
+          services.AddSingleton<IAuditStorageModule, AuditPGEfStorageImpl>();
           break;
         // case nameof(ILocalizationStorageModule):
         //   services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
         //   services.AddSingleton<ILocalizationStorageModule, LocalizationEfStorageImpl>();
         //   break;
-        // case nameof(ITestStorageModule):
-        //   services.AddDbContext<TestEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
-        //   services.AddSingleton<ITestStorageModule, TestEfStorageImpl>();
-        // break;
-        default:
-          throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");
       }
     }
   }
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicPGEfStorageImpl>(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -50,16 +44,11 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditPGEfStorageImpl>(serviceProvider);
           break;
         // case nameof(ILocalizationStorageModule):
         //   await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationEfStorageImpl>(serviceProvider);
         //   break;
-        // case nameof(ITestStorageModule):
-        //   await ConfigureEfSqlServiceLocal<ITestStorageModule, TestEfStorageImpl>(serviceProvider);
-        //   break;
-        default:
-          throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");
       }
     }
   }

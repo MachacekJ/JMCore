@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JMCore.Server.PGStorage.AuditModule;
 
-public class AuditEfStorageImpl(DbContextOptions options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : AuditStorageEfContext(options, mediator, logger)
+public class AuditPGEfStorageImpl(DbContextOptions<AuditPGEfStorageImpl> options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : AuditStorageEfContext(options, mediator, logger)
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeEnum StorageType => StorageTypeEnum.Postgres;

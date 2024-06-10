@@ -4,17 +4,17 @@ using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.AuditStructureT;
 
-public class AuditValuesT : AuditStructureBaseT
+public class AuditAttributeT : AuditStructureBaseT
 {
   [Fact]
-  public async Task AllTypes()
+  public async Task NoAudit()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
       var testDb = GetTestStorageModule(storageType);
-      await AuditValuesTHelper.AllTypes(auDb, testDb, LogInMemorySink, (name) => GetAuditTableName(storageType, name));
+      await AuditAttributeTHelper.NoAudit(auDb, testDb, (name) => GetAuditTableName(storageType, name));
     });
   }
 }

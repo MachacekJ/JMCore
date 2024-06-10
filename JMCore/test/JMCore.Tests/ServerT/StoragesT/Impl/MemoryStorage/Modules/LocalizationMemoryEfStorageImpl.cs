@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace JMCore.Tests.ServerT.StoragesT.Impl.MemoryStorage.Modules;
 
-public class LocalizationEfStorageImpl(DbContextOptions<LocalizationEfStorageImpl> options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
+public class LocalizationMemoryEfStorageImpl(DbContextOptions<LocalizationMemoryEfStorageImpl> options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
   : LocalizationStorageEfContext(options, mediator, resxOptions, localizationProvider, logger)
 {
   public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;

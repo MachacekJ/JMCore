@@ -8,13 +8,9 @@ using JMCore.Server.Storages.Base.Audit.Configuration;
 namespace JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule.Models;
 
 [Auditable]
-[Table("test_pk_guid")]
 public class TestPKGuidEntity
 {
   [Key]
-  [Column("test_pk_guid_id")]
   public Guid Id { get; set; }
-  
-  [Column("name")]
   public string Name { get; set; } = null!;
 }

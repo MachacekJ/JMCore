@@ -5,16 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule.Models;
 
-[Table("test")]
 public class TestEntity
 {
   [Key]
-  [Column("test_id")]
   public int Id { get; set; }
   
-  [Column("name")]
   public string Name { get; set; } = null!;
   
-  [Column("created")]
   public DateTime Created { get; set; }
 }

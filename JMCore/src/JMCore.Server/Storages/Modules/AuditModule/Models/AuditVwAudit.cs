@@ -1,19 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace JMCore.Server.Storages.Modules.AuditModule.Models;
 
-public class Audit_VwAuditEntity
+public class AuditVwAuditEntity
 {
-  [Key]
   public long Id { get; set; }
-
+  public long AuditId { get; set; }
   public string TableName { get; set; } = null!;
+  public string? SchemaName { get; set; }
   public long? PKValue { get; set; }
   public string? PKValueString { get; set; }
 

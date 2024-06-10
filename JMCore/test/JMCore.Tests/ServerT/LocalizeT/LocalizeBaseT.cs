@@ -26,7 +26,7 @@ public class LocalizeBaseT : DbBaseT
   protected IStringLocalizer<TestServer> ResXTestServer = null!;
   protected IStringLocalizer<TestClient> ResXTestClient = null!;
   protected IStringLocalizer<JMCore.ResX.ResX_Errors> ResXCoreErrors = null!;
-  protected LocalizationEfStorageImpl LocalizationEfStorageImpl = null!;
+  protected LocalizationMemoryEfStorageImpl LocalizationMemoryEfStorageImpl = null!;
 
   protected override void RegisterServices(ServiceCollection sc)
   {
@@ -57,7 +57,7 @@ public class LocalizeBaseT : DbBaseT
     await LocalizeResourcesAsync(sp);
 
     LocalizationStorageModule = StorageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>(StorageTypeEnum.Memory); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
-    LocalizationEfStorageImpl = (LocalizationStorageModule as LocalizationEfStorageImpl) ?? throw new ArgumentException();
+    LocalizationMemoryEfStorageImpl = (LocalizationStorageModule as LocalizationMemoryEfStorageImpl) ?? throw new ArgumentException();
     ResXTestServer = sp.GetService<IStringLocalizer<TestServer>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestServer>)} is null.");
     ResXTestClient = sp.GetService<IStringLocalizer<TestClient>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestClient>)} is null.");
     ResXCoreErrors = sp.GetService<IStringLocalizer<JMCore.ResX.ResX_Errors>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<JMCore.ResX.ResX_Errors>)} is null.");

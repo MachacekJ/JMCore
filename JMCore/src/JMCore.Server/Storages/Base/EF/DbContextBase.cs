@@ -27,8 +27,7 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
   private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{nameof(IAuditStorageModule)}";
   private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{nameof(IBasicStorageModule)}";
   private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{ModuleName}";
-
-
+  
   protected readonly ILogger<DbContextBase> Logger;
   private readonly IAuditDbService? _auditService;
 
@@ -45,9 +44,9 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
 
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeEnum StorageType { get; }
+  
   public abstract string ModuleName { get; }
-
-
+  
   protected IMediator Mediator { get; }
 
   public DbSet<SettingEntity> Settings { get; set; }
@@ -195,7 +194,6 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
       }
     }
 
-    //if (maxVersion > new Version("0.0.0.0"))
     await Mediator.Send(new SettingSaveCommand(StorageType, StorageVersionKey, maxVersion.ToString(), true));
   }
 

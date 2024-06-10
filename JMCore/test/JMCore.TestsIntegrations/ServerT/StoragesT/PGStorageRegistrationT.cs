@@ -1,7 +1,7 @@
 ﻿using JMCore.Server.Configuration.Storage;
-using JMCore.Server.PGStorage;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
+using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,16 +16,12 @@ public class PGStorageRegistrationT(string dbName): IStorageRegistrationT
   private string ConnectionStringPG { get; set; } = null!;
   private string MasterConnectionStringPG { get; set; } = null!;
 
-  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IStorageResolver storageResolver)
+  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IEnumerable<string> requiredBaseStorageModules, IStorageResolver storageResolver)
   {
     ConnectionStringPG = string.Format(configuration["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException(), dbName);
     MasterConnectionStringPG = string.Format(configuration["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException(), "postgres");
     sc.AddDbContext<MasterDb>(opt => opt.UseNpgsql(MasterConnectionStringPG));
-    storageResolver.RegisterStorage(sc, new PGStorageConfiguration(ConnectionStringPG, new[]
-    {
-      nameof(IBasicStorageModule),
-      nameof(IAuditStorageModule)
-    }));
+    storageResolver.RegisterStorage(sc, new PGTestStorageConfiguration(ConnectionStringPG, requiredBaseStorageModules));
   }
 
   public void GetServices(IServiceProvider sp)

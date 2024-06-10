@@ -1,5 +1,4 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.AuditModule.EF;
@@ -20,8 +19,6 @@ public class AuditStorageBaseT : DbBaseT
   {
     base.RegisterServices(sc);
     StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
-    sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
-    sc.AddScoped<IAuditDbService, AuditDbService>();
   }
 
   protected override async Task GetServicesAsync(IServiceProvider sp)

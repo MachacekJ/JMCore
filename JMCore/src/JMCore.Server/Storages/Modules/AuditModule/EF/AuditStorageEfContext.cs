@@ -11,8 +11,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
 namespace JMCore.Server.Storages.Modules.AuditModule.EF;
 
 public abstract class AuditStorageEfContext(DbContextOptions options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : DbContextBase(options, mediator, logger), IAuditStorageModule
@@ -21,44 +19,19 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
 
   private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(60);
   private readonly ScriptRegistrations _dbSqlScript = new();
-
+  
+  public override DbScriptBase UpdateScripts => _dbSqlScript;
+  public override string ModuleName => nameof(IAuditStorageModule);
   public DbSet<AuditEntity> Audits { get; set; }
   public DbSet<AuditColumnEntity> AuditColumns { get; set; }
   public DbSet<AuditUserEntity> AuditUsers { get; set; }
   public DbSet<AuditTableEntity> AuditTables { get; set; }
   public DbSet<AuditValueEntity> AuditValues { get; set; }
 
-  public IQueryable<Audit_VwAuditEntity> VwAudits() => AuditValues
-    .Include(a => a.Audit)
-    .Include(a => a.AuditColumn)
-    .Include(a => a.Audit.AuditTable)
-    .Include(a => a.Audit.User)
-    .Select(a => new Audit_VwAuditEntity()
-    {
-      Id = a.Id,
-      TableName = a.Audit.AuditTable.TableName,
-      PKValue = a.Audit.PKValue,
-      PKValueString = a.Audit.PKValueString,
-      UserName = a.Audit.User.UserName,
-      DateTime = a.Audit.DateTime,
-      EntityState = a.Audit.EntityState,
-      ColumnName = a.AuditColumn.ColumnName,
-      OldValueString = a.OldValueString,
-      NewValueString = a.NewValueString,
-      OldValueInt = a.OldValueInt,
-      NewValueInt = a.NewValueInt,
-      OldValueLong = a.OldValueLong,
-      NewValueLong = a.NewValueLong,
-      OldValueBool = a.OldValueBool,
-      NewValueBool = a.NewValueBool,
-      OldValueGuid = a.OldValueGuid,
-      NewValueGuid = a.NewValueGuid
-    });
-
-  public override DbScriptBase UpdateScripts => _dbSqlScript;
-  public override string ModuleName => nameof(IAuditStorageModule);
-
-
+  public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValue == pkValue && i.SchemaName == schemaName).ToArrayAsync();
+  public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValueString == pkValue && i.SchemaName == schemaName).ToArrayAsync();
+  public async Task<IEnumerable<AuditVwAuditEntity>> AllAuditItems(string tableName, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.SchemaName == schemaName).ToArrayAsync();
+  
   public async Task SaveAuditAsync(AuditEntry auditEntry)
   {
     var valuesTable = new List<AuditValue>();
@@ -116,7 +89,6 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
   public JMCacheKey AuditColumnCacheKey(int tableId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditColumnEntity)}-{tableId}");
   public JMCacheKey AuditUserCacheKey(string userId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditUserEntity)}-{userId}");
   public JMCacheKey AuditTableCacheKey(string tableName, string? schema) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditTableEntity)}-{tableName}-{schema ?? string.Empty}");
-
 
   public async Task<int> GetAuditUserIdAsync(string userId, string userName)
   {
@@ -273,6 +245,38 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
     Logger.LogDebug("Value saved to cache:{GetAuditColumnIdAsync}:{keyCache}", nameof(GetAuditColumnIdAsync), keyCache);
 
     return res;
+  }
+
+  private IQueryable<AuditVwAuditEntity> SelectVwAudits()
+  {
+    return AuditValues
+      .Include(a => a.Audit)
+      .Include(a => a.AuditColumn)
+      .Include(a => a.Audit.AuditTable)
+      .Include(a => a.Audit.User)
+      .Select(a => new AuditVwAuditEntity()
+      {
+        Id = a.Id,
+        AuditId = a.AuditId,
+        TableName = a.Audit.AuditTable.TableName,
+        SchemaName = a.Audit.AuditTable.SchemaName,
+        PKValue = a.Audit.PKValue,
+        PKValueString = a.Audit.PKValueString,
+        UserName = a.Audit.User.UserName,
+        DateTime = a.Audit.DateTime,
+        EntityState = a.Audit.EntityState,
+        ColumnName = a.AuditColumn.ColumnName,
+        OldValueString = a.OldValueString,
+        NewValueString = a.NewValueString,
+        OldValueInt = a.OldValueInt,
+        NewValueInt = a.NewValueInt,
+        OldValueLong = a.OldValueLong,
+        NewValueLong = a.NewValueLong,
+        OldValueBool = a.OldValueBool,
+        NewValueBool = a.NewValueBool,
+        OldValueGuid = a.OldValueGuid,
+        NewValueGuid = a.NewValueGuid
+      });
   }
 
   private class AuditValue

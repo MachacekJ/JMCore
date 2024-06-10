@@ -2,7 +2,6 @@
 using JMCore.Server.Storages.Base.Audit.Models;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.EF;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace JMCore.Server.Storages.Base.Audit.EF;
@@ -41,10 +40,10 @@ public class AuditDbService : IAuditDbService
             return;
 
         await BeginTrackingAuditEntriesAsync(auditEntries);
-        foreach (var auditEntry in auditEntries)
-        {
-            await _auditModuleEfContext.SaveAuditAsync(auditEntry);
-        }
+        // foreach (var auditEntry in auditEntries)
+        // {
+        //     await _auditModuleEfContext.SaveAuditAsync(auditEntry);
+        // }
 
     }
 

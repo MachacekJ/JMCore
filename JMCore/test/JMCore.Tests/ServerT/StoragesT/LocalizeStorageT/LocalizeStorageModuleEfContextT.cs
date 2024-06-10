@@ -48,8 +48,8 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
                 }
             };
 
-            newItems.ForEach(item => LocalizationEfStorageImpl.Localizations.Add(item));
-            await LocalizationEfStorageImpl.SaveChangesAsync();
+            newItems.ForEach(item => LocalizationMemoryEfStorageImpl.Localizations.Add(item));
+            await LocalizationMemoryEfStorageImpl.SaveChangesAsync();
 
             // Act.
             var result = await LocalizationStorageModule.ClientLocalizations(1033, null);
@@ -100,8 +100,8 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
                 }
             };
 
-            newItems.ForEach(item => LocalizationEfStorageImpl.Localizations.Add(item));
-            await LocalizationEfStorageImpl.SaveChangesAsync();
+            newItems.ForEach(item => LocalizationMemoryEfStorageImpl.Localizations.Add(item));
+            await LocalizationMemoryEfStorageImpl.SaveChangesAsync();
 
             // Act.
             var result = await LocalizationStorageModule.ClientLocalizations(1033, checkDate);
@@ -119,7 +119,7 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
         await RunTestAsync(method, async () =>
         {
             // Arrange
-            var allItems = await LocalizationEfStorageImpl.Localizations.Where(l => l.Scope == LocalizationScopeEnum.Client).ToListAsync();
+            var allItems = await LocalizationMemoryEfStorageImpl.Localizations.Where(l => l.Scope == LocalizationScopeEnum.Client).ToListAsync();
             var item = allItems.First(a => a is { MsgId: "TestClientF", Lcid: 1033 });
 
             // Act
@@ -127,7 +127,7 @@ public class LocalizeStorageModuleEfContextT : LocalizeStorageBaseT
 
             // Assert
             ResXTestClient["TestClientF"].ToString().Should().Be(newTans);
-            allItems = await LocalizationEfStorageImpl.Localizations.Where(l => l.Scope == LocalizationScopeEnum.Client).ToListAsync();
+            allItems = await LocalizationMemoryEfStorageImpl.Localizations.Where(l => l.Scope == LocalizationScopeEnum.Client).ToListAsync();
             allItems.First(a => a is { MsgId: "TestClientF", Lcid: 1033 }).Translation.Should().Be("newTranslation");
         });
     }

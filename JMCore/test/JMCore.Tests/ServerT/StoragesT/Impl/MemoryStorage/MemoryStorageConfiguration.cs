@@ -16,8 +16,8 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
 
   public override void RegisterServices(IServiceCollection services)
   {
-    services.AddDbContext<BasicEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
-    services.AddSingleton<IBasicStorageModule, BasicEfStorageImpl>();
+    services.AddDbContext<BasicMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
+    services.AddSingleton<IBasicStorageModule, BasicMemoryEfStorageImpl>();
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -25,16 +25,16 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          services.AddDbContext<AuditEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
-          services.AddSingleton<IAuditStorageModule, AuditEfStorageImpl>();
+          services.AddDbContext<AuditMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<IAuditStorageModule, AuditMemoryEfStorageImpl>();
           break;
         case nameof(ILocalizationStorageModule):
-          services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
-          services.AddSingleton<ILocalizationStorageModule, LocalizationEfStorageImpl>();
+          services.AddDbContext<LocalizationMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<ILocalizationStorageModule, LocalizationMemoryEfStorageImpl>();
           break;
         case nameof(ITestStorageModule):
-          services.AddDbContext<TestEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
-          services.AddSingleton<ITestStorageModule, TestEfStorageImpl>();
+          services.AddDbContext<TestMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ITestStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<ITestStorageModule, TestMemoryEfStorageImpl>();
           break;
         default:
           throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");
@@ -44,7 +44,7 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicMemoryEfStorageImpl>(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -52,13 +52,13 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditMemoryEfStorageImpl>(serviceProvider);
           break;
         case nameof(ILocalizationStorageModule):
-          await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationMemoryEfStorageImpl>(serviceProvider);
           break;
         case nameof(ITestStorageModule):
-          await ConfigureEfSqlServiceLocal<ITestStorageModule, TestEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<ITestStorageModule, TestMemoryEfStorageImpl>(serviceProvider);
           break;
         default:
           throw new Exception($"Required storage module '{requiredStorageModule}' is not implemented");

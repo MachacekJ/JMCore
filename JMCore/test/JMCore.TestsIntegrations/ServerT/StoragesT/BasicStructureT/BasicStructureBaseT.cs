@@ -5,8 +5,12 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT.BasicStructureT;
 
 public class BasicStructureBaseT : StorageBaseT
 {
-  protected const StorageTypeEnum StorageTypesToTest = StorageTypeEnum.Postgres | StorageTypeEnum.Memory;
+  protected virtual StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
 
-  protected IBasicStorageModule GetBasicStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstStorageModuleImplementation<IBasicStorageModule>(storageType);
+  protected override IEnumerable<string> RequiredBaseStorageModules => new[]
+  {
+    nameof(IBasicStorageModule)
+  };
   
+  protected IBasicStorageModule GetBasicStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstStorageModuleImplementation<IBasicStorageModule>(storageType);
 }

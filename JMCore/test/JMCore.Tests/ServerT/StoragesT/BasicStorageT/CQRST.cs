@@ -8,7 +8,7 @@ namespace JMCore.Tests.ServerT.StoragesT.BasicStorageT;
     public class CQRST : BasicStorageModuleEfContextT
     {
         [Fact]
-        public async Task SettingsCommandAndQuery()
+        public async Task SettingsCommandAndQueryTest()
         {
             const string key = "key";
             const string value = "value";

@@ -38,7 +38,8 @@
 		<Folder Include="ClientT\ServicesT\" />
 		<Folder Include="Logs\" />
 		<Folder Include="ServerT\ControllersT\" />
-		<Folder Include="ServerT\StoragesT\Impl\" />
+		<Folder Include="ServerT\StoragesT\Implementations\" />
+		<Folder Include="ServerT\StoragesT\ModulesT\" />
 	</ItemGroup>
 
 	<ItemGroup>

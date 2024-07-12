@@ -2,6 +2,7 @@
 using JMCore.Server.Configuration.Storage;
 using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.ResX;
+using JMCore.Server.ResX.Helpers;
 using JMCore.Server.Storages.Modules.LocalizationModule;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -39,7 +40,7 @@ public static class LocalizerExtensions
   {
     var rexOptions = options.Value;
 
-    var dic = ResXRegister.DefaultCoreResx();
+    var dic = ResXSourceRegister.DefaultSourceResx();
     dic.AddRange(rexOptions.OtherResourceManager);
 
     var allResources = ResXLoader.LoadFromResx(dic, rexOptions.SupportedCultures);

@@ -21,7 +21,7 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
     private IConfiguration Configuration { get; } = configuration;
     private IWebHostEnvironment Environment { get; } = environment;
 
-    private List<ResXManagerInfo>? _addLanguageResources;
+    private List<ResXSource>? _addLanguageResources;
 
     public void ConfigureServerServices(IServiceCollection services)
     {
@@ -55,7 +55,7 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
     //     return this;
     // }
 
-    public ConfigureServerBuilder SetLocalization(List<ResXManagerInfo>? addLanguageResources = null)
+    public ConfigureServerBuilder SetLocalization(List<ResXSource>? addLanguageResources = null)
     {
         _addLanguageResources = addLanguageResources;
         _isLocalization = true;
@@ -81,14 +81,14 @@ public class ConfigureServerBuilder(IConfiguration configuration, IWebHostEnviro
         {
             if (_addLanguageResources != null)
                 option.OtherResourceManager = _addLanguageResources;
-            option.SupportedCultures = ResXRegister.SupportedCultures.Keys.ToList();
+            option.SupportedCultures = ResXSourceRegister.SupportedCultures.Keys.ToList();
         });
         services.AddStringMemoryLocalization(options => { options.ReturnOnlyKeyIfNotFound = false; })
             .Configure<RequestLocalizationOptions>(options =>
             {
-                options.DefaultRequestCulture = new RequestCulture(ResXRegister.SupportedCultures.First().Value);
-                options.AddSupportedCultures(ResXRegister.SupportedCultures.Values.ToArray());
-                options.AddSupportedUICultures(ResXRegister.SupportedCultures.Values.ToArray());
+                options.DefaultRequestCulture = new RequestCulture(ResXSourceRegister.SupportedCultures.First().Value);
+                options.AddSupportedCultures(ResXSourceRegister.SupportedCultures.Values.ToArray());
+                options.AddSupportedUICultures(ResXSourceRegister.SupportedCultures.Values.ToArray());
             });
     }
 }

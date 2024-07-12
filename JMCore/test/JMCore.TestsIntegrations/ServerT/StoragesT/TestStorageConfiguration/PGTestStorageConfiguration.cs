@@ -1,5 +1,5 @@
 ﻿using JMCore.Server.PGStorage;
-using JMCore.Tests.ServerT.StoragesT.Impl.TestStorageModule;
+using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
 using JMCore.TestsIntegrations.ServerT.StoragesT.Impl.PG.TestStorageModule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

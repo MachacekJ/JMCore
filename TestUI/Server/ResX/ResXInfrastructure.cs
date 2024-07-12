@@ -9,9 +9,9 @@ namespace JMCoreTest.Blazor.Server.ResX;
 //https://github.com/telerik/blazor-ui-messages/tree/main/Messages
 public static class ResXInfrastructure
 {
-    public static List<ResXManagerInfo> RegisterResX()
+    public static List<ResXSource> RegisterResX()
     {
-        return new List<ResXManagerInfo>
+        return new List<ResXSource>
         {
             new(
                 nameof(Client.ResX.ResX_MainLayout),

@@ -30,7 +30,7 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
 
   public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValue == pkValue && i.SchemaName == schemaName).ToArrayAsync();
   public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValueString == pkValue && i.SchemaName == schemaName).ToArrayAsync();
-  public async Task<IEnumerable<AuditVwAuditEntity>> AllAuditItems(string tableName, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.SchemaName == schemaName).ToArrayAsync();
+  public async Task<IEnumerable<AuditVwAuditEntity>> AllAuditItemsAsync(string tableName, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.SchemaName == schemaName).ToArrayAsync();
   
   public async Task SaveAuditAsync(AuditEntry auditEntry)
   {

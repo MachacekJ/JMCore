@@ -14,5 +14,5 @@ public interface IAuditStorageModule : IDbContextBase, IStorage
   /// <summary>
   /// Use this function for testing purposes only.
   /// </summary>
-  Task<IEnumerable<AuditVwAuditEntity>> AllAuditItems(string tableName, string? schemaName = null);
+  Task<IEnumerable<AuditVwAuditEntity>> AllAuditItemsAsync(string tableName, string? schemaName = null);
 }

@@ -2,6 +2,7 @@
 using System.Reflection;
 using FluentAssertions;
 using JMCore.Localizer;
+using JMCore.ResX;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -16,18 +17,23 @@ public class LocalizeTableT : LocalizeBaseT
         await RunTestAsync(method, async () =>
         {
             CultureInfo.CurrentUICulture = new CultureInfo(1033);
-            Assert.True(ResXTestClient["Test_2"] == "I would like to encourage you");
+            Assert.Equal("I would like to encourage you", ResXTestClient["Test_2"]);
             CultureInfo.CurrentUICulture = new CultureInfo(1029);
-            Assert.True(ResXTestServer["Test_1"] == "Ahoj světe");
+            Assert.Equal("Ahoj světe", ResXTestServer["Test_1"]);
 
-            var ff = ResXTestServer["NotEx22"];
-            Assert.True(ff.ResourceNotFound);
-            Assert.True(ff.Value == "TestServer:NotEx22");
+            var serverLocalizedNotExistValue = ResXTestServer["NotEx22"];
+            Assert.True(serverLocalizedNotExistValue.ResourceNotFound);
+            Assert.Equal("TestServer:NotEx22", serverLocalizedNotExistValue.Value);
+            
+            var serverLocalizedValue = ResXTestServer["Test_Param"];
+            serverLocalizedValue.Value.Should().NotBeNull();
+            
+            var serverLocalizedValueWithParam = ResXTestServer["Test_Param", "P1", "P2"];
+            Assert.Contains("P1", serverLocalizedValueWithParam.Value);
+            Assert.Contains("P2", serverLocalizedValueWithParam.Value);
 
-
-            var ff3 = ResXTestServer["Test_Param", "P1", "P2"];
-            Assert.Contains("P1", ff3.Value);
-            Assert.Contains("P2", ff3.Value);
+            var coreResxValue = ResXCoreErrors[ResX_Errors.ApiResponseBaseStatusCode_ERROR_PARSEJSON];
+            coreResxValue.Should().NotBeNull();
             await Task.CompletedTask;
         });
     }

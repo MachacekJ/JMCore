@@ -43,6 +43,7 @@
 	  <Folder Include="Logs\" />
 	  <Folder Include="ServerT\ServicesT\EmailT\" />
 	  <Folder Include="ServerT\ServicesT\SMST\" />
+	  <Folder Include="ServerT\StoragesT\ModulesT\" />
 	</ItemGroup>
 
 </Project>

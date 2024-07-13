@@ -10,8 +10,8 @@ using JMCore.Server.Storages.Modules.LocalizationModule;
 using JMCore.Services.JMCache;
 using JMCore.Tests.ServerT.LocalizeT.ResX;
 using JMCore.Tests.ServerT.StoragesT;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage.Modules;
+using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
+using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,7 +71,7 @@ public class LocalizeBaseT : DbBaseT
     await base.GetServicesAsync(sp);
     await sp.UseJMServerLocalization();
 
-    LocalizationStorageModule = StorageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>(StorageTypeEnum.Memory); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
+    LocalizationStorageModule = StorageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>(); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
     LocalizationMemoryEfStorageImpl = (LocalizationStorageModule as LocalizationMemoryEfStorageImpl) ?? throw new ArgumentException();
     ResXTestServer = sp.GetService<IStringLocalizer<TestServer>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestServer>)} is null.");
     ResXTestClient = sp.GetService<IStringLocalizer<TestClient>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestClient>)} is null.");

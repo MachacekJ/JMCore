@@ -2,7 +2,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace JMCore.TestsIntegrations.ServerT.StoragesT.Impl.PG.TestStorageModule.Scripts;
+namespace JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule.Scripts;
 
 public class V1_0_1_3TestAuditTypes : DbVersionScriptsBase
 {

@@ -23,7 +23,7 @@ public abstract class StorageConfigurationBase(IEnumerable<string> requiredStora
     return (T)implementation;
   }
 
-  protected async Task ConfigureEfSqlServiceLocal<TInterface, TImpl>(IServiceProvider serviceProvider) where TImpl : IDbContextBase
+  protected async Task ConfigureEfSqlServiceLocal<TInterface, TImpl>(IServiceProvider serviceProvider) where TImpl : DbContextBase
   {
     var name = typeof(TInterface).Name;
     try
@@ -34,7 +34,7 @@ public abstract class StorageConfigurationBase(IEnumerable<string> requiredStora
 
 
       _implementations.Add(name, implementation);
-      await implementation.Init();
+      await implementation.UpdateDatabase(implementation);
     }
     catch (Exception e)
     {

@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage.Modules;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage.Modules;
 
 public class LocalizationMemoryEfStorageImpl(DbContextOptions<LocalizationMemoryEfStorageImpl> options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
   : LocalizationStorageEfContext(options, mediator, resxOptions, localizationProvider, logger)
 {
-  public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;
+  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 }

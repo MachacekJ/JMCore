@@ -4,9 +4,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage.Modules;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage.Modules;
 
 public class AuditMemoryEfStorageImpl(DbContextOptions<AuditMemoryEfStorageImpl> options, IMediator mediator, ILogger<AuditMemoryEfStorageImpl> logger) : AuditStorageEfContext(options, mediator, logger)
 {
-  public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;
+  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 }

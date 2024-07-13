@@ -5,7 +5,7 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.BasicStorageT;
 
 public class BasicStructureBaseT : StorageBaseT
 {
-  protected virtual StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
+  protected static StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Mongo | StorageTypeEnum.Postgres;
 
   protected override IEnumerable<string> RequiredBaseStorageModules => new[]
   {

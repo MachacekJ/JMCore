@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 
 [Auditable]
 public class TestValueTypeEntity

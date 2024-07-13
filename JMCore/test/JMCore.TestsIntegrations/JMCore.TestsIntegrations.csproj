@@ -25,7 +25,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\JMCore.Server\JMCore.Server.csproj" />
 		<ProjectReference Include="..\..\src\Storages\JMCore.Server.MongoStorage\JMCore.Server.MongoStorage.csproj" />
-		<ProjectReference Include="..\..\src\Storages\JMCore.Server.MSSQLStorage\JMCore.Server.MSSQLStorage.csproj" />
 		<ProjectReference Include="..\..\src\Storages\JMCore.Server.PGStorage\JMCore.Server.PGStorage.csproj" />
 		<ProjectReference Include="..\JMCore.Tests\JMCore.Tests.csproj" />
 	</ItemGroup>

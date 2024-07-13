@@ -21,7 +21,7 @@ public static class LocalizerExtensions
     var storageResolver = service.GetService<IStorageResolver>()
                           ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
-    var localizeStorageModule = storageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>(StorageTypeEnum.Memory)
+    var localizeStorageModule = storageResolver.FirstStorageModuleImplementation<ILocalizationStorageModule>()
                                 ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
     var localizationProvider = service.GetService<ILocalizationStorage>()

@@ -1,6 +1,5 @@
 ﻿namespace JMCore.Server.Configuration.Storage.Models;
 
-
 [Flags]
 public enum StorageTypeEnum
 {
@@ -9,4 +8,16 @@ public enum StorageTypeEnum
   Mongo = 1 << 2,
   
   AllRegistered = Memory | Postgres | Mongo
+}
+
+public class StorageTypeDefinition(StorageTypeEnum type)
+{
+  public bool IsTransactionEnabled => type switch
+  {
+    StorageTypeEnum.Memory => false,
+    StorageTypeEnum.Postgres => true,
+    StorageTypeEnum.Mongo => false,
+    _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+  };
+  public StorageTypeEnum Type => type;
 }

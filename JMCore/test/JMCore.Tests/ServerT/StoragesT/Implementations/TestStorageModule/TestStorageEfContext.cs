@@ -1,6 +1,5 @@
 ﻿using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.EF;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,15 +7,13 @@ using Microsoft.Extensions.Logging;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 
 public abstract class TestStorageEfContext(DbContextOptions options, IMediator mediator, ILogger<TestStorageEfContext> logger, IAuditDbService auditService)
   : DbContextBase(options, mediator, logger, auditService), ITestStorageModule
 {
-  private readonly ScriptRegistrations _dbSqlScript = new();
-
-  public override DbScriptBase UpdateScripts => _dbSqlScript;
-  public override string ModuleName => nameof(ITestStorageModule);
+  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override string ModuleName => nameof(ITestStorageModule);
 
   public DbSet<TestEntity> Tests { get; set; } = null!;
   public DbSet<TestManualAuditEntity> TestManualAudits { get; set; }

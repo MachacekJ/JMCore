@@ -8,7 +8,8 @@ namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Model
 [Auditable]
 public class TestAttributeAuditEntity
 {
-  [Key]
+  [MaxLength(36)]
+  public string UId { get; set; } = Guid.NewGuid().ToString();
   public int Id { get; set; }
   
   [MaxLength(50)]

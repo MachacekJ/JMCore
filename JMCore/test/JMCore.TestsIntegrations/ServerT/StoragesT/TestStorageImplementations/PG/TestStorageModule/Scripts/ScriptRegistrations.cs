@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.Storages.Base.EF;
 
-namespace JMCore.TestsIntegrations.ServerT.StoragesT.Impl.PG.TestStorageModule.Scripts;
+namespace JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule.Scripts;
 
 public class ScriptRegistrations : DbScriptBase
 {

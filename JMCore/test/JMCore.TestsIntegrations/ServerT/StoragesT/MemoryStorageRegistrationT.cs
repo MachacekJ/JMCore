@@ -1,7 +1,7 @@
 ﻿using JMCore.Server.Configuration.Storage;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage;
+using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

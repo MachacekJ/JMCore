@@ -4,8 +4,7 @@ using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +38,7 @@ public class AuditStructureBaseT : StorageBaseT
     return storageType switch
     {
       StorageTypeEnum.Memory => entityName,
+      StorageTypeEnum.Mongo => entityName,
       StorageTypeEnum.Postgres => entityName switch
       {
         nameof(TestEntity) => "test",

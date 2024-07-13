@@ -6,13 +6,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage.Modules;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage.Modules;
 
 public class BasicMemoryEfStorageImpl(DbContextOptions<BasicMemoryEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicMemoryEfStorageImpl> logger)
   : BasicStorageEfContext(options, mediator, auditService, logger)
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  public override StorageTypeEnum StorageType => StorageTypeEnum.Memory;
+  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 
   public BasicMemoryEfStorageImpl(DbContextOptions<BasicMemoryEfStorageImpl> options, IMediator mediator, ILogger<BasicMemoryEfStorageImpl> logger) : this(options, mediator, null, logger)
   {

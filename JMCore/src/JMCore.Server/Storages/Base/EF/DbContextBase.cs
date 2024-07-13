@@ -21,15 +21,26 @@ namespace JMCore.Server.Storages.Base.EF;
 /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
 /// Use <see cref="SaveChanges"/> only in special cases.
 /// </summary>
-public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageModule
+public abstract class DbContextBase : DbContext, IBasicStorageModule
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
-  private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{nameof(IAuditStorageModule)}";
-  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{nameof(IBasicStorageModule)}";
-  private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageType)}_{ModuleName}";
   
+  public abstract DbScriptBase UpdateScripts { get; }
+  protected abstract StorageTypeDefinition StorageDefinition { get; }
+  protected abstract string ModuleName { get; }
+  
+  private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
+  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IBasicStorageModule)}";
+  private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
+
   protected readonly ILogger<DbContextBase> Logger;
   private readonly IAuditDbService? _auditService;
+  private readonly DbContextOptions _options;
+
+  protected IMediator Mediator { get; }
+
+  public DbSet<SettingEntity> Settings { get; set; }
+
 
   /// <summary>
   /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
@@ -37,19 +48,11 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
   /// </summary>
   protected DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditDbService? auditService = null) : base(options)
   {
+    _options = options;
     _auditService = auditService;
     Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
     Mediator = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
   }
-
-  public abstract DbScriptBase UpdateScripts { get; }
-  public abstract StorageTypeEnum StorageType { get; }
-  
-  public abstract string ModuleName { get; }
-  
-  protected IMediator Mediator { get; }
-
-  public DbSet<SettingEntity> Settings { get; set; }
 
 
   #region Audit
@@ -82,6 +85,8 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
 
   #endregion
 
+  #region Settings
+
   public async Task<string?> Setting_GetAsync(string key, bool isRequired = true)
   {
     var vv = await GetSettingsAsync(key, isRequired);
@@ -95,13 +100,15 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     var set = await Settings.FirstOrDefaultAsync(i => i.Key == key);
     if (set == null)
     {
-      set = new SettingEntity();
+      set = new SettingEntity
+      {
+        Key = key
+      };
       Settings.Add(set);
     }
 
     set.Value = value;
     set.IsSystem = isSystem;
-    set.Key = key;
 
     await SaveChangesAsync();
 
@@ -141,68 +148,86 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
     return vv;
   }
 
-  public async Task Init()
+  #endregion
+
+  public async Task UpdateDatabase<T>(T impl) where T : DbContextBase
   {
     var allVersions = UpdateScripts.AllVersions.ToList();
 
     var lastVersion = new Version("0.0.0.0");
-    
+
     // Get the latest implemented version, if any.
     if (!await DbIsEmpty())
     {
-      var ver = await Mediator.Send(new SettingGetQuery(StorageType, StorageVersionKey));
+      var ver = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, StorageVersionKey));
       if (ver != null)
         lastVersion = new Version(ver);
     }
 
-    var maxVersion = new Version("0.0.0.0");
+    var updatedToVersion = new Version("0.0.0.0");
 
-    if (allVersions.Any())
+    if (allVersions.Count != 0)
     {
-      await using var transaction = await Database.BeginTransactionAsync();
-      foreach (var version in allVersions.Where(a => a.Version > lastVersion))
+      if (StorageDefinition.IsTransactionEnabled)
       {
-        foreach (var script in version.AllScripts)
+        await using var transaction = await Database.BeginTransactionAsync();
+        updatedToVersion = await UpdateDatabase(impl, allVersions, lastVersion);
+        try
         {
-          try
-          {
-            Logger.LogInformation("SQL scripts version " + version.Version + ":" +
-                                  script);
-            await Database.ExecuteSqlRawAsync(script);
-            Logger.LogInformation("OK");
-          }
-          catch (Exception ex)
-          {
-            Logger.LogCritical(MethodBase.GetCurrentMethod()?.Name + " - Create tables in DB:", ex);
-
-            throw new Exception("UpdateDB error for script ->" + script, ex);
-          }
+          await transaction.CommitAsync();
         }
-
-        if (maxVersion < version.Version)
-          maxVersion = version.Version;
+        catch (Exception ex)
+        {
+          await transaction.RollbackAsync();
+          throw new Exception("UpdateDbAsync is rollback", ex);
+        }
       }
-
-      try
+      else
       {
-        await transaction.CommitAsync();
-      }
-      catch (Exception ex)
-      {
-        await transaction.RollbackAsync();
-        throw new Exception("UpdateDbAsync is rollback", ex);
+        updatedToVersion = await UpdateDatabase(impl, allVersions, lastVersion);
       }
     }
 
-    await Mediator.Send(new SettingSaveCommand(StorageType, StorageVersionKey, maxVersion.ToString(), true));
+    await Mediator.Send(new SettingSaveCommand(StorageDefinition.Type, StorageVersionKey, updatedToVersion.ToString(), true));
   }
+
+  private async Task<Version> UpdateDatabase<T>(T impl, List<DbVersionScriptsBase> allVersions, Version lastVersion) where T : DbContextBase
+  {
+    var updatedToVersion = new Version("0.0.0.0");
+
+    foreach (var version in allVersions.Where(a => a.Version > lastVersion))
+    {
+      foreach (var script in version.AllScripts)
+      {
+        try
+        {
+          Logger.LogInformation("SQL scripts version " + version.Version + ":" +
+                                script);
+          await Database.ExecuteSqlRawAsync(script);
+          Logger.LogInformation("OK");
+        }
+        catch (Exception ex)
+        {
+          Logger.LogCritical(MethodBase.GetCurrentMethod()?.Name + " - Create tables in DB:", ex);
+
+          throw new Exception("UpdateDB error for script ->" + script, ex);
+        }
+      }
+
+      version.AfterScriptRunCode(impl, _options, Logger);
+      updatedToVersion = version.Version;
+    }
+
+    return updatedToVersion;
+  }
+
 
   private async Task<bool> DbIsEmpty()
   {
     var res = true;
     try
     {
-      var isSettingTable = await Mediator.Send(new SettingGetQuery(StorageType, StorageVersionBaseSettingKey));
+      var isSettingTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, StorageVersionBaseSettingKey));
       res = isSettingTable == null;
     }
     catch
@@ -223,7 +248,7 @@ public abstract class DbContextBase : DbContext, IDbContextBase, IBasicStorageMo
       return false;
 
     // return true;
-    var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageType, AuditSettingKey));
+    var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));
 
     return !string.IsNullOrEmpty(isAuditTable);
   }

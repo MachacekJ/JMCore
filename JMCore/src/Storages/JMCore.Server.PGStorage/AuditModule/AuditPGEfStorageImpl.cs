@@ -11,7 +11,7 @@ namespace JMCore.Server.PGStorage.AuditModule;
 public class AuditPGEfStorageImpl(DbContextOptions<AuditPGEfStorageImpl> options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : AuditStorageEfContext(options, mediator, logger)
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
-  public override StorageTypeEnum StorageType => StorageTypeEnum.Postgres;
+  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
   
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

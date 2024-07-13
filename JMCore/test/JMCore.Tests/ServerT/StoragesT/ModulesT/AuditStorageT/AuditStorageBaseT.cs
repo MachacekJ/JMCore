@@ -3,8 +3,8 @@ using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.AuditModule.EF;
 using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
+using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;

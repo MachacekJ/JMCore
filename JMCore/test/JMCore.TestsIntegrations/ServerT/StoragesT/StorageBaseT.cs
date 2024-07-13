@@ -12,9 +12,12 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT;
 
 public abstract class StorageBaseT : ServerTestBaseT
 {
+  /// <summary>
+  /// Mongo size database name limitation.
+  /// </summary>
+  private const int MaximumLengthOfDb = 63;
+  
   protected abstract IEnumerable<string> RequiredBaseStorageModules { get; }
-
-  private const string DbNameRemove = "JMCore_TestsIntegrations_ServerT_DbT_";
   private readonly List<IStorageRegistrationT> _allStorages = [];
 
   protected IStorageResolver StorageResolver = null!;
@@ -33,8 +36,8 @@ public abstract class StorageBaseT : ServerTestBaseT
     _storageType = storageType;
     await RunTestAsync(method, async () =>
     {
-      var aa = GetAllStorageType(storageType).ToList();
-      foreach (var storageTypeLocal in aa)
+      var storageTypes = GetAllStorageType(storageType).ToList();
+      foreach (var storageTypeLocal in storageTypes)
       {
         await testCode(storageTypeLocal);
       }
@@ -44,7 +47,18 @@ public abstract class StorageBaseT : ServerTestBaseT
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    DbName = TestData.TestName.Replace(DbNameRemove, string.Empty).ToLower();
+    var shrinkStrings = new List<string>() { 
+      nameof(JMCore) ,
+      nameof(TestsIntegrations),
+      nameof(ServerT),
+      nameof(StoragesT),
+      nameof(ModulesT)
+     };
+    var testName = shrinkStrings.Aggregate(TestData.TestName, (current, name) 
+      => current.Replace($"{name}_", string.Empty)).ToLower();
+    if (testName.Length > MaximumLengthOfDb)
+      throw new Exception($"Name of database '{testName}' is longer then {MaximumLengthOfDb}.");
+    DbName = testName;
 
     StorageResolver = new StorageResolver();
     sc.AddSingleton(StorageResolver);

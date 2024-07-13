@@ -4,7 +4,7 @@ using JMCore.Server.Storages.Base.Audit.Configuration;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 
 [Auditable]
 public class TestPKGuidEntity

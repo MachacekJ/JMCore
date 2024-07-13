@@ -6,7 +6,8 @@ public class SettingSaveHandler(IStorageResolver storageResolver) : BasicDbReque
 {
   public override async Task Handle(SettingSaveCommand request, CancellationToken cancellationToken)
   {
-    List<Task> task = [..AllBasicStorageWriteContexts(request.StorageType).Select(context => context.Setting_SaveAsync(request.Key, request.Value, request.IsSystem))];
+    List<Task> task = [..AllBasicStorageWriteContexts(request.StorageType).Select(context 
+      => context.Setting_SaveAsync(request.Key, request.Value, request.IsSystem))];
     await Task.WhenAll(task);
   }
 }

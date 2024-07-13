@@ -22,7 +22,7 @@ public abstract class LocalizationStorageEfContext(DbContextOptions options, IMe
 
   public override DbScriptBase UpdateScripts => _dbSqlScript;
 
-  public override string ModuleName => nameof(ILocalizationStorageModule);
+  protected override string ModuleName => nameof(ILocalizationStorageModule);
 
 
   #region Localization Table

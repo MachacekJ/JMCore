@@ -1,7 +1,15 @@
-﻿namespace JMCore.Server.Storages.Base.EF;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
+namespace JMCore.Server.Storages.Base.EF;
 
 public abstract class DbVersionScriptsBase
 {
     public abstract Version Version { get; }
-    public abstract List<string> AllScripts { get; }
+    public virtual List<string> AllScripts { get; } = new();
+
+    public virtual void AfterScriptRunCode<T>(T impl, DbContextOptions options, ILogger<DbContextBase> logger) where T : DbContextBase
+    {
+      
+    }
 }

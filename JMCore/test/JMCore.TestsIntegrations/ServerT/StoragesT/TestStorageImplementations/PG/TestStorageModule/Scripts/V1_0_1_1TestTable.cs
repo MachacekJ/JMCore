@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.Storages.Base.EF;
 
-namespace JMCore.TestsIntegrations.ServerT.StoragesT.Impl.PG.TestStorageModule.Scripts;
+namespace JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule.Scripts;
 
 // ReSharper disable once InconsistentNaming
 public class V1_0_1_1TestTable : DbVersionScriptsBase

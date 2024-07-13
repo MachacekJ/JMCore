@@ -1,10 +1,9 @@
 ﻿using JMCore.Server.Storages.Base.EF;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 
-public interface ITestStorageModule : IDbContextBase
+public interface ITestStorageModule
 {
   Task AddAsync(TestPKGuidEntity item);
   Task AddAsync(TestPKStringEntity item);

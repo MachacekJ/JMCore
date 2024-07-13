@@ -1,10 +1,9 @@
 ﻿using JMCore.Server.Storages.Base.Audit.Models;
-using JMCore.Server.Storages.Base.EF;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
 
 namespace JMCore.Server.Storages.Modules.AuditModule;
 
-public interface IAuditStorageModule : IDbContextBase, IStorage
+public interface IAuditStorageModule
 {
   Task SaveAuditAsync(AuditEntry auditEntry);
   

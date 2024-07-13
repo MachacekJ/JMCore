@@ -2,12 +2,12 @@
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.BasicModule;
 using JMCore.Server.Storages.Modules.LocalizationModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage.Modules;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
+using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage.Modules;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.MemoryStorage;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
 
 public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModules) : StorageConfigurationBase(requiredStorageModules)
 {

@@ -1,1 +1,1 @@
-﻿Another unit tests are included to LocalizeT.
+﻿This unittests tests only localization storage.

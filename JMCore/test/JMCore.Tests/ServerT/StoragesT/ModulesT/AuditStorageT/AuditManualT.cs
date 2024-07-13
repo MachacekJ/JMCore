@@ -4,7 +4,7 @@ using JMCore.Server.Storages.Base.Audit.Configuration;
 using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

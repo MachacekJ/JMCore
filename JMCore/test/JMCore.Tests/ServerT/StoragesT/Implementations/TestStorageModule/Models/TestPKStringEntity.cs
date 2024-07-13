@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using JMCore.Server.Storages.Base.Audit.Configuration;
 
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 
 [Auditable]
 public class TestPKStringEntity

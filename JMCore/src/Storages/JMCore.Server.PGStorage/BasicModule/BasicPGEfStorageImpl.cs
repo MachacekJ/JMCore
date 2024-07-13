@@ -13,7 +13,7 @@ namespace JMCore.Server.PGStorage.BasicModule;
 public class BasicPGEfStorageImpl : BasicStorageEfContext
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  public override StorageTypeEnum StorageType => StorageTypeEnum.Postgres;
+  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
   public BasicPGEfStorageImpl(DbContextOptions<BasicPGEfStorageImpl> options, IMediator mediator, ILogger<BasicPGEfStorageImpl> logger) : base(options, mediator, logger)
   {
@@ -22,8 +22,11 @@ public class BasicPGEfStorageImpl : BasicStorageEfContext
   public BasicPGEfStorageImpl(DbContextOptions<BasicPGEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicPGEfStorageImpl> logger) : base(options, mediator, auditService, logger)
   {
   }
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
+    //modelBuilder.Entity<SettingEntity>().Ignore(t => t.UId);
+    
     base.OnModelCreating(modelBuilder);
     modelBuilder.Entity<SettingEntity>().ToTable("setting");
     modelBuilder.Entity<SettingEntity>().HasKey(p => p.Id);
@@ -31,5 +34,6 @@ public class BasicPGEfStorageImpl : BasicStorageEfContext
     modelBuilder.Entity<SettingEntity>().Property(t => t.Key).HasColumnName("key");
     modelBuilder.Entity<SettingEntity>().Property(t => t.Value).HasColumnName("value");
     modelBuilder.Entity<SettingEntity>().Property(t => t.IsSystem).HasColumnName("is_system");
+
   }
 }

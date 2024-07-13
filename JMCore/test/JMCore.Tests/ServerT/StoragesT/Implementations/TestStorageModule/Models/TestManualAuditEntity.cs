@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
 
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
-namespace JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+namespace JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 
 public class TestManualAuditEntity
 {
-  [Key]
   public int Id { get; set; }
   public string Name { get; set; } = null!;
   public string NotAuditableColumn { get; set; } = null!;

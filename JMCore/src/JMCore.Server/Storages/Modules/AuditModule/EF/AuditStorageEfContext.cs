@@ -18,10 +18,10 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
   public const int MaxStringSize = 10000;
 
   private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(60);
-  private readonly ScriptRegistrations _dbSqlScript = new();
+
+  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override string ModuleName => nameof(IAuditStorageModule);
   
-  public override DbScriptBase UpdateScripts => _dbSqlScript;
-  public override string ModuleName => nameof(IAuditStorageModule);
   public DbSet<AuditEntity> Audits { get; set; }
   public DbSet<AuditColumnEntity> AuditColumns { get; set; }
   public DbSet<AuditUserEntity> AuditUsers { get; set; }

@@ -2,8 +2,8 @@
 using FluentAssertions;
 using JMCore.Server.Storages.Modules.AuditModule;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule;
-using JMCore.Tests.ServerT.StoragesT.Implemantations.TestStorageModule.Models;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
+using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using Xunit;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;

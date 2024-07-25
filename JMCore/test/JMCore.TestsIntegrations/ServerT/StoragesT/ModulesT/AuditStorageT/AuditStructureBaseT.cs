@@ -13,7 +13,8 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
 
 public class AuditStructureBaseT : StorageBaseT
 {
-  protected static StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
+  // Virtual is needed for stress tests.
+  protected virtual StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
 
   protected override IEnumerable<string> RequiredBaseStorageModules => new[]
   {

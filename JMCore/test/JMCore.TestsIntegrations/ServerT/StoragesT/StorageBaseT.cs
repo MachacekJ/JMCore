@@ -5,6 +5,7 @@ using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Services.JMCache;
 using JMCore.Services.JMCache;
 using JMCore.Tests.ServerT;
+using JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT.PGT;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -57,14 +58,15 @@ public abstract class StorageBaseT : ServerTestBaseT
     var testName = shrinkStrings.Aggregate(TestData.TestName, (current, name) 
       => current.Replace($"{name}_", string.Empty)).ToLower();
     if (testName.Length > MaximumLengthOfDb)
-      throw new Exception($"Name of database '{testName}' is longer then {MaximumLengthOfDb}.");
+      testName = testName.Substring(testName.Length - MaximumLengthOfDb);
+      //throw new Exception($"Name of database '{testName}' is longer then {MaximumLengthOfDb}.");
     DbName = testName;
 
     StorageResolver = new StorageResolver();
     sc.AddSingleton(StorageResolver);
 
     if (_storageType.HasFlag(StorageTypeEnum.Memory))
-      _allStorages.Add(new MemoryStorageRegistrationT());
+      throw new Exception("Memory stores use unit tests, not integration tests.");
 
     if (_storageType.HasFlag(StorageTypeEnum.Postgres))
       _allStorages.Add(new PGStorageRegistrationT(DbName));

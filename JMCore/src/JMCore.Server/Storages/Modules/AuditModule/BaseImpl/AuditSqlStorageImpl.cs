@@ -1,8 +1,11 @@
 ﻿using JMCore.CQRS.JMCache.CacheGet;
 using JMCore.CQRS.JMCache.CacheSave;
+using JMCore.Extensions;
 using JMCore.Server.Services.JMCache;
 using JMCore.Server.Storages.Base.Audit.Models;
 using JMCore.Server.Storages.Base.EF;
+using JMCore.Server.Storages.Modules.AuditModule.Helper;
+using JMCore.Server.Storages.Modules.AuditModule.Helper.Models;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
 using JMCore.Services.JMCache;
 using MediatR;
@@ -11,17 +14,19 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-namespace JMCore.Server.Storages.Modules.AuditModule.EF;
+namespace JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
 
-public abstract class AuditStorageEfContext(DbContextOptions options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : DbContextBase(options, mediator, logger), IAuditStorageModule
+public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<AuditSqlStorageImpl> logger) : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
-  public const int MaxStringSize = 10000;
-
   private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(60);
+
+  public static JMCacheKey AuditColumnCacheKey(int tableId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditColumnEntity)}-{tableId}");
+  public static JMCacheKey AuditUserCacheKey(string userId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditUserEntity)}-{userId}");
+  public static JMCacheKey AuditTableCacheKey(string tableName, string? schema) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditTableEntity)}-{tableName}-{schema ?? string.Empty}");
 
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override string ModuleName => nameof(IAuditStorageModule);
-  
+
   public DbSet<AuditEntity> Audits { get; set; }
   public DbSet<AuditColumnEntity> AuditColumns { get; set; }
   public DbSet<AuditUserEntity> AuditUsers { get; set; }
@@ -31,64 +36,52 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
   public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValue == pkValue && i.SchemaName == schemaName).ToArrayAsync();
   public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValueString == pkValue && i.SchemaName == schemaName).ToArrayAsync();
   public async Task<IEnumerable<AuditVwAuditEntity>> AllAuditItemsAsync(string tableName, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.SchemaName == schemaName).ToArrayAsync();
-  
-  public async Task SaveAuditAsync(AuditEntry auditEntry)
+
+  public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
-    var valuesTable = new List<AuditValue>();
-    foreach (var oldValue in auditEntry.OldValues)
+    var valuesTable = new List<AuditValueData>();
+    foreach (var oldValue in auditEntryItem.OldValues)
     {
-      auditEntry.NewValues.TryGetValue(oldValue.Key, out var newValue);
-      var auditValue = AuditValue.Value(Logger, oldValue.Key, oldValue.Value, newValue);
+      auditEntryItem.NewValues.TryGetValue(oldValue.Key, out var newValue);
+      var auditValue = AuditValueConverterHelper.CreateValue(Logger, oldValue.Key, oldValue.Value, newValue);
       if (auditValue != null)
         valuesTable.Add(auditValue);
     }
 
-    foreach (var newValue in auditEntry.NewValues.Where(kv => !auditEntry.OldValues.ContainsKey(kv.Key)))
+    foreach (var newValue in auditEntryItem.NewValues.Where(kv => !auditEntryItem.OldValues.ContainsKey(kv.Key)))
     {
-      var auditValue = AuditValue.Value(Logger, newValue.Key, null, newValue.Value);
+      var auditValue = AuditValueConverterHelper.CreateValue(Logger, newValue.Key, null, newValue.Value);
       if (auditValue != null)
         valuesTable.Add(auditValue);
     }
 
-    var auditTableId = await GetAuditTableIdAsync(auditEntry.TableName, auditEntry.SchemaName);
+    var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName);
     var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable.Select(a => a.AuditColumnName).ToList());
 
     var auditEntity = new AuditEntity
     {
       AuditTableId = auditTableId,
-      PKValue = auditEntry.PkValue,
-      PKValueString = auditEntry.PkValueString,
-      AuditUserId = await GetAuditUserIdAsync(auditEntry.ByUser.userId, auditEntry.ByUser.userName),
+      PKValue = auditEntryItem.PkValue,
+      PKValueString = auditEntryItem.PkValueString,
+      AuditUserId = await GetAuditUserIdAsync(auditEntryItem.ByUser.userId, auditEntryItem.ByUser.userName),
       DateTime = DateTime.UtcNow,
-      EntityState = auditEntry.EntityState,
+      EntityState = auditEntryItem.EntityState,
       AuditValues = new ObservableCollectionListSource<AuditValueEntity>()
     };
 
     foreach (var value in valuesTable)
     {
-      auditEntity.AuditValues.Add(new AuditValueEntity
+      var valueEntity = new AuditValueEntity
       {
-        AuditColumnId = auditColumnIds[value.AuditColumnName],
-        OldValueString = value.OldValueString,
-        NewValueString = value.NewValueString,
-        OldValueInt = value.OldValueInt,
-        NewValueInt = value.NewValueInt,
-        OldValueLong = value.OldValueLong,
-        NewValueLong = value.NewValueLong,
-        OldValueBool = value.OldValueBool,
-        NewValueBool = value.NewValueBool,
-        OldValueGuid = value.OldValueGuid,
-        NewValueGuid = value.NewValueGuid
-      });
+        AuditColumnId = auditColumnIds[value.AuditColumnName]
+      };
+      valueEntity.CopyPropertiesFrom(value);
+      auditEntity.AuditValues.Add(valueEntity);
     }
 
     await Audits.AddAsync(auditEntity);
     await SaveChangesAsync();
   }
-
-  public JMCacheKey AuditColumnCacheKey(int tableId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditColumnEntity)}-{tableId}");
-  public JMCacheKey AuditUserCacheKey(string userId) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditUserEntity)}-{userId}");
-  public JMCacheKey AuditTableCacheKey(string tableName, string? schema) => JMCacheKey.Create(JMCacheServerCategory.DbTable, $"{nameof(AuditTableEntity)}-{tableName}-{schema ?? string.Empty}");
 
   public async Task<int> GetAuditUserIdAsync(string userId, string userName)
   {
@@ -277,135 +270,5 @@ public abstract class AuditStorageEfContext(DbContextOptions options, IMediator 
         OldValueGuid = a.OldValueGuid,
         NewValueGuid = a.NewValueGuid
       });
-  }
-
-  private class AuditValue
-  {
-    private readonly ILogger<DbContextBase> _logger;
-    public string AuditColumnName { get; }
-    public string? OldValueString { get; }
-    public string? NewValueString { get; }
-    public int? OldValueInt { get; }
-    public int? NewValueInt { get; }
-    public long? OldValueLong { get; }
-    public long? NewValueLong { get; }
-    public bool? OldValueBool { get; }
-    public bool? NewValueBool { get; }
-
-    public Guid? OldValueGuid { get; set; }
-    public Guid? NewValueGuid { get; set; }
-
-    private AuditValue(ILogger<DbContextBase> logger, string columnName, object? oldValue, object? newValue)
-    {
-      _logger = logger;
-
-      AuditColumnName = columnName;
-      if (oldValue != null)
-      {
-        switch (oldValue)
-        {
-          case byte b:
-            OldValueInt = b;
-            break;
-          case short s:
-            OldValueInt = s;
-            break;
-          case int i:
-            OldValueInt = i;
-            break;
-          case long l:
-            OldValueLong = l;
-            break;
-          case bool bl:
-            OldValueBool = bl;
-            break;
-          case Guid g:
-            OldValueGuid = g;
-            break;
-          case DateTime dt:
-            OldValueLong = dt.Ticks;
-            break;
-          case TimeSpan span:
-            OldValueLong = span.Ticks;
-            break;
-          case string st:
-            OldValueString = st;
-            break;
-          default:
-            OldValueString = ToValueString(oldValue);
-            break;
-        }
-      }
-
-      if (newValue == null)
-        return;
-
-      switch (newValue)
-      {
-        case byte b:
-          NewValueInt = b;
-          break;
-        case short s:
-          NewValueInt = s;
-          break;
-        case int i:
-          NewValueInt = i;
-          break;
-        case long l:
-          NewValueLong = l;
-          break;
-        case bool bl:
-          NewValueBool = bl;
-          break;
-        case Guid g:
-          NewValueGuid = g;
-          break;
-        case DateTime dt:
-          NewValueLong = dt.Ticks;
-          break;
-        case TimeSpan span:
-          NewValueLong = span.Ticks;
-          break;
-        case string st:
-          NewValueString = st;
-          break;
-        default:
-          NewValueString = ToValueString(newValue);
-          break;
-      }
-    }
-
-    public static AuditValue? Value(ILogger<DbContextBase> logger, string columnName, object? oldValue, object? newValue)
-    {
-      var value = new AuditValue(logger, columnName, oldValue, newValue);
-      if (value.OldValueInt == value.NewValueInt &&
-          value.OldValueLong == value.NewValueLong &&
-          value.OldValueBool == value.NewValueBool &&
-          value.OldValueString == value.NewValueString &&
-          value.OldValueGuid == value.NewValueGuid)
-        return null;
-
-      return value;
-    }
-
-    private string ToValueString(object value)
-    {
-      var valueString = Newtonsoft.Json.JsonConvert.SerializeObject(value);
-
-      switch (value)
-      {
-        case decimal:
-        case byte[]:
-          break;
-        default:
-          throw new Exception($"Unknown type for audit. Type: {value.GetType()}; Value:{valueString}");
-      }
-
-      if (valueString.Length > MaxStringSize)
-        // This message is used in unit test.
-        _logger.LogError("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}", MaxStringSize, valueString);
-
-      return valueString;
-    }
   }
 }

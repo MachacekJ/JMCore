@@ -2,7 +2,7 @@
 using System.Text.Json;
 using FluentAssertions;
 using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.EF;
+using JMCore.Server.Storages.Modules.AuditModule.Helper;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +22,7 @@ public class AuditValuesT : AuditAttributeBaseT
   public async Task AllTypes()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => await AuditValuesTHelper.AllTypes(AuditEfStorageEfContext, TestStorageEfContext, LogInMemorySink, (name) => name));
+    await RunTestAsync(method, async () => await AuditValuesTHelper.AllTypes(AuditStorageModule, TestStorageModule, LogInMemorySink, (name) => name));
   }
 }
 
@@ -48,7 +48,7 @@ public static class AuditValuesTHelper
       SmallInt2 = short.MaxValue,
       TinyInt2 = byte.MaxValue,
       Guid2 = Guid.NewGuid(),
-      VarBinary2 = new byte[AuditStorageEfContext.MaxStringSize],
+      VarBinary2 = new byte[AuditValueConverterHelper.MaxStringSize],
       VarChar2 = "říkám já řřČŘÉÍÁ"
     };
     await testStorageEfContext.AddAsync(item);

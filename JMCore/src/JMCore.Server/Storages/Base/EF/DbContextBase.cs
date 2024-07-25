@@ -64,7 +64,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
     {
       return SaveChangesAsync(CancellationToken.None).Result;
     }
-
+    
     var entityAudits = _auditService.OnBeforeSaveChangesAsync(ChangeTracker).Result;
     var result = base.SaveChanges(acceptAllChangesOnSuccess);
     _auditService.OnAfterSaveChangesAsync(entityAudits).Wait();
@@ -247,7 +247,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
     if (_auditService == null)
       return false;
 
-    // return true;
+    // Check if db structure is already created.
     var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));
 
     return !string.IsNullOrEmpty(isAuditTable);

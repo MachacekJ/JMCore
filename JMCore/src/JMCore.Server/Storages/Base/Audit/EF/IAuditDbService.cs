@@ -5,7 +5,7 @@ namespace JMCore.Server.Storages.Base.Audit.EF;
 
 public interface IAuditDbService
 {
-    public Task<IEnumerable<AuditEntry>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker);
-    Task OnAfterSaveChangesAsync(IEnumerable<AuditEntry> entityAudits);
+    public Task<IEnumerable<AuditEntryItem>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker);
+    Task OnAfterSaveChangesAsync(IEnumerable<AuditEntryItem> entityAudits);
 }
 

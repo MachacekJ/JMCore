@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using JMCore.CQRS.JMCache.CacheRemove;
+using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
 using Serilog.Sinks.InMemory.Assertions;
 using Xunit;
@@ -9,6 +10,7 @@ namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
 /// <summary>
 /// Check if cache for audit module works - table name etc.
 /// Test is depending on log items. It can be tricky.
+/// var serilog = new LoggerConfiguration().MinimumLevel.Debug()
 /// </summary>
 public class AuditCacheT : AuditAttributeBaseT
 {
@@ -31,13 +33,14 @@ public class AuditCacheT : AuditAttributeBaseT
             };
             (UserProvider as TestAuditUserProvider)!.SetContext(TestAuditUserTypeEnum.Admin);
             var userId = UserProvider.GetUser().userId;
-            var auditUserCacheKey = AuditEfStorageEfContext.AuditUserCacheKey(userId);
+            var auditUserCacheKey = AuditSqlStorageImpl.AuditUserCacheKey(userId);
             var auditUserCacheKeyString = auditUserCacheKey.ToString();
 
             // Act 1
             LogInMemorySink.Dispose();
-            await TestStorageEfContext.TestAttributeAudits.AddAsync(item);
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.AddAsync(item);
+            //await TestStorageEfContext.TestAttributeAudits.AddAsync(item);
+            //await TestStorageEfContext.SaveChangesAsync();
 
             // Assert 1
             LogInMemorySink
@@ -58,7 +61,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameNew;
 
             // Act 2
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 2
             LogInMemorySink
@@ -87,7 +90,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameOld;
 
             // Act 3
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 3
             LogInMemorySink
@@ -119,7 +122,7 @@ public class AuditCacheT : AuditAttributeBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var auditTableCacheKey = AuditEfStorageEfContext.AuditTableCacheKey(tableName, null);
+            var auditTableCacheKey = AuditSqlStorageImpl.AuditTableCacheKey(tableName, null);
             var auditTableCacheKeyString = auditTableCacheKey.ToString();
             var testDateTime = DateTime.Now;
             const string testNameOld = "AuditTest";
@@ -135,8 +138,7 @@ public class AuditCacheT : AuditAttributeBaseT
 
             // Act 1
             LogInMemorySink.Dispose();
-            await TestStorageEfContext.TestAttributeAudits.AddAsync(item);
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.AddAsync(item);
 
             // Assert 1
             LogInMemorySink
@@ -157,7 +159,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameNew;
 
             // Act 2
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 2
             LogInMemorySink
@@ -184,7 +186,7 @@ public class AuditCacheT : AuditAttributeBaseT
             item.Name = testNameOld;
 
             // Act 3
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 3
             LogInMemorySink
@@ -215,8 +217,9 @@ public class AuditCacheT : AuditAttributeBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>
         {
-            var auditTableId = await AuditEfStorageEfContext.GetAuditTableIdAsync(nameof(TestAttributeAuditEntity), null);
-            var auditColumnCacheKey = AuditEfStorageEfContext.AuditColumnCacheKey(auditTableId);
+            var auditSqlStorageImpl = AuditStorageModule as AuditSqlStorageImpl ?? throw new ArgumentNullException($"{nameof(AuditStorageModule)} doesn't implement {nameof(AuditSqlStorageImpl)}'");
+            var auditTableId = await auditSqlStorageImpl.GetAuditTableIdAsync(nameof(TestAttributeAuditEntity), null);
+            var auditColumnCacheKey = AuditSqlStorageImpl.AuditColumnCacheKey(auditTableId);
             var auditColumnCacheKeyString = auditColumnCacheKey.ToString();
 
             var testDateTime = DateTime.Now;
@@ -234,9 +237,8 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 1
-            await TestStorageEfContext.TestAttributeAudits.AddAsync(item);
-            await TestStorageEfContext.SaveChangesAsync();
-
+            await TestStorageModule.AddAsync(item);
+      
             // Assert 1
             LogInMemorySink
                 .Should()
@@ -268,7 +270,7 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 2
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 2
             LogInMemorySink
@@ -296,7 +298,7 @@ public class AuditCacheT : AuditAttributeBaseT
             LogInMemorySink.Dispose();
 
             // Act 3 -!!! Only column Name was changed.
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 3
             LogInMemorySink
@@ -332,18 +334,18 @@ public class AuditCacheT : AuditAttributeBaseT
             // ------- Test 4 ------------
             // Arrange 4
             // Assert delete audit column
-            var columnEntities = AuditEfStorageEfContext.AuditColumns.Where(a => a.ColumnName == "Name").ToList();
-            var auditEntities = AuditEfStorageEfContext.Audits.Where(a => a.AuditTableId == columnEntities.First().AuditTableId).ToList();
-            AuditEfStorageEfContext.Audits.RemoveRange(auditEntities);
-            AuditEfStorageEfContext.AuditColumns.RemoveRange(columnEntities);
-            await AuditEfStorageEfContext.SaveChangesAsync();
+            var columnEntities = auditSqlStorageImpl.AuditColumns.Where(a => a.ColumnName == "Name").ToList();
+            var auditEntities = auditSqlStorageImpl.Audits.Where(a => a.AuditTableId == columnEntities.First().AuditTableId).ToList();
+            auditSqlStorageImpl.Audits.RemoveRange(auditEntities);
+            auditSqlStorageImpl.AuditColumns.RemoveRange(columnEntities);
+            await auditSqlStorageImpl.SaveChangesAsync();
 
             await Mediator.Send(new CacheRemoveCommand(auditColumnCacheKey));
             item.Name = testNameNew;
             LogInMemorySink.Dispose();
 
             // Act 4
-            await TestStorageEfContext.SaveChangesAsync();
+            await TestStorageModule.UpdateAsync(item);
 
             // Assert 4
             LogInMemorySink

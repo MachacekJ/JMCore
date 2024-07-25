@@ -12,6 +12,7 @@ public class AuditValueEntity
 {
   [Key]
   public long Id { get; set; }
+
   public long AuditId { get; set; }
   public int AuditColumnId { get; set; }
   public string? OldValueString { get; set; }
@@ -22,7 +23,7 @@ public class AuditValueEntity
   public long? NewValueLong { get; set; }
   public bool? OldValueBool { get; set; }
   public bool? NewValueBool { get; set; }
- public Guid? OldValueGuid { get; set; }
+  public Guid? OldValueGuid { get; set; }
   public Guid? NewValueGuid { get; set; }
 
   [ForeignKey("AuditId")]

@@ -14,7 +14,7 @@ public class AuditAttributeT : AuditStructureBaseT
     {
       var auDb = GetAuditStorageModule(storageType);
       var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.NoAudit(auDb, testDb, (name) => GetAuditTableName(storageType, name));
+      await AuditAttributeTHelper.NoAuditAsync(auDb, testDb, (name) => GetAuditTableName(storageType, name));
     });
   }
   [Fact]
@@ -25,7 +25,7 @@ public class AuditAttributeT : AuditStructureBaseT
     {
       var auDb = GetAuditStorageModule(storageType);
       var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.AddItem(auDb, testDb, (name) => GetAuditTableName(storageType, name));
+      await AuditAttributeTHelper.AddItemAsync(auDb, testDb, (name) => GetAuditTableName(storageType, name));
     });
   }
 

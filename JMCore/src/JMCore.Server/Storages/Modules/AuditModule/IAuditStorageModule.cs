@@ -5,7 +5,7 @@ namespace JMCore.Server.Storages.Modules.AuditModule;
 
 public interface IAuditStorageModule
 {
-  Task SaveAuditAsync(AuditEntry auditEntry);
+  Task SaveAuditAsync(AuditEntryItem auditEntryItem);
   
   Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null);
   Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null);

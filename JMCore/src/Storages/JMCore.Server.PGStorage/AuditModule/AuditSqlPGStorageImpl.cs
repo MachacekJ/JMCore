@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules.AuditModule.EF;
+using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JMCore.Server.PGStorage.AuditModule;
 
-public class AuditPGEfStorageImpl(DbContextOptions<AuditPGEfStorageImpl> options, IMediator mediator, ILogger<AuditStorageEfContext> logger) : AuditStorageEfContext(options, mediator, logger)
+public class AuditSqlPGStorageImpl(DbContextOptions<AuditSqlPGStorageImpl> options, IMediator mediator, ILogger<AuditSqlStorageImpl> logger) : AuditSqlStorageImpl(options, mediator, logger)
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);

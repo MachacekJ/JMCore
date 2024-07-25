@@ -16,8 +16,8 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
 
   public override void RegisterServices(IServiceCollection services)
   {
-    services.AddDbContext<BasicMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
-    services.AddSingleton<IBasicStorageModule, BasicMemoryEfStorageImpl>();
+    services.AddDbContext<BasicSqlMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
+    services.AddSingleton<IBasicStorageModule, BasicSqlMemoryEfStorageImpl>();
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -25,8 +25,8 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          services.AddDbContext<AuditMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
-          services.AddSingleton<IAuditStorageModule, AuditMemoryEfStorageImpl>();
+          services.AddDbContext<AuditSqlMemoryStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(IAuditStorageModule) + Guid.NewGuid()));
+          services.AddSingleton<IAuditStorageModule, AuditSqlMemoryStorageImpl>();
           break;
         case nameof(ILocalizationStorageModule):
           services.AddDbContext<LocalizationMemoryEfStorageImpl>(opt => opt.UseInMemoryDatabase(_connectionString + nameof(ILocalizationStorageModule) + Guid.NewGuid()));
@@ -44,7 +44,7 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicMemoryEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicSqlMemoryEfStorageImpl>(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -52,7 +52,7 @@ public class MemoryStorageConfiguration(IEnumerable<string> requiredStorageModul
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditMemoryEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditSqlMemoryStorageImpl>(serviceProvider);
           break;
         case nameof(ILocalizationStorageModule):
           await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationMemoryEfStorageImpl>(serviceProvider);

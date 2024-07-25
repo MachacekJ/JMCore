@@ -14,8 +14,8 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
 
   public override void RegisterServices(IServiceCollection services)
   {
-    services.AddDbContext<BasicPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
-    services.AddSingleton<IBasicStorageModule, BasicPGEfStorageImpl>();
+    services.AddDbContext<BasicSqlPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
+    services.AddSingleton<IBasicStorageModule, BasicSqlPGEfStorageImpl>();
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -23,8 +23,8 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          services.AddDbContext<AuditPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
-          services.AddSingleton<IAuditStorageModule, AuditPGEfStorageImpl>();
+          services.AddDbContext<AuditSqlPGStorageImpl>(opt => opt.UseNpgsql(connectionString));
+          services.AddSingleton<IAuditStorageModule, AuditSqlPGStorageImpl>();
           break;
         // case nameof(ILocalizationStorageModule):
         //   services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
@@ -36,7 +36,7 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicPGEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicSqlPGEfStorageImpl>(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -44,7 +44,7 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditPGEfStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditSqlPGStorageImpl>(serviceProvider);
           break;
         // case nameof(ILocalizationStorageModule):
         //   await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationEfStorageImpl>(serviceProvider);

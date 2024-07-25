@@ -1,7 +1,7 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules.BasicModule.EF;
+using JMCore.Server.Storages.Modules.BasicModule.BaseImpl;
 using JMCore.Server.Storages.Modules.BasicModule.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,16 +10,16 @@ using ScriptRegistrations = JMCore.Server.PGStorage.BasicModule.Scripts.ScriptRe
 
 namespace JMCore.Server.PGStorage.BasicModule;
 
-public class BasicPGEfStorageImpl : BasicStorageEfContext
+public class BasicSqlPGEfStorageImpl : BasicSqlStorageImpl
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
-  public BasicPGEfStorageImpl(DbContextOptions<BasicPGEfStorageImpl> options, IMediator mediator, ILogger<BasicPGEfStorageImpl> logger) : base(options, mediator, logger)
+  public BasicSqlPGEfStorageImpl(DbContextOptions<BasicSqlPGEfStorageImpl> options, IMediator mediator, ILogger<BasicSqlPGEfStorageImpl> logger) : base(options, mediator, logger)
   {
   }
 
-  public BasicPGEfStorageImpl(DbContextOptions<BasicPGEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicPGEfStorageImpl> logger) : base(options, mediator, auditService, logger)
+  public BasicSqlPGEfStorageImpl(DbContextOptions<BasicSqlPGEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicSqlPGEfStorageImpl> logger) : base(options, mediator, auditService, logger)
   {
   }
 

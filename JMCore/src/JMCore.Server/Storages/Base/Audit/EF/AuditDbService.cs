@@ -3,28 +3,21 @@ using JMCore.Server.Storages.Base.Audit.Models;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace JMCore.Server.Storages.Base.Audit.EF;
 
-public class AuditDbService : IAuditDbService
+public class AuditDbService(IAuditStorageModule auditModuleEfContext, IAuditConfiguration auditConfiguration, IAuditUserProvider? auditUserProvider, ILogger<AuditDbService> logger)
+    : IAuditDbService
 {
-    private readonly IAuditStorageModule _auditModuleEfContext;
-    private readonly IAuditUserProvider _auditUserProvider;
-    private readonly IAuditConfiguration _auditConfiguration;
+    private readonly IAuditUserProvider _auditUserProvider = auditUserProvider ?? new AuditEmptyUserProvider();
 
-    public AuditDbService(IAuditStorageModule auditModuleEfContext, IAuditConfiguration auditConfiguration, IAuditUserProvider? auditUserProvider)
-    {
-        _auditModuleEfContext = auditModuleEfContext;
-        _auditUserProvider = auditUserProvider ?? new AuditEmptyUserProvider();
-        _auditConfiguration = auditConfiguration;
-    }
-
-    public async Task<IEnumerable<AuditEntry>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker)
+    public async Task<IEnumerable<AuditEntryItem>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker)
     {
         changeTracker.DetectChanges();
         var auditEntries = (from entry in changeTracker.Entries()
-            where entry.ShouldBeAudited(_auditConfiguration.AuditEntities)
-            select new AuditEntry(entry, _auditUserProvider, _auditConfiguration)).ToList();
+            where entry.ShouldBeAudited(auditConfiguration.AuditEntities)
+            select new AuditEntryItem(entry, _auditUserProvider, auditConfiguration, logger)).ToList();
 
         await BeginTrackingAuditEntriesAsync(auditEntries.Where(e => !e.HasTemporaryProperties));
 
@@ -32,22 +25,17 @@ public class AuditDbService : IAuditDbService
         return auditEntries.Where(e => e.HasTemporaryProperties);
     }
 
-    public async Task OnAfterSaveChangesAsync(IEnumerable<AuditEntry> entityAudits)
+    public async Task OnAfterSaveChangesAsync(IEnumerable<AuditEntryItem> entityAudits)
     {
-        var auditEntries = entityAudits as AuditEntry[] ?? entityAudits.ToArray();
+        var auditEntries = entityAudits as AuditEntryItem[] ?? entityAudits.ToArray();
 
         if (!auditEntries.Any())
             return;
 
         await BeginTrackingAuditEntriesAsync(auditEntries);
-        // foreach (var auditEntry in auditEntries)
-        // {
-        //     await _auditModuleEfContext.SaveAuditAsync(auditEntry);
-        // }
-
     }
 
-    private async Task BeginTrackingAuditEntriesAsync(IEnumerable<AuditEntry> auditEntries)
+    private async Task BeginTrackingAuditEntriesAsync(IEnumerable<AuditEntryItem> auditEntries)
     {
         foreach (var auditEntry in auditEntries)
         {
@@ -56,5 +44,5 @@ public class AuditDbService : IAuditDbService
         }
     }
 
-    private async Task SaveAuditAsync(AuditEntry auditEntry) => await _auditModuleEfContext.SaveAuditAsync(auditEntry);
+    private async Task SaveAuditAsync(AuditEntryItem auditEntryItem) => await auditModuleEfContext.SaveAuditAsync(auditEntryItem);
 }

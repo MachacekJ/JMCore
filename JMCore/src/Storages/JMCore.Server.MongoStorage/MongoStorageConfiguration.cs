@@ -15,8 +15,8 @@ public class MongoStorageConfiguration(string connectionString, string dbName, I
 
   public override void RegisterServices(IServiceCollection services)
   {
-    services.AddDbContext<BasicMongoEfStorageImpl>(opt => opt.UseMongoDB(connectionString, dbName));
-    services.AddSingleton<IBasicStorageModule, BasicMongoEfStorageImpl>();
+    services.AddDbContext<BasicSqlMongoEfStorageImpl>(opt => opt.UseMongoDB(connectionString, dbName));
+    services.AddSingleton<IBasicStorageModule, BasicSqlMongoEfStorageImpl>();
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)
@@ -37,7 +37,7 @@ public class MongoStorageConfiguration(string connectionString, string dbName, I
 
   public override async Task ConfigureServices(IServiceProvider serviceProvider)
   {
-    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicMongoEfStorageImpl>(serviceProvider);
+    await ConfigureEfSqlServiceLocal<IBasicStorageModule, BasicSqlMongoEfStorageImpl>(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
       switch (requiredStorageModule)

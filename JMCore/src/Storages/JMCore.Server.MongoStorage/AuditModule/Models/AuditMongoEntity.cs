@@ -1,26 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace JMCore.Server.MongoStorage.AuditModule.Models;
 
 public class AuditMongoEntity
 {
+  [Key]
   public string Id { get; set; } = Guid.NewGuid().ToString();
-  public string ObjectId { get; set; }
-  public List<AuditMongoValues>? OldValues { get; set; }
-  public List<AuditMongoValues>? NewValues { get; set; }
-  public DateTime DateTime { get; set; }
+
+  [BsonElement("oid")]
+  public string ObjectId { get; set; } = null!;
+  
+  [BsonElement("o")]
+  public List<AuditMongoValueEntity>? OldValues { get; set; }
+
+  [BsonElement("n")]
+  public List<AuditMongoValueEntity>? NewValues { get; set; }
+  
+  [BsonElement("t")]
+  public DateTime Time { get; set; }
+  
+  [BsonElement("s")]
   public EntityState EntityState { get; set; }
-  public AuditMongoUser User { get; set; }
-}
-
-public class AuditMongoValues
-{
-  public string Column { get; set; }
-  public string Value { get; set; }
-}
-
-public class AuditMongoUser
-{
-  public string  UserId { get; set; }
-  public string UserName { get; set; }
+  
+  [BsonElement("u")]
+  public AuditMongoUserEntity? User { get; set; }
 }

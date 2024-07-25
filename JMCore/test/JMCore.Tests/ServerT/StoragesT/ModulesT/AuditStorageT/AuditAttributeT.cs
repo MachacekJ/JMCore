@@ -2,6 +2,7 @@
 using FluentAssertions;
 using JMCore.Server.Storages.Base.Audit.Configuration;
 using JMCore.Server.Storages.Modules.AuditModule;
+using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
 using JMCore.Server.Storages.Modules.AuditModule.Models;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
@@ -20,21 +21,21 @@ public class AuditAttributeT : AuditAttributeBaseT
   public async Task NoAudit()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditAttributeTHelper.NoAudit(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditAttributeTHelper.NoAuditAsync(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 
   [Fact]
   public async Task AddItem()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditAttributeTHelper.AddItem(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditAttributeTHelper.AddItemAsync(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 
   [Fact]
   public async Task UpdateItem()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditAttributeTHelper.UpdateItem(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditAttributeTHelper.UpdateItem(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 
 
@@ -44,6 +45,9 @@ public class AuditAttributeT : AuditAttributeBaseT
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
+      var auditSqlStorageImpl = AuditStorageModule as AuditSqlStorageImpl ?? throw new ArgumentNullException($"{nameof(AuditStorageModule)} doesn't implement {nameof(AuditSqlStorageImpl)}'");
+      var testStorageEfContext = TestStorageModule as TestStorageEfContext ?? throw new ArgumentNullException($"{nameof(TestStorageModule)} doesn't implement {nameof(TestStorageEfContext)}'");
+      
       var testDateTimeOld = DateTime.Now;
       var testNameOld = "AuditTest";
 
@@ -58,25 +62,25 @@ public class AuditAttributeT : AuditAttributeBaseT
         NotAuditableColumn = "Audit"
       };
 
-      TestStorageEfContext.TestAttributeAudits.Add(item);
+      testStorageEfContext.TestAttributeAudits.Add(item);
       // ReSharper disable once MethodHasAsyncOverload
-      TestStorageEfContext.SaveChanges();
+      testStorageEfContext.SaveChanges();
 
       item.Name = testNameNew;
       item.Created = testDateTimeNew;
       // ReSharper disable once MethodHasAsyncOverload
-      TestStorageEfContext.SaveChanges();
+      testStorageEfContext.SaveChanges();
 
       // Assert.
-      Assert.True(TestStorageEfContext.TestAttributeAudits.Count() == 1);
+      Assert.True(testStorageEfContext.TestAttributeAudits.Count() == 1);
 
-      var isAudit = await AuditEfStorageEfContext.Audits
+      var isAudit = await auditSqlStorageImpl.Audits
         .Include(a => a.AuditTable)
         .CountAsync(ae => ae.AuditTable.TableName == nameof(TestAttributeAuditEntity));
 
       Assert.Equal(2, isAudit);
 
-      var auditValues = await AuditEfStorageEfContext.AuditItemsAsync(nameof(TestAttributeAuditEntity), item.Id);
+      var auditValues = await AuditStorageModule.AuditItemsAsync(nameof(TestAttributeAuditEntity), item.Id);
       var auditVwAuditEntities = auditValues as AuditVwAuditEntity[] ?? auditValues.ToArray();
       Assert.Equal(5, auditVwAuditEntities.Length);
       var aid = auditVwAuditEntities.FirstOrDefault(a => a is { ColumnName: "Id", EntityState: EntityState.Added });
@@ -112,13 +116,13 @@ public class AuditAttributeT : AuditAttributeBaseT
   public async Task DeleteItem()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditAttributeTHelper.DeleteItem(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditAttributeTHelper.DeleteItem(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 }
 
 public static class AuditAttributeTHelper
 {
-  public static async Task NoAudit(IAuditStorageModule auditStorageModule, ITestStorageModule testStorageEfContext, Func<string, string> getTableName)
+  public static async Task NoAuditAsync(IAuditStorageModule auditStorageModule, ITestStorageModule testStorageEfContext, Func<string, string> getTableName)
   {
     var testDateTime = DateTime.UtcNow;
     const string testName = "AuditTest";
@@ -136,7 +140,7 @@ public static class AuditAttributeTHelper
     isAudit.Count().Should().Be(0);
   }
 
-  public static async Task AddItem(IAuditStorageModule auditStorageModule, ITestStorageModule testStorageEfContext, Func<string, string> getTableName)
+  public static async Task AddItemAsync(IAuditStorageModule auditStorageModule, ITestStorageModule testStorageEfContext, Func<string, string> getTableName)
   {
     var testDateTime = DateTime.UtcNow;
     var testName = "AuditTest";

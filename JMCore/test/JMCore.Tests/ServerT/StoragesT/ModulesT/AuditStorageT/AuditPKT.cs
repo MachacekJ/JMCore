@@ -18,14 +18,14 @@ public class AuditPKT : AuditAttributeBaseT
   public async Task GuidPK()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditPKTHelper.GuidPK(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditPKTHelper.GuidPK(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 
   [Fact]
   public async Task StringPK()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditPKTHelper.StringPK(AuditEfStorageEfContext, TestStorageEfContext, (name) => name); });
+    await RunTestAsync(method, async () => { await AuditPKTHelper.StringPK(AuditStorageModule, TestStorageModule, (name) => name); });
   }
 }
 

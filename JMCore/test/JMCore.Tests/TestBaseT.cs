@@ -12,6 +12,7 @@ using JMCore.Services.JMCache;
 using MediatR;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
+using Serilog.Events;
 using Serilog.Sinks.InMemory;
 
 namespace JMCore.Tests;
@@ -106,7 +107,7 @@ public abstract class TestBaseT
             .MinimumLevel.Debug()
             .WriteTo.File(Path.Combine(logDir, TestData.TestName) + ".txt", retainedFileTimeLimit: TimeSpan.FromDays(1))
             .WriteTo.Sink(LogInMemorySink)
-            //.WriteTo.InMemory(restrictedToMinimumLevel: LogEventLevel.Debug)
+            .WriteTo.InMemory(restrictedToMinimumLevel: LogEventLevel.Debug)
             .CreateLogger();
 
         services.AddLogging(logBuilder => { logBuilder.AddSerilog(logger: serilog, dispose: true); });

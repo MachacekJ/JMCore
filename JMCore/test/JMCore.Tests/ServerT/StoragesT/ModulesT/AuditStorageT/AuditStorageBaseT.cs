@@ -1,7 +1,7 @@
 ﻿using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Storages.Base.Audit.UserProvider;
 using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.EF;
+using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
 using JMCore.Server.Storages.Modules.BasicModule;
 using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
@@ -11,8 +11,8 @@ namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
 
 public class AuditStorageBaseT : DbBaseT
 {
-  protected AuditStorageEfContext AuditEfStorageEfContext = null!;
-  protected TestStorageEfContext TestStorageEfContext = null!;
+  protected IAuditStorageModule AuditStorageModule = null!;
+  protected ITestStorageModule TestStorageModule = null!;
   protected IAuditUserProvider UserProvider = null!;
 
   protected override void RegisterServices(ServiceCollection sc)
@@ -25,10 +25,10 @@ public class AuditStorageBaseT : DbBaseT
   {
     await base.GetServicesAsync(sp);
     var auditStorageModule = StorageResolver.FirstStorageModuleImplementation<IAuditStorageModule>(StorageTypeEnum.Memory);
-    AuditEfStorageEfContext = (auditStorageModule as AuditStorageEfContext) ?? throw new ArgumentException();
+    AuditStorageModule = (auditStorageModule as AuditSqlStorageImpl) ?? throw new ArgumentException();
 
     var testStorageModule = StorageResolver.FirstStorageModuleImplementation<ITestStorageModule>(StorageTypeEnum.Memory);
-    TestStorageEfContext = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
+    TestStorageModule = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
 
     UserProvider = sp.GetService<IAuditUserProvider>() ?? throw new ArgumentException($"{nameof(IAuditUserProvider)} is null.");
   }

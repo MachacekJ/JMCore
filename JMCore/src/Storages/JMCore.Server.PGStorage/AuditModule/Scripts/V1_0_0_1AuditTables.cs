@@ -32,7 +32,7 @@ CREATE TABLE audit_column
     audit_column_id INT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
     audit_table_id INT NOT NULL
-        CONSTRAINT fk_audit_table
+        CONSTRAINT fk_audit_column__audit_table
             REFERENCES audit_table(audit_table_id),
     column_name VARCHAR(255) NOT NULL
 );
@@ -42,12 +42,12 @@ CREATE TABLE audit
     audit_id BIGINT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
     audit_table_id INT NOT NULL
-        CONSTRAINT fk_audit_table
+        CONSTRAINT fk_audit__audit_table
             REFERENCES audit_table(audit_table_id),
     pk_value BIGINT,
     pk_value_string VARCHAR(450),
     audit_user_id INT
-        CONSTRAINT fk_audit_user
+        CONSTRAINT fk_audit__audit_user
             REFERENCES audit_user(audit_user_id),
     date_time timestamp NOT NULL,
     entity_state smallint NOT NULL
@@ -58,10 +58,10 @@ CREATE TABLE audit_value
     audit_value_id BIGINT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
     audit_id INT NOT NULL
-        CONSTRAINT fk_audit
+        CONSTRAINT fk_audit_value__audit
             REFERENCES audit(audit_id),
     audit_column_id INT
-        CONSTRAINT fk_audit_column
+        CONSTRAINT fk_audit_value__audit_column
             REFERENCES audit_column(audit_column_id),
     old_value_string TEXT,
     new_value_string TEXT,

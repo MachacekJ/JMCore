@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMCore.Server.MSSQLStorage"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMCore.Server.MongoStorage", "JMCore\src\Storages\JMCore.Server.MongoStorage\JMCore.Server.MongoStorage.csproj", "{3A0A1BD0-7B7A-436F-815E-E24237A5C180}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMCore.TestsStress", "JMCore\test\JMCore.TestsStress\JMCore.TestsStress.csproj", "{1421E39D-8188-41C2-9D73-E8B44E2DB676}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{3A0A1BD0-7B7A-436F-815E-E24237A5C180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A0A1BD0-7B7A-436F-815E-E24237A5C180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A0A1BD0-7B7A-436F-815E-E24237A5C180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{2540D791-A547-4585-B528-993CF17F8A5C} = {D8660ADF-D5AE-4B4A-8DAF-7CA1BBCA563B}
 		{9C3BF224-BBB1-48EE-A521-4AB6FB7B6096} = {D8660ADF-D5AE-4B4A-8DAF-7CA1BBCA563B}
 		{3A0A1BD0-7B7A-436F-815E-E24237A5C180} = {D8660ADF-D5AE-4B4A-8DAF-7CA1BBCA563B}
+		{1421E39D-8188-41C2-9D73-E8B44E2DB676} = {81327F10-8B74-4F59-8F86-304EAB3995B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD692FAC-E043-44E5-B382-E939BE935E2E}

@@ -3,6 +3,7 @@ using JMCore.Server.Storages.Base.Audit.EF;
 using JMCore.Server.Storages.Base.EF;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
 using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,9 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.
 public class TestPGEfStorageImpl(DbContextOptions<TestPGEfStorageImpl> options, IMediator mediator, ILogger<TestPGEfStorageImpl> logger, IAuditDbService auditService)
   : TestStorageEfContext(options, mediator, logger, auditService)
 {
+  public DbSet<TestRootCategory> TestParents { get; set; }
+  public DbSet<TestCategory> TestChildren { get; set; }
+  
   protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
 

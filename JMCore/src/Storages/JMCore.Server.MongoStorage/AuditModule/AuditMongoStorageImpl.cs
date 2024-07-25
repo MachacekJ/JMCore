@@ -19,40 +19,48 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
 
   public DbSet<AuditMongoEntity> Audits { get; set; }
 
-  public async Task SaveAuditAsync(AuditEntry auditEntry)
+  public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
+    if (!auditEntryItem.OldValues.Any() && !auditEntryItem.NewValues.Any())
+      return;
+    
     var entityNameFullName = string.Empty;
-    if (!string.IsNullOrEmpty(auditEntry.SchemaName))
-      entityNameFullName = $"{auditEntry.SchemaName}.";
+    if (!string.IsNullOrEmpty(auditEntryItem.SchemaName))
+      entityNameFullName = $"{auditEntryItem.SchemaName}.";
 
-    entityNameFullName += $"{auditEntry.TableName}.";
+    entityNameFullName += $"{auditEntryItem.TableName}.";
 
-    if (auditEntry.PkValue != null)
-      entityNameFullName += $"{auditEntry.PkValue}.";
+    if (auditEntryItem.PkValue != null)
+      entityNameFullName += $"{auditEntryItem.PkValue}.";
 
-    if (auditEntry.PkValueString != null)
-      entityNameFullName += $"{auditEntry.PkValueString}.";
+    if (auditEntryItem.PkValueString != null)
+      entityNameFullName += $"{auditEntryItem.PkValueString}.";
 
     if (entityNameFullName.EndsWith("."))
       entityNameFullName = entityNameFullName.Substring(0, entityNameFullName.Length - 1);
-
+    
     var auditEntity = new AuditMongoEntity
     {
       ObjectId = entityNameFullName,
-      OldValues = auditEntry.EntityState != EntityState.Added
-        ? auditEntry.OldValues.Select(a => new AuditMongoValues() { Column = a.Key, Value = Newtonsoft.Json.JsonConvert.SerializeObject(a.Value) }).ToList()
-        : null,
-      NewValues =  auditEntry.EntityState != EntityState.Deleted 
-        ? auditEntry.NewValues.Select(a => new AuditMongoValues() { Column = a.Key, Value = Newtonsoft.Json.JsonConvert.SerializeObject(a.Value) }).ToList()
-        :null,
-      User = new AuditMongoUser
+      User = new AuditMongoUserEntity
       {
-        UserId = auditEntry.ByUser.userId,
-        UserName = auditEntry.ByUser.userName
+        Id = auditEntryItem.ByUser.userId,
+        Name = auditEntryItem.ByUser.userName
       },
-      EntityState = auditEntry.EntityState,
-      DateTime = DateTime.UtcNow
+      EntityState = auditEntryItem.EntityState,
+      Time = DateTime.UtcNow,
+      OldValues = auditEntryItem.OldValues.Select(e=>new AuditMongoValueEntity()
+      {
+        Property = e.Key,
+        Value = Newtonsoft.Json.JsonConvert.SerializeObject(e.Value)
+      }).ToList(),
+      NewValues = auditEntryItem.NewValues.Select(e=>new AuditMongoValueEntity()
+      {
+        Property = e.Key,
+        Value = Newtonsoft.Json.JsonConvert.SerializeObject(e.Value)
+      }).ToList(),
     };
+    
     await Audits.AddAsync(auditEntity);
     await SaveChangesAsync();
   }
@@ -79,6 +87,5 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
   {
     base.OnModelCreating(modelBuilder);
     modelBuilder.Entity<AuditMongoEntity>().ToCollection(CollectionNames.AuditCollectionName);
-    modelBuilder.Entity<AuditMongoEntity>().HasKey(p => p.Id);
   }
 }

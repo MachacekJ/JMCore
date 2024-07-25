@@ -13,7 +13,8 @@ public class ScriptRegistrations : DbScriptBase
                 new V1_0_1_1TestTable(),
                 new V1_0_1_2TestAuditTables(),
                 new V1_0_1_3TestAuditTypes(),
-                new V1_0_1_4TestPK()
+                new V1_0_1_4TestPK(),
+                new V1_0_1_5TestParentChild()
             };
             return all;
         }

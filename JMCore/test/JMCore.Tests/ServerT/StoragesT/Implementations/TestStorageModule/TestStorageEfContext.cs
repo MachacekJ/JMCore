@@ -51,7 +51,18 @@ public abstract class TestStorageEfContext(DbContextOptions options, IMediator m
     await SaveChangesAsync();
   }
 
+  public async Task AddAsync(TestManualAuditEntity item)
+  {
+    await TestManualAudits.AddAsync(item);
+    await SaveChangesAsync();
+  }
+  
   public async Task UpdateAsync(TestAttributeAuditEntity item)
+  {
+    await SaveChangesAsync();
+  }
+  
+  public async Task UpdateAsync(TestManualAuditEntity item)
   {
     await SaveChangesAsync();
   }
@@ -72,6 +83,12 @@ public abstract class TestStorageEfContext(DbContextOptions options, IMediator m
     await SaveChangesAsync();
   }
 
+  public async Task DeleteAsync(TestManualAuditEntity item)
+  {
+    TestManualAudits.Remove(item);
+    await SaveChangesAsync();
+  }
+  
   public async Task<IEnumerable<TestEntity>> AllTest()
   {
     return await Tests.ToArrayAsync();
@@ -80,6 +97,10 @@ public abstract class TestStorageEfContext(DbContextOptions options, IMediator m
   public async Task<IEnumerable<TestAttributeAuditEntity>> AllTestAttribute()
   {
     return await TestAttributeAudits.ToArrayAsync();
+  }
+  public async Task<IEnumerable<TestManualAuditEntity>> AllTestManual()
+  {
+    return await TestManualAudits.ToArrayAsync();
   }
 
   public async Task<IEnumerable<TestPKGuidEntity>> AllTestPKGuid()

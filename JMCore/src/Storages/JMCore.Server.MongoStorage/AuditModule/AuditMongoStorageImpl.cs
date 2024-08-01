@@ -1,9 +1,9 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
+﻿using JMCore.Server.Modules.AuditModule.Models;
+using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Server.Modules.AuditModule.Storage.Models;
 using JMCore.Server.MongoStorage.AuditModule.Models;
-using JMCore.Server.Storages.Base.Audit.Models;
-using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.Models;
+using JMCore.Server.Storages.EF;
+using JMCore.Server.Storages.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

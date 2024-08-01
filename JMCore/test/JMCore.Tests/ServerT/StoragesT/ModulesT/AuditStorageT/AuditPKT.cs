@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using FluentAssertions;
-using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.Models;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Server.Modules.AuditModule.Storage.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages;
 using Xunit;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;

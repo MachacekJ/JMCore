@@ -1,5 +1,5 @@
 using System.Reflection;
-using JMCore.Server.Configuration.Storage.Models;
+using JMCore.Server.Storages.Models;
 using Xunit;
 
 namespace JMCore.TestsStress;

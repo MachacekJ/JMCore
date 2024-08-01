@@ -1,5 +1,6 @@
-﻿using JMCore.Server.Configuration.Storage;
-using JMCore.Server.Services.JMCache;
+﻿using JMCore.Server.Services.JMCache;
+using JMCore.Server.Storages;
+using JMCore.Server.Storages.Configuration;
 using JMCore.Services.JMCache;
 using Microsoft.Extensions.DependencyInjection;
 

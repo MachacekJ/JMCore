@@ -1,4 +1,4 @@
-﻿using JMCore.Server.Storages.Base.Audit.UserProvider;
+﻿using JMCore.Server.Modules.AuditModule.UserProvider;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
 

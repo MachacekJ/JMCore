@@ -1,4 +1,5 @@
-﻿using JMCore.Server.Configuration.Storage;
+﻿using JMCore.Server.Storages;
+using JMCore.Server.Storages.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

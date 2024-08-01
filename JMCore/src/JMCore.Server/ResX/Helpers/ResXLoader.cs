@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Globalization;
 using JMCore.Localizer;
-using JMCore.Server.Storages.Modules.LocalizationModule.Models;
+using JMCore.Server.Modules.LocalizationModule.Storage.Models;
 
 namespace JMCore.Server.ResX.Helpers;
 

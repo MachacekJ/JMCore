@@ -13,7 +13,7 @@ namespace JMCore.TestsIntegrations.ServerT.ServicesT.SMST.MailJetSMSSenderT
             var method = MethodBase.GetCurrentMethod();
             await RunTestAsync(new TestData(method)
             {
-                TestEnvironmentType = TestEnvironmentTypeEnum.Dev,
+              //  TestEnvironmentType = TestEnvironmentTypeEnum.Dev,
             }, async () =>
             {
                 await SMSSender.SendSMSAsync("trenden", "+420777329682", "Integration Test");

@@ -19,7 +19,7 @@ namespace JMCore.Tests;
 
 public abstract class TestBaseT
 {
-    private readonly ServiceCollection _services = new();
+    private ServiceCollection _services = new();
     protected IConfigurationRoot Configuration { get; set; } = null!;
     protected IMediator Mediator = null!;
     protected TestData TestData { get; private set; } = null!;
@@ -104,8 +104,8 @@ public abstract class TestBaseT
 
         var logDir = Path.Combine(RootDir, "Logs");
         var serilog = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.File(Path.Combine(logDir, TestData.TestName) + ".txt", retainedFileTimeLimit: TimeSpan.FromDays(1))
+            .MinimumLevel.Verbose()
+            .WriteTo.File(Path.Combine(logDir, TestData.TestName) + Guid.NewGuid().ToString() + ".txt", retainedFileTimeLimit: TimeSpan.FromDays(1))
             .WriteTo.Sink(LogInMemorySink)
             .WriteTo.InMemory(restrictedToMinimumLevel: LogEventLevel.Debug)
             .CreateLogger();
@@ -148,15 +148,15 @@ public abstract class TestBaseT
         if (string.IsNullOrEmpty(TestData.TestId))
             throw new Exception("Test does not have id.");
 
-        if ((TestData.TestEnvironmentType & TestConfig.TestType) == 0)
-            return false;
-
-
+        // if ((TestData.TestEnvironmentType & TestConfig.TestType) == 0)
+        //     return false;
+        
         return true;
     }
 
     private async Task SettingStartTestAsync(ServiceCollection services)
     {
+        _services = [];
         // RegisterServices(services);
         //
         // var serviceProvider = services.BuildServiceProvider();

@@ -1,10 +1,9 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Base.Audit.UserProvider;
-using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
-using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
+﻿using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Server.Modules.AuditModule.UserProvider;
+using JMCore.Server.Modules.SettingModule.Storage;
+using JMCore.Server.Storages.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
@@ -18,7 +17,7 @@ public class AuditStorageBaseT : DbBaseT
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
+    StorageResolver.RegisterStorage(sc, new MemoryTestStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
   }
 
   protected override async Task GetServicesAsync(IServiceProvider sp)

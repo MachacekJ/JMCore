@@ -12,7 +12,7 @@ public class SendEmailAsyncT : MailJetEmailSenderBaseT
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(new TestData(method)
         {
-            TestEnvironmentType = TestEnvironmentTypeEnum.Dev,
+            //TestEnvironmentType = TestEnvironmentTypeEnum.Dev,
         }, async () =>
         {
             await EmailSenderJM.SendEmailAsync("machacekjm@seznam.cz", "test", "testmsg");

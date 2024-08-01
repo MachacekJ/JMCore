@@ -1,5 +1,5 @@
 ﻿using JMCore.Localizer;
-using JMCore.Server.Configuration.Localization;
+using JMCore.Server.Modules.LocalizationModule.Configuration;
 using JMCore.Server.ResX;
 using JMCore.Server.Services.JMCache;
 using JMCore.Services.JMCache;

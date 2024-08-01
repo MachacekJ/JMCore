@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using FluentAssertions;
 using JMCore.CQRS.JMCache.CacheGet;
+using JMCore.Server.Modules.SettingModule.Storage;
+using JMCore.Server.Modules.SettingModule.Storage.Models;
 using JMCore.Server.Services.JMCache;
-using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Server.Storages.Modules.BasicModule.Models;
 using JMCore.Services.JMCache;
 using MediatR;
 using Xunit;

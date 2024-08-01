@@ -1,6 +1,6 @@
 ﻿using JMCore.Localizer;
 using JMCore.Server.Controllers;
-using JMCore.Server.Storages.Modules.LocalizationModule;
+using JMCore.Server.Modules.LocalizationModule.Storage;
 using JMCoreTest.Blazor.Shared.Controllers.LocalizationController;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,4 @@
-﻿using JMCore.Server.Storages.Base.EF;
+﻿using JMCore.Server.Storages.EF;
 
 namespace JMCore.Server.PGStorage.LocalizationModule.Scripts
 {

@@ -1,8 +1,8 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
+﻿using JMCore.Server.Storages.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.Mongo;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.PG.TestStorageModule;
 using JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
-using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.Mongo.TestStorageModule;
-using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT.MongoT;
 

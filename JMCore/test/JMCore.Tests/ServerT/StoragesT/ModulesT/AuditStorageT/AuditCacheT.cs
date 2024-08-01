@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using JMCore.CQRS.JMCache.CacheRemove;
-using JMCore.Server.Storages.Modules.AuditModule.BaseImpl;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Tests.Implementations.Storages.TestModule.Models;
 using Serilog.Sinks.InMemory.Assertions;
 using Xunit;
 

@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.MongoStorage;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
-using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.Mongo.TestStorageModule;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.Mongo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

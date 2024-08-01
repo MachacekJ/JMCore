@@ -1,6 +1,6 @@
-﻿using JMCore.Server.Storages.Base.Audit.Configuration;
-using JMCore.Server.Storages.Base.Audit.EF;
-using JMCore.Server.Storages.Base.Audit.UserProvider;
+﻿using JMCore.Server.Modules.AuditModule.Configuration;
+using JMCore.Server.Modules.AuditModule.EF;
+using JMCore.Server.Modules.AuditModule.UserProvider;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;

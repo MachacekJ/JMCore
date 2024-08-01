@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
-using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.PG.TestStorageModule.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.PG.TestStorageModule.Models;
+using JMCore.Tests.TestModelsT;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT.PGT;
@@ -7,32 +9,55 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT
 public class ParentChildT : TestStorageModuleBaseT
 {
   [Fact]
-  public async Task ParentChildHierarchyTest()
+  public async Task ParentChildAndHierarchyTest()
   {
+    var menuName = "menuName";
+    var categoryName = "categoryName";
+    var subCategoryName = "subCategoryName";
     var method = MethodBase.GetCurrentMethod();
-    await RunStorageTestAsync(StorageTypesToTest, method, async (_) =>
+    var testData = new TestData(method)
+    {
+      DatabaseManipulation = DatabaseManipulationEnum.Create
+    };
+    
+    await RunStorageTestAsync(StorageTypesToTest,testData,  async (_) =>
     {
       var testDb = GetTestStorageImplementation();
 
-      var parent = new TestRootCategory
+      var parent = new TestMenuEntity
       {
-        Name = "Ahoj",
+        Name = menuName,
         LastModify = DateTime.UtcNow,
-        SubCategories = new List<TestCategory>
+        Categories = new List<TestCategoryEntity>
         {
           new()
           {
-            Name = "aa"
+            Name = categoryName
           }
         }
       };
 
-      await testDb.TestParents.AddAsync(parent);
+      await testDb.TestMenus.AddAsync(parent);
       await testDb.SaveChangesAsync();
 
-      var pc = parent.SubCategories.First();
-      pc.SubCategories = new List<TestCategory>() { new() { Name = "vv", RootCategoryId = pc.Id } };
+      var pc = parent.Categories.First();
+      pc.SubCategories = new List<TestCategoryEntity>() { new() { Name = subCategoryName, MenuId = pc.Id } };
       await testDb.SaveChangesAsync();
+    });
+
+    var testData2 = new TestData(method)
+    {
+      DatabaseManipulation = DatabaseManipulationEnum.Drop
+    };
+    await RunStorageTestAsync(StorageTypesToTest, testData2, async (_) =>
+    {
+      var testDb = GetTestStorageImplementation();
+     // var pp = testDb.TestMenus.;
+
+      
+      
+      var categ = await testDb.TestCategories.Where(e => e.ParentCategoryId == null).ToListAsync();
+      var bb = categ[0].ParentCategory;
     });
   }
 }

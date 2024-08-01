@@ -1,6 +1,5 @@
 ﻿using JMCore.Server.MongoStorage.AuditModule.Models;
-using JMCore.Server.Storages.Base.EF;
-using JMCore.Server.Storages.Modules.AuditModule.Models;
+using JMCore.Server.Storages.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;

@@ -1,9 +1,9 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
+﻿using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Server.Modules.SettingModule.Storage;
 using JMCore.Server.MongoStorage.AuditModule;
-using JMCore.Server.MongoStorage.BasicModule;
-using JMCore.Server.Storages.Modules;
-using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.BasicModule;
+using JMCore.Server.MongoStorage.SettingModule;
+using JMCore.Server.Storages.Configuration;
+using JMCore.Server.Storages.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

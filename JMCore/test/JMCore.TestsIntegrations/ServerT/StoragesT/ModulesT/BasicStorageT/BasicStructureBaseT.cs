@@ -1,5 +1,5 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Modules.BasicModule;
+﻿using JMCore.Server.Modules.SettingModule.Storage;
+using JMCore.Server.Storages.Models;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.BasicStorageT;
 

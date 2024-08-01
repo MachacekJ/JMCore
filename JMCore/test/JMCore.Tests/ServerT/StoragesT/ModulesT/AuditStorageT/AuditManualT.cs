@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using FluentAssertions;
-using JMCore.Server.Storages.Base.Audit.Configuration;
-using JMCore.Server.Storages.Base.Audit.EF;
-using JMCore.Server.Storages.Base.Audit.UserProvider;
-using JMCore.Server.Storages.Modules.AuditModule.Models;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.Server.Modules.AuditModule.Configuration;
+using JMCore.Server.Modules.AuditModule.EF;
+using JMCore.Server.Modules.AuditModule.Storage.Models;
+using JMCore.Server.Modules.AuditModule.UserProvider;
+using JMCore.Tests.Implementations.Storages.TestModule.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;

@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using JMCore.Extensions;
-using JMCore.Server.Configuration.Storage;
-using JMCore.Server.Configuration.Storage.Models;
 using JMCore.Server.Services.JMCache;
+using JMCore.Server.Storages;
+using JMCore.Server.Storages.Configuration;
+using JMCore.Server.Storages.Models;
 using JMCore.Services.JMCache;
 using JMCore.Tests.ServerT;
-using JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT.PGT;
+using JMCore.Tests.TestModelsT;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,28 +14,21 @@ namespace JMCore.TestsIntegrations.ServerT.StoragesT;
 
 public abstract class StorageBaseT : ServerTestBaseT
 {
-  /// <summary>
-  /// Mongo size database name limitation.
-  /// </summary>
-  private const int MaximumLengthOfDb = 63;
-  
   protected abstract IEnumerable<string> RequiredBaseStorageModules { get; }
-  private readonly List<IStorageRegistrationT> _allStorages = [];
+  private List<IStorageRegistrationT> _allStorages = [];
 
   protected IStorageResolver StorageResolver = null!;
   private StorageTypeEnum _storageType = StorageTypeEnum.AllRegistered;
 
-  private string DbName { get; set; } = null!;
-
   protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<Task> testCode)
   {
-    _storageType = storageType;
+    Init(storageType);
     await RunTestAsync(method, testCode);
   }
 
   protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
   {
-    _storageType = storageType;
+    Init(storageType);
     await RunTestAsync(method, async () =>
     {
       var storageTypes = GetAllStorageType(storageType).ToList();
@@ -45,22 +39,28 @@ public abstract class StorageBaseT : ServerTestBaseT
     });
   }
 
+  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, TestData testData, Func<StorageTypeEnum, Task> testCode)
+  {
+    Init(storageType);
+    await RunTestAsync(testData, async () =>
+    {
+      var storageTypes = GetAllStorageType(storageType).ToList();
+      foreach (var storageTypeLocal in storageTypes)
+      {
+        await testCode(storageTypeLocal);
+      }
+    });
+  }
+
+  private void Init(StorageTypeEnum storageType)
+  {
+    _storageType = storageType;
+    _allStorages = [];
+  }
+
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    var shrinkStrings = new List<string>() { 
-      nameof(JMCore) ,
-      nameof(TestsIntegrations),
-      nameof(ServerT),
-      nameof(StoragesT),
-      nameof(ModulesT)
-     };
-    var testName = shrinkStrings.Aggregate(TestData.TestName, (current, name) 
-      => current.Replace($"{name}_", string.Empty)).ToLower();
-    if (testName.Length > MaximumLengthOfDb)
-      testName = testName.Substring(testName.Length - MaximumLengthOfDb);
-      //throw new Exception($"Name of database '{testName}' is longer then {MaximumLengthOfDb}.");
-    DbName = testName;
 
     StorageResolver = new StorageResolver();
     sc.AddSingleton(StorageResolver);
@@ -69,10 +69,10 @@ public abstract class StorageBaseT : ServerTestBaseT
       throw new Exception("Memory stores use unit tests, not integration tests.");
 
     if (_storageType.HasFlag(StorageTypeEnum.Postgres))
-      _allStorages.Add(new PGStorageRegistrationT(DbName));
+      _allStorages.Add(new PGStorageRegistrationT(TestData));
 
-    if (_storageType.HasFlag(StorageTypeEnum.Mongo))
-      _allStorages.Add(new MongoStorageRegistrationT(DbName));
+    if (_storageType.HasFlag(StorageTypeEnum.Mongo) && !_allStorages.Any(a => a is MongoStorageRegistrationT))
+      _allStorages.Add(new MongoStorageRegistrationT(TestData));
 
     foreach (var storage in _allStorages)
     {

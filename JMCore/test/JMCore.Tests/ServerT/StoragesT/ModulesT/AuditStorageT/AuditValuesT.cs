@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using System.Text.Json;
 using FluentAssertions;
-using JMCore.Server.Storages.Modules.AuditModule;
-using JMCore.Server.Storages.Modules.AuditModule.Helper;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.Server.Modules.AuditModule.Storage;
+using JMCore.Server.Modules.AuditModule.Storage.Helper;
+using JMCore.Tests.Implementations.Storages.TestModule.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages;
 using Microsoft.EntityFrameworkCore;
 using Serilog.Events;
 using Serilog.Sinks.InMemory;

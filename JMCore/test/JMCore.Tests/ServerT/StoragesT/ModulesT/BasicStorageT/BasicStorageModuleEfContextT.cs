@@ -1,6 +1,6 @@
-﻿using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Server.Storages.Modules.BasicModule;
-using JMCore.Tests.ServerT.StoragesT.Implementations.MemoryStorage;
+﻿using JMCore.Server.MemoryStorage;
+using JMCore.Server.Modules.SettingModule.Storage;
+using JMCore.Server.Storages.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.BasicStorageT;

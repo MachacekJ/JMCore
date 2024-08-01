@@ -2,7 +2,7 @@
 using System.Reflection;
 using FluentAssertions;
 using JMCore.Localizer;
-using JMCore.Server.Storages.Modules.LocalizationModule.Models;
+using JMCore.Server.Modules.LocalizationModule.Storage.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

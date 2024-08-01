@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using JMCore.Server.CQRS.Storages.BasicModule.SettingGet;
-using JMCore.Server.CQRS.Storages.BasicModule.SettingSave;
+using JMCore.Server.Modules.SettingModule.CQRS.SettingGet;
+using JMCore.Server.Modules.SettingModule.CQRS.SettingSave;
 using Xunit;
 
 namespace JMCore.Tests.ServerT.StoragesT.ModulesT.BasicStorageT;

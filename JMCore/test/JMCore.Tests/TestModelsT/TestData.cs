@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-
 namespace JMCore.Tests.TestModelsT;
 
 public class TestData
@@ -9,14 +8,19 @@ public class TestData
     private string _testName = null!;
     private readonly string[] _replaceLetter = { ".", "<", ">", "+" };
 
-    public TestData(MemberInfo? method)
-    {
-        if (method == null)
-            throw new ArgumentException($"{nameof(TestData)}.{nameof(method)} is null");
-        
-        TestId = method.DeclaringType?.FullName!;
-    }
-
+    private const int MaximumLengthOfDb = 63;
+  
+    private readonly List<string> _shrinkStrings =
+    [
+        nameof(JMCore),
+        "TestsIntegrations",
+        "ServerT",
+        "StoragesT",
+        "ModulesT"
+    ];
+    
+    public DatabaseManipulationEnum DatabaseManipulation { get; set; } = DatabaseManipulationEnum.Default;
+    
     public string TestId
     {
         get => _testId;
@@ -29,13 +33,8 @@ public class TestData
 
             _testName = _testId;
         }
-    }
-
-    /// <summary>
-    /// Type of test, default is Core.
-    /// </summary>
-    public TestEnvironmentTypeEnum TestEnvironmentType { get; init; } = TestEnvironmentTypeEnum.Core;
-
+    } 
+    
     /// <summary>
     /// Name of test important for DB name and log file name.
     /// </summary>
@@ -49,4 +48,23 @@ public class TestData
         }
         set => _testName = value;
     }
+    
+    public TestData(MemberInfo? method)
+    {
+        if (method == null)
+            throw new ArgumentException($"{nameof(TestData)}.{nameof(method)} is null");
+        
+        TestId = method.DeclaringType?.FullName!;
+    }
+
+    public string GetDbName()
+    {
+        var testName = _shrinkStrings.Aggregate(TestName, (current, name)
+            => current.Replace($"{name}_", string.Empty)).ToLower();
+        if (testName.Length > MaximumLengthOfDb)
+            testName = testName.Substring(testName.Length - MaximumLengthOfDb);
+        return testName;
+    }
+
+
 }

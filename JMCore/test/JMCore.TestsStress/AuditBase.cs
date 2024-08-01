@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using JMCore.Server.Configuration.Storage.Models;
-using JMCore.Tests.ServerT.StoragesT.Implementations.TestStorageModule.Models;
+using JMCore.Server.Storages.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Models;
 using JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
 
 namespace JMCore.TestsStress;

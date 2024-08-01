@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageImplementations.Mongo.TestStorageModule.Models;
+using JMCore.Tests.Implementations.Storages.TestModule.Storages.Mongo.Models;
 using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.TestStorageModuleT.MongoT;

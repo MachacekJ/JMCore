@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using ACore.Server.Storages.Models;
 using ACore.Tests.Implementations.Modules.TestModule.Storages.Models;
-using ACore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
+using ACore.TestsIntegrations.Modules.TestModule.Audit;
 
 namespace ACore.TestsStress;
 

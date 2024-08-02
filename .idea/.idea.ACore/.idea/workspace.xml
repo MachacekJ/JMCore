@@ -22,453 +22,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/sqldialects.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.JMCore/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/projectSettingsUpdater.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/shelf/Changes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/shelf/Changes/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/shelf/test.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/shelf/test/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/.idea/.idea.JMCore.Blazor/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/JMCore.Blazor.sln.DotSettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/doc/InterestingLinks.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/Analytics/Models/AnalyticsData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/Analytics/Models/AnalyticsName.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/Analytics/Models/AnalyticsTypeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/Analytics/WriteAnalyticsCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/Analytics/WriteAnalyticsHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/LocalStorageGetHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/LocalStorageGetQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/LocalStorageHelper.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/LocalStorageSaveCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/LocalStorageSaveHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/Models/LocalStorageCategoryEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/CQRS/LocalStorage/Models/LocalStorageData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/AntiForgeryTokenInput.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/CultureChooser.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/CultureChooser.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/CultureChooser.razor.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/HeaderRightPart.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/LogIn.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/LogIn.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/LogOut.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/LogOut.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/Register.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfo.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfo.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfo.razor.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfo.razor.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfo.razor.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Header/Login/UserInfoItem/Profile.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Layouts/DashboardDrawer.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Layouts/DashboardDrawer.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Layouts/DashboardDrawer.razor.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/PageNotFound.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SideBar/LeftSideBar/LeftMenuContent.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SideBar/LeftSideBar/LeftMenuContent.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SideBar/LeftSideBar/LeftMenuContent.razor.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SideBar/RightSideBar/CultureItems.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SideBar/RightSideBar/RightMenuContent.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/SvgIcons/SvgNationalFlagIcons.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/TelerikLayout.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/TelerikLayout.razor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Components/Testable.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Config/AvailableLanguage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/JMComponentBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/JMCore.Blazor.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/JMCoreBlazorExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/JMPageBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Models/ClaimRecord.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/ResX/ResX_Telerik.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/AppStartConfigurationBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/AppState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/IAppStartConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/IAppState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/Models/LanguageItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/Models/PageStateEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/Models/ResponsiveTypeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/App/Models/RightMenuTypeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/JMBlazorCacheCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/JSRuntimeBaseExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Implementations/PageData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Implementations/PageDataBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Implementations/PageManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Interfaces/IPageData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Interfaces/IPageManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Models/BreadcrumbItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/Services/Page/Models/MenuHierarchyItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/_Imports.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/webpack.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/css/_main.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/css/_mixins.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/css/index.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/css/telerik/_overrides.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/css/telerik/_tokens.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/js/antiForgeryToken.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot-src/js/interop.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot/index.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/src/JMCore.Blazor/wwwroot/index.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/test/JMCore.Blazor.BUnit/BUnitTestBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/test/JMCore.Blazor.BUnit/Implementations/IAppStartConfugurationT/EmptyAppStartConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/test/JMCore.Blazor.BUnit/JMCore.Blazor.BUnit.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/test/JMCore.Blazor.BUnit/SideBarT/LeftSideBarT/LeftMenuContentTest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.Blazor/test/JMCore.Blazor.BUnit/_Imports.razor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.sln" beforeDir="false" afterPath="$PROJECT_DIR$/ACore.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore.sln.DotSettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/.idea/.idea.JMCore/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/.idea/.idea.JMCore/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/.idea/.idea.JMCore/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/.idea/.idea.JMCore/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/.idea/.idea.JMCore/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/JMCore.sln" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/JMCore.sln.DotSettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpAuthorizedCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpAuthorizedHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpNonAuthorizedCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpNonAuthorizedHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpSendCommandBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/CQRS/Http/HttpSendHandlerBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/JMCore.Client.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/Services/Http/HttpClientTypeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/Services/Http/IJMHttpClientFactory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/Services/Logger/InMemoryLogger.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Client/Services/Logger/InMemoryLoggingProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Configuration/ConfigureServerBuilder.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Controllers/BaseController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Controllers/CultureBaseController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Controllers/LocalizeContrBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Controllers/PingContrBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/JMCore.Server.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Configuration/AuditAttribute.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Configuration/AuditConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Configuration/IAuditConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/EF/AuditDbExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/EF/AuditDbService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/EF/IAuditDbService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Models/AuditEntryItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/AuditSqlStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Doc/AuditSchema.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Helper/AuditValueHelper.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Helper/Models/AuditValueData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/IAuditStorageModule.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditColumnEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditTableEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditUserEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditValueEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/Storage/Models/AuditVwAudit.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/UserProvider/AuditEmptyUserProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/AuditModule/UserProvider/IAuditUserProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/LocalizationModule/Configuration/LocalizerExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/LocalizationModule/Storage/EF/LocalizationStorageEfContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/LocalizationModule/Storage/ILocalizationStorageModule.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/LocalizationModule/Storage/Models/LocalizationEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/CQRS/SettingGet/SettingGetHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/CQRS/SettingGet/SettingGetQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/CQRS/SettingModuleRequestHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/CQRS/SettingSave/SettingSaveCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/CQRS/SettingSave/SettingSaveHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/Storage/BaseImpl/BasicSqlStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/Storage/IBasicStorageModule.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Modules/SettingModule/Storage/Models/SettingEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Helpers/ResXLoader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/ResXLocalizationOptions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/ResXSource.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/ResXSourceRegister.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_DataAnnotation.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_DataAnnotation.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_DataAnnotation.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_Errors.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_Errors.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_Errors.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_General.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_General.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/ResX/Resources/ResX_General.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/Email/IEmailSenderJM.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/Email/MailJet/MailJetEmailSender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/Email/MailJet/MailJetOptions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/Email/MailJet/MailJetSMSSender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/Email/MemoryEmailSender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/JMCache/JMCacheServerCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/SMS/ISMSSenderJM.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Services/SMS/MemorySMSSender.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/Configuration/StorageConfigurationBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/EF/DbContextBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/EF/DbContextUpdater.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/EF/DbScriptBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/EF/DbVersionScriptsBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/EF/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/IStorage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/IStorageResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/Models/StorageEntityNameDefinition.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/Models/StorageModeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/Models/StorageTypeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore.Server/Storages/StorageResolver.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/CQRS/CQRSServiceExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/CQRS/LoggedRequest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/CQRS/LoggingBehavior.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Extensions/EnumExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Extensions/ExceptionExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Extensions/ObjectExtension.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/JMCore.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/ILocalizationRecord.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/LocalizationOptions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/LocalizationRecord.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/LocalizationScopeEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/Storage/ILocalizationStorage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/Storage/LocalizationMemoryStorage.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/StringLocalizer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/StringLocalizerExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Localizer/StringLocalizerFactory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Models/BaseRR/ApiRequestBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Models/BaseRR/ApiResponseBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Models/BaseRR/RequestBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Models/BaseRR/ResponseBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheBehavior.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheGet/CacheGetHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheGet/CacheGetQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheModuleRequest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheRemove/CacheRemoveCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheRemove/CacheRemoveHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheSave/CacheSaveCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/CacheSave/CacheSaveHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/Models/JMCacheKey.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CQRS/Models/JMCacheValue.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/CacheModuleServiceExtension.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/IJMCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/IJMCacheCategories.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/JMCacheCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/Modules/CacheModule/Storages/JMMemoryCache.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/ResX/ResX_DataAnnotation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/ResX/ResX_Errors.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/JMCore/ResX/ResX_General.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/AuditDbContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Doc/AuditSchema.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditColumnEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditTableEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditUserEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditValueEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Models/AuditVwAudit.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/Scripts/MSSQL/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/Scripts/MSSQL/V1_0_1_1TestTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/Scripts/MSSQL/V1_0_1_2TestAuditTables.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/Scripts/MSSQL/V1_0_1_3TestAuditTypes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/Scripts/MSSQL/V1_0_1_4TestPK.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/AuditStructure/Scripts/V1_0_0_1AuditTables.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/BasicStructure/BasicDbContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/BasicStructure/Models/SettingEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/BasicStructure/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/BasicStructure/Scripts/V1_0_0_1SettingsTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/JMCore.Server.MSSQLStorage.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/LocalizeDbContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/Models/LocalizationEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/Scripts/V1_0_0_01LocalizationTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/Scripts/V1_0_0_02Index_Scope.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/LocalizationStructure/Scripts/V1_0_0_03Index_MsgId.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MSSQLStorage/info.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MemoryStorage/AuditModule/AuditSqlMemoryStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MemoryStorage/JMCore.Server.MemoryStorage.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MemoryStorage/LocalizationModule/LocalizationMemoryEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MemoryStorage/MemoryStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MemoryStorage/SettingModule/BasicMemoryEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/AuditMongoStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/Models/AuditMongoEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/Models/AuditMongoUserEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/Models/AuditMongoValueEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/AuditModule/Scripts/V1_0_0_1AuditCollection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/CollectionNames.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/JMCore.Server.MongoStorage.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/MongoStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/SettingModule/BasicMongoEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/SettingModule/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.MongoStorage/SettingModule/Scripts/V1_0_0_1SettingsCollection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/AuditModule/AuditPGEfDbNames.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/AuditModule/AuditPGEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/AuditModule/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/AuditModule/Scripts/V1_0_0_1AuditTables.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/JMCore.Server.PGStorage.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/LocalizationModule/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/LocalizationModule/Scripts/V1_0_0_01LocalizationTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/PGStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/SettingModule/BasicPGEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/SettingModule/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/src/Storages/JMCore.Server.PGStorage/SettingModule/Scripts/V1_0_0_1SettingsTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/JMCore.Tests.Implementations.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/Models/TestPKGuidData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestModuleBehavior.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestModuleRequest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestModuleRequestHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestPKGuid/TestPKGuidGetHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestPKGuid/TestPKGuidGetQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestPKGuid/TestPKGuidSaveCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/CQRS/TestPKGuid/TestPKGuidSaveHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/ITestStorageModule.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Memory/MemoryTestStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Memory/TestMemoryEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestAttributeAuditEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestManualAuditEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestPKGuidEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestPKStringEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Models/TestValueTypeEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Models/TestCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Models/TestRootCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/V1_0_1_1TestTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/V1_0_1_2TestAuditTables.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/V1_0_1_3TestAuditTypes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/V1_0_1_4TestPK.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/Scripts/V1_0_1_5TestChildPropeties.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/Mongo/TestMongoStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Models/TestCategoryEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Models/TestMenuEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/ScriptRegistrations.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/V1_0_1_1TestTable.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/V1_0_1_2TestAuditTables.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/V1_0_1_3TestAuditTypes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/V1_0_1_4TestPK.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/Scripts/V1_0_1_5TestParentChild.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/TestPGEfDbNames.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/PG/TestPGEfStorageImpl.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/Storages/TestStorageEfContext.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests.Implementations/Modules/TestModule/TestModuleServiceExtensions.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/BaseInfrastructure/BaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/BaseInfrastructure/Models/DatabaseManipulationEnum.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/BaseInfrastructure/Models/TestData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/BaseInfrastructure/TestSettings.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/CQRST/HttpT/HttpCallApiTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/CQRST/TestOpenGenericT/FruitImplementation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/CQRST/TestOpenGenericT/OpenGenericMediatorTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/ServicesT/HttpT/HttpBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/ServicesT/HttpT/HttpErrorStatusesTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/ServicesT/HttpT/Implementations/FakeHttpClientConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Client/ServicesT/HttpT/Implementations/JMHttpFakeClientFactory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Core/CQRST/JMCacheTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Core/ServicesT/JMCacheT/JMCacheTestCategoryT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Core/ServicesT/JMCacheT/JMMemoryCacheT/JMCacheT/JMCacheInterfaceTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Core/ServicesT/JMCacheT/JMMemoryCacheT/MemoryBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/JMCore.Tests.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Screenshot 2023-11-18 183527.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeStorageBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeStorageModuleEfContextTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/LocalizeBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/LocalizeTableTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestBoth.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestBoth.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestBoth.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestClient.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestClient.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestClient.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestServer.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestServer.cs-CZ.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/LocalizeT/ResX/TestServer.resx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/LocalizationModule/info.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/SettingModule/BasicStorageModuleEfContextTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/SettingModule/CQRSTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/SettingModule/SettingsTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditAttributeBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditAttributeTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditCacheTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditManualTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditPKT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditStorageBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/AuditValuesTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Modules/TestModule/TestAuditUserProvider.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/ServerBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/EmailT/EmailBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/EmailT/MemoryEmailSender/MemoryEmailSenderBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/EmailT/MemoryEmailSender/SendEmailAsyncTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/SMST/MemorySMSSenderT/MemorySmsSenderBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/SMST/MemorySMSSenderT/SendSmsAsyncTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Services/SMST/SmsBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/Server/Storages/StorageBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.Tests/appsettings.Test.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/Docker/JMCoreIntegrationTest/00_init.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/Docker/JMCoreIntegrationTest/docker-compose.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/Docker/JMCoreIntegrationTest/replica.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/JMCore.TestsIntegrations.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/ServicesT/EmailT/MailJetEmailSenderT/MailJetEmailSenderBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/ServicesT/EmailT/MailJetEmailSenderT/SendEmailAsyncTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/ServicesT/SMST/MailJetSMSSenderT/MailJetSmsSenderBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/ServicesT/SMST/MailJetSMSSenderT/SendSmsAsyncTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/IStorageRegistrationT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditAttributeTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditChildValueT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditPKT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditStructureBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditValuesTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/BasicStructureBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/CQRST.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/SettingsTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/LocalizeStorageT/AllT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/LocalizeStorageT/LocalizeStructureBaseT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/MongoT/ParentChildTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/MongoT/TestStorageModuleBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/PGT/ParentChildTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/PGT/TestStorageModuleBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/MongoStorageRegistrationT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/PGStorageRegistrationT.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/StorageBaseTests.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/TestStorageConfiguration/MongoTestStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/ServerT/StoragesT/TestStorageConfiguration/PGTestStorageConfiguration.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/appsettings.Test.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsIntegrations/xunit.runner.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/AuditBase.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/AuditMongo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/AuditPG.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/JMCore.TestsStress.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/appsettings.Test.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JMCore/test/JMCore.TestsStress/xunit.runner.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/AppStartConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/AppStartConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/ConfigureClientBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/ConfigureClientBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/JMCoreTest.Blazor.Client.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Localization/TelerikStringLocalizer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Localization/TelerikStringLocalizer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/DirectApi.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/DirectApi.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/Index.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/Index.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/Index.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/Index.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/LargeContent.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/LargeContent.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/LargeContent.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/LargeContent.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationDetail.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationDetail.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationHome.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationHome.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Services/AntiforgeryHttpClientFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Services/AntiforgeryHttpClientFactory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Services/HostAuthenticationStateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Services/HostAuthenticationStateProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/Shared/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/Shared/MainLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Client/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/E2E/ComponentsT/HeaderT/CultureChooserTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/E2E/ComponentsT/HeaderT/CultureChooserTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/E2E/E2EBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/E2E/E2EBaseTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/E2E/JMCoreTest.Blazor.EE.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/Controllers/DirectApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Server/Controllers/DirectApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/Controllers/HttpTestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Server/Controllers/HttpTestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/Controllers/LocalizationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Server/Controllers/LocalizationController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/JMCoreTest.Blazor.Server.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Server/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Server/ResX/ResXInfrastructure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Server/ResX/ResXInfrastructure.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Shared/Controllers/HttpTestController/HttpPostTestRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Shared/Controllers/HttpTestController/HttpPostTestRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Shared/Controllers/HttpTestController/HttpPostTestResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Shared/Controllers/HttpTestController/HttpPostTestResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Shared/Controllers/LocalizationController/ClientLanguagePackAsyncResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TestUI/Shared/Controllers/LocalizationController/ClientLanguagePackAsyncResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestUI/Shared/JMCoreTest.Blazor.Shared.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ACore.TestsIntegrations.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ACore.TestsIntegrations.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/ServicesT/EmailT/MailJetEmailSenderT/MailJetEmailSenderBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/EmailT/MailJetEmailSenderT/MailJetEmailSenderBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/ServicesT/EmailT/MailJetEmailSenderT/SendEmailAsyncTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/EmailT/MailJetEmailSenderT/SendEmailAsyncTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/ServicesT/SMST/MailJetSMSSenderT/MailJetSmsSenderBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/SMST/MailJetSMSSenderT/MailJetSmsSenderBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/ServicesT/SMST/MailJetSMSSenderT/SendSmsAsyncTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/SMST/MailJetSMSSenderT/SendSmsAsyncTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/IStorageRegistrationT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/IStorageRegistrationT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditAttributeTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Audit/AuditAttributeTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditChildValueT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Audit/AuditChildValueT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditPKT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Audit/AuditPKT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditStructureBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Audit/AuditStructureBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/AuditStorageT/AuditValuesTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Audit/AuditValuesTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/BasicStructureBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/SettingModule/BasicStructureBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/CQRST.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/SettingModule/CQRST.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/BasicStorageT/SettingsTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/SettingModule/SettingsTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/LocalizeStorageT/AllT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/LocalizationModule/AllT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/LocalizeStorageT/LocalizeStructureBaseT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/LocalizationModule/LocalizeStructureBaseT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/MongoT/ParentChildTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/MongoT/ParentChildTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/MongoT/TestStorageModuleBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/MongoT/TestStorageModuleBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/PGT/ParentChildTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/PGT/ParentChildTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/ModulesT/TestStorageModuleT/PGT/TestStorageModuleBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/PGT/TestStorageModuleBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/MongoStorageRegistrationT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/MongoStorageRegistrationT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/PGStorageRegistrationT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/PGStorageRegistrationT.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/StorageBaseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/StorageBaseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/TestStorageConfiguration/MongoTestStorageConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/TestStorageConfiguration/MongoTestStorageConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServerT/StoragesT/TestStorageConfiguration/PGTestStorageConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/ServicesT/StoragesT/TestStorageConfiguration/PGTestStorageConfiguration.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -568,6 +148,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e5b3bf527769cb3295444e29d617bf2ebe5666bbe8e9c881a31444ba66846cfa/BooleanAsserts.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f4bc324a395d24ed12db75b0a81536b642509aa14825bf114d9b7c934e2b/Mediator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9b8579c61c1131ec7bf0253f254c8b2a5204bc2e64e4c9237ee291963d/BsonElementAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/CQRS/Analytics/WriteAnalyticsHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/Components/Testable.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/Storages/ACore.Server.MemoryStorage/bin/Debug/net8.0/JMCore.Server.MemoryStorage.deps.json" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/App.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -925,7 +506,8 @@
       <workItem from="1722576164042" duration="26837000" />
       <workItem from="1722605148374" duration="303000" />
       <workItem from="1722605516500" duration="1687000" />
-      <workItem from="1722613059824" duration="750000" />
+      <workItem from="1722613059824" duration="866000" />
+      <workItem from="1722613954716" duration="597000" />
     </task>
     <task id="LOCAL-00001" summary="First initialization">
       <option name="closed" value="true" />
@@ -1271,7 +853,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722603456170</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Rename JMCore to ACore">
+      <option name="closed" value="true" />
+      <created>1722613910051</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1722613910051</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1334,7 +924,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Postgre 1st attempt" />
     <MESSAGE value="pokus" />
     <MESSAGE value="Postgres finito unit tests" />
     <MESSAGE value="postgres docker compose" />
@@ -1359,7 +948,8 @@
     <MESSAGE value="Mongo audit" />
     <MESSAGE value="big refactor" />
     <MESSAGE value="Modules + CQRS" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modules + CQRS" />
+    <MESSAGE value="Rename JMCore to ACore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rename JMCore to ACore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

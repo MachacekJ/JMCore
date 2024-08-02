@@ -41,8 +41,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Logs\" />
-	  <Folder Include="ServerT\ServicesT\EmailT\" />
-	  <Folder Include="ServerT\ServicesT\SMST\" />
+	  <Folder Include="Modules\TestModule\" />
+	  <Folder Include="BaseInfrastructure\" />
 	</ItemGroup>
 
 </Project>

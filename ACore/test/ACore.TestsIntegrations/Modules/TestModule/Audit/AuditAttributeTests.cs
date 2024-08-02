@@ -13,8 +13,7 @@ public class AuditAttributeTests : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.NoAuditAsyncTest(auDb, testDb, (name) => GetTestTableName(storageType, name));
+      await AuditAttributeTHelper.NoAuditAsyncTest(auDb, Mediator, (name) => GetTestTableName(storageType, name));
     });
   }
   [Fact]
@@ -24,8 +23,7 @@ public class AuditAttributeTests : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.AddItemAsyncTest(auDb, testDb, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
+      await AuditAttributeTHelper.AddItemAsyncTest(auDb, Mediator, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
     });
   }
 
@@ -36,8 +34,7 @@ public class AuditAttributeTests : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.UpdateItemAsyncTest(auDb, testDb, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
+      await AuditAttributeTHelper.UpdateItemAsyncTest(auDb, Mediator, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
     });
   }
   
@@ -48,8 +45,7 @@ public class AuditAttributeTests : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditAttributeTHelper.DeleteItemTest(auDb, testDb, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
+      await AuditAttributeTHelper.DeleteItemTest(auDb, Mediator, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
     });
   }
 }

@@ -15,8 +15,7 @@ public class AuditPKT : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditPKTHelper.GuidPK(auDb, testDb,(name) => GetTestTableName(storageType, name));
+      await AuditPKTHelper.GuidPK(auDb, Mediator,(name) => GetTestTableName(storageType, name));
     });
   }
 
@@ -27,8 +26,7 @@ public class AuditPKT : AuditStructureBaseTests
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var auDb = GetAuditStorageModule(storageType);
-      var testDb = GetTestStorageModule(storageType);
-      await AuditPKTHelper.StringPK(auDb, testDb, (name) => GetTestTableName(storageType, name));
+      await AuditPKTHelper.StringPK(auDb, Mediator, (name) => GetTestTableName(storageType, name));
     });
   }
 }

@@ -1,6 +1,6 @@
-﻿using ACore.Server.Storages;
+﻿using ACore.AppTest.Modules.TestModule.Storages.PG;
+using ACore.Server.Storages;
 using ACore.Tests.BaseInfrastructure.Models;
-using ACore.TestsIntegrations.BaseInfrastructure.Storages.TestStorageConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

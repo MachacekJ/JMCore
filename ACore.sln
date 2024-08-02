@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.TestsStress", "ACore\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A374D79E-ADEE-44A8-8A6D-277B55FB6138}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.Tests.Implementations", "ACore\test\ACore.Tests.Implementations\ACore.Tests.Implementations.csproj", "{BA2CD290-4E9F-47AE-800E-164695A9ABF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.AppTest", "ACore\test\ACore.AppTest\ACore.AppTest.csproj", "{BA2CD290-4E9F-47AE-800E-164695A9ABF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.Server.MemoryStorage", "ACore\src\Storages\ACore.Server.MemoryStorage\ACore.Server.MemoryStorage.csproj", "{513838D2-35FA-4BD3-99BA-3ED65C0FFB2D}"
 EndProject

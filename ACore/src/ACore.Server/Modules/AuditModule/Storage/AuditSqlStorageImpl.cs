@@ -243,6 +243,12 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
 
   private IQueryable<AuditVwAuditEntity> SelectVwAudits()
   {
+    var aa = AuditValues
+      .Include(a => a.Audit)
+      .Include(a => a.AuditColumn)
+      .Include(a => a.Audit.AuditTable)
+      .Include(a => a.Audit.User).ToArray();
+    
     return AuditValues
       .Include(a => a.Audit)
       .Include(a => a.AuditColumn)

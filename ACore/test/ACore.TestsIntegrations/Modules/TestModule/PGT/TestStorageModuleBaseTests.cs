@@ -1,6 +1,6 @@
-﻿using ACore.Server.Storages.Models;
-using ACore.Tests.Implementations.Modules.TestModule.Storages;
-using ACore.Tests.Implementations.Modules.TestModule.Storages.PG;
+﻿using ACore.AppTest.Modules.TestModule.Storages;
+using ACore.AppTest.Modules.TestModule.Storages.PG;
+using ACore.Server.Storages.Models;
 using ACore.TestsIntegrations.Modules.TestModule.Audit;
 
 namespace ACore.TestsIntegrations.Modules.TestModule.PGT;
@@ -11,5 +11,5 @@ public class TestStorageModuleBaseTests : AuditStructureBaseTests
   /// <summary>
   /// <see cref="TestPGEfStorageImpl"/>
   /// </summary>
-  protected TestPGEfStorageImpl GetTestStorageImplementation() => (StorageResolver.FirstReadWriteStorage<ITestStorageModule>(StorageTypesToTest) as TestPGEfStorageImpl)!;
+  //protected TestPGEfStorageImpl GetTestStorageImplementation() => (StorageResolver.FirstReadWriteStorage<ITestStorageModule>(StorageTypesToTest) as TestPGEfStorageImpl)!;
 }

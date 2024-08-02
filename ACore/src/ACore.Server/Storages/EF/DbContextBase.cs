@@ -151,9 +151,9 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
 
   #endregion
 
-  protected static void SetDatabaseNames<T>(Dictionary<Type, StorageEntityNameDefinition> objectNameMapping , ModelBuilder modelBuilder) where T: class
+  protected static void SetDatabaseNames<T>(Dictionary<string, StorageEntityNameDefinition> objectNameMapping , ModelBuilder modelBuilder) where T: class
   {
-    if (objectNameMapping.TryGetValue(typeof(T), out var auditColumnEntityObjectNames))
+    if (objectNameMapping.TryGetValue(typeof(T).Name, out var auditColumnEntityObjectNames))
     {
       modelBuilder.Entity<T>().ToTable(auditColumnEntityObjectNames.TableName);
       foreach (var expression in auditColumnEntityObjectNames.GetColumns<T>())

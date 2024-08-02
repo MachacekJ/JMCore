@@ -1,11 +1,11 @@
-﻿using ACore.Server.Modules.AuditModule.Storage;
+﻿using ACore.AppTest;
+using ACore.AppTest.Modules.TestModule;
+using ACore.AppTest.Modules.TestModule.Storages.Memory;
+using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages.Models;
-using ACore.Tests.Implementations.Modules.TestModule.Storages;
-using ACore.Tests.Implementations.Modules.TestModule.Storages.Memory;
 using ACore.Tests.Server.Storages;
-using ACore.Tests.Implementations.Modules.TestModule;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.Tests.Server.Modules.TestModule;
@@ -13,14 +13,20 @@ namespace ACore.Tests.Server.Modules.TestModule;
 public class AuditStorageBaseTests : StorageBaseTests
 {
   protected IAuditStorageModule AuditStorageModule = null!;
-  protected ITestStorageModule TestStorageModule = null!;
+
+  // protected ITestStorageModule TestStorageModule = null!;
   protected IAuditUserProvider UserProvider = null!;
 
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
     sc.AddTestServiceModule();
-    StorageResolver.RegisterStorage(sc, new MemoryTestStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(IAuditStorageModule), nameof(ITestStorageModule) }));
+    StorageResolver.RegisterStorage(sc, new MemoryTestStorageConfiguration(new[]
+    {
+      nameof(IBasicStorageModule), 
+      nameof(IAuditStorageModule),
+      AppTestModulesNames.TestModule
+    }));
   }
 
   protected override async Task GetServicesAsync(IServiceProvider sp)
@@ -29,18 +35,18 @@ public class AuditStorageBaseTests : StorageBaseTests
     var auditStorageModule = StorageResolver.FirstReadWriteStorage<IAuditStorageModule>(StorageTypeEnum.Memory);
     AuditStorageModule = (auditStorageModule as AuditSqlStorageImpl) ?? throw new ArgumentException();
 
-    var testStorageModule = StorageResolver.FirstReadWriteStorage<ITestStorageModule>(StorageTypeEnum.Memory);
-    TestStorageModule = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
+    //var testStorageModule = StorageResolver.FirstReadWriteStorage<ITestStorageModule>(StorageTypeEnum.Memory);
+    // TestStorageModule = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();
 
     UserProvider = sp.GetService<IAuditUserProvider>() ?? throw new ArgumentException($"{nameof(IAuditUserProvider)} is null.");
   }
-  
-  protected string GetTableName(Type entityName)
+
+  protected string GetTableName(string entityName)
   {
-    return entityName.Name;
+    return entityName;
   }
 
-  protected string GetColumnName(Type entityName, string propertyName)
+  protected string GetColumnName(string entityName, string propertyName)
   {
     return propertyName;
   }

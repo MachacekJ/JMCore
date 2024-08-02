@@ -6,13 +6,13 @@ namespace ACore.Server.PGStorage.AuditModule;
 
 public static class AuditPGEfDbNames
 {
-  public static Dictionary<Type, StorageEntityNameDefinition> ObjectNameMapping => new()
+  public static Dictionary<string, StorageEntityNameDefinition> ObjectNameMapping => new()
   {
-    { typeof(AuditColumnEntity), new StorageEntityNameDefinition("audit_column", AuditColumnEntityColumnNames) },
-    { typeof(AuditEntity), new StorageEntityNameDefinition("audit", AuditEntityColumnNames) },
-    { typeof(AuditTableEntity), new StorageEntityNameDefinition("audit_table", AuditTableEntityColumnNames) },
-    { typeof(AuditUserEntity), new StorageEntityNameDefinition("audit_user", AuditUserEntityColumnNames) },
-    { typeof(AuditValueEntity), new StorageEntityNameDefinition("audit_value", AuditValueColumnNames) },
+    { nameof(AuditColumnEntity), new StorageEntityNameDefinition("audit_column", AuditColumnEntityColumnNames) },
+    { nameof(AuditEntity), new StorageEntityNameDefinition("audit", AuditEntityColumnNames) },
+    { nameof(AuditTableEntity), new StorageEntityNameDefinition("audit_table", AuditTableEntityColumnNames) },
+    { nameof(AuditUserEntity), new StorageEntityNameDefinition("audit_user", AuditUserEntityColumnNames) },
+    { nameof(AuditValueEntity), new StorageEntityNameDefinition("audit_value", AuditValueColumnNames) },
   };
   
   private static Dictionary<Expression<Func<AuditColumnEntity, object>>, string> AuditColumnEntityColumnNames => new()

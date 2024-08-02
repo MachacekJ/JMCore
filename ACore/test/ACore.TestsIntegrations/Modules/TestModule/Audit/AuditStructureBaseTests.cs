@@ -1,11 +1,12 @@
-﻿using ACore.Server.Modules.AuditModule.Configuration;
+﻿using ACore.AppTest;
+using ACore.AppTest.Modules.TestModule.Storages;
+using ACore.AppTest.Modules.TestModule.Storages.PG;
+using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages.Models;
-using ACore.Tests.Implementations.Modules.TestModule.Storages;
-using ACore.Tests.Implementations.Modules.TestModule.Storages.PG;
 using ACore.Tests.Server.Modules.TestModule;
 using ACore.TestsIntegrations.BaseInfrastructure.Storages;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,7 @@ public class AuditStructureBaseTests : StorageBaseTests
   {
     nameof(IBasicStorageModule),
     nameof(IAuditStorageModule),
-    nameof(ITestStorageModule)
+    AppTestModulesNames.TestModule
   };
 
   protected override void RegisterServices(ServiceCollection sc)
@@ -33,25 +34,25 @@ public class AuditStructureBaseTests : StorageBaseTests
   }
 
   protected IAuditStorageModule GetAuditStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstReadWriteStorage<IAuditStorageModule>(storageType);
-  protected ITestStorageModule GetTestStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstReadWriteStorage<ITestStorageModule>(storageType);
+  // protected ITestStorageModule GetTestStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstReadWriteStorage<ITestStorageModule>(storageType);
 
-  protected static string GetTestTableName(StorageTypeEnum storageType, Type entityName)
+  protected static string GetTestTableName(StorageTypeEnum storageType, string entityName)
   {
     return storageType switch
     {
-      StorageTypeEnum.Memory => entityName.Name,
-      StorageTypeEnum.Mongo => entityName.Name,
+      StorageTypeEnum.Memory => entityName,
+      StorageTypeEnum.Mongo => entityName,
       StorageTypeEnum.Postgres => TestPGEfDbNames.ObjectNameMapping[entityName].TableName,
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };
   }
 
-  protected static string GetTestColumnName(StorageTypeEnum storageType, Type entityName, string propName)
+  protected static string GetTestColumnName(StorageTypeEnum storageType, string entityName, string propName)
   {
     return storageType switch
     {
-      StorageTypeEnum.Memory => entityName.Name,
-      StorageTypeEnum.Mongo => entityName.Name,
+      StorageTypeEnum.Memory => entityName,
+      StorageTypeEnum.Mongo => entityName,
       StorageTypeEnum.Postgres => TestPGEfDbNames.ObjectNameMapping[entityName].ColumnNames[propName],
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };

@@ -1,0 +1,10 @@
+﻿@inherits JMComponentBase;
+@using ACore.Blazor.Services.App.Models
+@using Telerik.SvgIcons
+
+<TelerikButton FillMode="flat" Icon="@SvgIcon.Login" @onclick="LoginClick">
+    @if (AppState.ResponsiveType == ResponsiveTypeEnum.Desktop)
+    {
+        <span>Login</span>
+    }
+</TelerikButton>

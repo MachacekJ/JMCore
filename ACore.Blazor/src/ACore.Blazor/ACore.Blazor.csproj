@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>12</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="CQRS\Logger\**" />
+	  <Content Remove="CQRS\Logger\**" />
+	  <EmbeddedResource Remove="CQRS\Logger\**" />
+	  <None Remove="CQRS\Logger\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Remove="package-lock.json" />
+	  <Content Remove="package.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="package-lock.json" />
+	  <None Include="package.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\ACore\src\ACore\ACore.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+		<PackageReference Include="Telerik.UI.for.Blazor.Trial">
+			<Version>5.0.1</Version>
+		</PackageReference>
+	</ItemGroup>
+	
+</Project>

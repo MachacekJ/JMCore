@@ -1,12 +1,12 @@
-﻿using JMCore.Blazor.Components.SvgIcons;
-using JMCore.Blazor.Services.App;
-using JMCore.Blazor.Services.Page.Implementations;
-using JMCore.Blazor.Services.Page.Interfaces;
-using JMCore.Blazor.Services.Page.Models;
+﻿using ACore.Blazor.Components.SvgIcons;
+using ACore.Blazor.Services.App;
+using ACore.Blazor.Services.Page.Implementations;
+using ACore.Blazor.Services.Page.Interfaces;
+using ACore.Blazor.Services.Page.Models;
 using JMCoreTest.Blazor.Client.ResX;
 using Telerik.SvgIcons;
 
-namespace JMCoreTest.Blazor.Client;
+namespace ACoreTest.Blazor.Client;
 
 public class AppStartConfiguration(bool isTest) : AppStartConfigurationBase(isTest)
 {

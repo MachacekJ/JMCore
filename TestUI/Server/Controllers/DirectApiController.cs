@@ -1,4 +1,4 @@
-﻿using JMCore.Server.Controllers;
+﻿using ACore.Server.Controllers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

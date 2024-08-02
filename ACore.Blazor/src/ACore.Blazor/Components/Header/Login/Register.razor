@@ -1,0 +1,43 @@
+﻿@inherits JMComponentBase;
+@implements IDisposable
+@using System.Web
+@using ACore.Blazor.Components.SvgIcons
+@using ACore.Blazor.Services.App.Models
+
+<TelerikButton FillMode="flat" Icon="@SvgMyIcons.SignUp" OnClick="RegisterClick">
+    @if (AppState.ResponsiveType == ResponsiveTypeEnum.Desktop)
+    {
+        <span>Register</span>
+    }
+</TelerikButton>
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; } = null!;
+
+    private string _mobileIconCss = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        AppState.OnResponsiveChange += AppStateOnOnResponsiveChange;
+    }
+
+    private Task AppStateOnOnResponsiveChange(ResponsiveTypeEnum type)
+    {
+        _mobileIconCss = type == ResponsiveTypeEnum.Desktop
+            ? string.Empty
+            : "jm-mobile-icon";
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private void RegisterClick()
+    {
+        Navigation.NavigateTo($"api/Account/register?returnUrl={HttpUtility.UrlDecode(Navigation.BaseUri)}", true);
+    }
+
+    public void Dispose()
+    {
+        AppState.OnResponsiveChange -= AppStateOnOnResponsiveChange;
+    }
+
+}

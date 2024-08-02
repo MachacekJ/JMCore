@@ -396,4 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/JMCore/PRIVATE/jmachacek
+/ACore/PRIVATE/jmachacek

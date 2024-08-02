@@ -1,0 +1,81 @@
+﻿@inherits JMComponentBase
+@using Telerik.SvgIcons
+@using ACore.Blazor.Components.SideBar.LeftSideBar
+@using ACore.Blazor.Components.SideBar.RightSideBar
+@using ACore.Blazor.Components.Header.Login
+@using ACore.Blazor.Components.Header
+
+<TelerikDrawer @ref="_menuDrawer" Expanded="_expanded"
+               ExpandedChanged="ExpandedChangedHandler"
+               TItem="int"
+               Data="_fakeData"
+               Mode="_mode"
+               Position="DrawerPosition.Start"
+               MiniMode="false"
+               Class="jm-content-drawer-main">
+    <Template>
+        <TelerikAppBar PositionMode="AppBarPositionMode.Static" Class="jm-content-app-bar">
+            <AppBarSection Class="jm-content-logo">
+                <h2>E2E Testing</h2>
+            </AppBarSection>
+        </TelerikAppBar>
+        <LeftMenuContent></LeftMenuContent>
+    </Template>
+    <DrawerContent>
+        <TelerikAppBar PositionMode="AppBarPositionMode.Sticky" Class="jm-content-app-bar">
+            <AppBarSection>
+                <TelerikButton FillMode="flat" Icon="SvgIcon.Menu" OnClick="ToggleMenuDrawer"/>
+            </AppBarSection>
+
+            <AppBarSpacer/>
+
+            <AppBarSection>
+                <Register></Register>
+            </AppBarSection>
+
+            <AppBarSeparator/>
+
+            <AppBarSection>
+                <LogIn></LogIn>
+            </AppBarSection>
+
+            <AppBarSection>
+                <CultureChooser/>
+            </AppBarSection>
+
+        </TelerikAppBar>
+        <TelerikDrawer @ref="_menuDrawer2" Expanded="false"
+                       MiniMode="false"
+                       Position="DrawerPosition.End"
+                       TItem="int"
+                       Data="_fakeData2"
+                       Mode="DrawerMode.Overlay">
+            <Template>
+                <RightMenuContent></RightMenuContent>
+            </Template>
+            <DrawerContent>
+                <TelerikGridLayout RowSpacing="6px" ColumnSpacing="10px">
+                    <GridLayoutRows>
+                        <GridLayoutRow Height="30px"></GridLayoutRow>
+                        <GridLayoutRow Height="100%"></GridLayoutRow>
+                    </GridLayoutRows>
+                    <GridLayoutColumns>
+                        <GridLayoutColumn Width="100%"></GridLayoutColumn>
+                    </GridLayoutColumns>
+                    <GridLayoutItems>
+                        <GridLayoutItem Row="1" Column="1" Class="jm-breadcrumb">
+                            <TelerikBreadcrumb Data="@_items"></TelerikBreadcrumb>
+                        </GridLayoutItem>
+                        <GridLayoutItem Row="2" Column="1" Class="jm-content">
+                            <div class="jm-content-child">
+                                @Body
+                            </div>
+                        </GridLayoutItem>
+                    </GridLayoutItems>
+                </TelerikGridLayout>
+            </DrawerContent>
+        </TelerikDrawer>
+    </DrawerContent>
+</TelerikDrawer>
+
+<TelerikMediaQuery Media="(max-width: 768px)" OnChange="MediaQueryChange"></TelerikMediaQuery>

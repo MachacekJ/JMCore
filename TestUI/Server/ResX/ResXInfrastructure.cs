@@ -1,5 +1,5 @@
-﻿using JMCore.Localizer;
-using JMCore.Server.ResX;
+﻿using ACore.Localizer;
+using ACore.Server.ResX;
 using System.Resources;
 using ResX_MainLayout = JMCoreTest.Blazor.Server.ResX.Resources.ResX_MainLayout;
 
@@ -18,7 +18,7 @@ public static class ResXInfrastructure
                 new ResourceManager(typeof(ResX_MainLayout)),
                 LocalizationScopeEnum.Client),
             new(
-                nameof(JMCore.Blazor.ResX.ResX_Telerik),
+                nameof(ACore.Blazor.ResX.ResX_Telerik),
                 new ResourceManager(typeof(Resources.TelerikMessages)),
                 LocalizationScopeEnum.Client)
         };

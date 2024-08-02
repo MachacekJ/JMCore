@@ -1,4 +1,4 @@
-﻿using JMCore.Blazor;
+﻿using ACore.Blazor;
 using Telerik.Blazor.Components;
 
 namespace JMCoreTest.Blazor.Client.Pages;

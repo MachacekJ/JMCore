@@ -1,4 +1,4 @@
-﻿using JMCore.Blazor.ResX;
+﻿using ACore.Blazor.ResX;
 using Microsoft.Extensions.Localization;
 using Telerik.Blazor.Services;
 

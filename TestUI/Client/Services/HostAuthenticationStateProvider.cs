@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 using System.Security.Claims;
-using JMCore.Client.Services.Http;
+using ACore.Client.Services.Http;
 using JMCoreTest.Blazor.Shared.Authorization;
 
 namespace JMCoreTest.Blazor.Client.Services;

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using JMCore.Blazor.Services.Page.Interfaces;
-using JMCore.Tests;
-using JMCore.Tests.BaseInfrastructure;
+using ACore.Blazor.Services.Page.Interfaces;
+using ACore.Tests;
+using ACore.Tests.BaseInfrastructure;
 using JMCoreTest.Blazor.EE.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

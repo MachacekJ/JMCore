@@ -1,5 +1,5 @@
-﻿using JMCore.Blazor.Services;
-using JMCore.Client.Services.Http;
+﻿using ACore.Blazor.Services;
+using ACore.Client.Services.Http;
 using Microsoft.JSInterop;
 
 namespace JMCoreTest.Blazor.Client.Services;

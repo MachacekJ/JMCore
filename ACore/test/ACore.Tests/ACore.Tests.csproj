@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<LangVersion>12</LangVersion>
+		<RootNamespace>ACore.Tests</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="FluentAssertions" Version="6.12.0" />
+		<PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="Moq" Version="4.20.70" />
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+		<PackageReference Include="Serilog.Sinks.InMemory" Version="0.11.0" />
+		<PackageReference Include="Serilog.Sinks.InMemory.Assertions" Version="0.11.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+		<PackageReference Include="xunit" Version="2.6.3" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.5">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="6.0.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Client\ServicesT\" />
+		<Folder Include="Logs\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\ACore.Client\ACore.Client.csproj" />
+		<ProjectReference Include="..\..\src\Storages\ACore.Server.MemoryStorage\ACore.Server.MemoryStorage.csproj" />
+		<ProjectReference Include="..\ACore.Tests.Implementations\ACore.Tests.Implementations.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="appsettings.Test.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+		<None Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+		<None Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="ServerT\LocalizeT\ResX\TestBoth.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestBoth.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\LocalizeT\ResX\TestClient.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestClient.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\LocalizeT\ResX\TestServer.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+	  <EmbeddedResource Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+	  <EmbeddedResource Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestBoth.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestBoth.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestClient.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestClient.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestServer.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
+	  <Compile Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
+	  <Compile Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+	</ItemGroup>
+</Project>

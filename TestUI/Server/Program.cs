@@ -1,4 +1,4 @@
-﻿using JMCore.Server.Services.Email;
+﻿using ACore.Server.Services.Email;
 using JMCoreTest.Blazor.Server.Configuration;
 using JMCoreTest.Blazor.Server.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;

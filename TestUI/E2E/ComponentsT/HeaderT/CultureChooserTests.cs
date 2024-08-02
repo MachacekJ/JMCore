@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using FluentAssertions;
-using JMCore.Blazor.Components.Header;
-using JMCore.Blazor.Components.SideBar.RightSideBar;
+using ACore.Blazor.Components.Header;
+using ACore.Blazor.Components.SideBar.RightSideBar;
 using JMCoreTest.Blazor.Client;
 using OpenQA.Selenium;
 

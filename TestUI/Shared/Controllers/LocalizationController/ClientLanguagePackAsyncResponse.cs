@@ -1,5 +1,5 @@
-﻿using JMCore.Localizer;
-using JMCore.Models.BaseRR;
+﻿using ACore.Localizer;
+using ACore.Models.BaseRR;
 
 namespace JMCoreTest.Blazor.Shared.Controllers.LocalizationController;
 

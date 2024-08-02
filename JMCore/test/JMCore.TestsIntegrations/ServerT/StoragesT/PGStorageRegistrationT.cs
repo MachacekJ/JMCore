@@ -1,6 +1,6 @@
 ﻿using JMCore.Server.Storages;
 using JMCore.Server.Storages.Configuration;
-using JMCore.Tests.TestModelsT;
+using JMCore.Tests.BaseInfrastructure.Models;
 using JMCore.TestsIntegrations.ServerT.StoragesT.TestStorageConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

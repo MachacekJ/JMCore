@@ -1,7 +1,7 @@
 ﻿using Blazored.LocalStorage;
-using JMCore.Services.JMCache;
 using Microsoft.Extensions.DependencyInjection;
 using JMCore.Blazor.Services;
+using JMCore.Modules.CacheModule;
 
 namespace JMCore.Blazor;
 

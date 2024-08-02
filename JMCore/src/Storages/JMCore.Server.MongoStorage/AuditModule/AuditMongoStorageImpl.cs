@@ -14,7 +14,7 @@ namespace JMCore.Server.MongoStorage.AuditModule;
 public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> options, IMediator mediator, ILogger<AuditMongoStorageImpl> logger) : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
   protected override string ModuleName => nameof(IAuditStorageModule);
 
   public DbSet<AuditMongoEntity> Audits { get; set; }

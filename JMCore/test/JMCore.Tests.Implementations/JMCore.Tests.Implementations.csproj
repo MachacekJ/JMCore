@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Storages\" />
+      <Folder Include="Modules\" />
     </ItemGroup>
 
     <ItemGroup>

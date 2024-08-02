@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
-using JMCore.CQRS.JMCache.CacheGet;
-using JMCore.CQRS.JMCache.CacheRemove;
-using JMCore.CQRS.JMCache.CacheSave;
+using JMCore.Modules.CacheModule;
+using JMCore.Modules.CacheModule.CQRS.CacheGet;
+using JMCore.Modules.CacheModule.CQRS.CacheRemove;
+using JMCore.Modules.CacheModule.CQRS.CacheSave;
+using JMCore.Modules.CacheModule.CQRS.Models;
 using JMCore.Server.Modules.AuditModule.EF;
 using JMCore.Server.Modules.AuditModule.Storage;
 using JMCore.Server.Modules.SettingModule.CQRS.SettingGet;
@@ -10,7 +12,6 @@ using JMCore.Server.Modules.SettingModule.Storage;
 using JMCore.Server.Modules.SettingModule.Storage.Models;
 using JMCore.Server.Services.JMCache;
 using JMCore.Server.Storages.Models;
-using JMCore.Services.JMCache;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,12 +22,12 @@ namespace JMCore.Server.Storages.EF;
 /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
 /// Use <see cref="SaveChanges"/> only in special cases.
 /// </summary>
-public abstract class DbContextBase : DbContext, IBasicStorageModule
+public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
   
   public abstract DbScriptBase UpdateScripts { get; }
-  protected abstract StorageTypeDefinition StorageDefinition { get; }
+  public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
   
   private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
@@ -112,14 +113,14 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
 
     await SaveChangesAsync();
 
-    await Mediator.Send(new CacheRemoveCommand(CacheKeyTableSetting));
+    await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
   }
 
   private async Task<SettingEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
     List<SettingEntity> allSettings;
 
-    var allSettingsCache = await Mediator.Send(new CacheGetQuery(CacheKeyTableSetting));
+    var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
 
     if (allSettingsCache != null)
     {
@@ -135,7 +136,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
     else
     {
       allSettings = await Settings.ToListAsync();
-      await Mediator.Send(new CacheSaveCommand(CacheKeyTableSetting, allSettings));
+      await Mediator.Send(new CacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
     }
 
     if (allSettings == null)
@@ -150,6 +151,22 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
 
   #endregion
 
+  protected static void SetDatabaseNames<T>(Dictionary<Type, StorageEntityNameDefinition> objectNameMapping , ModelBuilder modelBuilder) where T: class
+  {
+    if (objectNameMapping.TryGetValue(typeof(T), out var auditColumnEntityObjectNames))
+    {
+      modelBuilder.Entity<T>().ToTable(auditColumnEntityObjectNames.TableName);
+      foreach (var expression in auditColumnEntityObjectNames.GetColumns<T>())
+      {
+        modelBuilder.Entity<T>().Property(expression.Key).HasColumnName(expression.Value);
+      }
+    }
+    else
+    {
+      throw new Exception($"Missing database name definition for entity: {typeof(T).Name}");
+    }
+  }
+  
   public async Task UpdateDatabase<T>(T impl) where T : DbContextBase
   {
     var allVersions = UpdateScripts.AllVersions.ToList();

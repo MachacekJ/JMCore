@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using JMCore.Server.Storages.Models;
-using JMCore.Tests.Implementations.Storages.TestModule.Models;
+using JMCore.Tests.Implementations.Modules.TestModule.Storages.Models;
 using JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
 
 namespace JMCore.TestsStress;
 
-public class AuditBase :  AuditStructureBaseT
+public class AuditBase :  AuditStructureBaseTests
 {
   private const int ItemCount = 1;
   protected async Task Audit(StorageTypeEnum storageType)

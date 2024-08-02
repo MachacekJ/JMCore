@@ -34,10 +34,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="ClientT\ServicesT\" />
+		<Folder Include="Client\ServicesT\" />
 		<Folder Include="Logs\" />
-		<Folder Include="ServerT\ControllersT\" />
-		<Folder Include="ServerT\StoragesT\ModulesT\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,6 +69,18 @@
 	  <EmbeddedResource Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 	  <EmbeddedResource Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
 	  <EmbeddedResource Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestBoth.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestBoth.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestClient.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestClient.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="ServerT\Modules\LocalizationModule\LocalizeT\ResX\TestServer.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

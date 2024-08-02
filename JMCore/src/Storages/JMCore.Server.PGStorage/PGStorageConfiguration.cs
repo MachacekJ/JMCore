@@ -31,8 +31,8 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          services.AddDbContext<AuditSqlPGStorageImpl>(opt => opt.UseNpgsql(connectionString));
-          services.AddSingleton<IAuditStorageModule, AuditSqlPGStorageImpl>();
+          services.AddDbContext<AuditPGEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
+          services.AddSingleton<IAuditStorageModule, AuditPGEfStorageImpl>();
           break;
         // case nameof(ILocalizationStorageModule):
         //   services.AddDbContext<LocalizationEfStorageImpl>(opt => opt.UseNpgsql(connectionString));
@@ -52,7 +52,7 @@ public class PGStorageConfiguration(string connectionString, IEnumerable<string>
         case nameof(IBasicStorageModule):
           break;
         case nameof(IAuditStorageModule):
-          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditSqlPGStorageImpl>(serviceProvider);
+          await ConfigureEfSqlServiceLocal<IAuditStorageModule, AuditPGEfStorageImpl>(serviceProvider);
           break;
         // case nameof(ILocalizationStorageModule):
         //   await ConfigureEfSqlServiceLocal<ILocalizationStorageModule, LocalizationEfStorageImpl>(serviceProvider);

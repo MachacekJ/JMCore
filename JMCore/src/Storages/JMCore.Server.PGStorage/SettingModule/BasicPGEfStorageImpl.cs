@@ -13,7 +13,7 @@ namespace JMCore.Server.PGStorage.SettingModule;
 public class BasicSqlPGEfStorageImpl : BasicSqlStorageImpl
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
   public BasicSqlPGEfStorageImpl(DbContextOptions<BasicSqlPGEfStorageImpl> options, IMediator mediator, ILogger<BasicSqlPGEfStorageImpl> logger) : base(options, mediator, logger)
   {

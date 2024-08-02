@@ -1,6 +1,7 @@
 ﻿using JMCore.Server.Modules.AuditModule.Configuration;
 using JMCore.Server.Modules.AuditModule.EF;
 using JMCore.Server.Modules.AuditModule.UserProvider;
+using JMCore.Server.Storages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
@@ -9,9 +10,9 @@ namespace JMCore.Server.Modules.AuditModule.Models;
 
 public class AuditEntryItem
 {
-  private List<dynamic> checkedEntries = new();
-
   private readonly ILogger _logger;
+  private readonly IStorage _storage;
+
   public string TableName { get; }
   public string? SchemaName { get; }
   public Dictionary<string, object?> OldValues { get; } = new();
@@ -26,9 +27,10 @@ public class AuditEntryItem
   private List<PropertyEntry> TemporaryProperties { get; } = new();
   private EntityEntry Entry { get; }
 
-  public AuditEntryItem(EntityEntry entry, IAuditUserProvider auditUserProvider, IAuditConfiguration auditConfiguration, ILogger logger)
+  public AuditEntryItem(EntityEntry entry, IAuditUserProvider auditUserProvider, IAuditConfiguration auditConfiguration, IStorage storage, ILogger logger)
   {
     _logger = logger;
+    _storage = storage;
     Entry = entry;
     PkValue = entry.PrimaryKeyValue();
     PkValueString = entry.PrimaryKeyValueString();
@@ -47,17 +49,12 @@ public class AuditEntryItem
   private string GetColumnNameInTable(string nestedPrefix, PropertyEntry property)
   {
     var propertyName = $"{nestedPrefix}{property.Metadata.Name}";
-    // try
-    // {
-    //   // Mongo:ElementName
-    //   var anno = property.Metadata.GetAnnotation("Relational:ColumnName").Value?.ToString();
-    //   if (anno != null)
-    //     propertyName = anno;
-    // }
-    // catch (Exception)
-    // {
-    //   // ignored
-    // }
+    if (_storage.StorageDefinition.DataAnnotationKey == null)
+      return propertyName;
+
+    var anno = property.Metadata.GetAnnotation(_storage.StorageDefinition.DataAnnotationKey).Value?.ToString();
+    if (anno != null)
+      propertyName = anno;
 
     return propertyName;
   }
@@ -76,7 +73,7 @@ public class AuditEntryItem
       }
 
       var propertyName = GetColumnNameInTable(nestedPrefix, property);
-      
+
       switch (entry.State)
       {
         case EntityState.Added:

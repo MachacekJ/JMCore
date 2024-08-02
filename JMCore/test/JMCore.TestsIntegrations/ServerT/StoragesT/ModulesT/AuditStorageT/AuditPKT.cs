@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
-using JMCore.Tests.ServerT.StoragesT.ModulesT.AuditStorageT;
+using JMCore.Tests.Server.Modules.TestModule;
 using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.AuditStorageT;
 
 // ReSharper disable once InconsistentNaming
-public class AuditPKT : AuditStructureBaseT
+public class AuditPKT : AuditStructureBaseTests
 {
 
   [Fact]
@@ -16,7 +16,7 @@ public class AuditPKT : AuditStructureBaseT
     {
       var auDb = GetAuditStorageModule(storageType);
       var testDb = GetTestStorageModule(storageType);
-      await AuditPKTHelper.GuidPK(auDb, testDb,(name) => GetAuditTableName(storageType, name));
+      await AuditPKTHelper.GuidPK(auDb, testDb,(name) => GetTestTableName(storageType, name));
     });
   }
 
@@ -28,7 +28,7 @@ public class AuditPKT : AuditStructureBaseT
     {
       var auDb = GetAuditStorageModule(storageType);
       var testDb = GetTestStorageModule(storageType);
-      await AuditPKTHelper.StringPK(auDb, testDb, (name) => GetAuditTableName(storageType, name));
+      await AuditPKTHelper.StringPK(auDb, testDb, (name) => GetTestTableName(storageType, name));
     });
   }
 }

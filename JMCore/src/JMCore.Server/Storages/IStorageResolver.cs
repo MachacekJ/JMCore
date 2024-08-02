@@ -9,6 +9,7 @@ public interface IStorageResolver
   void RegisterServices(IServiceCollection services);
   void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule);
   Task ConfigureStorages(IServiceProvider sp);
-  T FirstStorageModuleImplementation<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
-  List<T> AllStorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite);
+  T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.Read) where T : IStorage;
+  T FirstReadWriteStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite) where T : IStorage;
+  List<T> AllWriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.Write) where T : IStorage;
 }

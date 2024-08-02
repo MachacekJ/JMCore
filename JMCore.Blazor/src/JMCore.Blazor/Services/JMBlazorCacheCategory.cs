@@ -1,4 +1,4 @@
-﻿using JMCore.Services.JMCache;
+﻿using JMCore.Modules.CacheModule;
 
 namespace JMCore.Blazor.Services
 {

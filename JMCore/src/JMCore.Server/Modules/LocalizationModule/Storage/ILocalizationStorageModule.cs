@@ -1,9 +1,10 @@
 ﻿using JMCore.Localizer;
 using JMCore.Server.Modules.LocalizationModule.Storage.Models;
+using JMCore.Server.Storages;
 
 namespace JMCore.Server.Modules.LocalizationModule.Storage;
 
-public interface ILocalizationStorageModule
+public interface ILocalizationStorageModule: IStorage
 {
   /// <summary>
   /// If ChangeDate cannot be null, default value from resX cannot be overwritten.

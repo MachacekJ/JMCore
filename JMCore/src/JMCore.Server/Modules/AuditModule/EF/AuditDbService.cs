@@ -17,7 +17,7 @@ public class AuditDbService(IAuditStorageModule auditModuleEfContext, IAuditConf
         changeTracker.DetectChanges();
         var auditEntries = (from entry in changeTracker.Entries()
             where entry.ShouldBeAudited(auditConfiguration.AuditEntities)
-            select new AuditEntryItem(entry, _auditUserProvider, auditConfiguration, logger)).ToList();
+            select new AuditEntryItem(entry, _auditUserProvider, auditConfiguration, auditModuleEfContext, logger)).ToList();
 
         await BeginTrackingAuditEntriesAsync(auditEntries.Where(e => !e.HasTemporaryProperties));
 

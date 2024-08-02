@@ -13,7 +13,7 @@ namespace JMCore.Server.MongoStorage.SettingModule;
 public class BasicSqlMongoEfStorageImpl : BasicSqlStorageImpl
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
 
   public BasicSqlMongoEfStorageImpl(DbContextOptions<BasicSqlMongoEfStorageImpl> options, IMediator mediator, ILogger<BasicSqlMongoEfStorageImpl> logger) : base(options, mediator, logger)
   {

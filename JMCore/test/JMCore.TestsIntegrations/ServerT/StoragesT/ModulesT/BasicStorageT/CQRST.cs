@@ -7,7 +7,7 @@ using Xunit;
 
 namespace JMCore.TestsIntegrations.ServerT.StoragesT.ModulesT.BasicStorageT;
 
-public class CQRST : BasicStructureBaseT
+public class CQRST : BasicStructureBaseTests
 {
   [Fact]
   public async Task SettingsCommandAndQueryGlobalTest()

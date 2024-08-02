@@ -7,9 +7,9 @@ public class AuditColumnEntity
 {
   [Key]
   public int Id { get; set; }
-  
+
   public int AuditTableId { get; set; }
-  
+
   [MaxLength(255)]
   public string ColumnName { get; set; } = null!;
 

@@ -20,4 +20,12 @@ public class StorageTypeDefinition(StorageTypeEnum type)
     _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
   };
   public StorageTypeEnum Type => type;
+
+  public string? DataAnnotationKey => type switch
+  {
+    StorageTypeEnum.Memory => null,
+    StorageTypeEnum.Postgres => "Relational:ColumnName",
+    StorageTypeEnum.Mongo => "Mongo:ElementName",
+    _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+  };
 }

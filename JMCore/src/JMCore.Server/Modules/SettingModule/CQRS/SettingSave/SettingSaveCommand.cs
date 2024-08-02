@@ -1,16 +1,9 @@
-﻿using JMCore.Server.Storages.EF;
-using JMCore.Server.Storages.Models;
+﻿using JMCore.Server.Storages.Models;
+using MediatR;
 
 namespace JMCore.Server.Modules.SettingModule.CQRS.SettingSave;
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="storageType">Use flag for multiple storage save.</param>
-/// <param name="key"></param>
-/// <param name="value"></param>
-/// <param name="isSystem"></param>
-public class SettingSaveCommand(StorageTypeEnum storageType, string key, string value, bool isSystem = false) : IDbRequest
+public class SettingSaveCommand(StorageTypeEnum storageType, string key, string value, bool isSystem = false) : IRequest
 {
   public StorageTypeEnum StorageType { get; } = storageType;
   public string Key { get; } = key;

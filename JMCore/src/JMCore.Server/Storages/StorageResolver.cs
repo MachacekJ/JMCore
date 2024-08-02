@@ -28,21 +28,23 @@ public class StorageResolver : IStorageResolver
     }
   }
 
-  public T FirstStorageModuleImplementation<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
+  public T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.Read) where T : IStorage => FirstReadWriteStorage<T>(storageType, storageMode);
+
+  public T FirstReadWriteStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite) where T : IStorage
   {
     var storageImplementation = _allStorageModules.Where(sm => storageType.HasFlag(sm.StorageType) && sm.StorageMode.HasFlag(storageMode))
       .Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>()
       .FirstOrDefault();
-    
+
     if (storageImplementation != null)
       return storageImplementation;
 
     throw new Exception($"Storage module '{typeof(T).Name}' has no registered implementation.");
   }
-  
-  public List<T> AllStorageModuleImplementations<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite)
+
+  public List<T> AllWriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite) where T : IStorage
   {
-    var ab = _allStorageModules.Where(sm =>  storageType.HasFlag(sm.StorageType) &&  sm.StorageMode.HasFlag(storageMode)).Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>().ToList();
+    var ab = _allStorageModules.Where(sm => storageType.HasFlag(sm.StorageType) && sm.StorageMode.HasFlag(storageMode)).Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>().ToList();
     if (ab.Count > 0)
       return ab;
 

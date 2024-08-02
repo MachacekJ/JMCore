@@ -12,5 +12,5 @@ namespace JMCore.Server.MemoryStorage.LocalizationModule;
 public class LocalizationMemoryEfStorageImpl(DbContextOptions<LocalizationMemoryEfStorageImpl> options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
   : LocalizationStorageEfContext(options, mediator, resxOptions, localizationProvider, logger)
 {
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 }

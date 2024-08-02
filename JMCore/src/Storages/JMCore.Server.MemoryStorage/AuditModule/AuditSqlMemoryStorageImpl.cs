@@ -8,5 +8,5 @@ namespace JMCore.Server.MemoryStorage.AuditModule;
 
 public class AuditSqlMemoryStorageImpl(DbContextOptions<AuditSqlMemoryStorageImpl> options, IMediator mediator, ILogger<AuditSqlMemoryStorageImpl> logger) : AuditSqlStorageImpl(options, mediator, logger)
 {
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 }

@@ -1,9 +1,9 @@
-﻿using JMCore.Server.Storages.EF;
-using JMCore.Server.Storages.Models;
+﻿using JMCore.Server.Storages.Models;
+using MediatR;
 
 namespace JMCore.Server.Modules.SettingModule.CQRS.SettingGet;
 
-public class SettingGetQuery(StorageTypeEnum storageType, string key, bool isRequired = false) : IDbRequest<string?>
+public class SettingGetQuery(StorageTypeEnum storageType, string key, bool isRequired = false) : IRequest<string?>
 {
   public StorageTypeEnum StorageType { get; } = storageType;
 

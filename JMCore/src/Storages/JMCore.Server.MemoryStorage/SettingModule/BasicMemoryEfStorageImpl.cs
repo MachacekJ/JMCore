@@ -12,7 +12,7 @@ public class BasicSqlMemoryEfStorageImpl(DbContextOptions<BasicSqlMemoryEfStorag
   : BasicSqlStorageImpl(options, mediator, auditService, logger)
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  protected override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
+  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
 
   public BasicSqlMemoryEfStorageImpl(DbContextOptions<BasicSqlMemoryEfStorageImpl> options, IMediator mediator, ILogger<BasicSqlMemoryEfStorageImpl> logger) : this(options, mediator, null, logger)
   {

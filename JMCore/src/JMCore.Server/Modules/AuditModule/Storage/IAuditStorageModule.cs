@@ -1,9 +1,10 @@
 ﻿using JMCore.Server.Modules.AuditModule.Models;
 using JMCore.Server.Modules.AuditModule.Storage.Models;
+using JMCore.Server.Storages;
 
 namespace JMCore.Server.Modules.AuditModule.Storage;
 
-public interface IAuditStorageModule
+public interface IAuditStorageModule : IStorage
 {
   Task SaveAuditAsync(AuditEntryItem auditEntryItem);
   

@@ -1,8 +1,8 @@
 ﻿using JMCore.Localizer;
+using JMCore.Modules.CacheModule;
 using JMCore.Server.Modules.LocalizationModule.Configuration;
 using JMCore.Server.ResX;
 using JMCore.Server.Services.JMCache;
-using JMCore.Services.JMCache;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;

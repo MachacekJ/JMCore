@@ -16,6 +16,12 @@ public class StorageResolver : IStorageResolver
 
   public void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule)
   {
+    if (storageModule.StorageMode.HasFlag(StorageModeEnum.Write))
+    {
+      var exists = _allStorageModules.SingleOrDefault(e => e.StorageType == storageModule.StorageType);
+      if (exists != null)
+        throw new Exception($"Storage type {Enum.GetName(typeof(StorageTypeEnum), storageModule.StorageType)} is already implemented for write context.");
+    }
     _allStorageModules.Add(storageModule);
     storageModule.RegisterServices(sc);
   }

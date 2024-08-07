@@ -1,4 +1,5 @@
-﻿using ACore.Server.MongoStorage;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.Server.MongoStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,8 +18,8 @@ public class MongoTestStorageConfiguration(string connectionString, string dbNam
       if (requiredStorageModule == AppTestModulesNames.TestModule)
       {
         services.AddTestServiceModule();
-        services.AddDbContext<TestMongoStorageImpl>(opt => opt.UseMongoDB(_connectionString, _dbName));
-        services.AddSingleton<ITestStorageModule, TestMongoStorageImpl>();
+        services.AddDbContext<EfTestMongoStorageImpl>(opt => opt.UseMongoDB(_connectionString, _dbName));
+        services.AddSingleton<IEFTestStorageModule, EfTestMongoStorageImpl>();
       }
     }
   }
@@ -31,7 +32,7 @@ public class MongoTestStorageConfiguration(string connectionString, string dbNam
       if (requiredStorageModule == AppTestModulesNames.TestModule)
       {
         serviceProvider.UseTestServiceModule();
-        await ConfigureEfSqlServiceLocal<ITestStorageModule, TestMongoStorageImpl>(serviceProvider);
+        await ConfigureEfSqlServiceLocal<IEFTestStorageModule, EfTestMongoStorageImpl>(serviceProvider);
       }
     }
   }

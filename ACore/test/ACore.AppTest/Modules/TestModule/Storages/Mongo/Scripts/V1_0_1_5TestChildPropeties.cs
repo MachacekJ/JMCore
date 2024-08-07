@@ -16,7 +16,7 @@ public class V1_0_1_5TestChildPropeties: DbVersionScriptsBase
       
     var client = new MongoClient(connectionString);
     var db = client.GetDatabase(ext.DatabaseName);
-    db.CreateCollection(TestMongoStorageImpl.TestRootCategoryCollectionName);
-    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", TestMongoStorageImpl.TestAttributeCollectionName, ext.DatabaseName);
+    db.CreateCollection(EfTestMongoStorageImpl.TestRootCategoryCollectionName);
+    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", EfTestMongoStorageImpl.TestAttributeCollectionName, ext.DatabaseName);
   }
 }

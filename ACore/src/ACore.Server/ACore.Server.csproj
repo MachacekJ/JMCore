@@ -81,8 +81,4 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Modules\AuditModule\" />
-	</ItemGroup>
-
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ACore.Extensions;
 using ACore.Modules.CacheModule.CQRS.CacheGet;
 using ACore.Modules.CacheModule.CQRS.CacheRemove;
 using ACore.Modules.CacheModule.CQRS.CacheSave;
@@ -11,7 +12,6 @@ using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Modules.SettingModule.Storage.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.Models;
-using ACore.Modules.CacheModule;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,14 +22,14 @@ namespace ACore.Server.Storages.EF;
 /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
 /// Use <see cref="SaveChanges"/> only in special cases.
 /// </summary>
-public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
+public abstract class DbContextBase : DbContext, IBasicStorageModule
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
-  
+  public abstract Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class;
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
-  
+
   private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
   private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IBasicStorageModule)}";
   private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
@@ -41,7 +41,6 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
   protected IMediator Mediator { get; }
 
   public DbSet<SettingEntity> Settings { get; set; }
-
 
   /// <summary>
   /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
@@ -55,6 +54,48 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
     Mediator = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
   }
 
+  protected async Task<TU> SaveInternal<TEntity, TU>(object data, TU id, Func<TEntity, Task> addItem, Func<TEntity, TU> setId) where TEntity : StorageEntity<TU>, new()
+  {
+    TEntity existsEntity;
+    if (id == null)
+      throw new Exception();
+
+    var isNew = typeof(TU) switch
+    {
+      { } entityType when entityType == typeof(int) => (int)Convert.ChangeType(id, typeof(int)) == 0,
+      { } entityType when entityType == typeof(long) => (int)Convert.ChangeType(id, typeof(long)) == 0,
+      { } entityType when entityType == typeof(string) => string.IsNullOrEmpty((string)Convert.ChangeType(id, typeof(string))),
+      { } entityType when entityType == typeof(Guid) => (Guid)Convert.ChangeType(id, typeof(Guid)) == Guid.Empty,
+      _ => throw new Exception("Unknown primary data type {}")
+    };
+
+    if (!isNew)
+    {
+      existsEntity = await Get<TEntity, TU>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
+      existsEntity.CopyPropertiesFrom(data);
+    }
+    else
+    {
+      existsEntity = new TEntity();
+      existsEntity.CopyPropertiesFrom(data);
+      setId(existsEntity);
+      await addItem(existsEntity);
+    }
+
+    await SaveChangesAsync();
+    id = existsEntity.Id; // existsEntity.GetPropValue<TU>("Id") ?? throw new InvalidOperationException();
+    return id;
+  }
+
+  protected async Task DeleteInternal<T, TU>(TU id, Action<T> deleteItem) where T : class
+  {
+    var en = await Get<T, TU>(id);
+    if (en != null)
+    {
+      deleteItem(en);
+      await SaveChangesAsync();
+    }
+  }
 
   #region Audit
 
@@ -65,7 +106,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
     {
       return SaveChangesAsync(CancellationToken.None).Result;
     }
-    
+
     var entityAudits = _auditService.OnBeforeSaveChangesAsync(ChangeTracker).Result;
     var result = base.SaveChanges(acceptAllChangesOnSuccess);
     _auditService.OnAfterSaveChangesAsync(entityAudits).Wait();
@@ -151,7 +192,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
 
   #endregion
 
-  protected static void SetDatabaseNames<T>(Dictionary<string, StorageEntityNameDefinition> objectNameMapping , ModelBuilder modelBuilder) where T: class
+  protected static void SetDatabaseNames<T>(Dictionary<string, StorageEntityNameDefinition> objectNameMapping, ModelBuilder modelBuilder) where T : class
   {
     if (objectNameMapping.TryGetValue(typeof(T).Name, out var auditColumnEntityObjectNames))
     {
@@ -166,7 +207,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule, IStorage
       throw new Exception($"Missing database name definition for entity: {typeof(T).Name}");
     }
   }
-  
+
   public async Task UpdateDatabase<T>(T impl) where T : DbContextBase
   {
     var allVersions = UpdateScripts.AllVersions.ToList();

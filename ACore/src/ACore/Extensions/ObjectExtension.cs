@@ -18,4 +18,15 @@ public static class ObjectExtensionMethods
       }
     }
   }
+
+  public static T? GetPropValue<T>(this object self, string  name)
+  {
+    var fromProperties = self.GetType().GetProperties().Single(p => p.Name == name).GetValue(self, null);
+   
+    if (fromProperties == null)
+      return default;
+    
+    return (T)Convert.ChangeType(fromProperties, typeof(T));
+  }
+
 }

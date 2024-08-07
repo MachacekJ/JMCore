@@ -12,8 +12,7 @@ public class AuditValuesTests : AuditStructureBaseTests
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
-      var auDb = GetAuditStorageModule(storageType);
-      await AuditValuesTHelper.AllTypes(auDb, Mediator, LogInMemorySink, (name) => GetTestTableName(storageType, name), (name, propName) => GetTestColumnName(storageType, name, propName));
+      await AuditValuesTHelper.AllTypes(Mediator, LogInMemorySink, (name) => GetTestTableName(storageType, name), (name, propName) => GetTestColumnName(storageType, name, propName));
     });
   }
 }

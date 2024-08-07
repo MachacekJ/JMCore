@@ -2,13 +2,10 @@
 using ACore.Modules.CacheModule.CQRS.CacheSave;
 using ACore.Modules.CacheModule.CQRS.Models;
 using ACore.Server.Modules.AuditModule.Models;
-using ACore.Server.Modules.AuditModule.Storage.Helper;
-using ACore.Server.Modules.AuditModule.Storage.Helper.Models;
 using ACore.Server.Modules.AuditModule.Storage.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
 using ACore.Extensions;
-using ACore.Modules.CacheModule;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -34,24 +31,42 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
   public DbSet<AuditTableEntity> AuditTables { get; set; }
   public DbSet<AuditValueEntity> AuditValues { get; set; }
 
-  public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValue == pkValue && i.SchemaName == schemaName).ToArrayAsync();
-  public async Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.PKValueString == pkValue && i.SchemaName == schemaName).ToArrayAsync();
-  public async Task<IEnumerable<AuditVwAuditEntity>> AllAuditItemsAsync(string tableName, string? schemaName = null) => await SelectVwAudits().Where(i => i.TableName == tableName && i.SchemaName == schemaName).ToArrayAsync();
+  public override Task<T?> Get<T, TU>(TU id) where T : class
+  {
+    throw new NotImplementedException();
+    // if (id == null)
+    //   throw new ArgumentNullException($"{nameof(id)} is null.");
+    //
+    // var res = typeof(T) switch
+    // {
+    //   { } entityType when entityType == typeof(AuditEntity) => await Audits.FindAsync(Convert.ToInt64(id)) as T,
+    //   { } entityType when entityType == typeof(AuditValueEntity) => await AuditValues.FindAsync(Convert.ToInt64(id)) as T,
+    //   { } entityType when entityType == typeof(AuditColumnEntity) => await AuditColumns.FindAsync(Convert.ToInt32(id)) as T,
+    //   { } entityType when entityType == typeof(AuditUserEntity) => await AuditUsers.FindAsync(Convert.ToInt32(id)) as T,
+    //   { } entityType when entityType == typeof(AuditTableEntity) => await AuditTables.FindAsync(Convert.ToInt32(id)) as T,
+    //   _ => throw new Exception($"Unknown entity data type {typeof(T).Name} with primary key {id}.")
+    // };
+    // return res ?? throw new ArgumentNullException(nameof(res), @"Save function returned null value.");
+  }
+  
+  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == pkValue).ToArrayAsync();
+  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == pkValue).ToArrayAsync();
+  public async Task<IEnumerable<AuditValueEntity>> AllTableAuditAsync(string tableName, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).ToArrayAsync();
 
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
-    var valuesTable = new List<AuditValueData>();
+    var valuesTable = new List<AuditSqlValueItem>();
     foreach (var oldValue in auditEntryItem.OldValues)
     {
       auditEntryItem.NewValues.TryGetValue(oldValue.Key, out var newValue);
-      var auditValue = AuditValueConverterHelper.CreateValue(Logger, oldValue.Key, oldValue.Value, newValue);
+      var auditValue = AuditSqlValueItem.CreateValue(Logger, oldValue.Key, oldValue.Value, newValue);
       if (auditValue != null)
         valuesTable.Add(auditValue);
     }
 
     foreach (var newValue in auditEntryItem.NewValues.Where(kv => !auditEntryItem.OldValues.ContainsKey(kv.Key)))
     {
-      var auditValue = AuditValueConverterHelper.CreateValue(Logger, newValue.Key, null, newValue.Value);
+      var auditValue = AuditSqlValueItem.CreateValue(Logger, newValue.Key, null, newValue.Value);
       if (auditValue != null)
         valuesTable.Add(auditValue);
     }
@@ -82,9 +97,13 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
 
     await Audits.AddAsync(auditEntity);
     await SaveChangesAsync();
+    
+    // await SaveInternal<AuditEntity, long>(auditEntity, auditEntity.Id,
+    //   async (a) => await Audits.AddAsync(auditEntity),
+    //   (i) => i.Id = IdIntGenerator<AuditEntity>());
   }
 
-  public async Task<int> GetAuditUserIdAsync(string userId, string userName)
+  private async Task<int> GetAuditUserIdAsync(string userId, string userName)
   {
     var keyCache = AuditUserCacheKey(userId);
 
@@ -149,7 +168,7 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
     return tableEntity.Id;
   }
 
-  public async Task<Dictionary<string, int>> GetAuditColumnIdAsync(int tableId, List<string> columnNames)
+  private async Task<Dictionary<string, int>> GetAuditColumnIdAsync(int tableId, List<string> columnNames)
   {
     var keyCache = AuditColumnCacheKey(tableId);
     var res = new Dictionary<string, int>();
@@ -241,41 +260,12 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
     return res;
   }
 
-  private IQueryable<AuditVwAuditEntity> SelectVwAudits()
+  private IQueryable<AuditValueEntity> SelectVwAudits(string tableName, string? schemaName)
   {
-    var aa = AuditValues
-      .Include(a => a.Audit)
-      .Include(a => a.AuditColumn)
-      .Include(a => a.Audit.AuditTable)
-      .Include(a => a.Audit.User).ToArray();
-    
     return AuditValues
       .Include(a => a.Audit)
       .Include(a => a.AuditColumn)
       .Include(a => a.Audit.AuditTable)
-      .Include(a => a.Audit.User)
-      .Select(a => new AuditVwAuditEntity()
-      {
-        Id = a.Id,
-        AuditId = a.AuditId,
-        TableName = a.Audit.AuditTable.TableName,
-        SchemaName = a.Audit.AuditTable.SchemaName,
-        PKValue = a.Audit.PKValue,
-        PKValueString = a.Audit.PKValueString,
-        UserName = a.Audit.User.UserName,
-        DateTime = a.Audit.DateTime,
-        EntityState = a.Audit.EntityState,
-        ColumnName = a.AuditColumn.ColumnName,
-        OldValueString = a.OldValueString,
-        NewValueString = a.NewValueString,
-        OldValueInt = a.OldValueInt,
-        NewValueInt = a.NewValueInt,
-        OldValueLong = a.OldValueLong,
-        NewValueLong = a.NewValueLong,
-        OldValueBool = a.OldValueBool,
-        NewValueBool = a.NewValueBool,
-        OldValueGuid = a.OldValueGuid,
-        NewValueGuid = a.NewValueGuid
-      });
+      .Include(a => a.Audit.User).Where(i => i.Audit.AuditTable.TableName == tableName && i.Audit.AuditTable.SchemaName == schemaName).Select(a => a);
   }
 }

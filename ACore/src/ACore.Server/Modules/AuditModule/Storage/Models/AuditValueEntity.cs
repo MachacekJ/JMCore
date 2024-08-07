@@ -33,3 +33,32 @@ public class AuditValueEntity
   [ForeignKey("AuditColumnId")]
   public AuditColumnEntity AuditColumn { get; set; } = null!;
 }
+
+public static class AuditValueEntityExtensions
+{
+  public static object? GetNewValueObject(this AuditValueEntity auditSqlValueItem)
+  {
+    if (auditSqlValueItem.NewValueInt != null)
+      return auditSqlValueItem.NewValueInt;
+    if (auditSqlValueItem.NewValueLong != null)
+      return auditSqlValueItem.NewValueLong;
+    if (auditSqlValueItem.NewValueString != null)
+      return auditSqlValueItem.NewValueString;
+    if (auditSqlValueItem.NewValueBool != null)
+      return auditSqlValueItem.NewValueBool;
+    return auditSqlValueItem.NewValueGuid ?? null;
+  }
+
+  public static object? GetOldValueObject(this AuditValueEntity auditSqlValueItem)
+  {
+    if (auditSqlValueItem.OldValueInt != null)
+      return auditSqlValueItem.OldValueInt;
+    if (auditSqlValueItem.OldValueLong != null)
+      return auditSqlValueItem.OldValueLong;
+    if (auditSqlValueItem.OldValueString != null)
+      return auditSqlValueItem.OldValueString;
+    if (auditSqlValueItem.OldValueBool != null)
+      return auditSqlValueItem.OldValueBool;
+    return auditSqlValueItem.OldValueGuid ?? null;
+  }
+}

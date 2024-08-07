@@ -1,6 +1,6 @@
 ﻿using ACore.AppTest;
 using ACore.AppTest.Modules.TestModule.Storages;
-using ACore.AppTest.Modules.TestModule.Storages.PG;
+using ACore.AppTest.Modules.TestModule.Storages.EF.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.AuditModule.Storage;
@@ -32,17 +32,14 @@ public class AuditStructureBaseTests : StorageBaseTests
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
     sc.AddScoped<IAuditDbService, AuditDbService>();
   }
-
-  protected IAuditStorageModule GetAuditStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstReadWriteStorage<IAuditStorageModule>(storageType);
-  // protected ITestStorageModule GetTestStorageModule(StorageTypeEnum storageType) => StorageResolver.FirstReadWriteStorage<ITestStorageModule>(storageType);
-
+  
   protected static string GetTestTableName(StorageTypeEnum storageType, string entityName)
   {
     return storageType switch
     {
       StorageTypeEnum.Memory => entityName,
       StorageTypeEnum.Mongo => entityName,
-      StorageTypeEnum.Postgres => TestPGEfDbNames.ObjectNameMapping[entityName].TableName,
+      StorageTypeEnum.Postgres => PGTestStorageDbNames.ObjectNameMapping[entityName].TableName,
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };
   }
@@ -53,7 +50,7 @@ public class AuditStructureBaseTests : StorageBaseTests
     {
       StorageTypeEnum.Memory => entityName,
       StorageTypeEnum.Mongo => entityName,
-      StorageTypeEnum.Postgres => TestPGEfDbNames.ObjectNameMapping[entityName].ColumnNames[propName],
+      StorageTypeEnum.Postgres => PGTestStorageDbNames.ObjectNameMapping[entityName].ColumnNames[propName],
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };
   }

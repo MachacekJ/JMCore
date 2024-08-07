@@ -1,8 +1,8 @@
-﻿using ACore.AppTest.Modules.TestModule.CQRS.Models;
+﻿using ACore.AppTest.Modules.TestModule.Models;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-public class TestAttributeAuditGetQuery: TestModuleRequest<IEnumerable<TestAttributeAuditData>>
+public class TestAttributeAuditGetQuery: TestModuleRequest<TestAttributeAuditData[]>
 {
   
 }

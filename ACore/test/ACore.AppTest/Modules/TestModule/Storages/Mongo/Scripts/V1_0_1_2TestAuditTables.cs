@@ -18,8 +18,8 @@ public class V1_0_1_2TestAuditTables : DbVersionScriptsBase
       
         var client = new MongoClient(connectionString);
         var db = client.GetDatabase(ext.DatabaseName);
-        db.CreateCollection(TestMongoStorageImpl.TestAttributeCollectionName);
-        logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", TestMongoStorageImpl.TestAttributeCollectionName, ext.DatabaseName);
+        db.CreateCollection(EfTestMongoStorageImpl.TestAttributeCollectionName);
+        logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", EfTestMongoStorageImpl.TestAttributeCollectionName, ext.DatabaseName);
     }
 
 }

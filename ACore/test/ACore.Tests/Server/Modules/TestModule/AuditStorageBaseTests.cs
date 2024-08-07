@@ -1,6 +1,6 @@
 ﻿using ACore.AppTest;
 using ACore.AppTest.Modules.TestModule;
-using ACore.AppTest.Modules.TestModule.Storages.Memory;
+using ACore.AppTest.Modules.TestModule.Storages.EF.Memory;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Server.Modules.SettingModule.Storage;
@@ -12,7 +12,7 @@ namespace ACore.Tests.Server.Modules.TestModule;
 
 public class AuditStorageBaseTests : StorageBaseTests
 {
-  protected IAuditStorageModule AuditStorageModule = null!;
+  //protected IAuditStorageModule AuditStorageModule = null!;
 
   // protected ITestStorageModule TestStorageModule = null!;
   protected IAuditUserProvider UserProvider = null!;
@@ -32,8 +32,8 @@ public class AuditStorageBaseTests : StorageBaseTests
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    var auditStorageModule = StorageResolver.FirstReadWriteStorage<IAuditStorageModule>(StorageTypeEnum.Memory);
-    AuditStorageModule = (auditStorageModule as AuditSqlStorageImpl) ?? throw new ArgumentException();
+  //  var auditStorageModule = StorageResolver.FirstReadWriteStorage<IAuditStorageModule>(StorageTypeEnum.Memory);
+   // AuditStorageModule = (auditStorageModule as AuditSqlStorageImpl) ?? throw new ArgumentException();
 
     //var testStorageModule = StorageResolver.FirstReadWriteStorage<ITestStorageModule>(StorageTypeEnum.Memory);
     // TestStorageModule = (testStorageModule as TestStorageEfContext) ?? throw new ArgumentException();

@@ -1,5 +1,6 @@
 ﻿using ACore.AppTest.Modules.TestModule.CQRS;
 using ACore.AppTest.Modules.TestModule.Storages;
+using ACore.AppTest.Modules.TestModule.Storages.EF;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +12,7 @@ public static class TestModuleServiceExtensions
   {
     services.AddMediatR((c) =>
     {
-      c.RegisterServicesFromAssemblyContaining(typeof(ITestStorageModule));
+      c.RegisterServicesFromAssemblyContaining(typeof(IEFTestStorageModule));
     });
     
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TestModuleBehavior<,>));

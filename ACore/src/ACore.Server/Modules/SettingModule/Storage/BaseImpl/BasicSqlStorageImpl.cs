@@ -11,6 +11,11 @@ public abstract class BasicSqlStorageImpl(DbContextOptions options, IMediator me
 {
   protected override string ModuleName => nameof(IBasicStorageModule);
 
+  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
+  {
+    throw new NotImplementedException();
+  }
+  
   protected BasicSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<BasicSqlStorageImpl> logger) : this(options, mediator, null, logger)
   {
   }

@@ -23,7 +23,10 @@ public abstract class LocalizationStorageEfContext(DbContextOptions options, IMe
   public override DbScriptBase UpdateScripts => _dbSqlScript;
 
   protected override string ModuleName => nameof(ILocalizationStorageModule);
-
+  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
+  {
+    throw new NotImplementedException();
+  }
 
   #region Localization Table
 

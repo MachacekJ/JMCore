@@ -1,4 +1,5 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages;
+using ACore.AppTest.Modules.TestModule.Storages.EF;
 using ACore.Server.Storages;
 using MediatR;
 
@@ -8,6 +9,6 @@ internal abstract class TestModuleRequestHandler<TRequest, TResponse>(IStorageRe
   where TRequest : IRequest<TResponse>
 {
   public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
-  protected IEnumerable<ITestStorageModule> AllTestStorageWriteContexts() => storageResolver.AllWriteStorages<ITestStorageModule>();
-  protected ITestStorageModule ReadTestStorageWriteContexts() => storageResolver.FirstReadWriteStorage<ITestStorageModule>();
+  protected IEFTestStorageModule WriteStorage() => storageResolver.AllWriteStorages<IEFTestStorageModule>().Single();
+  protected IEFTestStorageModule ReadTestStorageWriteContexts() => storageResolver.FirstReadWriteStorage<IEFTestStorageModule>();
 }

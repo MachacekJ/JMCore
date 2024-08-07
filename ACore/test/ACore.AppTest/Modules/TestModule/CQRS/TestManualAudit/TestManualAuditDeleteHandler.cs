@@ -1,4 +1,4 @@
-﻿using ACore.AppTest.Modules.TestModule.Storages.Models;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Extensions;
 using ACore.Server.Storages;
 
@@ -8,12 +8,7 @@ internal class TestManualAuditDeleteHandler(IStorageResolver storageResolver) : 
 {
   public override async Task<bool> Handle(TestManualAuditDeleteCommand request, CancellationToken cancellationToken)
   {
-    var en = new TestManualAuditEntity();
-    en.CopyPropertiesFrom(request.Data);
-    
-    List<Task> task = [..AllTestStorageWriteContexts().Select(context 
-      => context.DeleteAsync(en))];
-    await Task.WhenAll(task);
+    await WriteStorage().Delete<TestManualAuditEntity, long>(request.Data.Id);
     return true;
   }
 }

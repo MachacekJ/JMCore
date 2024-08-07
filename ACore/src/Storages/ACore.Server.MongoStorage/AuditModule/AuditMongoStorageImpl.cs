@@ -17,6 +17,11 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
   protected override string ModuleName => nameof(IAuditStorageModule);
 
+  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
+  {
+    throw new NotImplementedException();
+  }
+  
   public DbSet<AuditMongoEntity> Audits { get; set; }
 
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
@@ -65,23 +70,21 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
     await SaveChangesAsync();
   }
 
-  public Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null)
+  public Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null)
   {
-    var aa = new List<AuditVwAuditEntity> { new() { AuditId = 1 } };
-    return Task.FromResult<IEnumerable<AuditVwAuditEntity>>(aa);
+    throw new NotImplementedException();
   }
 
-  public Task<IEnumerable<AuditVwAuditEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null)
+  public Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null)
   {
-    var aa = new List<AuditVwAuditEntity> { new() { AuditId = 1 } };
-    return Task.FromResult<IEnumerable<AuditVwAuditEntity>>(aa);
+    throw new NotImplementedException();
   }
 
-  public Task<IEnumerable<AuditVwAuditEntity>> AllAuditItemsAsync(string tableName, string? schemaName = null)
+  public Task<IEnumerable<AuditValueEntity>> AllTableAuditAsync(string tableName, string? schemaName = null)
   {
-    var aa = new List<AuditVwAuditEntity> { new() { AuditId = 1 } };
-    return Task.FromResult<IEnumerable<AuditVwAuditEntity>>(aa);
+    throw new NotImplementedException();
   }
+
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

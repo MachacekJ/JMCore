@@ -12,11 +12,18 @@ using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Storages.EF;
 
-public abstract class AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditDbService? auditService = null)
-  : DbContextBase(options, mediator, logger)
+public abstract class AuditableDbContext : DbContextBase
 {
-  private readonly IAuditDbService? _auditService = auditService;
   private bool? _isAuditEnabled;
+  private readonly IAuditDbService? _auditService;
+  private readonly IAuditConfiguration? _auditConfiguration;
+
+  protected AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditDbService? auditService, IAuditConfiguration? auditConfiguration) : base(options, mediator, logger)
+  {
+    _auditService = auditService;
+    _auditConfiguration = auditConfiguration;
+  }
+
   public abstract Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class;
   public abstract override DbScriptBase UpdateScripts { get; }
 
@@ -107,7 +114,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
   private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> GetAuditI<TEntity>(object id, EntityState state)
   {
-    if (_auditService == null || !await IsAuditEnabledAsync() || !IsAuditAttribute<TEntity>())
+    if (_auditService == null || !await IsAuditEnabledAsync() || !typeof(TEntity).IsAuditable(_auditConfiguration?.AuditEntities))
       return null;
 
     var dbEntityType = Model.FindEntityType(typeof(TEntity)) ?? throw new Exception($"Unknown db entity class '{typeof(TEntity).Name}'");
@@ -122,21 +129,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
   {
     var property = dbEntityType.GetProperties().SingleOrDefault(property => property.Name.Equals(propName, StringComparison.OrdinalIgnoreCase));
     var columnName = property?.GetColumnName();
-    return columnName != null && IsAuditAttribute<T>(propName) ? columnName : null;
-  }
-
-  private bool IsAuditAttribute<T>()
-  {
-    return Attribute.GetCustomAttribute(typeof(T), typeof(AuditableAttribute)) != null;
-  }
-
-  private bool IsAuditAttribute<T>(string propName)
-  {
-    var t = typeof(T);
-    var pi = t.GetProperty(propName);
-    if (pi == null)
-      return true;
-    return !Attribute.IsDefined(pi, typeof(NotAuditableAttribute));
+    return columnName != null && typeof(T).IsAuditable(propName, _auditConfiguration?.NotAuditProperty) ? columnName : null;
   }
 
   /// <summary>

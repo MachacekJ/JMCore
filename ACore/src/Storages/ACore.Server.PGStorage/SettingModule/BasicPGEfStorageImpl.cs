@@ -1,4 +1,5 @@
-﻿using ACore.Server.Modules.AuditModule.EF;
+﻿using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.SettingModule.Storage.BaseImpl;
 using ACore.Server.Modules.SettingModule.Storage.Models;
 using ACore.Server.Storages.EF;
@@ -21,7 +22,7 @@ public class BasicSqlPGEfStorageImpl : BasicSqlStorageImpl
   {
   }
 
-  public BasicSqlPGEfStorageImpl(DbContextOptions<BasicSqlPGEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicSqlPGEfStorageImpl> logger) : base(options, mediator, auditService, logger)
+  public BasicSqlPGEfStorageImpl(DbContextOptions<BasicSqlPGEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, IAuditConfiguration auditConfiguration , ILogger<BasicSqlPGEfStorageImpl> logger) : base(options, mediator, auditService, auditConfiguration, logger)
   {
   }
 

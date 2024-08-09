@@ -1,6 +1,7 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
+using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
@@ -11,7 +12,8 @@ using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ACore.AppTest.Modules.TestModule.Storages.Mongo;
 
-internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> options, IMediator mediator, ILogger<EfTestMongoStorageImpl> logger, IAuditDbService auditService) : EFTestStorageContext(options, mediator, logger, auditService)
+internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> options, IMediator mediator, ILogger<EfTestMongoStorageImpl> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration) 
+  : EFTestStorageContext(options, mediator, logger, auditService, auditConfiguration)
 {
   public const string TestCollectionName = "test";
   public const string TestAttributeCollectionName = "testAtrribute";

@@ -1,5 +1,6 @@
 ﻿using ACore.AppTest.Modules.TestModule.Models;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
 using MediatR;
@@ -11,8 +12,8 @@ using Exception = System.Exception;
 
 namespace ACore.AppTest.Modules.TestModule.Storages.EF;
 
-internal abstract class EFTestStorageContext(DbContextOptions options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditDbService auditService)
-  : AuditableDbContext(options, mediator, logger, auditService), IEFTestStorageModule
+internal abstract class EFTestStorageContext(DbContextOptions options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration)
+  : AuditableDbContext(options, mediator, logger, auditService, auditConfiguration), IEFTestStorageModule
 {
   protected abstract long IdLongGenerator<T>() where T : class;
   protected abstract int IdIntGenerator<T>() where T : class;
@@ -38,8 +39,8 @@ internal abstract class EFTestStorageContext(DbContextOptions options, IMediator
     {
       { } entityType when entityType == typeof(TestEntity) => await Tests.FindAsync(Convert.ToInt32(id)) as TEntity,
       { } entityType when entityType == typeof(TestAttributeAuditEntity) => await TestAttributeAudits.FindAsync(Convert.ToInt32(id)) as TEntity,
+      { } entityType when entityType == typeof(TestManualAuditEntity) => await TestManualAudits.FindAsync(Convert.ToInt64(id)) as TEntity,
       { } entityType when entityType == typeof(TestPKGuidEntity) => await TestPKGuid.FindAsync((Guid)Convert.ChangeType(id, typeof(Guid))) as TEntity,
-      { } entityType when entityType == typeof(TestManualAuditData) => await TestManualAudits.FindAsync(Convert.ToInt64(id)) as TEntity,
       { } entityType when entityType == typeof(TestPKStringEntity) => await TestPKString.FindAsync(id.ToString()) as TEntity,
       { } entityType when entityType == typeof(TestValueTypeEntity) => await TestPKString.FindAsync(Convert.ToInt32(id)) as TEntity,
       _ => throw new Exception($"Unknown entity data type {typeof(TEntity).Name} with primary key {id}.")
@@ -108,15 +109,15 @@ internal abstract class EFTestStorageContext(DbContextOptions options, IMediator
   {
     switch (typeof(T))
     {
-      case { } entityType when entityType == typeof(TestData):
+      case { } entityType when entityType == typeof(TestEntity):
         await DeleteInternalWithAudit<TestEntity, TPK>(id,
           (i) => Tests.Remove(i));
         return;
-      case { } entityType when entityType == typeof(TestAttributeAuditData):
+      case { } entityType when entityType == typeof(TestAttributeAuditEntity):
         await DeleteInternalWithAudit<TestAttributeAuditEntity, TPK>(id,
           (i) => TestAttributeAudits.Remove(i));
         return;
-      case { } entityType when entityType == typeof(TestManualAuditData):
+      case { } entityType when entityType == typeof(TestManualAuditEntity):
         await DeleteInternalWithAudit<TestManualAuditEntity, TPK>(id,
           (i) => TestManualAudits.Remove(i));
         return;

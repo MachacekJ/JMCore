@@ -13,7 +13,7 @@ namespace ACore.Server.Modules.LocalizationModule.Storage.EF;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
 
 public abstract class LocalizationStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
-  : AuditableDbContext(options, mediator, logger), ILocalizationStorageModule
+  : DbContextBase(options, mediator, logger), ILocalizationStorageModule
 {
 
   public DbSet<LocalizationEntity> Localizations { get; set; }
@@ -23,10 +23,6 @@ public abstract class LocalizationStorageEfContext(DbContextOptions options, IMe
   public override DbScriptBase UpdateScripts => _dbSqlScript;
 
   protected override string ModuleName => nameof(ILocalizationStorageModule);
-  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
-  {
-    throw new NotImplementedException();
-  }
 
   #region Localization Table
 

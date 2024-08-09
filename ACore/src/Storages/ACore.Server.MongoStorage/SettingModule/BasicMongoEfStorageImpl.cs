@@ -1,4 +1,5 @@
-﻿using ACore.Server.Modules.AuditModule.EF;
+﻿using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.SettingModule.Storage.BaseImpl;
 using ACore.Server.Modules.SettingModule.Storage.Models;
 using ACore.Server.Storages.EF;
@@ -19,7 +20,7 @@ public class BasicSqlMongoEfStorageImpl : BasicSqlStorageImpl
   {
   }
 
-  public BasicSqlMongoEfStorageImpl(DbContextOptions<BasicSqlMongoEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicSqlMongoEfStorageImpl> logger) : base(options, mediator, auditService, logger)
+  public BasicSqlMongoEfStorageImpl(DbContextOptions<BasicSqlMongoEfStorageImpl> options, IMediator mediator, IAuditDbService? auditService, IAuditConfiguration? auditConfiguration, ILogger<BasicSqlMongoEfStorageImpl> logger) : base(options, mediator, auditService, auditConfiguration, logger)
   {
   }
 

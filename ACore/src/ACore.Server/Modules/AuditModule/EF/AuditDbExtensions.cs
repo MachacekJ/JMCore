@@ -1,35 +1,26 @@
 ﻿using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.Storage.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ACore.Server.Modules.AuditModule.EF;
 
 internal static class AuditDbExtensions
 {
-  internal static bool ShouldBeAudited(this EntityEntry entry, IEnumerable<string> tables)
+  internal static bool IsAuditable(this Type entityEntry, IEnumerable<string>? entities = null)
   {
-    return entry.State != EntityState.Detached && entry.State != EntityState.Unchanged &&
-           !(entry.Entity is AuditEntity) && entry.IsAuditable(tables);
-  }
-
-  private static bool IsAuditable(this EntityEntry entityEntry, IEnumerable<string>? entities = null)
-  {
-    var enableAuditAttribute = Attribute.GetCustomAttribute(entityEntry.Entity.GetType(), typeof(AuditableAttribute));
+    var enableAuditAttribute = Attribute.GetCustomAttribute(entityEntry, typeof(AuditableAttribute));
 
     if (enableAuditAttribute != null)
       return true;
 
-    return entities != null && entities.Contains(entityEntry.Entity.GetType().Name);
+    return entities != null && entities.Contains(entityEntry.Name);
   }
 
-  internal static bool IsAuditable(this PropertyEntry propertyEntry, Dictionary<string, IEnumerable<string>> nonAuditProps)
+  internal static bool IsAuditable(this Type entityType, string propName, Dictionary<string, IEnumerable<string>>? nonAuditProps)
   {
-    var entityType = propertyEntry.EntityEntry.Entity.GetType();
-    var propertyInfo = entityType.GetProperty(propertyEntry.Metadata.Name);
+  
+    var propertyInfo = entityType.GetProperty(propName);
     var disableAuditAttribute = propertyInfo != null && Attribute.IsDefined(propertyInfo, typeof(NotAuditableAttribute));
-    var isEntityAuditable = propertyEntry.EntityEntry.IsAuditable();
-    //var res = && !disableAuditAttribute;
+    var isEntityAuditable = entityType.IsAuditable();
 
     switch (isEntityAuditable)
     {
@@ -39,7 +30,10 @@ internal static class AuditDbExtensions
         return true;
     }
 
-    if (nonAuditProps.TryGetValue(propertyEntry.EntityEntry.Entity.GetType().Name, out var columns) == false)
+    if (nonAuditProps == null)
+      return false;
+    
+    if (nonAuditProps.TryGetValue(entityType.Name, out var columns) == false)
       return true;
 
     return propertyInfo != null && !columns.Contains(propertyInfo.Name);

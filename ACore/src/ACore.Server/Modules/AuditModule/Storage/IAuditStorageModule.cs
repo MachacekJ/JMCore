@@ -1,18 +1,12 @@
 ﻿using ACore.Server.Modules.AuditModule.Models;
-using ACore.Server.Modules.AuditModule.Storage.Models;
 using ACore.Server.Storages;
+using ACore.Server.Storages.Models.SaveInfo;
 
 namespace ACore.Server.Modules.AuditModule.Storage;
 
 public interface IAuditStorageModule : IStorage
 {
-  Task SaveAuditAsync(AuditEntryItem auditEntryItem);
-  
-  Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null);
-  Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null);
+  Task SaveAuditAsync(SaveInfoItem saveInfoItem);
 
-  /// <summary>
-  /// Use this function for testing purposes only.
-  /// </summary>
-  Task<IEnumerable<AuditValueEntity>> AllTableAuditAsync(string tableName, string? schemaName = null);
+  Task<AuditInfoItem[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null);
 }

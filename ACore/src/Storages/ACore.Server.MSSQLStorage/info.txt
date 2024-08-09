@@ -1,2 +1,0 @@
-﻿MSSQL is not supported. Use Postgres. 
-MSSQL storage is not implemented correctly.

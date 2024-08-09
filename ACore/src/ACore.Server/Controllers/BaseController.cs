@@ -30,7 +30,7 @@ public abstract class BaseController<T> : Controller where T : BaseController<T>
     {
       res.ServerErrorId = Guid.NewGuid();
       _logger.LogError("ErrorId:{DtoErrorId}->ControllerBase:{MessageRecur}", res.ServerErrorId,
-        ex.MessageRecur());
+        ex.MessageRecursive());
     }
   }
 }

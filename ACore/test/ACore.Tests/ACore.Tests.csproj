@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -11,7 +10,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="FluentAssertions" Version="6.12.0" />
+		<PackageReference Include="FluentAssertions" Version="6.12.1" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
 		<PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="11.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
@@ -37,12 +37,12 @@
 	<ItemGroup>
 		<Folder Include="Client\ServicesT\" />
 		<Folder Include="Logs\" />
+		<Folder Include="Server\Configuration\" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ACore.Client\ACore.Client.csproj" />
-		<ProjectReference Include="..\..\src\Storages\ACore.Server.MemoryStorage\ACore.Server.MemoryStorage.csproj" />
-		<ProjectReference Include="..\ACore.AppTest\ACore.AppTest.csproj" />
+		<ProjectReference Include="..\..\src\ACore.Server\ACore.Server.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -52,6 +52,8 @@
 		<None Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 		<None Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
 		<None Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+		<None Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+		<None Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -82,11 +84,15 @@
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
+	  <EmbeddedResource Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+	  <EmbeddedResource Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 	  <Compile Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
 	  <Compile Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
+	  <Compile Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+	  <Compile Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 </Project>

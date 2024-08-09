@@ -1,9 +1,10 @@
 ﻿using ACore.Localizer;
 using ACore.Localizer.Storage;
 using ACore.Server.Modules.LocalizationModule.Configuration;
+using ACore.Server.Modules.LocalizationModule.ResX;
 using ACore.Server.Modules.LocalizationModule.Storage.Models;
-using ACore.Server.ResX;
 using ACore.Server.Storages.EF;
+using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,6 @@ using Microsoft.Extensions.Options;
 
 namespace ACore.Server.Modules.LocalizationModule.Storage.EF;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-
 public abstract class LocalizationStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
   : DbContextBase(options, mediator, logger), ILocalizationStorageModule
 {
@@ -20,13 +20,9 @@ public abstract class LocalizationStorageEfContext(DbContextOptions options, IMe
 
   private readonly ScriptRegistrations _dbSqlScript = new();
 
-  public override DbScriptBase UpdateScripts => _dbSqlScript;
+  protected override DbScriptBase UpdateScripts => _dbSqlScript;
 
   protected override string ModuleName => nameof(ILocalizationStorageModule);
-  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
-  {
-    throw new NotImplementedException();
-  }
 
   #region Localization Table
 

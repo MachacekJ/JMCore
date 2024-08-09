@@ -1,12 +1,15 @@
-﻿using ACore.Server.Modules.AuditModule.Storage;
-using ACore.Server.Storages;
+﻿using ACore.Base.CQRS.Results;
+using ACore.Server.Modules.AuditModule.Storage;
+using ACore.Server.Storages.Services.StorageResolvers;
 using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 
-internal abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : IRequestHandler<TRequest, TResponse>
+public abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : IRequestHandler<TRequest, TResponse>
   where TRequest : IRequest<TResponse>
+  where TResponse : Result
 {
-  public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken); 
-  protected IAuditStorageModule ReadAuditContexts() => storageResolver.FirstReadWriteStorage<IAuditStorageModule>();
+  public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+  protected IAuditStorageModule ReadAuditContext() => storageResolver.FirstReadOnlyStorage<IAuditStorageModule>();
+  protected IEnumerable<IAuditStorageModule> WriteAuditContexts() => storageResolver.WriteStorages<IAuditStorageModule>();
 }

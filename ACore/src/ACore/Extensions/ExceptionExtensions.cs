@@ -2,30 +2,31 @@
 
 public static class ExceptionExtensions
 {
-    public static string MessageRecur(this Exception ex)
+  public static string MessageRecursive(this Exception ex, bool withStackTrace = false)
+  {
+    var allMessages = string.Empty;
+    RecursiveInnerExceptionMessage(ex, ref allMessages);
+    if (withStackTrace)
+      allMessages += ex.StackTrace;
+    return allMessages;
+  }
+
+  private static void RecursiveInnerExceptionMessage(Exception ex, ref string mess)
+  {
+    if (!string.IsNullOrEmpty(ex.Message))
+      mess += "->" + ex.Message;
+
+
+    if (ex is AggregateException aggregateException)
     {
-        var allmess = string.Empty;
-        RekurInnerMess(ex, ref allmess);
-        return allmess;
+      foreach (var exceptionItem in aggregateException.InnerExceptions)
+      {
+        RecursiveInnerExceptionMessage(exceptionItem, ref mess);
+      }
     }
-
-    private static void RekurInnerMess(Exception ex, ref string mess)
+    else if (ex.InnerException != null)
     {
-        if (!string.IsNullOrEmpty(ex.Message))
-            mess += "->" + ex.Message;
-
-
-        var aex = ex as AggregateException;
-        if (aex != null)
-        {
-            foreach (var exitem in aex.InnerExceptions)
-            {
-                RekurInnerMess(exitem, ref mess);
-            }
-        }
-        else if (ex.InnerException != null)
-        {
-            RekurInnerMess(ex.InnerException, ref mess);
-        }
+      RecursiveInnerExceptionMessage(ex.InnerException, ref mess);
     }
+  }
 }

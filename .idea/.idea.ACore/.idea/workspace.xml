@@ -21,20 +21,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/EF/AuditDbExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/EF/AuditDbExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/LocalizationModule/Storage/EF/LocalizationStorageEfContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/LocalizationModule/Storage/EF/LocalizationStorageEfContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/BaseImpl/BasicSqlStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/BaseImpl/BasicSqlStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.MemoryStorage/SettingModule/BasicMemoryEfStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.MemoryStorage/SettingModule/BasicMemoryEfStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.MongoStorage/SettingModule/BasicMongoEfStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.MongoStorage/SettingModule/BasicMongoEfStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.PGStorage/SettingModule/BasicPGEfStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/Storages/ACore.Server.PGStorage/SettingModule/BasicPGEfStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/EFTestStorageContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/EFTestStorageContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/Memory/MemoryTestStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/Memory/MemoryTestStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/PG/PGTestStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/PG/PGTestStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/Mongo/EfTestMongoStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/Mongo/EfTestMongoStorageImpl.cs" afterDir="false" />
-    </list>
+    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="fds" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -901,7 +888,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723038090162</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="fds">
+      <option name="closed" value="true" />
+      <created>1723228081214</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1723228081214</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -964,7 +959,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="temp" />
     <MESSAGE value="Refactoring - DB na Storages" />
     <MESSAGE value="Storages PG a MSSQL solutions" />
     <MESSAGE value="Add MSSQL old scripts" />
@@ -989,7 +983,8 @@
     <MESSAGE value="big internal CQRS" />
     <MESSAGE value="big refactor save" />
     <MESSAGE value="big res" />
-    <option name="LAST_COMMIT_MESSAGE" value="big res" />
+    <MESSAGE value="fds" />
+    <option name="LAST_COMMIT_MESSAGE" value="fds" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1214,40 +1209,14 @@
           <option name="timeStamp" value="371" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/EF/AuditDbExtensions.cs</url>
-          <line>20</line>
-          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Modules\AuditModule\EF\AuditDbExtensions.cs" containingFunctionPresentation="Method 'IsAuditable'">
-            <startOffsets>
-              <option value="672" />
-            </startOffsets>
-            <endOffsets>
-              <option value="724" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="383" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/EF/AuditDbExtensions.cs</url>
-          <line>9</line>
-          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Modules\AuditModule\EF\AuditDbExtensions.cs" containingFunctionPresentation="Method 'IsAuditable'">
-            <startOffsets>
-              <option value="301" />
-            </startOffsets>
-            <endOffsets>
-              <option value="398" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="384" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/EF/EFTestStorageContext.cs</url>
           <line>109</line>
           <properties documentPath="D:\MTest\ACore\ACore\test\ACore.AppTest\Modules\TestModule\Storages\EF\EFTestStorageContext.cs" containingFunctionPresentation="Method 'Delete'">
             <startOffsets>
-              <option value="5667" />
+              <option value="5669" />
             </startOffsets>
             <endOffsets>
-              <option value="5685" />
+              <option value="5687" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="385" />

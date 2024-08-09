@@ -28,6 +28,33 @@
 	  <Compile Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
 	  <EmbeddedResource Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
 	  <None Remove="DB\DbContexts\LocalizeStructure\Scripts\MSSQL\**" />
+	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_DataAnnotation.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ResX_DataAnnotation.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_Errors.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ResX_Errors.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_General.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ResX_General.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_FluentValidation.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>FluentValidation.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <Compile Update="Modules\LocalizationModule\ResX\Resources\ResX_FluentValidation.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ResX_FluentValidation.resx</DependentUpon>
+	  </Compile>
+	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_DataAnnotation.cs-cz.resx">
+	    <DependentUpon>ResX_DataAnnotation.resx</DependentUpon>
+	  </EmbeddedResource>
+	  <Compile Remove="Modules\LocalizationModule\**" />
+	  <EmbeddedResource Remove="Modules\LocalizationModule\**" />
+	  <None Remove="Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -35,50 +62,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Autofac" Version="7.1.0" />
+		<PackageReference Include="FluentValidation" Version="11.9.2" />
 		<PackageReference Include="Mailjet.Api" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
+		<PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.3" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ACore\ACore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="ResX\Resources\ResX_DataAnnotation.Designer.cs">
-	    <DependentUpon>ResX_DataAnnotation.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
-	  <Compile Update="ResX\Resources\ResX_Errors.Designer.cs">
-	    <DependentUpon>ResX_Errors.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
-	  <Compile Update="ResX\Resources\ResX_General.Designer.cs">
-	    <DependentUpon>ResX_General.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="ResX\Resources\ResX_DataAnnotation.resx">
-	    <SubType>Designer</SubType>
-	    <LastGenOutput>ResX_DataAnnotation.Designer.cs</LastGenOutput>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="ResX\Resources\ResX_Errors.resx">
-	    <LastGenOutput>ResX_Errors.Designer.cs</LastGenOutput>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="ResX\Resources\ResX_General.resx">
-	    <LastGenOutput>ResX_General.Designer.cs</LastGenOutput>
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿namespace ACore.ResX
-{
-    // ReSharper disable once InconsistentNaming
-    public class ResX_DataAnnotation;
-}
+﻿namespace ACore.ResX;
+
+// ReSharper disable once InconsistentNaming
+public class ResX_DataAnnotation;

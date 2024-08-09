@@ -20,6 +20,8 @@
 		<Compile Remove="Models\Account\**" />
 		<EmbeddedResource Remove="Localizer\Providers\Models\**" />
 		<EmbeddedResource Remove="Models\Account\**" />
+		<Compile Remove="Localizer\**" />
+		<EmbeddedResource Remove="Localizer\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,6 +30,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.9.2" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+		<PackageReference Include="Mapster" Version="7.4.0" />
 		<PackageReference Include="MediatR" Version="12.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
@@ -68,5 +73,13 @@
 	    <LastGenOutput>ResX_General.Designer.cs</LastGenOutput>
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Localizer\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Base\Modules\" />
 	</ItemGroup>
 </Project>

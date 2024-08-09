@@ -1,11 +1,8 @@
 ﻿using System.Reflection;
-using ACore.Extensions;
 using ACore.Modules.CacheModule.CQRS.CacheGet;
 using ACore.Modules.CacheModule.CQRS.CacheRemove;
 using ACore.Modules.CacheModule.CQRS.CacheSave;
 using ACore.Modules.CacheModule.CQRS.Models;
-using ACore.Server.Modules.AuditModule.EF;
-using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 using ACore.Server.Modules.SettingModule.Storage;
@@ -18,114 +15,23 @@ using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Storages.EF;
 
-/// <summary>
-/// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
-/// Use <see cref="SaveChanges"/> only in special cases.
-/// </summary>
-public abstract class DbContextBase : DbContext, IBasicStorageModule
+public abstract class DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger)
+  : DbContext(options), IBasicStorageModule
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
-  public abstract Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class;
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
-
-  private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
+  
   private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IBasicStorageModule)}";
   private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
 
-  protected readonly ILogger<DbContextBase> Logger;
-  private readonly IAuditDbService? _auditService;
-  private readonly DbContextOptions _options;
+  protected readonly ILogger<DbContextBase> Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
+  private readonly DbContextOptions _options = options;
 
-  protected IMediator Mediator { get; }
+  protected IMediator Mediator { get; } = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
 
   public DbSet<SettingEntity> Settings { get; set; }
-
-  /// <summary>
-  /// This base class implements audit functionality and calls db <see cref="SaveChangesAsync"/> method.
-  /// Use <see cref="SaveChanges"/> only in special cases.
-  /// </summary>
-  protected DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditDbService? auditService = null) : base(options)
-  {
-    _options = options;
-    _auditService = auditService;
-    Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
-    Mediator = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
-  }
-
-  protected async Task<TU> SaveInternal<TEntity, TU>(object data, TU id, Func<TEntity, Task> addItem, Func<TEntity, TU> setId) where TEntity : StorageEntity<TU>, new()
-  {
-    TEntity existsEntity;
-    if (id == null)
-      throw new Exception();
-
-    var isNew = typeof(TU) switch
-    {
-      { } entityType when entityType == typeof(int) => (int)Convert.ChangeType(id, typeof(int)) == 0,
-      { } entityType when entityType == typeof(long) => (int)Convert.ChangeType(id, typeof(long)) == 0,
-      { } entityType when entityType == typeof(string) => string.IsNullOrEmpty((string)Convert.ChangeType(id, typeof(string))),
-      { } entityType when entityType == typeof(Guid) => (Guid)Convert.ChangeType(id, typeof(Guid)) == Guid.Empty,
-      _ => throw new Exception("Unknown primary data type {}")
-    };
-
-    if (!isNew)
-    {
-      existsEntity = await Get<TEntity, TU>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
-      existsEntity.CopyPropertiesFrom(data);
-    }
-    else
-    {
-      existsEntity = new TEntity();
-      existsEntity.CopyPropertiesFrom(data);
-      setId(existsEntity);
-      await addItem(existsEntity);
-    }
-
-    await SaveChangesAsync();
-    id = existsEntity.Id; // existsEntity.GetPropValue<TU>("Id") ?? throw new InvalidOperationException();
-    return id;
-  }
-
-  protected async Task DeleteInternal<T, TU>(TU id, Action<T> deleteItem) where T : class
-  {
-    var en = await Get<T, TU>(id);
-    if (en != null)
-    {
-      deleteItem(en);
-      await SaveChangesAsync();
-    }
-  }
-
-  #region Audit
-
-  public override int SaveChanges(bool acceptAllChangesOnSuccess)
-  {
-    Logger.LogError($"Don't use {nameof(SaveChanges)} in EF. Use {nameof(SaveChangesAsync)}.");
-    if (_auditService == null || !IsAuditEnabledAsync().Result)
-    {
-      return SaveChangesAsync(CancellationToken.None).Result;
-    }
-
-    var entityAudits = _auditService.OnBeforeSaveChangesAsync(ChangeTracker).Result;
-    var result = base.SaveChanges(acceptAllChangesOnSuccess);
-    _auditService.OnAfterSaveChangesAsync(entityAudits).Wait();
-    return result;
-  }
-
-  public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-  {
-    if (_auditService == null || !(await IsAuditEnabledAsync()))
-      return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-
-    var entityAudits = await _auditService.OnBeforeSaveChangesAsync(ChangeTracker);
-    var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-    await _auditService.OnAfterSaveChangesAsync(entityAudits);
-
-    return result;
-  }
-
-  #endregion
 
   #region Settings
 
@@ -159,7 +65,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
 
   private async Task<SettingEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
-    List<SettingEntity> allSettings;
+    List<SettingEntity>? allSettings;
 
     var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
 
@@ -172,7 +78,7 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
         throw ex;
       }
 
-      allSettings = (allSettingsCache.Value as List<SettingEntity>)!;
+      allSettings = allSettingsCache.Value as List<SettingEntity>;
     }
     else
     {
@@ -294,20 +200,5 @@ public abstract class DbContextBase : DbContext, IBasicStorageModule
     }
 
     return res;
-  }
-
-  /// <summary>
-  /// Resolves problem with this situation. We have settings table where is audit on and audit structure is not created yet.
-  /// In this case is audit will be skipped.  
-  /// </summary>
-  private async Task<bool> IsAuditEnabledAsync()
-  {
-    if (_auditService == null)
-      return false;
-
-    // Check if db structure is already created.
-    var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));
-
-    return !string.IsNullOrEmpty(isAuditTable);
   }
 }

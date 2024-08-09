@@ -12,7 +12,14 @@ internal class AuditGetHandler(IStorageResolver storageResolver) : AuditModuleRe
       throw new ArgumentNullException($"{nameof(request.PKValue)} or {nameof(request.PKStringValue)} is null.");
 
     var res = new List<AuditValueData>();
-    var aa = await ReadAuditContexts().AllTableAuditAsync(request.TableName, request.SchemaName); // .Select(TestAttributeAuditData.Create);
+    IEnumerable<AuditValueEntity>? aa;
+    if (request.PKValue != null)
+      aa = await ReadAuditContexts().AuditItemsAsync(request.TableName, request.PKValue.Value, request.SchemaName);
+    else if (!string.IsNullOrEmpty(request.PKStringValue))
+      aa = await ReadAuditContexts().AuditItemsAsync(request.TableName, request.PKStringValue, request.SchemaName);
+    else
+      throw new Exception($"Primary key is not found. TableName: {request.TableName}; Schema: {request.SchemaName ?? string.Empty}");
+
     foreach (var grItem in aa.GroupBy(e =>
                new
                {

@@ -24,6 +24,11 @@ internal class MemoryTestStorageImpl(DbContextOptions<MemoryTestStorageImpl> opt
   {
     return 1;
   }
+  
+  protected override long IdLongGenerator<T>()
+  {
+    return 1;
+  }
 
   protected override string IdStringGenerator<T>()
   {

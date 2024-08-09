@@ -30,46 +30,16 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
   public DbSet<AuditUserEntity> AuditUsers { get; set; }
   public DbSet<AuditTableEntity> AuditTables { get; set; }
   public DbSet<AuditValueEntity> AuditValues { get; set; }
-
-  public override Task<T?> Get<T, TU>(TU id) where T : class
-  {
-    throw new NotImplementedException();
-    // if (id == null)
-    //   throw new ArgumentNullException($"{nameof(id)} is null.");
-    //
-    // var res = typeof(T) switch
-    // {
-    //   { } entityType when entityType == typeof(AuditEntity) => await Audits.FindAsync(Convert.ToInt64(id)) as T,
-    //   { } entityType when entityType == typeof(AuditValueEntity) => await AuditValues.FindAsync(Convert.ToInt64(id)) as T,
-    //   { } entityType when entityType == typeof(AuditColumnEntity) => await AuditColumns.FindAsync(Convert.ToInt32(id)) as T,
-    //   { } entityType when entityType == typeof(AuditUserEntity) => await AuditUsers.FindAsync(Convert.ToInt32(id)) as T,
-    //   { } entityType when entityType == typeof(AuditTableEntity) => await AuditTables.FindAsync(Convert.ToInt32(id)) as T,
-    //   _ => throw new Exception($"Unknown entity data type {typeof(T).Name} with primary key {id}.")
-    // };
-    // return res ?? throw new ArgumentNullException(nameof(res), @"Save function returned null value.");
-  }
   
-  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == pkValue).ToArrayAsync();
+  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, long pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == pkValue).ToArrayAsync();
   public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == pkValue).ToArrayAsync();
   public async Task<IEnumerable<AuditValueEntity>> AllTableAuditAsync(string tableName, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).ToArrayAsync();
 
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
-    var valuesTable = new List<AuditSqlValueItem>();
-    foreach (var oldValue in auditEntryItem.OldValues)
-    {
-      auditEntryItem.NewValues.TryGetValue(oldValue.Key, out var newValue);
-      var auditValue = AuditSqlValueItem.CreateValue(Logger, oldValue.Key, oldValue.Value, newValue);
-      if (auditValue != null)
-        valuesTable.Add(auditValue);
-    }
-
-    foreach (var newValue in auditEntryItem.NewValues.Where(kv => !auditEntryItem.OldValues.ContainsKey(kv.Key)))
-    {
-      var auditValue = AuditSqlValueItem.CreateValue(Logger, newValue.Key, null, newValue.Value);
-      if (auditValue != null)
-        valuesTable.Add(auditValue);
-    }
+    var valuesTable = auditEntryItem.ChangedColumns
+      .Select(change => AuditSqlValueItem.CreateValue(Logger, change.ColumnName, change.OldValue, change.NewValue))
+      .OfType<AuditSqlValueItem>().ToList();
 
     var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName);
     var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable.Select(a => a.AuditColumnName).ToList());
@@ -97,10 +67,6 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
 
     await Audits.AddAsync(auditEntity);
     await SaveChangesAsync();
-    
-    // await SaveInternal<AuditEntity, long>(auditEntity, auditEntity.Id,
-    //   async (a) => await Audits.AddAsync(auditEntity),
-    //   (i) => i.Id = IdIntGenerator<AuditEntity>());
   }
 
   private async Task<int> GetAuditUserIdAsync(string userId, string userName)
@@ -215,7 +181,7 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
 
       foreach (var missingDbColumn in missingColumnNamesInCache)
       {
-        // New audit column is appeared for exiting table, this column is not saved in db yet.
+        // New audit column is appeared for existing table, this column is not saved in db yet.
         if (dbColumnEntitiesForTable.SingleOrDefault(a => a.ColumnName == missingDbColumn) == null)
           missingDbColumns.Add(missingDbColumn);
       }

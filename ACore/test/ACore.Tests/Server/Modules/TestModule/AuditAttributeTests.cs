@@ -9,6 +9,7 @@ using ACore.Server.Modules.AuditModule.CQRS.Models;
 using FluentAssertions;
 using MediatR;
 using Xunit;
+// ReSharper disable NullableWarningSuppressionIsUsed
 
 namespace ACore.Tests.Server.Modules.TestModule;
 
@@ -191,42 +192,26 @@ public static class AuditAttributeTHelper
     // Assert.
     var allData = await mediator.Send(new TestAttributeAuditGetQuery());
     allData.Should().HaveCount(0);
+    
+    var resAuditItems = await mediator.Send(new AuditGetQuery(getTableName(entityName), res));
+    resAuditItems.Should().HaveCount(2);
+    resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
+    
+    
+    var auditItem = resAuditItems.Last();
+    auditItem.Columns.Should().HaveCount(3);
+    
+    var aid = auditItem.GetColumn(getColumnName(entityName, nameof(TestAttributeAuditData.Id)));
+    var aName = auditItem.GetColumn(getColumnName(entityName, nameof(TestAttributeAuditData.Name)));
+    var aCreated = auditItem.GetColumn(getColumnName(entityName, nameof(TestAttributeAuditData.Created)));
 
-    // var allAuditItems = await auditStorageModule.AllTableAuditAsync(getTableName(entityName));
-    //
-    // Assert.Equal(3, allAuditItems.Count(i => i.EntityState == EntityState.Deleted));
-    //
-    // var auditValues = await auditStorageModule.AuditItemsAsync(getTableName(entityName), item.Id);
-    // var auditVwAuditEntities = auditValues as AuditVwAuditEntity[] ?? auditValues.ToArray();
-    // Assert.Equal(6, auditVwAuditEntities.Length);
-    // var aid = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Id)) && a.EntityState == EntityState.Added);
-    // var aName = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Name)) && a.EntityState == EntityState.Added);
-    // var aCreated = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Created)) && a.EntityState == EntityState.Added);
-    //
-    // Assert.NotNull(aid);
-    // Assert.NotNull(aName);
-    // Assert.NotNull(aCreated);
-    // Assert.NotNull(aCreated.NewValueLong);
-    //
-    // Assert.Equal(aid.NewValueInt, item.Id);
-    // Assert.Equal(aName.NewValueString, testNameOld);
-    // Assert.Equal(new DateTime(aCreated.NewValueLong.Value), testDateTimeOld);
-    //
-    // var aidDeleted = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Id)) && a.EntityState == EntityState.Deleted);
-    // var aNameDeleted = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Name)) && a.EntityState == EntityState.Deleted);
-    // var aCreatedDeleted = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == getColumnName(entityName, nameof(TestAttributeAuditData.Created)) && a.EntityState == EntityState.Deleted);
-    //
-    // Assert.NotNull(aNameDeleted);
-    // Assert.NotNull(aCreatedDeleted);
-    // Assert.NotNull(aidDeleted);
-    //
-    // Assert.Null(aCreatedDeleted.NewValueLong);
-    // Assert.Null(aNameDeleted.NewValueString);
-    // Assert.Null(aidDeleted.NewValueInt);
-    // Assert.NotNull(aCreatedDeleted.OldValueLong);
-    //
-    // Assert.Equal(aidDeleted.OldValueInt, item.Id);
-    // Assert.Equal(aNameDeleted.OldValueString, testNameOld);
-    // Assert.Equal(new DateTime(aCreatedDeleted.OldValueLong.Value), testDateTimeOld);
+    aid.Should().NotBeNull();
+    aName.Should().NotBeNull();
+    aName!.OldValue.Should().NotBeNull();
+    aName.NewValue.Should().BeNull();
+    aCreated.Should().NotBeNull();
+    aCreated!.OldValue.Should().NotBeNull();
+    aCreated.NewValue.Should().BeNull();
+    
   }
 }

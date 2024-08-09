@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ACore.AppTest.Modules.TestModule.Storages.EF.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -22,11 +23,11 @@ internal class TestAttributeAuditEntity: IntStorageEntity
   public Guid UId { get; set; } = Guid.Empty;
   
   [MaxLength(50)]
-  public string Name { get; set; } = null!;
+  public string Name { get; set; } = string.Empty;
 
   [NotAuditable]
   [MaxLength(50)]
-  public string NotAuditableColumn { get; set; } = null!;
+  public string NotAuditableColumn { get; set; } = string.Empty;
   
   public DateTime Created { get; set; }
 }

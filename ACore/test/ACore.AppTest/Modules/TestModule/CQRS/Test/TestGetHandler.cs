@@ -2,6 +2,7 @@
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Storages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.Test;
 
@@ -9,6 +10,7 @@ internal class TestGetHandler(IStorageResolver storageResolver) : TestModuleRequ
 {
   public override async Task<IEnumerable<TestData>> Handle(TestGetQuery request, CancellationToken cancellationToken)
   {
-    return (await ReadTestStorageWriteContexts().All<TestEntity>()).Select(TestData.Create);
+    var db = ReadTestStorageWriteContexts().DbSet<TestEntity>() ?? throw new Exception();
+    return await db.Select(a => TestData.Create(a)).ToArrayAsync(cancellationToken: cancellationToken);
   }
 }

@@ -12,11 +12,8 @@ public class AuditMongoEntity
   [BsonElement("oid")]
   public string ObjectId { get; set; } = null!;
   
-  [BsonElement("o")]
-  public List<AuditMongoValueEntity>? OldValues { get; set; }
-
-  [BsonElement("n")]
-  public List<AuditMongoValueEntity>? NewValues { get; set; }
+  [BsonElement("c")]
+  public List<AuditMongoValueEntity>? Columns { get; set; }
   
   [BsonElement("t")]
   public DateTime Time { get; set; }

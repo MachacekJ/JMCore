@@ -1,6 +1,5 @@
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Extensions;
-using ACore.Server.Storages.Models;
 
 namespace ACore.AppTest.Modules.TestModule.Models;
 
@@ -14,5 +13,18 @@ public class TestPKStringData
     var testPKGuidData = new TestPKStringData();
     testPKGuidData.CopyPropertiesFrom(entity);
     return testPKGuidData;
+  }
+}
+
+public static class TestPKStringDataExtensions
+{
+  internal static TestPKStringEntity ToEntity(this TestPKStringData data)
+  {
+    var en = new TestPKStringEntity
+    {
+      Name = string.Empty
+    };
+    en.CopyPropertiesFrom(data);
+    return en;
   }
 }

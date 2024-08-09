@@ -4,9 +4,11 @@ namespace ACore.Server.MongoStorage.AuditModule.Models;
 
 public class AuditMongoValueEntity
 {
-  [BsonElement("p")]
+  [BsonElement("n")]
   public string Property { get; set; }
 
-  [BsonElement("v")]
-  public string Value { get; set; }
+  [BsonElement("ov")]
+  public string OldValue { get; set; }
+  [BsonElement("nv")]
+  public string NewValue { get; set; }
 }

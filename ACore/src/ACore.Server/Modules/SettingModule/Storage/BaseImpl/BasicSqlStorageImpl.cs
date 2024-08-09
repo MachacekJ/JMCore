@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace ACore.Server.Modules.SettingModule.Storage.BaseImpl;
 
 public abstract class BasicSqlStorageImpl(DbContextOptions options, IMediator mediator, IAuditDbService? auditService, ILogger<BasicSqlStorageImpl> logger)
-  : DbContextBase(options, mediator, logger, auditService)
+  : AuditableDbContext(options, mediator, logger, auditService)
 {
   protected override string ModuleName => nameof(IBasicStorageModule);
 

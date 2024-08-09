@@ -16,17 +16,12 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
   protected override string ModuleName => nameof(IAuditStorageModule);
-
-  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
-  {
-    throw new NotImplementedException();
-  }
   
   public DbSet<AuditMongoEntity> Audits { get; set; }
 
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
-    if (!auditEntryItem.OldValues.Any() && !auditEntryItem.NewValues.Any())
+    if (!auditEntryItem.ChangedColumns.Any())
       return;
     
     var entityNameFullName = string.Empty;
@@ -54,23 +49,19 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
       },
       EntityState = auditEntryItem.EntityState,
       Time = DateTime.UtcNow,
-      OldValues = auditEntryItem.OldValues.Select(e=>new AuditMongoValueEntity()
+      Columns =auditEntryItem.ChangedColumns.Select(e=>new AuditMongoValueEntity()
       {
-        Property = e.Key,
-        Value = Newtonsoft.Json.JsonConvert.SerializeObject(e.Value)
-      }).ToList(),
-      NewValues = auditEntryItem.NewValues.Select(e=>new AuditMongoValueEntity()
-      {
-        Property = e.Key,
-        Value = Newtonsoft.Json.JsonConvert.SerializeObject(e.Value)
-      }).ToList(),
+        Property = e.ColumnName,
+        NewValue = Newtonsoft.Json.JsonConvert.SerializeObject(e.NewValue),
+        OldValue = Newtonsoft.Json.JsonConvert.SerializeObject(e.OldValue), 
+      }).ToList()
     };
     
     await Audits.AddAsync(auditEntity);
     await SaveChangesAsync();
   }
 
-  public Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, int pkValue, string? schemaName = null)
+  public Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, long pkValue, string? schemaName = null)
   {
     throw new NotImplementedException();
   }

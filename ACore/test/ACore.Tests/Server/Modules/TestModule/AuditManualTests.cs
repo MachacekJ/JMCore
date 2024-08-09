@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using ACore.AppTest.Modules.TestModule.CQRS.Test;
 using ACore.AppTest.Modules.TestModule.CQRS.TestManualAudit;
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.AuditModule.CQRS.Audit;
+using ACore.Server.Modules.AuditModule.CQRS.Models;
 using ACore.Server.Modules.AuditModule.EF;
-using ACore.Server.Modules.AuditModule.Storage.Models;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-
+// ReSharper disable NullableWarningSuppressionIsUsed
 namespace ACore.Tests.Server.Modules.TestModule;
 
 /// <summary>
@@ -35,46 +34,19 @@ public class AuditManualTests : AuditStorageBaseTests
     sc.AddScoped<IAuditDbService, AuditDbService>();
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
   }
-
-  [Fact]
-  public async Task NoAudit()
-  {
-    var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () =>
-    {
-      var testDateTime = DateTime.Now;
-      const string testName = "AuditTest";
-
-      var item = new TestData()
-      {
-        Created = testDateTime,
-        Name = testName,
-      };
-      
-      var res = await Mediator.Send(new TestSaveCommand(item));
-      res.Should().BeGreaterThan(0);
-
-      // Assert.
-      var allTestData = await Mediator.Send(new TestGetQuery());
-      allTestData.Count().Should().Be(1);
-      
-   //   var isAudit = await AuditStorageModule.AuditItemsAsync("Test", item.Id);
-     // isAudit.Count().Should().Be(0);
-    });
-  }
-
-
+  
   [Fact]
   public async Task AddItemAsync()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var testDateTime = DateTime.Now;
+      var testDateTime = DateTime.UtcNow;
       var testName = "AuditTest";
+      var entityName = "TestManualAuditEntity";
 
       // Action.
-      var item = new TestManualAuditData()
+      var item = new TestManualAuditData
       {
         Created = testDateTime,
         Name = testName,
@@ -85,28 +57,30 @@ public class AuditManualTests : AuditStorageBaseTests
       res.Should().BeGreaterThan(0);
 
       // Assert.
-      var allTestData = await Mediator.Send(new TestManualAuditGetQuery());
-      allTestData.Count().Should().Be(1);
+      var allData = await Mediator.Send(new TestManualAuditGetQuery());
+      allData.Should().HaveCount(1);
+    
+      var savedItem = allData.Single();
+      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), savedItem.Id));
+      resAuditItems.Should().HaveCount(1);
+      resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
+    
+      var auditItem = resAuditItems.Single();
+      auditItem.Columns.Should().HaveCount(3);
 
-      // var auditValues = await AuditStorageModule.AuditItemsAsync(TestManualAuditEntityName, item.Id);
-      // var auditVwAuditEntities = auditValues as AuditVwAuditEntity[] ?? auditValues.ToArray();
-      // auditVwAuditEntities.Length.Should().Be(3);
-      //
-      // var aid = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == "Id");
-      // var aName = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == "Name");
-      // var aCreated = auditVwAuditEntities.FirstOrDefault(a => a.ColumnName == "Created");
-      //
-      // Assert.NotNull(aid);
-      // Assert.NotNull(aName);
-      // Assert.NotNull(aCreated);
-      // Assert.NotNull(aName.NewValueString);
-      // Assert.NotNull(aCreated.NewValueLong);
-      //
-      // Assert.True(aid.AuditId == aName.AuditId && aid.AuditId == aCreated.AuditId);
-      // Assert.Equal(aid.NewValueInt, item.Id);
-      // Assert.Equal(aName.NewValueString, testName);
-      // Assert.Equal(new DateTime(aCreated.NewValueLong.Value), testDateTime);
+      var aid = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Id)));
+      var aName = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Name)));
+      var aCreated = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Created)));
 
+      aid.Should().NotBeNull();
+      aName.Should().NotBeNull();
+      aName!.NewValue.Should().NotBeNull();
+      aCreated.Should().NotBeNull();
+      aCreated!.NewValue.Should().NotBeNull();
+    
+      aid!.NewValue.Should().Be(savedItem.Id);
+      aName.NewValue.Should().Be(testName);
+      new DateTime(Convert.ToInt64(aCreated.NewValue)).Should().Be(testDateTime);
     });
   }
 
@@ -116,14 +90,15 @@ public class AuditManualTests : AuditStorageBaseTests
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var testDateTimeOld = DateTime.Now;
+      var testDateTime = DateTime.UtcNow;
       var testNameOld = "AuditTest";
       var testNameNew = "AuditTestNew";
+      var entityName = "TestManualAuditEntity";
 
       // Action.
       var item = new TestManualAuditData()
       {
-        Created = testDateTimeOld,
+        Created = testDateTime,
         Name = testNameOld,
         NotAuditableColumn = "Audit"
       };
@@ -131,14 +106,56 @@ public class AuditManualTests : AuditStorageBaseTests
       var res = await Mediator.Send(new TestManualAuditSaveCommand(item));
       res.Should().BeGreaterThan(0);
 
+      item.Id = res;
       item.Name = testNameNew;
-     // item.Created = testDateTimeNew;
-     var res2 = await Mediator.Send(new TestManualAuditSaveCommand(item));
-     res2.Should().Be(res);
+
+      var res2 = await Mediator.Send(new TestManualAuditSaveCommand(item));
+      res2.Should().Be(res);
 
       // Assert.
-      var allTestData = await Mediator.Send(new TestManualAuditGetQuery());
-      allTestData.Count().Should().Be(1);
+      var allData = await Mediator.Send(new TestManualAuditGetQuery());
+      allData.Should().HaveCount(1);
+    
+      var savedItem = allData.Single();
+      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), savedItem.Id));
+    
+      resAuditItems.Should().HaveCount(2);
+      resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
+    
+    
+      var auditItem = resAuditItems.Last();
+      auditItem.Columns.Should().HaveCount(1);
+    
+      var aName = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Name)));
+      aName.Should().NotBeNull();
+      aName!.NewValue.Should().NotBeNull();
+      aName.OldValue.Should().NotBeNull();
+      aName.OldValue.Should().Be(testNameOld);
+      aName.NewValue.Should().Be(testNameNew);
+      
+     //  var testDateTimeOld = DateTime.Now;
+     //  var testNameOld = "AuditTest";
+     //  var testNameNew = "AuditTestNew";
+     //
+     //  // Action.
+     //  var item = new TestManualAuditData()
+     //  {
+     //    Created = testDateTimeOld,
+     //    Name = testNameOld,
+     //    NotAuditableColumn = "Audit"
+     //  };
+     //
+     //  var res = await Mediator.Send(new TestManualAuditSaveCommand(item));
+     //  res.Should().BeGreaterThan(0);
+     //
+     //  item.Name = testNameNew;
+     // // item.Created = testDateTimeNew;
+     // var res2 = await Mediator.Send(new TestManualAuditSaveCommand(item));
+     // res2.Should().Be(res);
+     //
+     //  // Assert.
+     //  var allTestData = await Mediator.Send(new TestManualAuditGetQuery());
+     //  allTestData.Count().Should().Be(1);
 
       // var allAuditItems = await AuditStorageModule.AllTableAuditAsync(TestManualAuditEntityName);
       // Assert.Equal(1, allAuditItems.Count(i => i.EntityState == EntityState.Modified));
@@ -175,8 +192,9 @@ public class AuditManualTests : AuditStorageBaseTests
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var testDateTimeOld = DateTime.Now;
+      var testDateTimeOld = DateTime.UtcNow;
       var testNameOld = "AuditTest";
+      var entityName = "TestManualAuditEntity";
 
       // Action.
       var item = new TestManualAuditData()
@@ -189,12 +207,55 @@ public class AuditManualTests : AuditStorageBaseTests
       var res = await Mediator.Send(new TestManualAuditSaveCommand(item));
       res.Should().BeGreaterThan(0);
 
+      item.Id = res;
+    
       var res2 = await Mediator.Send(new TestManualAuditDeleteCommand(item));
       res2.Should().Be(true);
-      
+
       // Assert.
-      var allTestData = await Mediator.Send(new TestManualAuditGetQuery());
-      allTestData.Count().Should().Be(0);
+      var allData = await Mediator.Send(new TestManualAuditGetQuery());
+      allData.Should().HaveCount(0);
+    
+      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), res));
+      resAuditItems.Should().HaveCount(2);
+      resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
+    
+    
+      var auditItem = resAuditItems.Last();
+      auditItem.Columns.Should().HaveCount(3);
+    
+      var aid = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Id)));
+      var aName = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Name)));
+      var aCreated = auditItem.GetColumn(GetColumnName(entityName, nameof(TestManualAuditData.Created)));
+
+      aid.Should().NotBeNull();
+      aName.Should().NotBeNull();
+      aName!.OldValue.Should().NotBeNull();
+      aName.NewValue.Should().BeNull();
+      aCreated.Should().NotBeNull();
+      aCreated!.OldValue.Should().NotBeNull();
+      aCreated.NewValue.Should().BeNull();
+      
+      // var testDateTimeOld = DateTime.Now;
+      // var testNameOld = "AuditTest";
+      //
+      // // Action.
+      // var item = new TestManualAuditData()
+      // {
+      //   Created = testDateTimeOld,
+      //   Name = testNameOld,
+      //   NotAuditableColumn = "Audit"
+      // };
+      //
+      // var res = await Mediator.Send(new TestManualAuditSaveCommand(item));
+      // res.Should().BeGreaterThan(0);
+      //
+      // var res2 = await Mediator.Send(new TestManualAuditDeleteCommand(item));
+      // res2.Should().Be(true);
+      //
+      // // Assert.
+      // var allTestData = await Mediator.Send(new TestManualAuditGetQuery());
+      // allTestData.Count().Should().Be(0);
 
       // var allAuditItems = await AuditStorageModule.AllTableAuditAsync(TestManualAuditEntityName);
       //

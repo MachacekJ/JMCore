@@ -1,6 +1,7 @@
 ﻿using ACore.AppTest.Modules.TestModule.Models;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Storages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid;
 
@@ -8,6 +9,7 @@ internal class TestPKGuidGetHandler(IStorageResolver storageResolver) : TestModu
 {
   public override async Task<IEnumerable<TestPKGuidData>> Handle(TestPKGuidGetQuery request, CancellationToken cancellationToken)
   {
-    return (await ReadTestStorageWriteContexts().All<TestPKGuidEntity>()).Select(TestPKGuidData.Create);
+    var db = ReadTestStorageWriteContexts().DbSet<TestPKGuidEntity>() ?? throw new Exception();
+    return await db.Select(a => TestPKGuidData.Create(a)).ToArrayAsync(cancellationToken: cancellationToken);
   }
 }

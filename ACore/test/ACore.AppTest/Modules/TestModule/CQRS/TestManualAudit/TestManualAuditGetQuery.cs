@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestManualAudit;
 
-public class TestManualAuditGetQuery: TestModuleRequest<IEnumerable<TestManualAuditData>>
+public class TestManualAuditGetQuery: TestModuleRequest<TestManualAuditData[]>
 {
   
 }

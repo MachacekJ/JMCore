@@ -3,10 +3,7 @@ using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models;
 using Microsoft.EntityFrameworkCore;
 
-// ReSharper disable once PropertyCanBeMadeInitOnly.Global
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 namespace ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 
 [Auditable]
@@ -28,17 +25,17 @@ internal class TestValueTypeEntity : IntStorageEntity
   public decimal Decimal2 { get; set; }
 
   [MaxLength(10)]
-  public string NChar2 { get; set; } = null!;
+  public string NChar2 { get; set; } = string.Empty;
 
   [MaxLength(10)]
-  public string NVarChar2 { get; set; } = null!;
+  public string NVarChar2 { get; set; } = string.Empty;
 
   public DateTime SmallDateTime2 { get; set; }
   public short SmallInt2 { get; set; }
   public byte TinyInt2 { get; set; }
   public Guid Guid2 { get; set; }
-  public byte[] VarBinary2 { get; set; } = null!;
+  public byte[] VarBinary2 { get; set; } = [];
 
   [MaxLength(100)]
-  public string VarChar2 { get; set; } = null!;
+  public string VarChar2 { get; set; } = string.Empty;
 }

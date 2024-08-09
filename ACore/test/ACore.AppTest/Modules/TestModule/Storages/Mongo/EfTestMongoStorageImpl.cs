@@ -50,6 +50,10 @@ internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> o
     return 1;
   }
 
+  protected override long IdLongGenerator<T>()
+  {
+    return 1;
+  }
   protected override string IdStringGenerator<T>()
   {
     return IdGuidGenerator<T>().ToString();

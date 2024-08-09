@@ -13,19 +13,20 @@ public class TestCategoryEntity
   public int Id { get; set; }
   
   [Column("name")]
-  public string Name { get; set; } = null!;
+  [MaxLength(200)]
+  public string Name { get; set; } = string.Empty;
   
   [Column("test_menu_id")]
   public int MenuId { get; set; }
  
   [Column("test_category_parent_id")]
   public int? ParentCategoryId { get; set; }
-  
+
   [ForeignKey(nameof(MenuId))]
-  public TestMenuEntity MenuEntity { get; set; }
+  public TestMenuEntity? MenuEntity { get; set; }
   
   [ForeignKey(nameof(ParentCategoryId))]
   public TestCategoryEntity? ParentCategory { get; set; }
-  
+
   public ICollection<TestCategoryEntity>? SubCategories { get; set; }
 }

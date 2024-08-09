@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Storages.Models;
+#pragma warning disable CS8603 // Possible null reference return.
 
 namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG;
 
@@ -43,11 +44,11 @@ public static class PGTestStorageDbNames
   {
     { e => e.Id, "test_value_type_id" },
     { e => e.IntNotNull, "int_not_null" },
-    { e => e.IntNull!, "int_null" },
+    { e => e.IntNull, "int_null" },
     { e => e.BigIntNotNull, "big_int_not_null" },
-    { e => e.BigIntNull!, "big_int_null" },
+    { e => e.BigIntNull, "big_int_null" },
     { e => e.Bit2, "bit2" },
-    { e => e.Char2!, "char2" },
+    { e => e.Char2, "char2" },
     { e => e.Date2, "date2" },
     { e => e.DateTime2, "datetime2" },
     { e => e.Decimal2, "decimal2" },

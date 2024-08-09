@@ -45,6 +45,11 @@ internal class PGEFTestStorageImpl(DbContextOptions<PGEFTestStorageImpl> options
     return 0;
   }
 
+  protected override long IdLongGenerator<T>()
+  {
+    return 0;
+  }
+
   protected override string IdStringGenerator<T>()
   {
     return IdGuidGenerator<T>().ToString();

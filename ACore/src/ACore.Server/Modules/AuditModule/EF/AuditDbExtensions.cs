@@ -38,7 +38,7 @@ internal static class AuditDbExtensions
 
     return propertyInfo != null && !columns.Contains(propertyInfo.Name);
   }
-
+  
   public static long? PrimaryKeyValue(this EntityEntry entry)
   {
     var primaryKey = entry.Metadata.FindPrimaryKey();

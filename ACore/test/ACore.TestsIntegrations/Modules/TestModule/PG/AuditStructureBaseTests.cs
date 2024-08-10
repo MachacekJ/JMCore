@@ -1,4 +1,5 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.AppTest.Modules.TestModule.Storages.Mongo;
 using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
@@ -41,7 +42,7 @@ public abstract class AuditStructureBaseTests : StorageBaseTests
     return storageType switch
     {
       StorageTypeEnum.Memory => entityName,
-      StorageTypeEnum.Mongo => entityName,
+      StorageTypeEnum.Mongo => MongoTestStorageDbNames.ObjectNameMapping[entityName].TableName,
       StorageTypeEnum.Postgres => PGTestStorageDbNames.ObjectNameMapping[entityName].TableName,
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };
@@ -52,7 +53,7 @@ public abstract class AuditStructureBaseTests : StorageBaseTests
     return storageType switch
     {
       StorageTypeEnum.Memory => entityName,
-      StorageTypeEnum.Mongo => entityName,
+      StorageTypeEnum.Mongo => MongoTestStorageDbNames.ObjectNameMapping[entityName].ColumnNames[propName],
       StorageTypeEnum.Postgres => PGTestStorageDbNames.ObjectNameMapping[entityName].ColumnNames[propName],
       _ => throw new Exception($"Register name of table '{Enum.GetName(storageType.GetType(), storageType)}' for '{entityName}'.")
     };

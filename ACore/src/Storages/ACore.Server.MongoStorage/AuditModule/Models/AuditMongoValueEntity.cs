@@ -6,9 +6,12 @@ public class AuditMongoValueEntity
 {
   [BsonElement("n")]
   public string Property { get; set; }
+  
+  [BsonElement("t")]
+  public string DataType { get; set; }
 
   [BsonElement("ov")]
-  public string OldValue { get; set; }
+  public string? OldValue { get; set; }
   [BsonElement("nv")]
-  public string NewValue { get; set; }
+  public string? NewValue { get; set; }
 }

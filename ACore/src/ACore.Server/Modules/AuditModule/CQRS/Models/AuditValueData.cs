@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.Models;
@@ -18,11 +17,12 @@ public class AuditValueData
   public AuditValueColumnData[] Columns { get; set; } = [];
 }
 
-public class AuditValueColumnData
+public class AuditValueColumnData(string columnName, string dataType, object? oldValue, object? newValue)
 {
-  public string ColumnName { get; set; } = null!;
-  public object? OldValue { get; set; }
-  public object? NewValue { get; set; }
+  public string ColumnName { get; } = columnName;
+  public string DataType { get; } = dataType;
+  public object? OldValue { get; } = oldValue;
+  public object? NewValue { get; } = newValue;
 }
 
 public static class AuditValueDataExtensions
@@ -31,6 +31,7 @@ public static class AuditValueDataExtensions
   {
     return auditValueData.Columns.SingleOrDefault(e => e.ColumnName == columnName);
   }
+
   public static AuditStateEnum ToAuditStateEnum(this EntityState entityState)
   {
     return entityState switch

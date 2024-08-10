@@ -1,7 +1,7 @@
-﻿using ACore.Server.Modules.AuditModule.CQRS.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using ACore.Server.Modules.AuditModule.CQRS.Models;
 using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage;
-using ACore.Server.Modules.AuditModule.Storage.Models;
 using ACore.Server.MongoStorage.AuditModule.Models;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
@@ -9,7 +9,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ACore.Server.MongoStorage.AuditModule;
@@ -41,8 +40,9 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
       Columns = auditEntryItem.ChangedColumns.Select(e => new AuditMongoValueEntity()
       {
         Property = e.ColumnName,
-        NewValue = Newtonsoft.Json.JsonConvert.SerializeObject(e.NewValue),
-        OldValue = Newtonsoft.Json.JsonConvert.SerializeObject(e.OldValue),
+        DataType = e.DataType.FullName ?? string.Empty,
+        NewValue = e.NewValue?.ToString(),
+        OldValue = e.OldValue?.ToString(),
       }).ToList()
     };
 
@@ -66,21 +66,47 @@ public class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> optio
       };
 
       var ccc = new List<AuditValueColumnData>();
+
       foreach (var col in imte.Columns)
       {
+        var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{imte._id}'");
         var bb = new AuditValueColumnData
-        {
-          ColumnName = col.Property,
-          NewValue = col.NewValue,
-          OldValue = col.OldValue
-        };
+        (
+          col.Property,
+          coltype,
+          CC(col.OldValue, coltype),
+          CC(col.NewValue, coltype)
+        );
         ccc.Add(bb);
       }
 
       aa.Columns = ccc.ToArray();
       ll.Add(aa);
     }
+
     return ll.ToArray();
+  }
+
+  private object? CC(string? value, string dataType)
+  {
+    if (string.IsNullOrEmpty(dataType))
+      throw new ArgumentNullException($"Data type is null.");
+
+    if (value == null || value == "null")
+      return null;
+    
+    if (dataType == typeof(ObjectId).FullName)
+      return new ObjectId(value);
+    
+    var type = Type.GetType(dataType);
+    if (type == null)
+      throw new Exception($"Cannot create data type '{dataType}'.");
+
+
+    
+    
+    var c = Convert.ChangeType(value, type);
+    return c;
   }
 
   private static string GetObjectId(string collection, ObjectId pk) => $"{collection}.{pk}";

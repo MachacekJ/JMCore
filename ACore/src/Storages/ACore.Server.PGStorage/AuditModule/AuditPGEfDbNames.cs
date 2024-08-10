@@ -19,7 +19,8 @@ public static class AuditPGEfDbNames
   {
     { e => e.Id, "audit_column_id" },
     { e => e.AuditTableId, "audit_table_id" },
-    { e => e.ColumnName, "column_name" }
+    { e => e.ColumnName, "column_name" } ,
+    { e => e.DataType, "data_type" }
   };
   
   private static Dictionary<Expression<Func<AuditEntity, object>>, string> AuditEntityColumnNames => new()

@@ -17,7 +17,7 @@ public class V1_0_1_1TestTable : DbVersionScriptsBase
       
         var client = new MongoClient(connectionString);
         var db = client.GetDatabase(ext.DatabaseName);
-        db.CreateCollection(EfTestMongoStorageImpl.TestCollectionName);
-        logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", EfTestMongoStorageImpl.TestCollectionName, ext.DatabaseName);
+      //  db.CreateCollection(EfTestMongoStorageImpl.TestCollectionName);
+      //  logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", EfTestMongoStorageImpl.TestCollectionName, ext.DatabaseName);
     }
 }

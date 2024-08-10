@@ -8,11 +8,17 @@ public class AuditColumnEntity
   [Key]
   public int Id { get; set; }
 
+  [Required]
   public int AuditTableId { get; set; }
 
   [MaxLength(255)]
-  public string ColumnName { get; set; } = null!;
+  [Required]
+  public string ColumnName { get; set; } = string.Empty;
 
+  [MaxLength(1024)]
+  [Required]
+  public string DataType { get; set; } = string.Empty;
+  
   [ForeignKey("AuditTableId")]
-  public AuditTableEntity AuditTable { get; set; } = null!;
+  public AuditTableEntity? AuditTable { get; set; }
 }

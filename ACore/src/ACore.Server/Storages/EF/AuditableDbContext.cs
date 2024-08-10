@@ -7,6 +7,7 @@ using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Storages.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 
@@ -89,7 +90,7 @@ public abstract class AuditableDbContext : DbContextBase
   {
     if (id == null)
       ArgumentNullException.ThrowIfNull(id);
-    
+
     return typeof(TU) switch
     {
       { } entityType when entityType == typeof(int) => (int)Convert.ChangeType(id, typeof(int)) == 0,
@@ -128,18 +129,44 @@ public abstract class AuditableDbContext : DbContextBase
       return null;
 
     var dbEntityType = Model.FindEntityType(typeof(TEntity)) ?? throw new Exception($"Unknown db entity class '{typeof(TEntity).Name}'");
-    var tableName = dbEntityType.GetTableName() ?? throw new Exception($"Unknown db table name for entity class '{typeof(TEntity).Name}'");
+    var tableName = GetTableName(dbEntityType) ?? throw new Exception($"Unknown db table name for entity class '{typeof(TEntity).Name}'");
     var schemaName = dbEntityType.GetSchema();
     var audit = new AuditEntryItem(tableName, schemaName, id, _auditService.AuditUserProvider)
       { EntityState = state };
     return (audit, dbEntityType);
   }
 
+  private string? GetTableName(IEntityType dbEntityType)
+  {
+    var tableName = dbEntityType.GetTableName();
+    if (StorageDefinition.DataAnnotationTableNameKey == null)
+      return tableName;
+
+    var anno = dbEntityType.GetAnnotation(StorageDefinition.DataAnnotationTableNameKey).Value?.ToString();
+    if (anno != null)
+      tableName = anno;
+
+    return tableName;
+  }
+
   private string? GetColumnName<T>(IEntityType dbEntityType, string propName)
   {
+    if (!typeof(T).IsAuditable(propName, _auditConfiguration?.NotAuditProperty))
+      return null;
+
     var property = dbEntityType.GetProperties().SingleOrDefault(property => property.Name.Equals(propName, StringComparison.OrdinalIgnoreCase));
-    var columnName = property?.GetColumnName();
-    return columnName != null && typeof(T).IsAuditable(propName, _auditConfiguration?.NotAuditProperty) ? columnName : null;
+    if (property == null)
+      return null;
+
+    var columnName = property.GetColumnName();
+    if (StorageDefinition.DataAnnotationColumnNameKey == null)
+      return columnName;
+
+    var anno = property.GetAnnotation(StorageDefinition.DataAnnotationColumnNameKey).Value?.ToString();
+    if (anno != null)
+      columnName = anno;
+
+    return columnName;
   }
 
   /// <summary>

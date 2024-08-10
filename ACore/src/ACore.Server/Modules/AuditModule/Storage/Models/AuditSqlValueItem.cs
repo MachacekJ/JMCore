@@ -1,13 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using ACore.Server.Modules.AuditModule.Models;
 using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Modules.AuditModule.Storage.Models;
 
-public class AuditSqlValueItem
+public class AuditSqlValueItem(string colname, Type dataType)
 {
   public const int MaxStringSize = 10000;
-
-  public string AuditColumnName { get; set; } = null!;
+  public string AuditColumnName { get; } = colname;
+  
+  public Type AuditColumnDataType { get; } = dataType;
   public string? OldValueString { get; set; }
   public string? NewValueString { get; set; }
   public int? OldValueInt { get; set; }
@@ -18,15 +19,14 @@ public class AuditSqlValueItem
   public bool? NewValueBool { get; set; }
   public Guid? OldValueGuid { get; set; }
   public Guid? NewValueGuid { get; set; }
-  
-  public static AuditSqlValueItem? CreateValue(ILogger logger, string columnName, object? oldValue, object? newValue)
-  {
-    var value = new AuditSqlValueItem();
-    value.AuditColumnName = columnName;
 
-    if (oldValue != null)
+  public static AuditSqlValueItem? CreateValue(ILogger logger, AuditEntryValueItem coll)
+  {
+    var value = new AuditSqlValueItem(coll.ColumnName, coll.DataType);
+
+    if (coll.OldValue != null)
     {
-      switch (oldValue)
+      switch (coll.OldValue)
       {
         case byte b:
           value.OldValueInt = b;
@@ -56,14 +56,16 @@ public class AuditSqlValueItem
           value.OldValueString = st;
           break;
         default:
-          value.OldValueString = ToValueString(logger, oldValue);
+          // TODO try retype
+          throw new Exception("TODO try retype");
+         // value.OldValueString = ToValueString(logger, coll.OldValue);
           break;
       }
     }
 
-    if (newValue != null)
+    if (coll.NewValue != null)
     {
-      switch (newValue)
+      switch (coll.NewValue)
       {
         case byte b:
           value.NewValueInt = b;
@@ -93,11 +95,13 @@ public class AuditSqlValueItem
           value.NewValueString = st;
           break;
         default:
-          value.NewValueString = ToValueString(logger, newValue);
+          // TODO try retype
+          throw new Exception("TODO try retype");
+          // value.OldValueString = ToValueString(logger, coll.NewValue
           break;
       }
     }
-    
+
     if (value.OldValueInt == value.NewValueInt &&
         value.OldValueLong == value.NewValueLong &&
         value.OldValueBool == value.NewValueBool &&
@@ -108,23 +112,23 @@ public class AuditSqlValueItem
     return value;
   }
 
-  private static string ToValueString(ILogger logger, object value)
-  {
-    var valueString = Newtonsoft.Json.JsonConvert.SerializeObject(value);
-
-    switch (value)
-    {
-      case decimal:
-      case byte[]:
-        break;
-      default:
-        throw new Exception($"Unknown type for audit. Type: {value.GetType()}; Value:{valueString}");
-    }
-
-    if (valueString.Length > MaxStringSize)
-      // This message is used in unit test.
-      logger.LogError("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}", MaxStringSize, valueString);
-
-    return valueString;
-  }
+  // private static string ToValueString(ILogger logger, object value)
+  // {
+  //   var valueString = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+  //
+  //   switch (value)
+  //   {
+  //     case decimal:
+  //     case byte[]:
+  //       break;
+  //     default:
+  //       throw new Exception($"Unknown type for audit. Type: {value.GetType()}; Value:{valueString}");
+  //   }
+  //
+  //   if (valueString.Length > MaxStringSize)
+  //     // This message is used in unit test.
+  //     logger.LogError("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}", MaxStringSize, valueString);
+  //
+  //   return valueString;
+  // }
 }

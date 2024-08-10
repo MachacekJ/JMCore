@@ -44,17 +44,12 @@ internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> o
   {
     return ObjectId.GenerateNewId();
   }
-
-  public const string TestCollectionName = "test";
-  public const string TestAttributeCollectionName = "testAtrribute";
-  public const string TestRootCategoryCollectionName = "testRootCategory";
-
-  public const string TestCategoryCollectionName = "testCategory";
+  
   // public DbSet<TestRootCategory> TestParents { get; set; }
   //public DbSet<TestCategory> TestChildren { get; set; }
 
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
-  
+
   public async Task<TPK> Save<TEntity, TPK>(TEntity data) where TEntity : class
   {
     ArgumentNullException.ThrowIfNull(data);
@@ -163,16 +158,16 @@ internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> o
   {
     base.OnModelCreating(modelBuilder);
     //  modelBuilder.Entity<TestEntity>().ToCollection(TestCollectionName);
-    modelBuilder.Entity<TestAttributeAuditMongoEntity>().ToCollection(TestAttributeCollectionName);
+    modelBuilder.Entity<TestAttributeAuditMongoEntity>().ToCollection(MongoTestStorageDbNames.ObjectNameMapping[nameof(TestAttributeAuditMongoEntity)].TableName);
     //  modelBuilder.Entity<TestRootCategory>().ToCollection(TestRootCategoryCollectionName);
     //  modelBuilder.Entity<TestCategory>().ToCollection(TestCategoryCollectionName);
 
-   // modelBuilder.Entity<TestEntity>().HasKey(p => p.UId);
+    // modelBuilder.Entity<TestEntity>().HasKey(p => p.UId);
     modelBuilder.Entity<TestAttributeAuditMongoEntity>().HasKey(p => p.Id);
     //
-    // modelBuilder.Entity<TestEntity>(builder =>
-    //   builder.Property(entity => entity.UId).HasElementName("_id")
-    // );
+    modelBuilder.Entity<TestAttributeAuditMongoEntity>(builder =>
+      builder.Property(entity => entity.Id).HasElementName("_id")
+    );
     // modelBuilder.Entity<TestAttributeAuditEntity>(builder =>
     //   builder.Property(entity => entity.UId).HasElementName("_id")
     // );

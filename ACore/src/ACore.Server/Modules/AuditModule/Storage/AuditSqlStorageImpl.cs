@@ -59,12 +59,12 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
       var cc = new List<AuditValueColumnData>();
       foreach (var col in grItem.ToArray())
       {
-        cc.Add(new AuditValueColumnData
-        {
-          ColumnName = col.AuditColumn.ColumnName,
-          NewValue = col.GetNewValueObject(),
-          OldValue = col.GetOldValueObject()
-        });
+        cc.Add(new AuditValueColumnData(
+          col.AuditColumn.ColumnName,
+          col.AuditColumn.DataType ?? throw new Exception($"Cannot create data type '{col.AuditColumn.DataType}' from {nameof(AuditColumnEntity)}:'{col.AuditColumn.Id}'"),
+          col.GetOldValueObject(),
+          col.GetNewValueObject())
+        );
       }
 
       aab.Columns = cc.ToArray();
@@ -80,11 +80,12 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
     var valuesTable = auditEntryItem.ChangedColumns
-      .Select(change => AuditSqlValueItem.CreateValue(Logger, change.ColumnName, change.OldValue, change.NewValue))
+      .Select(change => AuditSqlValueItem.CreateValue(Logger, change))
       .OfType<AuditSqlValueItem>().ToList();
 
     var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName);
-    var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable.Select(a => a.AuditColumnName).ToList());
+    var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable
+      .ToDictionary(k => k.AuditColumnName, v => v.AuditColumnDataType.FullName ?? string.Empty));
 
     var auditEntity = new AuditEntity
     {
@@ -176,7 +177,7 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
     return tableEntity.Id;
   }
 
-  private async Task<Dictionary<string, int>> GetAuditColumnIdAsync(int tableId, List<string> columnNames)
+  private async Task<Dictionary<string, int>> GetAuditColumnIdAsync(int tableId, Dictionary<string, string> columnNameWithTypes)
   {
     var keyCache = AuditColumnCacheKey(tableId);
     var res = new Dictionary<string, int>();
@@ -191,12 +192,12 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
 
     // Check if I have all columns from cache.
     var missingColumnNamesInCache = new List<string>();
-    foreach (var columnName in columnNames)
+    foreach (var columnName in columnNameWithTypes)
     {
-      if (res.ContainsKey(columnName))
+      if (res.ContainsKey(columnName.Key))
         continue;
 
-      missingColumnNamesInCache.Add(columnName);
+      missingColumnNamesInCache.Add(columnName.Key);
       // This message is also used in unit test.
       Logger.LogDebug("Missing value in cache:{GetAuditColumnIdAsync}:{keyCache}:{columnName}",
         nameof(GetAuditColumnIdAsync), keyCache, columnName);
@@ -240,9 +241,13 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
       List<AuditColumnEntity> newDbColumnEntities = new List<AuditColumnEntity>();
       foreach (var missingDbColumnName in missingDbColumns)
       {
+        if (!columnNameWithTypes.TryGetValue(missingDbColumnName, out var dataType))
+          throw new Exception($"Column {missingDbColumnName} has no datatype in dictionary.");
+
         var columnEntity = new AuditColumnEntity
         {
           ColumnName = missingDbColumnName,
+          DataType = dataType,
           AuditTableId = tableId
         };
         newDbColumnEntities.Add(columnEntity);

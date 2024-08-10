@@ -1,4 +1,5 @@
-﻿using ACore.Server.Storages.EF;
+﻿using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
+using ACore.Server.Storages.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -18,8 +19,11 @@ public class V1_0_1_2TestAuditTables : DbVersionScriptsBase
       
         var client = new MongoClient(connectionString);
         var db = client.GetDatabase(ext.DatabaseName);
-        db.CreateCollection(EfTestMongoStorageImpl.TestAttributeCollectionName);
-        logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", EfTestMongoStorageImpl.TestAttributeCollectionName, ext.DatabaseName);
+
+        var collectionName = MongoTestStorageDbNames.ObjectNameMapping[nameof(TestAttributeAuditMongoEntity)].TableName;
+        
+        db.CreateCollection(collectionName);
+        logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", collectionName, ext.DatabaseName);
     }
 
 }

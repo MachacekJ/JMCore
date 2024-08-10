@@ -43,7 +43,7 @@ public class AuditAttribute : MongoAuditTestBase
       allData.Should().HaveCount(1);
 
       var savedItem = allData.Single();
-      var resAuditItems = await Mediator.Send(new AuditGetQuery<ObjectId>(GetTestTableName(StorageTypeEnum.Mongo, entityName), savedItem.Id));
+      var resAuditItems = await Mediator.Send(new AuditGetQuery<ObjectId>(GetTestTableName(storageType, entityName), savedItem.Id));
       resAuditItems.Should().HaveCount(1);
       resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
 
@@ -62,7 +62,8 @@ public class AuditAttribute : MongoAuditTestBase
 
       aid!.NewValue.Should().Be(savedItem.Id);
       aName.NewValue.Should().Be(testName);
-      new DateTime(Convert.ToInt64(aCreated.NewValue)).Should().Be(testDateTime);
+      var aa = Convert.ToDateTime(aCreated.NewValue);
+      new DateTime(aa.Ticks, DateTimeKind.Utc).Should().Be(testDateTime);
     });
   }
 

@@ -1,8 +1,9 @@
-﻿using ACore.Server.MemoryStorage;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.Server.MemoryStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.Memory;
+namespace ACore.AppTest.Modules.TestModule.Storages.Memory;
 
 public class MemoryTestStorageConfiguration(IEnumerable<string> requiredStorageModules) : MemoryStorageConfiguration(requiredStorageModules)
 {

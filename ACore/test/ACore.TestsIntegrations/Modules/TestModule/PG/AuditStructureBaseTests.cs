@@ -1,6 +1,5 @@
-﻿using ACore.AppTest;
-using ACore.AppTest.Modules.TestModule.Storages;
-using ACore.AppTest.Modules.TestModule.Storages.EF.PG;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.AuditModule.Storage;
@@ -9,20 +8,18 @@ using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages.Models;
 using ACore.Tests.Server.Modules.TestModule;
 using ACore.TestsIntegrations.BaseInfrastructure.Storages;
+using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ACore.TestsIntegrations.Modules.TestModule.Audit;
+namespace ACore.TestsIntegrations.Modules.TestModule.PG;
 
-public class AuditStructureBaseTests : StorageBaseTests
+public abstract class AuditStructureBaseTests : StorageBaseTests
 {
-  // Virtual is needed for stress tests.
-  protected virtual StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
-
   protected override IEnumerable<string> RequiredBaseStorageModules => new[]
   {
     nameof(IBasicStorageModule),
     nameof(IAuditStorageModule),
-    AppTestModulesNames.TestModule
+    nameof(IEFTestStorageModule)
   };
 
   protected override void RegisterServices(ServiceCollection sc)
@@ -32,7 +29,13 @@ public class AuditStructureBaseTests : StorageBaseTests
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
     sc.AddScoped<IAuditDbService, AuditDbService>();
   }
-  
+
+  protected override void RegisterAutofacContainer(ServiceCollection services, ContainerBuilder containerBuilder)
+  {
+    base.RegisterAutofacContainer(services, containerBuilder);
+    AuditStorageBaseTests.RegisterAutofacContainerStatic(containerBuilder);
+  }
+
   protected static string GetTestTableName(StorageTypeEnum storageType, string entityName)
   {
     return storageType switch

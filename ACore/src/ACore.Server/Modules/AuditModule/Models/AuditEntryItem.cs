@@ -33,7 +33,7 @@ public class AuditEntryItem
     ChangedColumns.Add(new AuditEntryValueItem(columnName, oldValue, newValue));
   }
 
-  public void SetPK(object pkValue)
+  public void SetPK<TPK>(TPK pkValue)
   {
     if (long.TryParse(pkValue.ToString(), out var pkv))
       PkValue = pkv;

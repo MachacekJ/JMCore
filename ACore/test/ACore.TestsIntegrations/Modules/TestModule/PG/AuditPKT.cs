@@ -2,10 +2,10 @@
 using ACore.Tests.Server.Modules.TestModule;
 using Xunit;
 
-namespace ACore.TestsIntegrations.Modules.TestModule.Audit;
+namespace ACore.TestsIntegrations.Modules.TestModule.PG;
 
 // ReSharper disable once InconsistentNaming
-public class AuditPKT : AuditStructureBaseTests
+public class AuditPKT : PGAuditTestBase
 {
 
   [Fact]

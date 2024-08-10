@@ -13,5 +13,7 @@ public class AuditAttributeBaseTests : AuditStorageBaseTests
     sc.AddScoped<IAuditConfiguration, AuditConfiguration>();
     sc.AddScoped<IAuditDbService, AuditDbService>();
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
+    
+
   }
 }

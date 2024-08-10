@@ -1,6 +1,6 @@
 ﻿using ACore.Server.Storages.EF;
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG.Scripts;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG.Scripts;
 
 internal class ScriptRegistrations : DbScriptBase
 {

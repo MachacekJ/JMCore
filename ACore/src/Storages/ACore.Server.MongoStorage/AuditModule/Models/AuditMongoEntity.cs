@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ACore.Server.MongoStorage.AuditModule.Models;
@@ -7,10 +9,10 @@ namespace ACore.Server.MongoStorage.AuditModule.Models;
 public class AuditMongoEntity
 {
   [Key]
-  public string Id { get; set; } = Guid.NewGuid().ToString();
+  public ObjectId _id { get; set; }
 
   [BsonElement("oid")]
-  public string ObjectId { get; set; } = null!;
+  public string ObjectId { get; set; } = string.Empty;
   
   [BsonElement("c")]
   public List<AuditMongoValueEntity>? Columns { get; set; }

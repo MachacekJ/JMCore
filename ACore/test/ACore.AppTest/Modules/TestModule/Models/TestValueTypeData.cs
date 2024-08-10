@@ -16,14 +16,14 @@ public class TestValueTypeData
   public DateTime Date2 { get; set; }
   public DateTime DateTime2 { get; set; }
   public decimal Decimal2 { get; set; }
-  public string NChar2 { get; set; } = null!;
-  public string NVarChar2 { get; set; } = null!;
+  public string NChar2 { get; set; } = string.Empty;
+  public string NVarChar2 { get; set; } = string.Empty;
   public DateTime SmallDateTime2 { get; set; }
   public short SmallInt2 { get; set; }
   public byte TinyInt2 { get; set; }
   public Guid Guid2 { get; set; }
-  public byte[] VarBinary2 { get; set; } = null!;
-  public string VarChar2 { get; set; } = null!;
+  public byte[] VarBinary2 { get; set; } = [];
+  public string VarChar2 { get; set; } = string.Empty;
   
   internal static TestValueTypeData Create(TestValueTypeEntity entity)
   {

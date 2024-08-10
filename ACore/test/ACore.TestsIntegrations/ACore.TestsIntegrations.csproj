@@ -41,8 +41,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Logs\" />
-	  <Folder Include="Modules\TestModule\" />
 	  <Folder Include="BaseInfrastructure\" />
+	  <Folder Include="Modules\TestModule\Audit\" />
 	</ItemGroup>
 
 </Project>

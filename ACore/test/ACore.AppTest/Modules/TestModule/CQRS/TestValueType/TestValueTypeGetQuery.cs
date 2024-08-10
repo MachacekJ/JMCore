@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestValueType;
 
-public class TestValueTypeGetQuery: TestModuleRequest<IEnumerable<TestValueTypeData>>
+public class TestValueTypeGetQuery: TestModuleRequest<TestValueTypeData[]>
 {
   
 }

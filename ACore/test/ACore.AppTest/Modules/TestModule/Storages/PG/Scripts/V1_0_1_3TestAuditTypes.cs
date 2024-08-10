@@ -2,7 +2,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG.Scripts;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG.Scripts;
 
 public class V1_0_1_3TestAuditTypes : DbVersionScriptsBase
 {
@@ -29,7 +29,7 @@ CREATE TABLE test_value_type
     datetime2 TIMESTAMP NOT NULL,
     decimal2 NUMERIC(19,4) NOT NULL,
     nchar2 CHAR(10) NOT NULL,
-    nvarchar2 CHAR(10) NOT NULL,
+    nvarchar2 VARCHAR(10) NOT NULL,
     smalldatetime2 timestamp NOT NULL,
     smallint2 SMALLINT NOT NULL,
     tinyint2 SMALLINT NOT NULL,

@@ -1,4 +1,4 @@
-﻿using ACore.AppTest.Modules.TestModule.Storages.EF.PG;
+﻿using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Storages;
 using ACore.Tests.BaseInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;

@@ -16,16 +16,16 @@ public abstract class StorageBaseTests : ServerBaseTests
   protected abstract IEnumerable<string> RequiredBaseStorageModules { get; }
   private List<IStorageRegistrationT> _allStorages = [];
 
-  protected IStorageResolver StorageResolver = null!;
-  private StorageTypeEnum _storageType = StorageTypeEnum.AllRegistered;
+  protected IStorageResolver? StorageResolver;
+  private StorageTypeEnum? _storageType;
 
-  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<Task> testCode)
+  protected async Task RunStorageTestAsync(StorageTypeEnum? storageType, MemberInfo? method, Func<Task> testCode)
   {
     Init(storageType);
     await RunTestAsync(method, testCode);
   }
 
-  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
+  protected async Task RunStorageTestAsync(StorageTypeEnum? storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
   {
     Init(storageType);
     await RunTestAsync(method, async () =>
@@ -51,7 +51,7 @@ public abstract class StorageBaseTests : ServerBaseTests
     });
   }
 
-  private void Init(StorageTypeEnum storageType)
+  private void Init(StorageTypeEnum? storageType)
   {
     _storageType = storageType;
     _allStorages = [];
@@ -64,18 +64,21 @@ public abstract class StorageBaseTests : ServerBaseTests
     StorageResolver = new StorageResolver();
     sc.AddSingleton(StorageResolver);
 
-    if (_storageType.HasFlag(StorageTypeEnum.Memory))
-      throw new Exception("Memory stores use unit tests, not integration tests.");
-
-    if (_storageType.HasFlag(StorageTypeEnum.Postgres))
-      _allStorages.Add(new PGStorageRegistrationT(TestData));
-
-    if (_storageType.HasFlag(StorageTypeEnum.Mongo) && !_allStorages.Any(a => a is MongoStorageRegistrationT))
-      _allStorages.Add(new MongoStorageRegistrationT(TestData));
-
-    foreach (var storage in _allStorages)
+    if (_storageType != null)
     {
-      storage.RegisterServices(sc, Configuration, RequiredBaseStorageModules, StorageResolver);
+      if (_storageType.Value.HasFlag(StorageTypeEnum.Memory))
+        throw new Exception("Memory stores use unit tests, not integration tests.");
+
+      if (_storageType.Value.HasFlag(StorageTypeEnum.Postgres))
+        _allStorages.Add(new PGStorageRegistrationT(TestData));
+
+      if (_storageType.Value.HasFlag(StorageTypeEnum.Mongo) && !_allStorages.Any(a => a is MongoStorageRegistrationT))
+        _allStorages.Add(new MongoStorageRegistrationT(TestData));
+
+      foreach (var storage in _allStorages)
+      {
+        storage.RegisterServices(sc, Configuration, RequiredBaseStorageModules, StorageResolver);
+      }
     }
 
     StorageResolver.RegisterServices(sc);
@@ -90,6 +93,9 @@ public abstract class StorageBaseTests : ServerBaseTests
       storage.GetServices(sp);
     }
 
+    if (StorageResolver == null)
+      ArgumentNullException.ThrowIfNull(StorageResolver);
+    
     await StorageResolver.ConfigureStorages(sp);
   }
 
@@ -103,9 +109,9 @@ public abstract class StorageBaseTests : ServerBaseTests
     await base.FinishedTestAsync();
   }
 
-  protected IEnumerable<StorageTypeEnum> GetAllStorageType(StorageTypeEnum storageType)
+  protected IEnumerable<StorageTypeEnum> GetAllStorageType(StorageTypeEnum? storageType)
   {
-    return storageType.ToValues().Where(a => (a & StorageTypeEnum.AllRegistered) != StorageTypeEnum.AllRegistered);
+    return storageType == null ? [] : storageType.Value.ToValues().Where(a => (a & StorageTypeEnum.AllRegistered) != StorageTypeEnum.AllRegistered);
   }
 }
 

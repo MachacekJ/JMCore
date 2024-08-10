@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-public class TestAttributeAuditSaveCommand(TestAttributeAuditData data): TestModuleRequest<int>
+public class TestAttributeAuditSaveCommand<T>(TestAttributeAuditData<T> data): TestModuleRequest<T>
 {
-  public TestAttributeAuditData Data => data;
+  public TestAttributeAuditData<T> Data => data;
 }

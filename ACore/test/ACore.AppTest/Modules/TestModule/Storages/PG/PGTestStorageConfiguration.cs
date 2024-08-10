@@ -1,8 +1,9 @@
-﻿using ACore.Server.PGStorage;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.Server.PGStorage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG;
 
 public class PGTestStorageConfiguration(string connectionString, IEnumerable<string> requiredStorageModules) : PGStorageConfiguration(connectionString, requiredStorageModules)
 {
@@ -13,7 +14,7 @@ public class PGTestStorageConfiguration(string connectionString, IEnumerable<str
     base.RegisterServices(services);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
-      if (requiredStorageModule == AppTestModulesNames.TestModule)
+      if (requiredStorageModule == nameof(IEFTestStorageModule))
       {
         services.AddTestServiceModule();
         services.AddDbContext<PGEFTestStorageImpl>(opt => opt.UseNpgsql(_connectionString));
@@ -27,7 +28,7 @@ public class PGTestStorageConfiguration(string connectionString, IEnumerable<str
     await base.ConfigureServices(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
-      if (requiredStorageModule == AppTestModulesNames.TestModule)
+      if (requiredStorageModule == nameof(IEFTestStorageModule))
       {
         serviceProvider.UseTestServiceModule();
         await ConfigureEfSqlServiceLocal<IEFTestStorageModule, PGEFTestStorageImpl>(serviceProvider);

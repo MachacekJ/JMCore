@@ -135,7 +135,7 @@ internal abstract class EFTestStorageContext(DbContextOptions options, IMediator
       { } entityType when entityType == typeof(TestPKGuidEntity) => TestPKGuid as DbSet<TEntity>,
       { } entityType when entityType == typeof(TestManualAuditEntity) => TestManualAudits as DbSet<TEntity>,
       { } entityType when entityType == typeof(TestPKStringEntity) => TestPKString as DbSet<TEntity>,
-      { } entityType when entityType == typeof(TestValueTypeEntity) => TestPKString as DbSet<TEntity>,
+      { } entityType when entityType == typeof(TestValueTypeEntity) => TestValueTypes as DbSet<TEntity>,
       _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
     };
     return res ?? throw new ArgumentNullException(nameof(res), @"DbSet function returned null value.");

@@ -2,12 +2,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.MongoStorage;
 using ACore.Server.Storages.Models;
-// ReSharper disable PropertyCanBeMadeInitOnly.Global
+using MongoDB.Bson.Serialization.Attributes;
 
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 
 /// <summary>
 /// Sample: How to use <see cref="AuditableAttribute"/> for entity.
@@ -15,14 +17,18 @@ namespace ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 /// Column name <see cref="ColumnAttribute"/> for saving in storage is defined e.g. <see cref="PGTestStorageDbNames"/>.
 /// </summary>
 [Auditable]
-internal class TestAttributeAuditEntity: IntStorageEntity
+public class TestAttributeAuditMongoEntity: MongoStorageEntity
 {
+
   [MaxLength(50)]
+  [BsonElement("name")]
   public string Name { get; set; } = string.Empty;
 
   [NotAuditable]
   [MaxLength(50)]
+  [BsonElement("notAuditableColumn")]
   public string NotAuditableColumn { get; set; } = string.Empty;
   
+  [BsonElement("created")]
   public DateTime Created { get; set; }
 }

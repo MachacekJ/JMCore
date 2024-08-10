@@ -15,7 +15,7 @@ public class MongoTestStorageConfiguration(string connectionString, string dbNam
     base.RegisterServices(services);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
-      if (requiredStorageModule == AppTestModulesNames.TestModule)
+      if (requiredStorageModule == nameof(IEFTestStorageModule))
       {
         services.AddTestServiceModule();
         services.AddDbContext<EfTestMongoStorageImpl>(opt => opt.UseMongoDB(_connectionString, _dbName));
@@ -29,7 +29,7 @@ public class MongoTestStorageConfiguration(string connectionString, string dbNam
     await base.ConfigureServices(serviceProvider);
     foreach (var requiredStorageModule in RequiredStorageModules)
     {
-      if (requiredStorageModule == AppTestModulesNames.TestModule)
+      if (requiredStorageModule == nameof(IEFTestStorageModule))
       {
         serviceProvider.UseTestServiceModule();
         await ConfigureEfSqlServiceLocal<IEFTestStorageModule, EfTestMongoStorageImpl>(serviceProvider);

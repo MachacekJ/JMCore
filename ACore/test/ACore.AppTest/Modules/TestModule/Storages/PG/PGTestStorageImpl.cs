@@ -1,4 +1,5 @@
-﻿using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
@@ -7,7 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG;
 
 using ScriptRegistrations = Scripts.ScriptRegistrations;
 
@@ -22,9 +23,6 @@ internal class PGEFTestStorageImpl(DbContextOptions<PGEFTestStorageImpl> options
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.Entity<TestEntity>().Ignore(a => a.UId);
-    modelBuilder.Entity<TestAttributeAuditEntity>().Ignore(a => a.UId);
-
     base.OnModelCreating(modelBuilder);
     modelBuilder.Entity<TestEntity>().HasKey(p => p.Id);
     modelBuilder.Entity<TestAttributeAuditEntity>().HasKey(p => p.Id);

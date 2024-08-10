@@ -6,6 +6,7 @@ using ACore.Server.Modules.AuditModule.Storage.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.CQRS.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -30,9 +31,50 @@ public abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator me
   public DbSet<AuditUserEntity> AuditUsers { get; set; }
   public DbSet<AuditTableEntity> AuditTables { get; set; }
   public DbSet<AuditValueEntity> AuditValues { get; set; }
-  
-  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, long pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == pkValue).ToArrayAsync();
-  public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == pkValue).ToArrayAsync();
+
+  public async Task<AuditValueData[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null)
+  {
+    var en = await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == Convert.ToInt64(pkValue)).ToArrayAsync();
+    var res = new List<AuditValueData>();
+    foreach (var grItem in en.GroupBy(e =>
+               new
+               {
+                 tableName = e.Audit.AuditTable.TableName,
+                 schemaName = e.Audit.AuditTable.SchemaName,
+                 pk = e.Audit.PKValue,
+                 pkString = e.Audit.PKValueString,
+                 entityState = e.Audit.EntityState
+                 //userName= e.Audit.User.UserName
+               }))
+    {
+      var aab = new AuditValueData
+      {
+        TableName = grItem.Key.tableName,
+        PKValue = grItem.Key.pk,
+        PKValueString = grItem.Key.pkString,
+        SchemaName = grItem.Key.schemaName,
+        EntityState = grItem.Key.entityState.ToAuditStateEnum()
+      };
+
+      var cc = new List<AuditValueColumnData>();
+      foreach (var col in grItem.ToArray())
+      {
+        cc.Add(new AuditValueColumnData
+        {
+          ColumnName = col.AuditColumn.ColumnName,
+          NewValue = col.GetNewValueObject(),
+          OldValue = col.GetOldValueObject()
+        });
+      }
+
+      aab.Columns = cc.ToArray();
+      res.Add(aab);
+    }
+
+    return res.ToArray();
+  }
+
+  //public async Task<IEnumerable<AuditValueEntity>> AuditItemsAsync(string tableName, string pkValue, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == pkValue).ToArrayAsync();
   public async Task<IEnumerable<AuditValueEntity>> AllTableAuditAsync(string tableName, string? schemaName = null) => await SelectVwAudits(tableName, schemaName).ToArrayAsync();
 
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)

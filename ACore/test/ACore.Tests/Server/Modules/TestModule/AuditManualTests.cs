@@ -61,7 +61,7 @@ public class AuditManualTests : AuditStorageBaseTests
       allData.Should().HaveCount(1);
     
       var savedItem = allData.Single();
-      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), savedItem.Id));
+      var resAuditItems = await Mediator.Send(new AuditGetQuery<long>(GetTableName(entityName), savedItem.Id));
       resAuditItems.Should().HaveCount(1);
       resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
     
@@ -117,7 +117,7 @@ public class AuditManualTests : AuditStorageBaseTests
       allData.Should().HaveCount(1);
     
       var savedItem = allData.Single();
-      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), savedItem.Id));
+      var resAuditItems = await Mediator.Send(new AuditGetQuery<long>(GetTableName(entityName), savedItem.Id));
     
       resAuditItems.Should().HaveCount(2);
       resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
@@ -216,7 +216,7 @@ public class AuditManualTests : AuditStorageBaseTests
       var allData = await Mediator.Send(new TestManualAuditGetQuery());
       allData.Should().HaveCount(0);
     
-      var resAuditItems = await Mediator.Send(new AuditGetQuery(GetTableName(entityName), res));
+      var resAuditItems = await Mediator.Send(new AuditGetQuery<long>(GetTableName(entityName), res));
       resAuditItems.Should().HaveCount(2);
       resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
     

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestValueType;
 
-internal class TestValueTypeGetHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestValueTypeGetQuery, IEnumerable<TestValueTypeData>>(storageResolver)
+internal class TestValueTypeGetHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestValueTypeGetQuery, TestValueTypeData[]>(storageResolver)
 {
-  public override async Task<IEnumerable<TestValueTypeData>> Handle(TestValueTypeGetQuery request, CancellationToken cancellationToken)
+  public override async Task<TestValueTypeData[]> Handle(TestValueTypeGetQuery request, CancellationToken cancellationToken)
   {
     var db = ReadTestStorageWriteContexts().DbSet<TestValueTypeEntity>() ?? throw new Exception();
     return await db.Select(a => TestValueTypeData.Create(a)).ToArrayAsync(cancellationToken: cancellationToken);

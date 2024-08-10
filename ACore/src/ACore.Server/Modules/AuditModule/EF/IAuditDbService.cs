@@ -6,9 +6,9 @@ namespace ACore.Server.Modules.AuditModule.EF;
 
 public interface IAuditDbService
 {
-    IAuditUserProvider AuditUserProvider { get; }
- //   public Task<IEnumerable<AuditEntryItem>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker);
+  IAuditUserProvider AuditUserProvider { get; }
+
+  //   public Task<IEnumerable<AuditEntryItem>> OnBeforeSaveChangesAsync(ChangeTracker changeTracker);
   //  Task OnAfterSaveChangesAsync(IEnumerable<AuditEntryItem> entityAudits);
   Task SaveAuditAsync(AuditEntryItem auditEntryItem);
 }
-

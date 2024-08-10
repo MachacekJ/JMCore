@@ -1,15 +1,27 @@
 ﻿using ACore.AppTest.Modules.TestModule.Models;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+using ACore.AppTest.Modules.TestModule.Storages.Mongo;
+using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Server.Storages;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-internal class TestAttributeAuditGetHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestAttributeAuditGetQuery, TestAttributeAuditData[]>(storageResolver)
+public class TestAttributeAuditGetHandler<T>(IStorageResolver storageResolver)
+  : TestModuleRequestHandler<TestAttributeAuditGetQuery<T>, TestAttributeAuditData<T>[]>(storageResolver)
 {
-  public override async Task<TestAttributeAuditData[]> Handle(TestAttributeAuditGetQuery request, CancellationToken cancellationToken)
+  public override async Task<TestAttributeAuditData<T>[]> Handle(TestAttributeAuditGetQuery<T> request, CancellationToken cancellationToken)
   {
-    var db = ReadTestStorageWriteContexts().DbSet<TestAttributeAuditEntity>() ?? throw new Exception();
-    return await db.Select(a => TestAttributeAuditData.Create(a)).ToArrayAsync(cancellationToken: cancellationToken);
+    var st = ReadTestStorageWriteContexts();
+    if (st is EfTestMongoStorageImpl)
+    {
+      var dbMongo = st.DbSet<TestAttributeAuditMongoEntity>() ?? throw new Exception();
+      var allItemsM = await dbMongo.ToArrayAsync(cancellationToken: cancellationToken);
+      return allItemsM.Select(TestAttributeAuditData<T>.Create<T>).ToArray();
+    }
+
+    var db = st.DbSet<TestAttributeAuditEntity>() ?? throw new Exception();
+    var allItems = await db.ToArrayAsync(cancellationToken: cancellationToken);
+    return allItems.Select(TestAttributeAuditData<T>.Create<T>).ToArray();
   }
 }

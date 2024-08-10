@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestPKString;
 
-public class TestPKStringGetQuery: TestModuleRequest<IEnumerable<TestPKStringData>>
+public class TestPKStringGetQuery: TestModuleRequest<TestPKStringData[]>
 {
   
 }

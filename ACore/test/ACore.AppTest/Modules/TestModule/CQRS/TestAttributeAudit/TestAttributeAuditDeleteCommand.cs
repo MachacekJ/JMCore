@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-public class TestAttributeAuditDeleteCommand(TestAttributeAuditData data): TestModuleRequest<bool>
+public class TestAttributeAuditDeleteCommand<T>(TestAttributeAuditData<T> data): TestModuleRequest<bool>
 {
-  public TestAttributeAuditData Data => data;
+  public TestAttributeAuditData<T> Data => data;
 }

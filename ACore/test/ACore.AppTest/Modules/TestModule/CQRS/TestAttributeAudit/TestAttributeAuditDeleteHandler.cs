@@ -1,14 +1,13 @@
-﻿using ACore.AppTest.Modules.TestModule.Models;
-using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Storages;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-internal class TestAttributeAuditDeleteHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestAttributeAuditDeleteCommand, bool>(storageResolver)
+public class TestAttributeAuditDeleteHandler<T>(IStorageResolver storageResolver) : TestModuleRequestHandler<TestAttributeAuditDeleteCommand<T>, bool>(storageResolver)
 {
-  public override async Task<bool> Handle(TestAttributeAuditDeleteCommand request, CancellationToken cancellationToken)
+  public override async Task<bool> Handle(TestAttributeAuditDeleteCommand<T> request, CancellationToken cancellationToken)
   {
-    await WriteStorage().Delete<TestAttributeAuditEntity, int>(request.Data.Id);
+    await WriteStorage().Delete<TestAttributeAuditEntity, T>(request.Data.Id);
     return true;
   }
 }

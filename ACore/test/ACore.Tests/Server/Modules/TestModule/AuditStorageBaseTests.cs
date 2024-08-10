@@ -1,11 +1,14 @@
 ﻿using ACore.AppTest;
 using ACore.AppTest.Modules.TestModule;
-using ACore.AppTest.Modules.TestModule.Storages.EF.Memory;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
+using ACore.AppTest.Modules.TestModule.Storages.EF;
+using ACore.AppTest.Modules.TestModule.Storages.Memory;
+using ACore.Server.Modules.AuditModule.CQRS.Audit;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Server.Modules.SettingModule.Storage;
-using ACore.Server.Storages.Models;
 using ACore.Tests.Server.Storages;
+using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.Tests.Server.Modules.TestModule;
@@ -20,9 +23,9 @@ public class AuditStorageBaseTests : StorageBaseTests
     sc.AddTestServiceModule();
     StorageResolver.RegisterStorage(sc, new MemoryTestStorageConfiguration(new[]
     {
-      nameof(IBasicStorageModule), 
+      nameof(IBasicStorageModule),
       nameof(IAuditStorageModule),
-      AppTestModulesNames.TestModule
+      nameof(IEFTestStorageModule)
     }));
   }
 
@@ -30,6 +33,12 @@ public class AuditStorageBaseTests : StorageBaseTests
   {
     await base.GetServicesAsync(sp);
     UserProvider = sp.GetService<IAuditUserProvider>() ?? throw new ArgumentException($"{nameof(IAuditUserProvider)} is null.");
+  }
+
+  protected override void RegisterAutofacContainer(ServiceCollection services, ContainerBuilder containerBuilder)
+  {
+    base.RegisterAutofacContainer(services, containerBuilder);
+    RegisterAutofacContainerStatic(containerBuilder);
   }
 
   protected string GetTableName(string entityName)
@@ -40,5 +49,17 @@ public class AuditStorageBaseTests : StorageBaseTests
   protected string GetColumnName(string entityName, string propertyName)
   {
     return propertyName;
+  }
+
+  public static void RegisterAutofacContainerStatic(ContainerBuilder containerBuilder)
+  {
+    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditGetHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditSaveHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditDeleteHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<>)).AsImplementedInterfaces();
+  }
+
+  public static void RegisterServicesStatic()
+  {
   }
 }

@@ -2,7 +2,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG.Scripts;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG.Scripts;
 
 internal class V1_0_1_2TestAuditTables : DbVersionScriptsBase
 {

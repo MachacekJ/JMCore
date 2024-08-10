@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 
-internal abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : IRequestHandler<TRequest, TResponse>
+public abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : IRequestHandler<TRequest, TResponse>
   where TRequest : IRequest<TResponse>
 {
   public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken); 

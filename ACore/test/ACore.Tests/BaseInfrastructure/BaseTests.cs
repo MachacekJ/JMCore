@@ -85,10 +85,9 @@ public abstract class BaseTests
             .Create(typeof(BaseTests).Assembly, typeof(JMCacheKey).Assembly)
             .WithAllOpenGenericHandlerTypesRegistered()
             .Build();
-
         containerBuilder.RegisterMediatR(configuration);
     }
-
+    
     protected virtual void RegisterServices(ServiceCollection services)
     {
         RootDir = JsonSettingPath();

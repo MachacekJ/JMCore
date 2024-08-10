@@ -1,6 +1,6 @@
 ﻿using ACore.Server.Storages.EF;
 
-namespace ACore.AppTest.Modules.TestModule.Storages.EF.PG.Scripts;
+namespace ACore.AppTest.Modules.TestModule.Storages.PG.Scripts;
 
 // ReSharper disable once InconsistentNaming
 internal class V1_0_1_1TestTable : DbVersionScriptsBase

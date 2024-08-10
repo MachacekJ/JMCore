@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 
-public class TestAttributeAuditGetQuery: TestModuleRequest<TestAttributeAuditData[]>
+public class TestAttributeAuditGetQuery<T>: TestModuleRequest<TestAttributeAuditData<T>[]>
 {
   
 }

@@ -1,5 +1,5 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.Mongo;
-using ACore.Server.Storages;
+using ACore.Server.Configuration;
 using ACore.Tests.BaseInfrastructure.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,16 +15,16 @@ public class MongoStorageRegistrationT(TestData testData) : IStorageRegistration
 
   private string ConnectionStringMongo { get; set; } = null!;
 
-  public void SetTestData(TestData testData2)
-  {
-    testData = testData2;
-    _dbName = testData.GetDbName();
-  }
+  // public void SetTestData(TestData testData2)
+  // {
+  //   testData = testData2;
+  //   _dbName = testData.GetDbName();
+  // }
   
-  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IEnumerable<string> requiredBaseStorageModules, IStorageResolver storageResolver)
+  public void RegisterServices(ServiceCollection sc, StorageModuleConfiguration config)
   {
-    ConnectionStringMongo = configuration["TestSettings:ConnectionStringMongo"] ?? throw new InvalidOperationException();
-    storageResolver.RegisterStorage(sc, new MongoTestStorageConfiguration(ConnectionStringMongo, _dbName, requiredBaseStorageModules));
+    ConnectionStringMongo = config.MongoDb?.ReadWrite.ConnectionString ?? throw new InvalidOperationException();
+  //  storageResolver.RegisterStorage(sc, new MongoTestStorageConfiguration(ConnectionStringMongo, _dbName, requiredBaseStorageModules));
   }
 
   public void GetServices(IServiceProvider sp)

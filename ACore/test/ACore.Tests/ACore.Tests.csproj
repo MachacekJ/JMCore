@@ -41,7 +41,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ACore.Client\ACore.Client.csproj" />
-		<ProjectReference Include="..\..\src\Storages\ACore.Server.MemoryStorage\ACore.Server.MemoryStorage.csproj" />
 		<ProjectReference Include="..\ACore.AppTest\ACore.AppTest.csproj" />
 	</ItemGroup>
 

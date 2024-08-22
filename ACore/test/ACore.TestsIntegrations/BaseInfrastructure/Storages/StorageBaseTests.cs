@@ -1,31 +1,72 @@
 ﻿using System.Reflection;
+using ACore.AppTest.Modules.TestModule.Configuration;
 using ACore.Extensions;
 using ACore.Modules.CacheModule;
+using ACore.Server.Configuration;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages;
 using ACore.Server.Storages.Models;
 using ACore.Tests.BaseInfrastructure.Models;
 using ACore.Tests.Server;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace ACore.TestsIntegrations.BaseInfrastructure.Storages;
 
 public abstract class StorageBaseTests : ServerBaseTests
 {
-  protected abstract IEnumerable<string> RequiredBaseStorageModules { get; }
   private List<IStorageRegistrationT> _allStorages = [];
 
   protected IStorageResolver? StorageResolver;
-  private StorageTypeEnum? _storageType;
+  private StorageTypeEnum _storageType;
 
-  protected async Task RunStorageTestAsync(StorageTypeEnum? storageType, MemberInfo? method, Func<Task> testCode)
+  public TestModuleConfiguration GetTestConfig(string? dbName = null)
+  {
+    return _storageType switch
+    {
+      StorageTypeEnum.Memory => throw new Exception("Memory is used in Unit test"),
+      StorageTypeEnum.Mongo => new TestModuleConfiguration()
+      {
+        MongoDb = MongoDb()
+      },
+      StorageTypeEnum.Postgres => new TestModuleConfiguration()
+      {
+        PGDb = PGDb(dbName)
+      },
+      StorageTypeEnum.AllRegistered => new TestModuleConfiguration()
+      {
+        MongoDb = MongoDb(),
+        PGDb = PGDb(dbName)
+      },
+      _ => throw new Exception("Unknow test config")
+    };
+  }
+
+  private TestModuleMongoOptions MongoDb()
+  {
+    return new TestModuleMongoOptions(
+      new TestModuleMongoConnectionOptions(Configuration["TestSettings:ConnectionStringMongo"] ?? throw new InvalidOperationException()),
+      TestData.GetDbName());
+  }
+
+  private TestModulePGOptions PGDb(string? dbName = null)
+  {
+    var connectionString = Configuration["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException();
+    return string.IsNullOrEmpty(dbName)
+      ? new TestModulePGOptions(connectionString)
+      : new TestModulePGOptions(string.Format(connectionString, dbName));
+  }
+
+
+  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<Task> testCode)
   {
     Init(storageType);
     await RunTestAsync(method, testCode);
   }
 
-  protected async Task RunStorageTestAsync(StorageTypeEnum? storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
+  protected async Task RunStorageTestAsync(StorageTypeEnum storageType, MemberInfo? method, Func<StorageTypeEnum, Task> testCode)
   {
     Init(storageType);
     await RunTestAsync(method, async () =>
@@ -51,7 +92,7 @@ public abstract class StorageBaseTests : ServerBaseTests
     });
   }
 
-  private void Init(StorageTypeEnum? storageType)
+  private void Init(StorageTypeEnum storageType)
   {
     _storageType = storageType;
     _allStorages = [];
@@ -61,27 +102,27 @@ public abstract class StorageBaseTests : ServerBaseTests
   {
     base.RegisterServices(sc);
 
-    StorageResolver = new StorageResolver();
+    StorageResolver = new DefaultStorageResolver();
     sc.AddSingleton(StorageResolver);
 
-    if (_storageType != null)
+    // if (_storageType != null)
+    //{
+    if (_storageType.HasFlag(StorageTypeEnum.Memory))
+      throw new Exception("Memory stores use unit tests, not integration tests.");
+
+    if (_storageType.HasFlag(StorageTypeEnum.Postgres))
+      _allStorages.Add(new PGStorageRegistrationT(TestData));
+
+    if (_storageType.HasFlag(StorageTypeEnum.Mongo) && !_allStorages.Any(a => a is MongoStorageRegistrationT))
+      _allStorages.Add(new MongoStorageRegistrationT(TestData));
+
+    foreach (var storage in _allStorages)
     {
-      if (_storageType.Value.HasFlag(StorageTypeEnum.Memory))
-        throw new Exception("Memory stores use unit tests, not integration tests.");
-
-      if (_storageType.Value.HasFlag(StorageTypeEnum.Postgres))
-        _allStorages.Add(new PGStorageRegistrationT(TestData));
-
-      if (_storageType.Value.HasFlag(StorageTypeEnum.Mongo) && !_allStorages.Any(a => a is MongoStorageRegistrationT))
-        _allStorages.Add(new MongoStorageRegistrationT(TestData));
-
-      foreach (var storage in _allStorages)
-      {
-        storage.RegisterServices(sc, Configuration, RequiredBaseStorageModules, StorageResolver);
-      }
+      storage.RegisterServices(sc, GetTestConfig());
     }
+    //}
 
-    StorageResolver.RegisterServices(sc);
+    //StorageResolver.RegisterServices(sc);
     sc.AddJMMemoryCache<JMCacheServerCategory>();
   }
 
@@ -95,8 +136,8 @@ public abstract class StorageBaseTests : ServerBaseTests
 
     if (StorageResolver == null)
       ArgumentNullException.ThrowIfNull(StorageResolver);
-    
-    await StorageResolver.ConfigureStorages(sp);
+
+    // await StorageResolver.ConfigureStorages(sp);
   }
 
   protected override async Task FinishedTestAsync()

@@ -1,5 +1,4 @@
 ﻿using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +10,7 @@ public class AuditAttributeBaseTests : AuditStorageBaseTests
   {
     base.RegisterServices(sc);
     sc.AddScoped<IAuditConfiguration, AuditConfiguration>();
-    sc.AddScoped<IAuditDbService, AuditDbService>();
+   // sc.AddScoped<IAuditDbService, AuditDbService>();
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
     
 

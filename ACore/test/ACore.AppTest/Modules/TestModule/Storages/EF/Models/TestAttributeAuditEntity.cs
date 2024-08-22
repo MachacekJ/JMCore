@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models;
-// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace ACore.AppTest.Modules.TestModule.Storages.EF.Models;

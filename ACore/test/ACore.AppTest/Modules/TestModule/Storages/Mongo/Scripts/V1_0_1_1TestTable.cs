@@ -6,7 +6,7 @@ using MongoDB.Driver;
 namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Scripts;
 
 // ReSharper disable once InconsistentNaming
-public class V1_0_1_1TestTable : DbVersionScriptsBase
+internal class V1_0_1_1TestTable : DbVersionScriptsBase
 {
     public override Version Version => new ("1.0.0.1");
 

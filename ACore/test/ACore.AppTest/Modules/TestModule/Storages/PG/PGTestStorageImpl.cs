@@ -1,7 +1,6 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
 using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
 using MediatR;
@@ -12,8 +11,8 @@ namespace ACore.AppTest.Modules.TestModule.Storages.PG;
 
 using ScriptRegistrations = Scripts.ScriptRegistrations;
 
-internal class PGEFTestStorageImpl(DbContextOptions<PGEFTestStorageImpl> options, IMediator mediator, ILogger<PGEFTestStorageImpl> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration) 
-  : EFTestStorageContext(options, mediator, logger, auditService, auditConfiguration)
+internal class PGEFTestStorageImpl(DbContextOptions<PGEFTestStorageImpl> options, IMediator mediator, ILogger<PGEFTestStorageImpl> logger, IAuditConfiguration auditConfiguration)
+  : EFTestStorageContext(options, mediator, logger, auditConfiguration)
 {
   public DbSet<TestMenuEntity> TestMenus { get; set; }
   public DbSet<TestCategoryEntity> TestCategories { get; set; }

@@ -11,7 +11,6 @@ using Microsoft.Extensions.Options;
 
 namespace ACore.Server.Modules.LocalizationModule.Storage.EF;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-
 public abstract class LocalizationStorageEfContext(DbContextOptions options, IMediator mediator, IOptions<ResXLocalizationOptions> resxOptions, ILocalizationStorage localizationProvider, ILogger<LocalizationStorageEfContext> logger)
   : DbContextBase(options, mediator, logger), ILocalizationStorageModule
 {

@@ -8,7 +8,7 @@ public class SettingGetHandler(IStorageResolver storageResolver) : SettingModule
 {
   public override Task<string?> Handle(SettingGetQuery request, CancellationToken cancellationToken)
   {
-    var storageImplementation = storageResolver.FirstReadWriteStorage<IBasicStorageModule>(request.StorageType, StorageModeEnum.Read);
+    var storageImplementation = storageResolver.FirstReadOnlyStorage<IBasicStorageModule>(request.StorageType);
     return storageImplementation.Setting_GetAsync(request.Key, request.IsRequired);
   }
 }

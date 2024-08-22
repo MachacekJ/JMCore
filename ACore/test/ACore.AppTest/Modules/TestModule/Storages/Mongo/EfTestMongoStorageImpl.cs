@@ -1,7 +1,6 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
 using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
 using MediatR;
@@ -13,8 +12,8 @@ using MongoDB.EntityFrameworkCore.Extensions;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace ACore.AppTest.Modules.TestModule.Storages.Mongo;
 
-internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> options, IMediator mediator, ILogger<EfTestMongoStorageImpl> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration)
-  : AuditableDbContext(options, mediator, logger, auditService, auditConfiguration), IEFTestStorageModule
+internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> options, IMediator mediator, ILogger<EfTestMongoStorageImpl> logger, IAuditConfiguration auditConfiguration)
+  : AuditableDbContext(options, mediator, logger, auditConfiguration), IEFTestStorageModule
 {
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   protected override string ModuleName => nameof(IEFTestStorageModule);
@@ -44,7 +43,7 @@ internal class EfTestMongoStorageImpl(DbContextOptions<EfTestMongoStorageImpl> o
   {
     return ObjectId.GenerateNewId();
   }
-  
+
   // public DbSet<TestRootCategory> TestParents { get; set; }
   //public DbSet<TestCategory> TestChildren { get; set; }
 

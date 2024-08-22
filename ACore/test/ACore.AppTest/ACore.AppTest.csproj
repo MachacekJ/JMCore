@@ -9,12 +9,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\ACore.Server\ACore.Server.csproj" />
-      <ProjectReference Include="..\..\src\Storages\ACore.Server.MemoryStorage\ACore.Server.MemoryStorage.csproj" />
-      <ProjectReference Include="..\..\src\Storages\ACore.Server.MongoStorage\ACore.Server.MongoStorage.csproj" />
-      <ProjectReference Include="..\..\src\Storages\ACore.Server.PGStorage\ACore.Server.PGStorage.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="7.1.0" />
       <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     </ItemGroup>

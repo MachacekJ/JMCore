@@ -1,6 +1,5 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.EF;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ACore.AppTest.Modules.TestModule.Storages.Memory;
 
-internal class MemoryTestStorageImpl(DbContextOptions<MemoryTestStorageImpl> options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration)
-  : EFTestStorageContext(options, mediator, logger, auditService, auditConfiguration)
+internal class MemoryTestStorageImpl(DbContextOptions<MemoryTestStorageImpl> options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditConfiguration auditConfiguration)
+  : EFTestStorageContext(options, mediator, logger, auditConfiguration)
 {
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
   

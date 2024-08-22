@@ -25,8 +25,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ACore.Server\ACore.Server.csproj" />
-		<ProjectReference Include="..\..\src\Storages\ACore.Server.MongoStorage\ACore.Server.MongoStorage.csproj" />
-		<ProjectReference Include="..\..\src\Storages\ACore.Server.PGStorage\ACore.Server.PGStorage.csproj" />
 		<ProjectReference Include="..\ACore.Tests\ACore.Tests.csproj" />
 	</ItemGroup>
 
@@ -42,7 +40,6 @@
 	<ItemGroup>
 	  <Folder Include="Logs\" />
 	  <Folder Include="BaseInfrastructure\" />
-	  <Folder Include="Modules\TestModule\Audit\" />
 	</ItemGroup>
 
 </Project>

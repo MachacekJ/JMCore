@@ -9,5 +9,5 @@ public abstract class TestModuleRequestHandler<TRequest, TResponse>(IStorageReso
 {
   public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
   protected IEFTestStorageModule WriteStorage() => storageResolver.AllWriteStorages<IEFTestStorageModule>().Single();
-  protected IEFTestStorageModule ReadTestStorageWriteContexts() => storageResolver.FirstReadWriteStorage<IEFTestStorageModule>();
+  protected IEFTestStorageModule ReadTestStorageWriteContexts() => storageResolver.FirstReadOnlyStorage<IEFTestStorageModule>();
 }

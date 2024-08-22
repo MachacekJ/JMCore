@@ -2,9 +2,9 @@
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
-using ACore.Server.Modules.AuditModule.CQRS.Audit;
-using ACore.Server.Modules.AuditModule.CQRS.Models;
-using ACore.Server.Storages.Models;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet.Models;
+using ACore.Server.Modules.AuditModule.Models;
 using ACore.Tests.Server.Modules.TestModule;
 using FluentAssertions;
 using MongoDB.Bson;
@@ -20,8 +20,6 @@ public class AuditAttribute : MongoAuditTestBase
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
-      // await AuditAttributeTHelper.AddItemAsyncTest(Mediator, (name) => GetTestTableName(storageType, name), (name, prop) => GetTestColumnName(storageType, name, prop));
-
       var testDateTime = DateTime.UtcNow;
       var testName = "AuditTest";
       var entityName = nameof(TestAttributeAuditMongoEntity);
@@ -56,14 +54,17 @@ public class AuditAttribute : MongoAuditTestBase
 
       aid.Should().NotBeNull();
       aName.Should().NotBeNull();
+      // ReSharper disable once NullableWarningSuppressionIsUsed
       aName!.NewValue.Should().NotBeNull();
       aCreated.Should().NotBeNull();
+      // ReSharper disable once NullableWarningSuppressionIsUsed
       aCreated!.NewValue.Should().NotBeNull();
 
+      // ReSharper disable once NullableWarningSuppressionIsUsed
       aid!.NewValue.Should().Be(savedItem.Id);
       aName.NewValue.Should().Be(testName);
       var aa = Convert.ToDateTime(aCreated.NewValue);
-      new DateTime(aa.Ticks, DateTimeKind.Utc).Should().Be(testDateTime);
+      aa.Should().Be(testDateTime);
     });
   }
 

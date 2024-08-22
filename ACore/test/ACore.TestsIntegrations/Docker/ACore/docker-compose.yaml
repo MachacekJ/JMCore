@@ -42,6 +42,7 @@ services:
       PGPASSWORD: replicator_password
     command: |
       bash -c "
+      rm /var/lib/postgresql/data -r
       until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot --host=postgres_primary --port=5432
       do
       echo 'Waiting for primary to connect...'

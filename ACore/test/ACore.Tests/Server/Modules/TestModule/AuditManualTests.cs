@@ -3,8 +3,9 @@ using ACore.AppTest.Modules.TestModule.CQRS.TestManualAudit;
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.CQRS.Audit;
-using ACore.Server.Modules.AuditModule.CQRS.Models;
-using ACore.Server.Modules.AuditModule.EF;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet.Models;
+using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,7 @@ public class AuditManualTests : AuditStorageBaseTests
       }
     };
     sc.AddSingleton<IAuditConfiguration>(auditConfiguration);
-    sc.AddScoped<IAuditDbService, AuditDbService>();
+    //sc.AddScoped<IAuditDbService, AuditDbService>();
     sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
   }
   

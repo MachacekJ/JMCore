@@ -3,7 +3,6 @@ using ACore.Server.Modules.LocalizationModule.Storage;
 using ACore.Server.ResX;
 using ACore.Server.ResX.Helpers;
 using ACore.Server.Storages;
-using ACore.Server.Storages.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -21,7 +20,7 @@ public static class LocalizerExtensions
     var storageResolver = service.GetService<IStorageResolver>()
                           ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
-    var localizeStorageModule = storageResolver.FirstReadWriteStorage<ILocalizationStorageModule>()
+    var localizeStorageModule = storageResolver.FirstReadOnlyStorage<ILocalizationStorageModule>()
                                 ?? throw new ArgumentException($"Service for {nameof(ILocalizationStorageModule)} not found.");
 
     var localizationProvider = service.GetService<ILocalizationStorage>()

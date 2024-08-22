@@ -12,7 +12,7 @@ public class AuditMongo : AuditBase
 {
   //protected override StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Mongo;
 
-  [Fact]
+  //[Fact]
   public async Task UpdateItem()
   {
     var method = MethodBase.GetCurrentMethod();

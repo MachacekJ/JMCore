@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices.Marshalling;
 
 namespace ACore.Extensions;
 
 public static class ObjectExtensionMethods
 {
-  public static void CopyPropertiesFrom(this object self, object parent, Action<(string propName, object? oldValue, object? newValue)>? update = null)
+  public static void CopyPropertiesFrom(this object self, object parent, Action<(string propName, object? oldValue, object? newValue)>? updatingValue = null)
   {
-    var fromProperties = parent.GetType().GetProperties();
-    var toProperties = self.GetType().GetProperties();
+    var fromProperties = GetProperties(parent);
+    var toProperties = GetProperties(self);
 
     foreach (var fromProperty in fromProperties)
     {
@@ -26,19 +27,19 @@ public static class ObjectExtensionMethods
         if (newValue == null && oldValue != null)
         {
           toProperty.SetValue(self, newValue);
-          update?.Invoke(new(toProperty.Name, oldValue, newValue));
+          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
         }
 
         if (oldValue == null && newValue != null)
         {
           toProperty.SetValue(self, newValue);
-          update?.Invoke(new(toProperty.Name, oldValue, newValue));
+          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
         }
         
         if (newValue != null && !newValue.Equals(oldValue))
         {
           toProperty.SetValue(self, newValue);
-          update?.Invoke(new(toProperty.Name, oldValue, newValue));
+          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
         }
 
         break;
@@ -47,19 +48,8 @@ public static class ObjectExtensionMethods
   }
 
   public static IEnumerable<(string propName, object? value)> AllProperties(this object self)
-    => self.GetType().GetProperties().Select(e=>new ValueTuple<string, object?>(e.Name, e.GetValue(self)));
+    => GetProperties(self).Select(e=>new ValueTuple<string, object?>(e.Name, e.GetValue(self)));
   
-
-  public static T? GetPropValue<T>(this object self, string name)
-  {
-    var fromProperties = self.GetType().GetProperties().Single(p => p.Name == name).GetValue(self, null);
-
-    if (fromProperties == null)
-      return default;
-
-    return (T)Convert.ChangeType(fromProperties, typeof(T));
-  }
-
   public static List<(string propName, object? originalValue, object? newValue)> Differences<T>(this T original, T newValues)
   {
     var diffs = new List<(string propName, object? originalValue, object? newValue)>();
@@ -82,4 +72,7 @@ public static class ObjectExtensionMethods
   {
     return EqualityComparer<T>.Default.Equals(x, y);
   }
+
+  private static PropertyInfo[] GetProperties(object obj)
+  => obj.GetType().GetProperties();
 }

@@ -1,7 +1,5 @@
-﻿using ACore.AppTest.Modules.TestModule.Models;
-using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
+﻿using ACore.AppTest.Modules.TestModule.Storages.EF.Models;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
 using ACore.Server.Storages.EF;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +10,8 @@ using Exception = System.Exception;
 
 namespace ACore.AppTest.Modules.TestModule.Storages.EF;
 
-internal abstract class EFTestStorageContext(DbContextOptions options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditDbService auditService, IAuditConfiguration auditConfiguration)
-  : AuditableDbContext(options, mediator, logger, auditService, auditConfiguration), IEFTestStorageModule
+internal abstract class EFTestStorageContext(DbContextOptions options, IMediator mediator, ILogger<EFTestStorageContext> logger, IAuditConfiguration auditConfiguration)
+  : AuditableDbContext(options, mediator, logger, auditConfiguration), IEFTestStorageModule
 {
   protected abstract long IdLongGenerator<T>() where T : class;
   protected abstract int IdIntGenerator<T>() where T : class;
@@ -52,7 +50,7 @@ internal abstract class EFTestStorageContext(DbContextOptions options, IMediator
   {
     ArgumentNullException.ThrowIfNull(data);
 
-    var res = (typeof(TPK)) switch
+    var res = typeof(TPK) switch
     {
       { } entityType when entityType == typeof(int) => (TPK)Convert.ChangeType(
         data switch

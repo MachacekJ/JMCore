@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Scripts;
 
-public class ScriptRegistrations : DbScriptBase
+internal class ScriptRegistrations : DbScriptBase
 {
   public override IEnumerable<DbVersionScriptsBase> AllVersions
   {

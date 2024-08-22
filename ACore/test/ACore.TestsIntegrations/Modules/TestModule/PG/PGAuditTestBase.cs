@@ -4,5 +4,5 @@ namespace ACore.TestsIntegrations.Modules.TestModule.PG;
 
 public class PGAuditTestBase : AuditStructureBaseTests
 {
-  protected StorageTypeEnum? StorageTypesToTest => StorageTypeEnum.Postgres;
+  protected StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Postgres;
 }

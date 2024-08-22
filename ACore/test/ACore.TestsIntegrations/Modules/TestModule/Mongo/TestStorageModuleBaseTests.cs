@@ -5,5 +5,5 @@ namespace ACore.TestsIntegrations.Modules.TestModule.Mongo;
 
 public class MongoAuditTestBase : AuditStructureBaseTests
 {
-  protected StorageTypeEnum? StorageTypesToTest => StorageTypeEnum.Mongo;
+  protected StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Mongo;
 }

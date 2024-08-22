@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Scripts;
 
-public class V1_0_1_5TestChildPropeties: DbVersionScriptsBase
+internal class V1_0_1_5TestChildPropeties: DbVersionScriptsBase
 {
   public override Version Version => new("1.0.0.5");
   

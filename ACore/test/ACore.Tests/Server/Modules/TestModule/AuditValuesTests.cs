@@ -3,8 +3,9 @@ using System.Text.Json;
 using ACore.AppTest.Modules.TestModule.CQRS.TestValueType;
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.Server.Modules.AuditModule.CQRS.Audit;
-using ACore.Server.Modules.AuditModule.CQRS.Models;
-using ACore.Server.Modules.AuditModule.Storage.Models;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
+using ACore.Server.Modules.AuditModule.Models;
+using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 using FluentAssertions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,7 @@ public static class AuditValuesTHelper
   public static async Task AllTypes(IMediator mediator, InMemorySink logInMemorySink, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
     var entityName = "TestValueTypeEntity";
+    
     // Arrange
     var item = new TestValueTypeData
     {
@@ -51,7 +53,7 @@ public static class AuditValuesTHelper
       SmallInt2 = short.MaxValue,
       TinyInt2 = byte.MaxValue,
       Guid2 = Guid.NewGuid(),
-      VarBinary2 = new byte[AuditSqlValueItem.MaxStringSize],
+      VarBinary2 = new byte[10000],
       VarChar2 = "říkám já řřČŘÉÍÁ"
     };
 

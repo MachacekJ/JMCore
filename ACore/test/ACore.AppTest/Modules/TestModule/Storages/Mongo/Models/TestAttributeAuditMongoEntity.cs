@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.MongoStorage;
-using ACore.Server.Storages.Models;
+using ACore.Server.Storages;
+using ACore.Server.Storages.Mongo;
 using MongoDB.Bson.Serialization.Attributes;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global

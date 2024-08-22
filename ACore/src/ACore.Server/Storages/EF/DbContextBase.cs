@@ -114,7 +114,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     }
   }
 
-  public async Task UpdateDatabase<T>(T impl) where T : DbContextBase
+  public async Task UpdateDatabase()
   {
     var allVersions = UpdateScripts.AllVersions.ToList();
 
@@ -135,7 +135,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
       if (StorageDefinition.IsTransactionEnabled)
       {
         await using var transaction = await Database.BeginTransactionAsync();
-        updatedToVersion = await UpdateDatabase(impl, allVersions, lastVersion);
+        updatedToVersion = await UpdateDatabase(allVersions, lastVersion);
         try
         {
           await transaction.CommitAsync();
@@ -148,14 +148,14 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
       }
       else
       {
-        updatedToVersion = await UpdateDatabase(impl, allVersions, lastVersion);
+        updatedToVersion = await UpdateDatabase(allVersions, lastVersion);
       }
     }
 
     await Mediator.Send(new SettingSaveCommand(StorageDefinition.Type, StorageVersionKey, updatedToVersion.ToString(), true));
   }
 
-  private async Task<Version> UpdateDatabase<T>(T impl, List<DbVersionScriptsBase> allVersions, Version lastVersion) where T : DbContextBase
+  private async Task<Version> UpdateDatabase(List<DbVersionScriptsBase> allVersions, Version lastVersion)
   {
     var updatedToVersion = new Version("0.0.0.0");
 
@@ -178,7 +178,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
         }
       }
 
-      version.AfterScriptRunCode(impl, _options, Logger);
+      version.AfterScriptRunCode(this, _options, Logger);
       updatedToVersion = version.Version;
     }
 

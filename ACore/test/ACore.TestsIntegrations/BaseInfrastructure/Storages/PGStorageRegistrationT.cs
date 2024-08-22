@@ -1,8 +1,6 @@
-﻿using ACore.AppTest.Modules.TestModule.Storages.PG;
-using ACore.Server.Storages;
+﻿using ACore.Server.Configuration;
 using ACore.Tests.BaseInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -10,24 +8,21 @@ namespace ACore.TestsIntegrations.BaseInfrastructure.Storages;
 
 public class PGStorageRegistrationT(TestData testData) : IStorageRegistrationT
 {
-  private ILogger<PGStorageRegistrationT> _log = null!;
-  private MasterDb _masterDb = null!;
-  private string _dbName = testData.GetDbName();
+  private ILogger<PGStorageRegistrationT>? _log;
+  private MasterDb? _masterDb;
+  private readonly string _dbName = testData.GetDbName();
   
-  private string ConnectionStringPG { get; set; } = null!;
-  private string MasterConnectionStringPG { get; set; } = null!;
+  private string? MasterConnectionStringPG { get; set; }
 
-  public void RegisterServices(ServiceCollection sc, IConfigurationRoot configuration, IEnumerable<string> requiredBaseStorageModules, IStorageResolver storageResolver)
+  public void RegisterServices(ServiceCollection sc, StorageModuleConfiguration config)
   {
-    ConnectionStringPG = string.Format(configuration["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException(), _dbName);
-    MasterConnectionStringPG = string.Format(configuration["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException(), "postgres");
+    MasterConnectionStringPG = string.Format(config.PGDb?.ReadWriteConnectionString ?? throw new InvalidOperationException(), "postgres");
     sc.AddDbContext<MasterDb>(opt => opt.UseNpgsql(MasterConnectionStringPG));
-    storageResolver.RegisterStorage(sc, new PGTestStorageConfiguration(ConnectionStringPG, requiredBaseStorageModules));
   }
 
   public void GetServices(IServiceProvider sp)
   {
-    _log =  sp.GetService<ILogger<PGStorageRegistrationT>>() ?? throw new ArgumentException($"{nameof(ILogger<PGStorageRegistrationT>)} is null.");
+    _log = sp.GetService<ILogger<PGStorageRegistrationT>>() ?? throw new ArgumentException($"{nameof(ILogger<PGStorageRegistrationT>)} is null.");
     _masterDb = sp.GetService<MasterDb>() ?? throw new ArgumentException($"{nameof(PGStorageRegistrationT)}.{nameof(MasterDb)} is null.");
     NewPGDatabase();
   }
@@ -41,7 +36,7 @@ public class PGStorageRegistrationT(TestData testData) : IStorageRegistrationT
   {
     if (!testData.DatabaseManipulation.HasFlag(DatabaseManipulationEnum.Create))
       return;
-    
+
     string sql = @"
 DROP DATABASE IF EXISTS " + _dbName + @" WITH (FORCE);
 
@@ -52,21 +47,20 @@ CREATE DATABASE " + _dbName + @"
  ";
 
 
-    _masterDb.Database.ExecuteSqlRaw(sql);
+    _masterDb?.Database.ExecuteSqlRaw(sql);
 
 
-    _log.LogInformation("Database '{Dbname}' has been created", _dbName);
+    _log?.LogInformation("Database '{Dbname}' has been created", _dbName);
   }
-  
+
   private void DropPGDatabase()
   {
     if (!testData.DatabaseManipulation.HasFlag(DatabaseManipulationEnum.Drop))
       return;
-    
+
     var sql = "DROP DATABASE IF EXISTS " + _dbName + " WITH (FORCE);";
-    _masterDb.Database.ExecuteSqlRaw(sql);
+    _masterDb?.Database.ExecuteSqlRaw(sql);
 
-    _log.LogInformation("Database '{Dbname}' has been deleted", _dbName);
+    _log?.LogInformation("Database '{Dbname}' has been deleted", _dbName);
   }
-
 }

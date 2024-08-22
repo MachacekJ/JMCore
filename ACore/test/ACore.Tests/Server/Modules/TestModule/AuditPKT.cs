@@ -3,7 +3,6 @@ using ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid;
 using ACore.AppTest.Modules.TestModule.CQRS.TestPKString;
 using ACore.AppTest.Modules.TestModule.Models;
 using ACore.Server.Modules.AuditModule.Storage;
-using ACore.Server.Modules.AuditModule.Storage.Models;
 using FluentAssertions;
 using MediatR;
 using Xunit;

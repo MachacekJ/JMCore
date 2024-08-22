@@ -20,7 +20,7 @@ public class AuditValuesTests : PGAuditTestBase
   }
   
   [Fact]
-  public async Task StringSize()
+  public async Task StringDbSize()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async _ =>

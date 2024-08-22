@@ -1,13 +1,13 @@
 using ACore.Extensions;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.EF;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditSave;
+using ACore.Server.Modules.AuditModule.Extensions;
 using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Storages.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 
@@ -16,12 +16,12 @@ namespace ACore.Server.Storages.EF;
 public abstract class AuditableDbContext : DbContextBase
 {
   private bool? _isAuditEnabled;
-  private readonly IAuditDbService? _auditService;
+  //private readonly IAuditDbService? _auditService;
   private readonly IAuditConfiguration? _auditConfiguration;
 
-  protected AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditDbService? auditService, IAuditConfiguration? auditConfiguration) : base(options, mediator, logger)
+  protected AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditConfiguration? auditConfiguration) : base(options, mediator, logger)
   {
-    _auditService = auditService;
+   // _auditService = auditService;
     _auditConfiguration = auditConfiguration;
   }
 
@@ -38,7 +38,7 @@ public abstract class AuditableDbContext : DbContextBase
     if (id == null)
       ArgumentNullException.ThrowIfNull(id);
 
-    var audit = await GetAuditI<TEntity>(id, EntityState.Modified);
+    var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Modified);
 
     var isNew = IsNew(id);
 
@@ -50,7 +50,7 @@ public abstract class AuditableDbContext : DbContextBase
         if (audit == null)
           return;
 
-        var colName = GetColumnName<TEntity>(audit.Value.dbEntityType, p.propName);
+        var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
           audit.Value.auditEntryItem.AddEntry(colName, p.oldValue, p.newValue);
       });
@@ -70,18 +70,19 @@ public abstract class AuditableDbContext : DbContextBase
 
     if (isNew)
     {
-      audit.Value.auditEntryItem.EntityState = EntityState.Added;
+      audit.Value.auditEntryItem.SetEntityState(EntityState.Added);
       audit.Value.auditEntryItem.SetPK(id);
       foreach (var p in existsEntity.AllProperties())
       {
-        var colName = GetColumnName<TEntity>(audit.Value.dbEntityType, p.propName);
+        var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
           audit.Value.auditEntryItem.AddEntry(colName, null, p.value);
       }
     }
 
-    if (_auditService != null)
-      await _auditService.SaveAuditAsync(audit.Value.auditEntryItem);
+    //if (_auditService != null)
+    await Mediator.Send(new AuditSaveCommand(audit.Value.auditEntryItem));
+   //   await _auditService.SaveAuditAsync(audit.Value.auditEntryItem);
 
     return id;
   }
@@ -104,7 +105,7 @@ public abstract class AuditableDbContext : DbContextBase
   protected async Task DeleteInternalWithAudit<TEntity, TPK>(TPK id, Action<TEntity> deleteItem) where TEntity : class
   {
     var en = await Get<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
-    var audit = await GetAuditI<TEntity>(id, EntityState.Deleted);
+    var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Deleted);
 
     deleteItem(en);
 
@@ -112,27 +113,27 @@ public abstract class AuditableDbContext : DbContextBase
     {
       foreach (var p in en.AllProperties())
       {
-        var colName = GetColumnName<TEntity>(audit.Value.dbEntityType, p.propName);
+        var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
           audit.Value.auditEntryItem.AddEntry(colName, p.value, null);
       }
 
-      _auditService?.SaveAuditAsync(audit.Value.auditEntryItem);
+      await Mediator.Send(new AuditSaveCommand(audit.Value.auditEntryItem));
+     // _auditService?.SaveAuditAsync(audit.Value.auditEntryItem);
     }
 
     await SaveChangesAsync();
   }
 
-  private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> GetAuditI<TEntity>(object id, EntityState state)
+  private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> CreateAuditEntryItem<TEntity>(object id, EntityState state)
   {
-    if (_auditService == null || !await IsAuditEnabledAsync() || !typeof(TEntity).IsAuditable(_auditConfiguration?.AuditEntities))
+    if (!await IsAuditEnabledAsync() || !typeof(TEntity).IsAuditable(_auditConfiguration?.AuditEntities))
       return null;
 
     var dbEntityType = Model.FindEntityType(typeof(TEntity)) ?? throw new Exception($"Unknown db entity class '{typeof(TEntity).Name}'");
     var tableName = GetTableName(dbEntityType) ?? throw new Exception($"Unknown db table name for entity class '{typeof(TEntity).Name}'");
     var schemaName = dbEntityType.GetSchema();
-    var audit = new AuditEntryItem(tableName, schemaName, id, _auditService.AuditUserProvider)
-      { EntityState = state };
+    var audit = new AuditEntryItem(tableName, schemaName, id, state);
     return (audit, dbEntityType);
   }
 
@@ -149,7 +150,7 @@ public abstract class AuditableDbContext : DbContextBase
     return tableName;
   }
 
-  private string? GetColumnName<T>(IEntityType dbEntityType, string propName)
+  private string? GetColumnName<T>(string propName, IEntityType dbEntityType)
   {
     if (!typeof(T).IsAuditable(propName, _auditConfiguration?.NotAuditProperty))
       return null;
@@ -178,11 +179,11 @@ public abstract class AuditableDbContext : DbContextBase
     if (_isAuditEnabled != null)
       return _isAuditEnabled.Value;
 
-    if (_auditService == null)
-    {
-      _isAuditEnabled = false;
-      return false;
-    }
+    // if (_auditService == null)
+    // {
+    //   _isAuditEnabled = false;
+    //   return false;
+    // }
 
     // Check if db structure is already created.
     var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));

@@ -4,9 +4,17 @@ using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 
+public abstract class AuditModuleRequestHandler<TRequest>(IStorageResolver storageResolver) : IRequestHandler<TRequest>
+  where TRequest : IRequest
+{
+  public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+
+  protected IEnumerable<IAuditStorageModule> AllBasicStorageWriteContexts() => storageResolver.AllWriteStorages<IAuditStorageModule>();
+}
+
 public abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : IRequestHandler<TRequest, TResponse>
   where TRequest : IRequest<TResponse>
 {
   public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken); 
-  protected IAuditStorageModule ReadAuditContexts() => storageResolver.FirstReadWriteStorage<IAuditStorageModule>();
+  protected IAuditStorageModule ReadAuditContexts() => storageResolver.FirstReadOnlyStorage<IAuditStorageModule>();
 }

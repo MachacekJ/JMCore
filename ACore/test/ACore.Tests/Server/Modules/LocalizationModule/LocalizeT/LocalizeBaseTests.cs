@@ -2,16 +2,16 @@
 using System.Resources;
 using ACore.Localizer;
 using ACore.ResX;
-using ACore.Server.MemoryStorage;
-using ACore.Server.MemoryStorage.LocalizationModule;
 using ACore.Server.Modules.LocalizationModule.Storage;
-using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.ResX;
 using ACore.Server.Services.JMCache;
 using ACore.Tests.Server.Modules.LocalizationModule.LocalizeT.ResX;
 using ACore.Tests.Server.Storages;
 using ACore.Modules.CacheModule;
+using ACore.Server.Configuration;
+using ACore.Server.Modules.LocalizationModule;
 using ACore.Server.Modules.LocalizationModule.Configuration;
+using ACore.Server.Modules.LocalizationModule.Storage.Memory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,11 +26,15 @@ public class LocalizeBaseTests : StorageBaseTests
   protected IStringLocalizer<TestClient> ResXTestClient = null!;
   protected IStringLocalizer<ResX_Errors> ResXCoreErrors = null!;
   protected LocalizationMemoryEfStorageImpl LocalizationMemoryEfStorageImpl = null!;
-
+  private readonly StorageModuleConfiguration _testModuleConfig = new()
+  {
+    UseMemoryStorage = true
+  };
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(ILocalizationStorageModule) }));
+    sc.AddLocalizationServiceModule(_testModuleConfig);
+   // StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(ILocalizationStorageModule) }));
     sc.AddJMMemoryCache<JMCacheServerCategory>();
     var addLanguageResources = new List<ResXSource>
     {
@@ -69,9 +73,10 @@ public class LocalizeBaseTests : StorageBaseTests
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
+    await sp.UseAuditServiceModule(_testModuleConfig);
     await sp.UseJMServerLocalization();
 
-    LocalizationStorageModule = StorageResolver.FirstReadWriteStorage<ILocalizationStorageModule>(); //sp.GetService<LocalizeStorageModule>() ?? throw new ArgumentException($"{nameof(LocalizeStorageModule)} is null.");
+    LocalizationStorageModule = StorageResolver?.FirstReadOnlyStorage<ILocalizationStorageModule>() ?? throw new ArgumentException($"{nameof(ILocalizationStorageModule)} is not implemented.");
     LocalizationMemoryEfStorageImpl = (LocalizationStorageModule as LocalizationMemoryEfStorageImpl) ?? throw new ArgumentException();
     ResXTestServer = sp.GetService<IStringLocalizer<TestServer>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestServer>)} is null.");
     ResXTestClient = sp.GetService<IStringLocalizer<TestClient>>() ?? throw new ArgumentException($"{nameof(IStringLocalizer<TestClient>)} is null.");

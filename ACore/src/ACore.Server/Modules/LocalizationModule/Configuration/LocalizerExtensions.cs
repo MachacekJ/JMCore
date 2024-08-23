@@ -1,7 +1,7 @@
 ﻿using ACore.Localizer.Storage;
+using ACore.Server.Modules.LocalizationModule.ResX;
+using ACore.Server.Modules.LocalizationModule.ResX.Helpers;
 using ACore.Server.Modules.LocalizationModule.Storage;
-using ACore.Server.ResX;
-using ACore.Server.ResX.Helpers;
 using ACore.Server.Storages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace ACore.TestsIntegrations.Modules.SettingModule;
 
-public class CQRST : BasicStructureBaseTests
+public class CQRST : BasicStructureBase
 {
   [Fact]
   public async Task SettingsCommandAndQueryGlobalTest()

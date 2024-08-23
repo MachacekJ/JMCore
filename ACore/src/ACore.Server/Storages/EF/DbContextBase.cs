@@ -1,14 +1,9 @@
 ﻿using System.Reflection;
-using ACore.Modules.CacheModule.CQRS.CacheGet;
-using ACore.Modules.CacheModule.CQRS.CacheRemove;
-using ACore.Modules.CacheModule.CQRS.CacheSave;
-using ACore.Modules.CacheModule.CQRS.Models;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 using ACore.Server.Modules.SettingModule.Storage;
-using ACore.Server.Modules.SettingModule.Storage.Models;
-using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,14 +11,13 @@ using Microsoft.Extensions.Logging;
 namespace ACore.Server.Storages.EF;
 
 public abstract class DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger)
-  : DbContext(options), IBasicStorageModule
+  : DbContext(options), IStorage
 {
-  private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
-  
-  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IBasicStorageModule)}";
+
+  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(ISettingStorageModule)}";
   private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
 
   protected readonly ILogger<DbContextBase> Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
@@ -31,72 +25,6 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
 
   protected IMediator Mediator { get; } = mediator ?? throw new ArgumentException($"{nameof(mediator)} is null.");
 
-  public DbSet<SettingEntity> Settings { get; set; }
-
-  #region Settings
-
-  public async Task<string?> Setting_GetAsync(string key, bool isRequired = true)
-  {
-    var vv = await GetSettingsAsync(key, isRequired);
-    if (vv == null)
-      return null;
-    return vv.Value;
-  }
-
-  public async Task Setting_SaveAsync(string key, string value, bool isSystem = false)
-  {
-    var set = await Settings.FirstOrDefaultAsync(i => i.Key == key);
-    if (set == null)
-    {
-      set = new SettingEntity
-      {
-        Key = key
-      };
-      Settings.Add(set);
-    }
-
-    set.Value = value;
-    set.IsSystem = isSystem;
-
-    await SaveChangesAsync();
-
-    await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
-  }
-
-  private async Task<SettingEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
-  {
-    List<SettingEntity>? allSettings;
-
-    var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
-
-    if (allSettingsCache != null)
-    {
-      if (allSettingsCache.Value == null)
-      {
-        var ex = new Exception("The key '" + key + "' is not represented in settings table.");
-        Logger.LogCritical("GetSettingsValue->" + key, ex);
-        throw ex;
-      }
-
-      allSettings = allSettingsCache.Value as List<SettingEntity>;
-    }
-    else
-    {
-      allSettings = await Settings.ToListAsync();
-      await Mediator.Send(new CacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
-    }
-
-    if (allSettings == null)
-      throw new ArgumentException($"{nameof(Settings)} entity table is null.");
-
-    var vv = allSettings.FirstOrDefault(a => a.Key == key);
-    if (vv == null && exceptedValue)
-      throw new Exception($"Value for setting {nameof(key)} is not set. Check {nameof(Settings)} table.");
-
-    return vv;
-  }
-
-  #endregion
 
   protected static void SetDatabaseNames<T>(Dictionary<string, StorageEntityNameDefinition> objectNameMapping, ModelBuilder modelBuilder) where T : class
   {
@@ -150,6 +78,12 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
       {
         updatedToVersion = await UpdateDatabase(allVersions, lastVersion);
       }
+    }
+
+    if (this is ISettingStorageModule aa)
+    {
+      await aa.Setting_SaveAsync(StorageVersionKey, updatedToVersion.ToString(), true);
+      return;
     }
 
     await Mediator.Send(new SettingSaveCommand(StorageDefinition.Type, StorageVersionKey, updatedToVersion.ToString(), true));

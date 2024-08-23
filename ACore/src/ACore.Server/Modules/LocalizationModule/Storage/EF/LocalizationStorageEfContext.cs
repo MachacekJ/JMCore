@@ -1,9 +1,10 @@
 ﻿using ACore.Localizer;
 using ACore.Localizer.Storage;
 using ACore.Server.Modules.LocalizationModule.Configuration;
+using ACore.Server.Modules.LocalizationModule.ResX;
 using ACore.Server.Modules.LocalizationModule.Storage.Models;
-using ACore.Server.ResX;
 using ACore.Server.Storages.EF;
+using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

@@ -1,11 +1,9 @@
-using ACore.Server.Configuration;
-using ACore.Server.Modules.AuditModule.Storage;
-using ACore.Server.Modules.AuditModule.Storage.Mongo;
 using ACore.Server.Modules.LocalizationModule.Storage;
 using ACore.Server.Modules.LocalizationModule.Storage.Memory;
 using ACore.Server.Modules.SettingModule;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages;
+using ACore.Server.Storages.Configuration.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,24 +11,24 @@ namespace ACore.Server.Modules.LocalizationModule;
 
 public static class LocalizationModuleServiceExtensions
 {
-  public static void AddLocalizationServiceModule(this IServiceCollection services, Action<StorageModuleConfiguration>? options = null)
+  public static void AddLocalizationServiceModule(this IServiceCollection services, Action<ACoreStorageOptions>? options = null)
   {
-    var testModuleConfiguration = new StorageModuleConfiguration();
+    var testModuleConfiguration = new ACoreStorageOptions();
     options?.Invoke(testModuleConfiguration);
     AddLocalizationServiceModule(services, testModuleConfiguration);
   }
 
-  public static void AddLocalizationServiceModule(this IServiceCollection services, StorageModuleConfiguration testModuleConfiguration)
+  public static void AddLocalizationServiceModule(this IServiceCollection services, ACoreStorageOptions testOptions)
   {
-    services.AddSettingServiceModule(testModuleConfiguration);
+    services.AddSettingServiceModule(testOptions);
 
-    if (testModuleConfiguration.MongoDb != null)
+    if (testOptions.MongoDb != null)
     {
       throw new NotImplementedException();
       // services.AddDbContext<AuditMongoStorageImpl>(opt => opt.UseMongoDB(testModuleConfiguration.MongoDb.ReadWrite.ConnectionString, testModuleConfiguration.MongoDb.DbName));
     }
 
-    if (testModuleConfiguration.PGDb != null)
+    if (testOptions.PGDb != null)
     {
       throw new NotImplementedException();
       // services.AddDbContext<AuditPGEfStorageImpl>(opt =>
@@ -40,13 +38,13 @@ public static class LocalizationModuleServiceExtensions
       // });
     }
 
-    if (testModuleConfiguration.UseMemoryStorage)
+    if (testOptions.UseMemoryStorage)
     {
-      services.AddDbContext<LocalizationMemoryEfStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(StorageConst.MemoryConnectionString + nameof(IBasicStorageModule) + Guid.NewGuid()));
+      services.AddDbContext<LocalizationMemoryEfStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(StorageConst.MemoryConnectionString + nameof(ISettingStorageModule) + Guid.NewGuid()));
     }
   }
 
-  public static async Task UseAuditServiceModule(this IServiceProvider provider, StorageModuleConfiguration opt)
+  public static async Task UseAuditServiceModule(this IServiceProvider provider, ACoreStorageOptions opt)
   {
     await provider.UseSettingServiceModule(opt);
     var storageResolver = provider.GetService<IStorageResolver>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(IStorageResolver)}.");

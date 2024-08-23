@@ -1,54 +1,55 @@
-﻿using ACore.AppTest.Modules.TestModule.CQRS;
+﻿using ACore.AppTest.Modules.TestModule.Configuration.Options;
+using ACore.AppTest.Modules.TestModule.CQRS;
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
-using ACore.AppTest.Modules.TestModule.Storages.EF;
-using ACore.AppTest.Modules.TestModule.Storages.Memory;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Delete;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Get;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Save;
+using ACore.AppTest.Modules.TestModule.Storages;
 using ACore.AppTest.Modules.TestModule.Storages.Mongo;
-using ACore.AppTest.Modules.TestModule.Storages.PG;
+using ACore.AppTest.Modules.TestModule.Storages.SQL.Memory;
+using ACore.AppTest.Modules.TestModule.Storages.SQL.PG;
+using ACore.Server.Modules.AuditModule;
+using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
+using ACore.Server.Modules.AuditModule.Extensions;
 using ACore.Server.Storages;
 using Autofac;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ACore.Server.Modules.AuditModule;
-using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
-using ACore.Server.Modules.AuditModule.Extensions;
 
-namespace ACore.AppTest.Modules.TestModule;
+namespace ACore.AppTest.Modules.TestModule.Configuration;
 
 public static class TestModuleServiceExtensions
 {
-  private const string _memName = "memory";
+  private const string MemoryConnectionStringPrefix = "memory";
 
-  public static void AddTestServiceModule(this IServiceCollection services, Configuration.TestModuleConfiguration options)
+  public static void AddTestServiceModule(this IServiceCollection services, TestModuleOptions moduleOptions)
   {
-    var testModuleConfiguration = options;
+    var testModuleConfiguration = moduleOptions;
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
     services.AddAuditServiceModule(testModuleConfiguration);
 
     if (testModuleConfiguration.MongoDb != null)
     {
-      services.AddDbContext<EfTestMongoStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseMongoDB(testModuleConfiguration.MongoDb.ReadWrite.ConnectionString, testModuleConfiguration.MongoDb.DbName));
+      services.AddDbContext<TestModuleMongoStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseMongoDB(testModuleConfiguration.MongoDb.ReadWrite, testModuleConfiguration.MongoDb.DbName));
     }
 
     if (testModuleConfiguration.PGDb != null)
     {
-      services.AddDbContext<PGEFTestStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseNpgsql(testModuleConfiguration.PGDb.ReadWriteConnectionString));
+      services.AddDbContext<TestModulePGStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseNpgsql(testModuleConfiguration.PGDb.ReadWriteConnectionString));
     }
 
     if (testModuleConfiguration.UseMemoryStorage)
     {
-      services.AddDbContext<MemoryTestStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(_memName + nameof(IEFTestStorageModule) + Guid.NewGuid()));
+      services.AddDbContext<TestModuleMemoryStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(MemoryConnectionStringPrefix + nameof(ITestStorageModule) + Guid.NewGuid()));
     }
 
-    AddTestServiceModuleOld(services);
-  }
-
-  public static void AddTestServiceModuleOld(this IServiceCollection services)
-  {
-    services.AddMediatR(c => { c.RegisterServicesFromAssemblyContaining(typeof(IEFTestStorageModule)); });
+    services.AddMediatR(c => { c.RegisterServicesFromAssemblyContaining(typeof(ITestStorageModule)); });
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TestModuleBehavior<,>));
   }
+
 
   public static void RegisterAutofacTestService(this ContainerBuilder containerBuilder)
   {
@@ -58,27 +59,27 @@ public static class TestModuleServiceExtensions
     containerBuilder.RegisterGeneric(typeof(AuditGetHandler<>)).AsImplementedInterfaces();
   }
 
-  public static async Task UseTestServiceModule(this IServiceProvider provider, Configuration.TestModuleConfiguration opt)
+  public static async Task UseTestServiceModule(this IServiceProvider provider, TestModuleOptions opt)
   {
     await provider.UseAuditServiceModule(opt);
     var storageResolver = provider.GetService<IStorageResolver>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(IStorageResolver)}.");
 
     if (opt.MongoDb != null)
     {
-      var mongoImpl = provider.GetService<EfTestMongoStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(EfTestMongoStorageImpl)}.");
-      await storageResolver.ConfigureStorage<IEFTestStorageModule>(new StorageImplementation(mongoImpl));
+      var mongoImpl = provider.GetService<TestModuleMongoStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(TestModuleMongoStorageImpl)}.");
+      await storageResolver.ConfigureStorage<ITestStorageModule>(new StorageImplementation(mongoImpl));
     }
 
     if (opt.PGDb != null)
     {
-      var pgImpl = provider.GetService<PGEFTestStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(PGEFTestStorageImpl)}.");
-      await storageResolver.ConfigureStorage<IEFTestStorageModule>(new StorageImplementation(pgImpl));
+      var pgImpl = provider.GetService<TestModulePGStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(TestModulePGStorageImpl)}.");
+      await storageResolver.ConfigureStorage<ITestStorageModule>(new StorageImplementation(pgImpl));
     }
 
     if (opt.UseMemoryStorage)
     {
-      var pgImpl = provider.GetService<MemoryTestStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(MemoryTestStorageImpl)}.");
-      await storageResolver.ConfigureStorage<IEFTestStorageModule>(new StorageImplementation(pgImpl));
+      var memoryImpl = provider.GetService<TestModuleMemoryStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(TestModuleMemoryStorageImpl)}.");
+      await storageResolver.ConfigureStorage<ITestStorageModule>(new StorageImplementation(memoryImpl));
     }
   }
 }

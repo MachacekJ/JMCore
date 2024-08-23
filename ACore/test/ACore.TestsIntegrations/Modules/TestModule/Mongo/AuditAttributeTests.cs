@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
-using ACore.AppTest.Modules.TestModule.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Get;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Save;
 using ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet.Models;
@@ -12,10 +14,10 @@ using Xunit;
 
 namespace ACore.TestsIntegrations.Modules.TestModule.Mongo;
 
-public class AuditAttribute : MongoAuditTestBase
+public class AuditAttributeTests : MongoAuditBase
 {
   [Fact]
-  public async Task AddItem()
+  public async Task AddItemTest()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>

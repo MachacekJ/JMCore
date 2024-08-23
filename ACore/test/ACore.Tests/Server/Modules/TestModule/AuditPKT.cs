@@ -1,7 +1,12 @@
 ﻿using System.Reflection;
 using ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid.Get;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid.Save;
 using ACore.AppTest.Modules.TestModule.CQRS.TestPKString;
-using ACore.AppTest.Modules.TestModule.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKString.Get;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKString.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestPKString.Save;
 using ACore.Server.Modules.AuditModule.Storage;
 using FluentAssertions;
 using MediatR;
@@ -13,7 +18,7 @@ namespace ACore.Tests.Server.Modules.TestModule;
 /// Two kinds of table primary key are supported. 
 /// </summary>
 // ReSharper disable once InconsistentNaming
-public class AuditPKT : AuditAttributeBaseTests
+public class AuditPKT : AuditAttributeBase
 {
   [Fact]
   public async Task GuidPK()

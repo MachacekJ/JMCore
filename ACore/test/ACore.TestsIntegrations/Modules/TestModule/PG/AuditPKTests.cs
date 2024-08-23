@@ -5,11 +5,11 @@ using Xunit;
 namespace ACore.TestsIntegrations.Modules.TestModule.PG;
 
 // ReSharper disable once InconsistentNaming
-public class AuditPKTests : PGAuditTestBase
+public class AuditPKTests : PGAuditBase
 {
 
   [Fact]
-  public async Task GuidPK()
+  public async Task GuidPKTest()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
@@ -19,7 +19,7 @@ public class AuditPKTests : PGAuditTestBase
   }
 
   [Fact]
-  public async Task StringPK()
+  public async Task StringPKTest()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>

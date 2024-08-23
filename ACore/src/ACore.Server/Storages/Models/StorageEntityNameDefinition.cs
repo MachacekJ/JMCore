@@ -6,34 +6,46 @@ namespace ACore.Server.Storages.Models;
 
 public class StorageEntityNameDefinition
 {
-  private readonly IDictionary _columns;
+  private readonly IDictionary? _columns;
   private Dictionary<string, string>? _columnNames;
-  
+
   public string TableName { get; }
-  public Dictionary<string, string> ColumnNames
+
+  public Dictionary<string, string>? ColumnNames
   {
     get
     {
+      if (_columns == null)
+        return null;
+
       InitColumnNames();
-      return _columnNames!;
+      return _columnNames;
     }
   }
-  
+
   public Dictionary<Expression<Func<T, object>>, string> GetColumns<T>()
   {
     return _columns as Dictionary<Expression<Func<T, object>>, string> ?? throw new InvalidOperationException($"Columns are not defined for '{typeof(T).Name}' entity.");
   }
-  
+
+  /// <summary>
+  /// Columns names are defined in entity model with attribute.
+  /// </summary>
+  public StorageEntityNameDefinition(string tableName)
+  {
+    TableName = tableName;
+  }
+
   public StorageEntityNameDefinition(string tableName, IDictionary columns)
   {
     TableName = tableName;
     _columns = columns;
   }
-
-
+  
   private static object GetPropValue(object src, string propName)
   {
-    return src.GetType().GetProperty(propName)?.GetValue(src, null) ?? throw new InvalidOperationException($"Prop {propName} doesn't exist.");
+    return src.GetType().GetProperty(propName)?
+      .GetValue(src, null) ?? throw new InvalidOperationException($"Prop {propName} doesn't exist.");
   }
 
   private static string GetPropertyName(object body)
@@ -49,6 +61,9 @@ public class StorageEntityNameDefinition
 
   private void InitColumnNames()
   {
+    if (_columns == null)
+      return;
+    
     if (_columnNames != null)
       return;
 
@@ -60,7 +75,7 @@ public class StorageEntityNameDefinition
       var key = GetPropValue(columnDef, "Key");
       var expressionBody = GetPropValue(key, "Body");
       var expressionPropertyName = GetPropertyName(expressionBody);
-      _columnNames.Add(expressionPropertyName, GetPropValue(columnDef, "Value").ToString()!);
+      _columnNames.Add(expressionPropertyName, GetPropValue(columnDef, "Value").ToString() ?? throw new InvalidOperationException($"Prop {expressionPropertyName} doesn't exist."));
     }
   }
 }

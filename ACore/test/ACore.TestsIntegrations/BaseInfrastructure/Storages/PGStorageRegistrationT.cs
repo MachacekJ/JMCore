@@ -1,4 +1,4 @@
-﻿using ACore.Server.Configuration;
+﻿using ACore.Server.Storages.Configuration.Options;
 using ACore.Tests.BaseInfrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ public class PGStorageRegistrationT(TestData testData) : IStorageRegistrationT
   
   private string? MasterConnectionStringPG { get; set; }
 
-  public void RegisterServices(ServiceCollection sc, StorageModuleConfiguration config)
+  public void RegisterServices(ServiceCollection sc, ACoreStorageOptions config)
   {
     MasterConnectionStringPG = string.Format(config.PGDb?.ReadWriteConnectionString ?? throw new InvalidOperationException(), "postgres");
     sc.AddDbContext<MasterDb>(opt => opt.UseNpgsql(MasterConnectionStringPG));

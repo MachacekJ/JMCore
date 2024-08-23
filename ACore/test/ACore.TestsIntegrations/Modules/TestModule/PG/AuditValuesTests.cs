@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
 using ACore.AppTest.Modules.TestModule.CQRS.TestValueType;
-using ACore.AppTest.Modules.TestModule.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestValueType.Models;
+using ACore.AppTest.Modules.TestModule.CQRS.TestValueType.Save;
 using ACore.Tests.Server.Modules.TestModule;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace ACore.TestsIntegrations.Modules.TestModule.PG;
 
-public class AuditValuesTests : PGAuditTestBase
+public class AuditValuesTests : PGAuditBase
 {
   [Fact]
-  public async Task AllTypes()
+  public async Task AllTypesTest()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
@@ -20,7 +21,7 @@ public class AuditValuesTests : PGAuditTestBase
   }
   
   [Fact]
-  public async Task StringDbSize()
+  public async Task StringDbSizeTest()
   {
     var method = MethodBase.GetCurrentMethod();
     await RunStorageTestAsync(StorageTypesToTest, method, async _ =>

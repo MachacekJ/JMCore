@@ -1,9 +1,8 @@
 ﻿using ACore.Server.Storages.Models;
-using ACore.TestsIntegrations.Modules.TestModule.PG;
 
 namespace ACore.TestsIntegrations.Modules.TestModule.Mongo;
 
-public class MongoAuditTestBase : AuditStructureBaseTests
+public class MongoAuditBase : AuditStructureBase
 {
-  protected StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Mongo;
+  protected static StorageTypeEnum StorageTypesToTest => StorageTypeEnum.Mongo;
 }

@@ -10,7 +10,7 @@ public abstract class SettingModuleRequestHandler<TRequest>(IStorageResolver sto
 {
   public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
 
-  protected IEnumerable<IBasicStorageModule> AllBasicStorageWriteContexts(StorageTypeEnum storageType) => storageResolver.AllWriteStorages<IBasicStorageModule>(storageType);
+  protected IEnumerable<ISettingStorageModule> AllBasicStorageWriteContexts(StorageTypeEnum storageType) => storageResolver.AllWriteStorages<ISettingStorageModule>(storageType);
 }
 
 public abstract class SettingModuleRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>

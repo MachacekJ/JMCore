@@ -1,11 +1,11 @@
-﻿using ACore.Server.Configuration;
+﻿using ACore.Server.Storages.Configuration.Options;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.TestsIntegrations.BaseInfrastructure.Storages;
 
 public interface IStorageRegistrationT
 {
-    void RegisterServices(ServiceCollection sc, StorageModuleConfiguration config);
+    void RegisterServices(ServiceCollection sc, ACoreStorageOptions config);
     void GetServices(IServiceProvider sp);
     void FinishedTest();
 }

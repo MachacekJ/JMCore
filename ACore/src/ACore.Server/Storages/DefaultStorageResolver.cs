@@ -1,4 +1,6 @@
-﻿using ACore.Server.Storages.Models;
+﻿using System.Runtime.CompilerServices;
+using ACore.Server.Modules.SettingModule.Storage;
+using ACore.Server.Storages.Models;
 
 namespace ACore.Server.Storages;
 
@@ -18,6 +20,11 @@ public class DefaultStorageResolver : IStorageResolver
     var name = typeof(TStorage).Name;
     if (implementation == null)
       throw new Exception($"Cannot find any implementation of {name}.");
+
+
+    if (implementation.Implementation is not TStorage)
+      throw new Exception($"Cannot find any implementation of {name}.");
+      
 
     if (_implementations.TryGetValue(name, out var list))
       list.Add(implementation);
@@ -60,6 +67,19 @@ public class DefaultStorageResolver : IStorageResolver
   //   }
   // }
 
+  // public ISettingStorageModule? FirstReadOnlySettingModule(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered)
+  // {
+  //   if (!_implementations.TryGetValue(nameof(ISettingStorageModule), out var storageImplementations)) 
+  //     throw new Exception($"Storage module '{nameof(ISettingStorageModule)}' has no registered implementation.");
+  //   
+  //   var storageImplementationByMode = storageImplementations.Where(e => e.Mode.HasFlag(StorageModeEnum.Read)).Select(storageModule => storageModule.Implementation).OfType<ISettingStorageModule>().ToList();
+  //
+  //   if (storageType != StorageTypeEnum.AllRegistered)
+  //     storageImplementationByMode = storageImplementationByMode.Where(a => a.StorageDefinition.Type == storageType).ToList();
+  //     
+  //   return storageImplementationByMode.Count > 0 ? storageImplementationByMode.First() : null;
+  // }
+
   public T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
     => AllStorages<T>(StorageModeEnum.Write, storageType).First();
 
@@ -82,19 +102,16 @@ public class DefaultStorageResolver : IStorageResolver
 
   private List<T> AllStorages<T>(StorageModeEnum mode, StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
   {
-    if (_implementations.TryGetValue(typeof(T).Name, out var aa))
-    {
-      var ab = aa.Where(e => e.Mode.HasFlag(mode)).Select(storageModule => storageModule.Implementation).OfType<T>().ToList();
+    if (!_implementations.TryGetValue(typeof(T).Name, out var storageImplementations))
+      throw new Exception($"Storage module '{typeof(T).Name}' has no registered implementation.");
 
-      if (storageType != StorageTypeEnum.AllRegistered)
-        ab = ab.Where(a => a.StorageDefinition.Type == storageType).ToList();
-      
-      if (ab.Count > 0)
-        return ab;
-    }
+    var storageImplementationByMode = storageImplementations.Where(e => e.Mode.HasFlag(mode)).Select(storageModule => storageModule.Implementation).OfType<T>().ToList();
 
-    //var ab = _allStorageModules.Where(sm => storageType.HasFlag(sm.StorageType) && sm.StorageMode.HasFlag(storageMode)).Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>().ToList();
+    if (storageType != StorageTypeEnum.AllRegistered)
+      storageImplementationByMode = storageImplementationByMode.Where(a => a.StorageDefinition.Type == storageType).ToList();
 
+    if (storageImplementationByMode.Count > 0)
+      return storageImplementationByMode;
 
     throw new Exception($"Storage module '{typeof(T).Name}' has no registered implementation.");
   }

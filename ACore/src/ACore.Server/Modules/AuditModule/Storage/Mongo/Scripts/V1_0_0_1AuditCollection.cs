@@ -1,6 +1,7 @@
 ﻿using ACore.Server.Modules.AuditModule.Storage.Mongo.Models;
 using ACore.Server.Storages;
 using ACore.Server.Storages.EF;
+using ACore.Server.Storages.Scripts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -19,13 +20,13 @@ internal class V1_0_0_1AuditCollection : DbVersionScriptsBase
       
     var client = new MongoClient(connectionString);
     var db = client.GetDatabase(ext.DatabaseName);
-    db.CreateCollection(CollectionNames.AuditCollectionName);
-    var col = db.GetCollection<AuditMongoEntity>(CollectionNames.AuditCollectionName);
+    db.CreateCollection(DefaultNames.AuditCollectionName);
+    var col = db.GetCollection<AuditMongoEntity>(DefaultNames.AuditCollectionName);
     
     var index = Builders<AuditMongoEntity>.IndexKeys.Ascending(e => e.ObjectId);
     col.Indexes.CreateOneAsync(new CreateIndexModel<AuditMongoEntity>(index));
     
     //db.GetCollection<AuditEntity>(CollectionNames.AuditCollectionName).Indexes.CreateMany()
-    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", CollectionNames.AuditCollectionName, ext.DatabaseName);
+    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", DefaultNames.AuditCollectionName, ext.DatabaseName);
   }
 }

@@ -6,6 +6,7 @@ using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -105,6 +106,9 @@ public abstract class AuditableDbContext : DbContextBase
   protected async Task DeleteInternalWithAudit<TEntity, TPK>(TPK id, Action<TEntity> deleteItem) where TEntity : class
   {
     var en = await Get<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
+    if (id == null)
+      throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
+        
     var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Deleted);
 
     deleteItem(en);

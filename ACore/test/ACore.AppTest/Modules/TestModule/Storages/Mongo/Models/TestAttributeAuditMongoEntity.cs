@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ACore.AppTest.Modules.TestModule.Storages.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Storages;
-using ACore.Server.Storages.Mongo;
+using ACore.Server.Storages.Models;
 using MongoDB.Bson.Serialization.Attributes;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
@@ -14,7 +12,7 @@ namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 /// <summary>
 /// Sample: How to use <see cref="AuditableAttribute"/> for entity.
 /// This entity is used for more storages like MongoDb, Postgres etc.
-/// Column name <see cref="ColumnAttribute"/> for saving in storage is defined e.g. <see cref="PGTestStorageDbNames"/>.
+/// Column name <see cref="ColumnAttribute"/> for saving in storage is defined e.g. <see cref="SQL.PG.DefaultNames"/>.
 /// </summary>
 [Auditable]
 public class TestAttributeAuditMongoEntity: MongoStorageEntity

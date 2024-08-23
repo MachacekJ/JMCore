@@ -5,7 +5,7 @@ using ACore.TestsIntegrations.Modules.TestModule.PG;
 
 namespace ACore.TestsStress;
 
-public class AuditBase :  AuditStructureBaseTests
+public class AuditBase :  AuditStructureBase
 {
   private const int ItemCount = 1;
   // protected async Task Audit(StorageTypeEnum storageType)

@@ -8,7 +8,7 @@ public class TestPKStringData
   public string Id { get; set; } = string.Empty;
   public string Name { get; set; } = null!;
   
-  internal static TestPKStringData Create(TestPKStringEntity entity)
+  internal static TestPKStringData Create(TestPKPKStringEntity entity)
   {
     var testPKGuidData = new TestPKStringData();
     testPKGuidData.CopyPropertiesFrom(entity);
@@ -18,9 +18,9 @@ public class TestPKStringData
 
 public static class TestPKStringDataExtensions
 {
-  internal static TestPKStringEntity ToEntity(this TestPKStringData data)
+  internal static TestPKPKStringEntity ToEntity(this TestPKStringData data)
   {
-    var en = new TestPKStringEntity
+    var en = new TestPKPKStringEntity
     {
       Name = string.Empty
     };

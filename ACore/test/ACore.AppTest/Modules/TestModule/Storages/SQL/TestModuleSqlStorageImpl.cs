@@ -27,7 +27,7 @@ internal abstract class TestModuleSqlStorageImpl(DbContextOptions options, IMedi
   internal DbSet<TestAttributeAuditEntity> TestAttributeAudits { get; set; }
   internal DbSet<TestValueTypeEntity> TestValueTypes { get; set; }
   internal DbSet<TestPKGuidEntity> TestPKGuid { get; set; }
-  internal DbSet<TestPKStringEntity> TestPKString { get; set; }
+  internal DbSet<TestPKPKStringEntity> TestPKString { get; set; }
 
   public override async Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
   {
@@ -40,7 +40,7 @@ internal abstract class TestModuleSqlStorageImpl(DbContextOptions options, IMedi
       { } entityType when entityType == typeof(TestAttributeAuditEntity) => await TestAttributeAudits.FindAsync(Convert.ToInt32(id)) as TEntity,
       { } entityType when entityType == typeof(TestManualAuditEntity) => await TestManualAudits.FindAsync(Convert.ToInt64(id)) as TEntity,
       { } entityType when entityType == typeof(TestPKGuidEntity) => await TestPKGuid.FindAsync((Guid)Convert.ChangeType(id, typeof(Guid))) as TEntity,
-      { } entityType when entityType == typeof(TestPKStringEntity) => await TestPKString.FindAsync(id.ToString()) as TEntity,
+      { } entityType when entityType == typeof(TestPKPKStringEntity) => await TestPKString.FindAsync(id.ToString()) as TEntity,
       { } entityType when entityType == typeof(TestValueTypeEntity) => await TestPKString.FindAsync(Convert.ToInt32(id)) as TEntity,
       _ => throw new Exception($"Unknown entity data type {typeof(TEntity).Name} with primary key {id}.")
     };
@@ -82,10 +82,10 @@ internal abstract class TestModuleSqlStorageImpl(DbContextOptions options, IMedi
       }, typeof(TPK)),
       { } entityType when entityType == typeof(string) => (TPK)Convert.ChangeType(data switch
       {
-        TestPKStringEntity testAttributeAuditData
+        TestPKPKStringEntity testAttributeAuditData
           => await SaveInternalWithAudit(testAttributeAuditData, testAttributeAuditData.Id,
             async (a) => await TestPKString.AddAsync(a),
-            (i) => i.Id = IdStringGenerator<TestPKStringEntity>()),
+            (i) => i.Id = IdStringGenerator<TestPKPKStringEntity>()),
 
         _ => throw new Exception($"Save is not allowed for {data.GetType().Name}")
       }, typeof(TPK)),
@@ -133,7 +133,7 @@ internal abstract class TestModuleSqlStorageImpl(DbContextOptions options, IMedi
       { } entityType when entityType == typeof(TestAttributeAuditEntity) => TestAttributeAudits as DbSet<TEntity>,
       { } entityType when entityType == typeof(TestPKGuidEntity) => TestPKGuid as DbSet<TEntity>,
       { } entityType when entityType == typeof(TestManualAuditEntity) => TestManualAudits as DbSet<TEntity>,
-      { } entityType when entityType == typeof(TestPKStringEntity) => TestPKString as DbSet<TEntity>,
+      { } entityType when entityType == typeof(TestPKPKStringEntity) => TestPKString as DbSet<TEntity>,
       { } entityType when entityType == typeof(TestValueTypeEntity) => TestValueTypes as DbSet<TEntity>,
       _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
     };

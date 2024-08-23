@@ -8,6 +8,6 @@ internal class TestPKStringSaveHandler(IStorageResolver storageResolver) : TestM
 {
   public override async Task<string> Handle(TestPKStringSaveCommand request, CancellationToken cancellationToken)
   {
-    return await WriteStorage().Save<TestPKStringEntity, string>(request.Data.ToEntity());
+    return await WriteStorage().Save<TestPKPKStringEntity, string>(request.Data.ToEntity());
   }
 }

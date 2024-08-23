@@ -1,0 +1,16 @@
+misto find
+{ } entityType when entityType == typeof(TestEntity) => await Tests.FindAsync(Convert.ToInt32(id)) as TEntity,
+dat SingleOrDefaultAsync
+{ } entityType when entityType == typeof(SettingEntity) => await Settings.SingleOrDefaultAsync(i => i.Id == Convert.ToInt32(id)) as TEntity,
+
+----
+sjednotit, aspon po PG, kde je identity
+ 
+ protected override int IdIntGenerator<TEntity>()
+  {
+    return typeof(TEntity) switch
+    {
+      { } entityType when entityType == typeof(SettingEntity) => !Settings.Any() ? 1 : Settings.Max(i => i.Id) + 1,
+      _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
+    };
+  }

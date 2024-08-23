@@ -1,4 +1,5 @@
-﻿using ACore.Server.Storages;
+﻿using ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
+using ACore.Server.Storages;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Scripts;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,12 @@ internal class V1_0_0_1SettingsCollection : DbVersionScriptsBase
   {
     var ext = options.FindExtension<MongoOptionsExtension>() ?? throw new Exception($"{nameof(MongoOptionsExtension)} has not been found in extensions.");
     var connectionString = ext.ConnectionString;
-      
+
     var client = new MongoClient(connectionString);
     var db = client.GetDatabase(ext.DatabaseName);
-    
-    db.CreateCollection(CollectionNames.SettingsCollectionName);
-    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", CollectionNames.SettingsCollectionName, ext.DatabaseName);
+
+    var collectionName = CollectionNames.ObjectNameMapping[nameof(SettingMongoEntity)].TableName;
+    db.CreateCollection(collectionName);
+    logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", collectionName, ext.DatabaseName);
   }
 }

@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace ACore.Server.Storages.Models;
 
-public class StorageEntityNameDefinition
+public class StorageEntityNameDefinition(string tableName, IDictionary columns)
 {
-  private readonly IDictionary? _columns;
+  private readonly IDictionary? _columns = columns;
   private Dictionary<string, string>? _columnNames;
 
-  public string TableName { get; }
+  public string TableName { get; } = tableName;
 
   public Dictionary<string, string>? ColumnNames
   {
@@ -28,20 +28,6 @@ public class StorageEntityNameDefinition
     return _columns as Dictionary<Expression<Func<T, object>>, string> ?? throw new InvalidOperationException($"Columns are not defined for '{typeof(T).Name}' entity.");
   }
 
-  /// <summary>
-  /// Columns names are defined in entity model with attribute.
-  /// </summary>
-  public StorageEntityNameDefinition(string tableName)
-  {
-    TableName = tableName;
-  }
-
-  public StorageEntityNameDefinition(string tableName, IDictionary columns)
-  {
-    TableName = tableName;
-    _columns = columns;
-  }
-  
   private static object GetPropValue(object src, string propName)
   {
     return src.GetType().GetProperty(propName)?

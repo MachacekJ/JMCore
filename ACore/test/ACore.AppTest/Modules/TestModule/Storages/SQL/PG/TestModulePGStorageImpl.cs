@@ -22,19 +22,12 @@ internal class TestModulePGStorageImpl(DbContextOptions<TestModulePGStorageImpl>
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    modelBuilder.Entity<TestEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestAttributeAuditEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestManualAuditEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestValueTypeEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestPKGuidEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestPKStringEntity>().HasKey(p => p.Id);
-
     SetDatabaseNames<TestEntity>(modelBuilder);
     SetDatabaseNames<TestAttributeAuditEntity>(modelBuilder);
     SetDatabaseNames<TestManualAuditEntity>(modelBuilder);
     SetDatabaseNames<TestValueTypeEntity>(modelBuilder);
     SetDatabaseNames<TestPKGuidEntity>(modelBuilder);
-    SetDatabaseNames<TestPKStringEntity>(modelBuilder);
+    SetDatabaseNames<TestPKPKStringEntity>(modelBuilder);
   }
 
   protected override int IdIntGenerator<T>()

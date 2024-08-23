@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Models.PK;
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 namespace ACore.AppTest.Modules.TestModule.Storages.SQL.Models;
 
 [Auditable]
-internal class TestValueTypeEntity : IntStorageEntity
+internal class TestValueTypeEntity : PKIntEntity
 {
   public int IntNotNull { get; set; }
   public int? IntNull { get; set; }

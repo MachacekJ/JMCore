@@ -9,7 +9,7 @@ internal class TestPKStringGetHandler(IStorageResolver storageResolver) : TestMo
 {
   public override async Task<TestPKStringData[]> Handle(TestPKStringGetQuery request, CancellationToken cancellationToken)
   {
-    var db = ReadTestStorageWriteContexts().DbSet<TestPKStringEntity>() ?? throw new Exception();
+    var db = ReadTestStorageWriteContexts().DbSet<TestPKPKStringEntity>() ?? throw new Exception();
     return await db.Select(a => TestPKStringData.Create(a)).ToArrayAsync(cancellationToken: cancellationToken);
   }
 }

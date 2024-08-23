@@ -31,7 +31,7 @@ public static class SettingModuleServiceExtensions
 
     if (testOptions.PGDb != null)
     {
-      services.AddDbContext<SettingModulePGStorageImpl>(opt =>
+      services.AddDbContext<SettingModuleSqlPGStorageImpl>(opt =>
       {
         opt.UseNpgsql(testOptions.PGDb.ReadWriteConnectionString);
         // opt.AddInterceptors(new SlowQueryDetectionHelper());
@@ -40,7 +40,7 @@ public static class SettingModuleServiceExtensions
 
     if (testOptions.UseMemoryStorage)
     {
-      services.AddDbContext<SettingModuleMemoryStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(StorageConst.MemoryConnectionString + nameof(ISettingStorageModule) + Guid.NewGuid()));
+      services.AddDbContext<SettingModuleSqlMemoryStorageImpl>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(StorageConst.MemoryConnectionString + nameof(ISettingStorageModule) + Guid.NewGuid()));
     }
   }
 
@@ -55,13 +55,13 @@ public static class SettingModuleServiceExtensions
     
     if (opt.PGDb != null)
     {
-      var pgImpl = provider.GetService<SettingModulePGStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(SettingModulePGStorageImpl)}.");
+      var pgImpl = provider.GetService<SettingModuleSqlPGStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(SettingModuleSqlPGStorageImpl)}.");
       await storageResolver.ConfigureStorage<ISettingStorageModule>(new StorageImplementation(pgImpl));
     }
 
     if (opt.UseMemoryStorage)
     {
-      var memoryImpl = provider.GetService<SettingModuleMemoryStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(SettingModuleMemoryStorageImpl)}.");
+      var memoryImpl = provider.GetService<SettingModuleSqlMemoryStorageImpl>() ?? throw new ArgumentNullException($"Missing implementation of {nameof(SettingModuleSqlMemoryStorageImpl)}.");
       await storageResolver.ConfigureStorage<ISettingStorageModule>(new StorageImplementation(memoryImpl));
     }
   }

@@ -6,6 +6,7 @@ using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Models.PK;
 using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ public abstract class AuditableDbContext : DbContextBase
 
   public abstract override StorageTypeDefinition StorageDefinition { get; }
 
-  protected async Task<TU> SaveInternalWithAudit<TEntity, TU>(TEntity data, TU id, Func<TEntity, Task> addItem, Func<TEntity, TU> setId) where TEntity : StorageEntity<TU>
+  protected async Task<TU> SaveInternalWithAudit<TEntity, TU>(TEntity data, TU id, Func<TEntity, Task> addItem, Func<TEntity, TU> setId) where TEntity : PKEntity<TU>
   {
     TEntity existsEntity;
     if (id == null)

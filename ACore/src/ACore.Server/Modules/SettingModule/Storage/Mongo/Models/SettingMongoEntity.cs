@@ -7,11 +7,13 @@ using ACore.Server.Storages.Models;
 namespace ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
 
 [Auditable]
-public class SettingMongoEntity : MongoStorageEntity
+public class SettingMongoEntity : MongoEntity
 {
   [MaxLength(1024)]
   public string Key { get; set; }
+  
   [MaxLength(1024)]
   public string Value { get; set; }
+  
   public bool? IsSystem { get; set; }
 }

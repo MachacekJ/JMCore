@@ -15,7 +15,7 @@ public static class DefaultNames
     { nameof(TestManualAuditEntity), new StorageEntityNameDefinition("test_manual_audit", TestManualAuditEntityColumnNames) },
     { nameof(TestValueTypeEntity), new StorageEntityNameDefinition("test_value_type", TestValueTypeEntityColumnNames) },
     { nameof(TestPKGuidEntity), new StorageEntityNameDefinition("test_pk_guid", TestPKGuidEntityColumnNames) },
-    { nameof(TestPKStringEntity), new StorageEntityNameDefinition("test_pk_string", TestPKStringEntityColumnNames) }
+    { nameof(TestPKPKStringEntity), new StorageEntityNameDefinition("test_pk_string", TestPKStringEntityColumnNames) }
   };
 
   private static Dictionary<Expression<Func<TestEntity, object>>, string> TestEntityColumnNames => new()
@@ -69,7 +69,7 @@ public static class DefaultNames
     { e => e.Name, "name" }
   };
   
-  private static Dictionary<Expression<Func<TestPKStringEntity, object>>, string> TestPKStringEntityColumnNames => new()
+  private static Dictionary<Expression<Func<TestPKPKStringEntity, object>>, string> TestPKStringEntityColumnNames => new()
   {
     { e => e.Id, "test_pk_string_id" },
     { e => e.Name, "name" }

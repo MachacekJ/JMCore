@@ -11,16 +11,16 @@ namespace ACore.Server.Modules.SettingModule.Storage.SQL.PG;
 
 using ScriptRegistrations = ScriptRegistrations;
 
-internal class SettingModulePGStorageImpl : SettingModuleStorageImpl
+internal class SettingModuleSqlPGStorageImpl : SettingModuleSqlStorageImpl
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
-  public SettingModulePGStorageImpl(DbContextOptions<SettingModulePGStorageImpl> options, IMediator mediator, ILogger<SettingModulePGStorageImpl> logger) : base(options, mediator, logger)
+  public SettingModuleSqlPGStorageImpl(DbContextOptions<SettingModuleSqlPGStorageImpl> options, IMediator mediator, ILogger<SettingModuleSqlPGStorageImpl> logger) : base(options, mediator, logger)
   {
   }
 
-  public SettingModulePGStorageImpl(DbContextOptions<SettingModulePGStorageImpl> options, IMediator mediator, IAuditConfiguration auditConfiguration, ILogger<SettingModulePGStorageImpl> logger) : base(options, mediator, auditConfiguration, logger)
+  public SettingModuleSqlPGStorageImpl(DbContextOptions<SettingModuleSqlPGStorageImpl> options, IMediator mediator, IAuditConfiguration auditConfiguration, ILogger<SettingModuleSqlPGStorageImpl> logger) : base(options, mediator, auditConfiguration, logger)
   {
   }
 
@@ -33,4 +33,8 @@ internal class SettingModulePGStorageImpl : SettingModuleStorageImpl
   }
   
   private static void SetDatabaseNames<T>(ModelBuilder modelBuilder) where T : class => SetDatabaseNames<T>(DefaultNames.ObjectNameMapping, modelBuilder);
+  protected override int IdIntGenerator<T>()
+  {
+    return 0;
+  }
 }

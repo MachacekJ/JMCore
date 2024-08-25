@@ -21,41 +21,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="refac">
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/MongoEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/PK/PKEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/PK/PKGuidEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/PK/PKIntEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/PK/PKLongEntity.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/PK/PKStringEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/SettingModuleServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/SettingModuleServiceExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/DefaultNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/DefaultNames.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/Models/SettingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/Models/SettingMongoEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/Scripts/V1_0_0_1SettingsCollection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/Scripts/V1_0_0_1SettingsCollection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/SettingModuleMongoStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/Mongo/SettingModuleMongoStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/Memory/SettingModuleMemoryStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/Memory/SettingModuleSqlMemoryStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/Models/SettingEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/Models/SettingEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/PG/SettingModulePGStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/PG/SettingModuleSqlPGStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/SettingModuleStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Storage/SQL/SettingModuleSqlStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/MongoStorageEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/StorageEntity.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/StorageEntityNameDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Models/StorageEntityNameDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Get/TestPKStringGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Get/TestPKStringGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Models/TestPKStringData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Models/TestPKStringData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Save/TestPKStringSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/TestPKString/Save/TestPKStringSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/Mongo/Models/TestAttributeAuditMongoEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/Mongo/Models/TestAttributeAuditMongoEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestAttributeAuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestAttributeAuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestManualAuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestManualAuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestPKGuidEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestPKGuidEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestPKStringEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestPKStringEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestValueTypeEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/Models/TestValueTypeEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/PG/DefaultNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/PG/DefaultNames.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/PG/TestModulePGStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/PG/TestModulePGStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/TestModuleSqlStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/Storages/SQL/TestModuleSqlStorageImpl.cs" afterDir="false" />
-    </list>
+    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,6 +61,10 @@
     <option name="onto" value="3e79c77058c3df9326cd1d3b6562b4280666e9dc" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
@@ -564,15 +534,7 @@
       <workItem from="1723973328767" duration="1805000" />
       <workItem from="1723983377347" duration="7582000" />
       <workItem from="1724251541570" duration="29287000" />
-      <workItem from="1724439298644" duration="16173000" />
-    </task>
-    <task id="LOCAL-00005" summary="test uml">
-      <option name="closed" value="true" />
-      <created>1703587646377</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1703587646377</updated>
+      <workItem from="1724439298644" duration="16670000" />
     </task>
     <task id="LOCAL-00006" summary="ss">
       <option name="closed" value="true" />
@@ -958,7 +920,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724451825155</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="refac">
+      <option name="closed" value="true" />
+      <created>1724456163079</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1724456163079</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1313,8 +1283,7 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="RiderUnitTests">
-        <watch expression="storageImplementations[0].Mode.HasFlag(StorageModeEnum.Read)" language="C#" />
-        <watch expression="storageImplementations[0].Implementation" language="C#" />
+        <watch expression="Settings.SingleOrDefault(i=&gt;i.Id == 2)" language="C#" />
       </configuration>
     </watches-manager>
   </component>

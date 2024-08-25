@@ -21,15 +21,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/TODO/AA.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/TODO/AuditService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/TODO/DbChangeTrackerContextBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Extensions/AuditDbExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Extensions/AuditDbExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/DbContextBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/DbContextBase.cs" afterDir="false" />
-    </list>
+    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="Audit change tracker - again add" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,13 +146,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9b8579c61c1131ec7bf0253f254c8b2a5204bc2e64e4c9237ee291963d/BsonElementAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/CQRS/Analytics/WriteAnalyticsHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/Components/Testable.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/MTest/ACore/ACore/src/ACore.Server/Modules/AuditModule/Extensions/AuditDbExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditDbContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Mongo/AuditAttributeTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/PG/AuditAttributeTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/App.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/AppStartConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/Pages/Index.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationDetail.razor" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TestUI/Client/Pages/Localization/LocalizationDetail.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/E2E/E2EBaseTests.cs" root0="SKIP_HIGHLIGHTING" />
@@ -531,15 +524,7 @@
       <workItem from="1723983377347" duration="7582000" />
       <workItem from="1724251541570" duration="29287000" />
       <workItem from="1724439298644" duration="16670000" />
-      <workItem from="1724569835679" duration="2526000" />
-    </task>
-    <task id="LOCAL-00006" summary="ss">
-      <option name="closed" value="true" />
-      <created>1703595499199</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1703595499199</updated>
+      <workItem from="1724569835679" duration="4110000" />
     </task>
     <task id="LOCAL-00007" summary="aaa">
       <option name="closed" value="true" />
@@ -925,7 +910,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724456163079</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Audit change tracker - again add">
+      <option name="closed" value="true" />
+      <created>1724573971180</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1724573971181</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -988,7 +981,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="working without mongodb" />
     <MESSAGE value="Big refac" />
     <MESSAGE value="storages" />
     <MESSAGE value="storaga" />
@@ -1013,7 +1005,8 @@
     <MESSAGE value="gfsdgsdf" />
     <MESSAGE value="big changes" />
     <MESSAGE value="refac" />
-    <option name="LAST_COMMIT_MESSAGE" value="refac" />
+    <MESSAGE value="Audit change tracker - again add" />
+    <option name="LAST_COMMIT_MESSAGE" value="Audit change tracker - again add" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1236,14 +1229,14 @@
           <option name="timeStamp" value="519" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditableDbContext.cs</url>
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditDbContext.cs</url>
           <line>37</line>
           <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\EF\AuditableDbContext.cs" containingFunctionPresentation="Method 'SaveInternalWithAudit'">
             <startOffsets>
-              <option value="1454" />
+              <option value="1348" />
             </startOffsets>
             <endOffsets>
-              <option value="1566" />
+              <option value="1460" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="521" />

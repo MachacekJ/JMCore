@@ -30,7 +30,7 @@ internal static class AuditDbExtensions
 
     if (nonAuditProps == null)
       return false;
-    
+
     if (nonAuditProps.TryGetValue(entityType.Name, out var columns) == false)
       return true;
 

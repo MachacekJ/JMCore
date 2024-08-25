@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 using ACore.Server.Modules.SettingModule.Storage;
@@ -13,6 +14,10 @@ namespace ACore.Server.Storages.EF;
 public abstract class DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger)
   : DbContext(options), IStorage
 {
+  private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
+  
+  private bool? _isAuditEnabled;
+  
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
@@ -134,5 +139,27 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     }
 
     return res;
+  }
+  
+  /// <summary>
+  /// Resolves problem with this situation. We have settings table where is audit on and audit structure is not created yet.
+  /// In this case is audit will be skipped.  
+  /// </summary>
+  protected async Task<bool> IsAuditEnabledAsync()
+  {
+    if (_isAuditEnabled != null)
+      return _isAuditEnabled.Value;
+    
+    // Check if db structure is already created.
+    var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));
+
+    if (string.IsNullOrEmpty(isAuditTable))
+    {
+      _isAuditEnabled = false;
+      return false;
+    }
+    
+    _isAuditEnabled = true;
+    return true;
   }
 }

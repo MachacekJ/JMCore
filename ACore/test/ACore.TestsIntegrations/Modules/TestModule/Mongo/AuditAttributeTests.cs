@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit;
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Get;
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Models;
 using ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Save;
@@ -24,7 +23,7 @@ public class AuditAttributeTests : MongoAuditBase
     {
       var testDateTime = DateTime.UtcNow;
       var testName = "AuditTest";
-      var entityName = nameof(TestAttributeAuditMongoEntity);
+      var entityName = nameof(TestAttributeAuditPKMongoEntity);
 
       // Action.
       var item = new TestAttributeAuditData<ObjectId>

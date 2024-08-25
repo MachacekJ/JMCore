@@ -6,16 +6,18 @@ using ACore.Server.Storages;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestAttributeAudit.Save;
 
-public class TestAttributeAuditSaveHandler<T>(IStorageResolver storageResolver) : TestModuleRequestHandler<TestAttributeAuditSaveCommand<T>, T>(storageResolver)
+public class TestAttributeAuditSaveHandler<T>(IStorageResolver storageResolver) 
+  : TestModuleRequestHandler<TestAttributeAuditSaveCommand<T>, T>(storageResolver)
+  where T: IConvertible
 {
   public override async Task<T> Handle(TestAttributeAuditSaveCommand<T> request, CancellationToken cancellationToken)
   {
     var st = WriteStorage();
     if (st is TestModuleMongoStorageImpl)
     {
-      var enMongo = new TestAttributeAuditMongoEntity();
+      var enMongo = new TestAttributeAuditPKMongoEntity();
       enMongo.CopyPropertiesFrom(request.Data);
-      return await WriteStorage().Save<TestAttributeAuditMongoEntity, T>(enMongo);
+      return await WriteStorage().Save<TestAttributeAuditPKMongoEntity, T>(enMongo);
     }
     
     var en = new TestAttributeAuditEntity();

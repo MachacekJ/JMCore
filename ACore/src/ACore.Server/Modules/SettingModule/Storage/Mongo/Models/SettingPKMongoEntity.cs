@@ -7,7 +7,7 @@ using ACore.Server.Storages.Models;
 namespace ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
 
 [Auditable]
-public class SettingMongoEntity : MongoEntity
+public class SettingPKMongoEntity : PKMongoEntity
 {
   [MaxLength(1024)]
   public string Key { get; set; }

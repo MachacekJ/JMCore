@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using ACore.AppTest.Modules.TestModule.Storages.SQL.PG;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Models.PK;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global

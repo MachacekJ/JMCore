@@ -9,10 +9,10 @@ public static class CollectionNames
 {
   public static Dictionary<string, StorageEntityNameDefinition> ObjectNameMapping => new()
   {
-    { nameof(SettingMongoEntity), new StorageEntityNameDefinition("setting", SettingMongoEntityColumnNames) },
+    { nameof(SettingPKMongoEntity), new StorageEntityNameDefinition("setting", SettingMongoEntityColumnNames) },
   };
   
-  private static Dictionary<Expression<Func<SettingMongoEntity, object>>, string> SettingMongoEntityColumnNames => new()
+  private static Dictionary<Expression<Func<SettingPKMongoEntity, object>>, string> SettingMongoEntityColumnNames => new()
   {
     { e => e.Id, "_id" },
     { e => e.Key, "key" },

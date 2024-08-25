@@ -21,7 +21,7 @@ public class V1_0_1_2TestAuditTables : DbVersionScriptsBase
         var client = new MongoClient(connectionString);
         var db = client.GetDatabase(ext.DatabaseName);
 
-        var collectionName = DefaultNames.ObjectNameMapping[nameof(TestAttributeAuditMongoEntity)].TableName;
+        var collectionName = DefaultNames.ObjectNameMapping[nameof(TestAttributeAuditPKMongoEntity)].TableName;
         
         db.CreateCollection(collectionName);
         logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", collectionName, ext.DatabaseName);

@@ -6,14 +6,14 @@ using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
+using ACore.Server.Storages.Models.PK;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Modules.SettingModule.Storage.SQL;
 
-internal abstract class SettingModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, IAuditConfiguration? auditConfiguration, ILogger<SettingModuleSqlStorageImpl> logger)
-  : AuditableDbContext(options, mediator, logger, auditConfiguration), ISettingStorageModule
+internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISettingStorageModule
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
 
@@ -39,9 +39,8 @@ internal abstract class SettingModuleSqlStorageImpl(DbContextOptions options, IM
     set.Value = value;
     set.IsSystem = isSystem;
 
-    var res = await SaveInternalWithAudit(set, set.Id, async (a) => await Settings.AddAsync(a), (i) => i.Id = IdIntGenerator<SettingEntity>());
-    set.Id = res;
-
+    await SaveInternalWithAudit<SettingEntity, int>(set); //(i) => i.Id = IdIntGenerator<SettingEntity>()) 
+    
     await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
   }
 
@@ -80,20 +79,25 @@ internal abstract class SettingModuleSqlStorageImpl(DbContextOptions options, IM
 
   #endregion
 
-  public override async Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
-  {
-    if (id == null)
-      throw new ArgumentNullException($"{nameof(id)} is null.");
-
-    var res = typeof(TEntity) switch
-    {
-      { } entityType when entityType == typeof(SettingEntity) => await Settings.SingleOrDefaultAsync(i => i.Id == Convert.ToInt32(id)) as TEntity,
-      _ => throw new Exception($"Unknown entity data type {typeof(TEntity).Name} with primary key {id}.")
-    };
-    return res ?? throw new ArgumentNullException(nameof(res), @"Save function returned null value.");
-  }
+  // public override async Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : PKEntity<TPK>
+  // {
+  //   if (id == null)
+  //     throw new ArgumentNullException($"{nameof(id)} is null.");
+  //
+  //   var res = typeof(TEntity) switch
+  //   {
+  //     { } entityType when entityType == typeof(SettingEntity) => await Settings.SingleOrDefaultAsync(i => i.Id == Convert.ToInt32(id)) as TEntity,
+  //     _ => throw new Exception($"Unknown entity data type {typeof(TEntity).Name} with primary key {id}.")
+  //   };
+  //   return res ?? throw new ArgumentNullException(nameof(res), @"Save function returned null value.");
+  // }
 
   protected SettingModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<SettingModuleSqlStorageImpl> logger) : this(options, mediator, null, logger)
   {
+  }
+
+  protected SettingModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, IAuditConfiguration? auditConfiguration, ILogger<SettingModuleSqlStorageImpl> logger) : base(options, mediator, logger, auditConfiguration)
+  {
+    RegisterDbSet(Settings);
   }
 }

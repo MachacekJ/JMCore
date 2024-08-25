@@ -21,7 +21,7 @@ internal class V1_0_0_1SettingsCollection : DbVersionScriptsBase
     var client = new MongoClient(connectionString);
     var db = client.GetDatabase(ext.DatabaseName);
 
-    var collectionName = CollectionNames.ObjectNameMapping[nameof(SettingMongoEntity)].TableName;
+    var collectionName = CollectionNames.ObjectNameMapping[nameof(SettingPKMongoEntity)].TableName;
     db.CreateCollection(collectionName);
     logger.LogInformation("Collection '{collectionName}' in database '{DatabaseName}' has been created.", collectionName, ext.DatabaseName);
   }

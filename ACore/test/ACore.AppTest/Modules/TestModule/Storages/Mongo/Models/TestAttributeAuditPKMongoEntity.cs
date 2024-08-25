@@ -15,7 +15,7 @@ namespace ACore.AppTest.Modules.TestModule.Storages.Mongo.Models;
 /// Column name <see cref="ColumnAttribute"/> for saving in storage is defined e.g. <see cref="SQL.PG.DefaultNames"/>.
 /// </summary>
 [Auditable]
-public class TestAttributeAuditMongoEntity: MongoEntity
+public class TestAttributeAuditPKMongoEntity: PKMongoEntity
 {
 
   [MaxLength(50)]

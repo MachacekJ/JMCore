@@ -7,6 +7,7 @@ using ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Models.PK;
 using ACore.Server.Storages.Scripts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,13 @@ namespace ACore.Server.Modules.SettingModule.Storage.Mongo;
 
 internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStorageModule
 {
-  private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingMongoEntity));
+  private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingPKMongoEntity));
 
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
   protected override string ModuleName => nameof(ISettingStorageModule);
 
-  public DbSet<SettingMongoEntity> Settings { get; set; }
+  public DbSet<SettingPKMongoEntity> Settings { get; set; }
 
   #region Settings
 
@@ -36,7 +37,7 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
     var setting = await Settings.FirstOrDefaultAsync(i => i.Key == key);
     if (setting == null)
     {
-      setting = new SettingMongoEntity
+      setting = new SettingPKMongoEntity
       {
         Key = key
       };
@@ -51,9 +52,9 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
     await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
   }
 
-  private async Task<SettingMongoEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
+  private async Task<SettingPKMongoEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
-    List<SettingMongoEntity>? allSettings;
+    List<SettingPKMongoEntity>? allSettings;
 
     var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
 
@@ -66,7 +67,7 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
         throw ex;
       }
 
-      allSettings = allSettingsCache.Value as List<SettingMongoEntity>;
+      allSettings = allSettingsCache.Value as List<SettingPKMongoEntity>;
     }
     else
     {
@@ -86,10 +87,10 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
 
   #endregion
 
-  public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : class
-  {
-    throw new NotImplementedException();
-  }
+  // public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity :  PKEntity<TPK>
+  // {
+  //   throw new NotImplementedException();
+  // }
 
   public SettingModuleMongoStorageImpl(DbContextOptions<SettingModuleMongoStorageImpl> options, IMediator mediator, ILogger<SettingModuleMongoStorageImpl> logger) : base(options, mediator, logger, null)
   {
@@ -102,10 +103,9 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    modelBuilder.Entity<SettingMongoEntity>().ToCollection(CollectionNames.ObjectNameMapping[nameof(SettingMongoEntity)].TableName);
-    SetDatabaseNames<SettingMongoEntity>(modelBuilder);
+    modelBuilder.Entity<SettingPKMongoEntity>().ToCollection(CollectionNames.ObjectNameMapping[nameof(SettingPKMongoEntity)].TableName);
+    SetDatabaseNames<SettingPKMongoEntity>(modelBuilder);
   }
   
   private static void SetDatabaseNames<T>(ModelBuilder modelBuilder) where T : class => SetDatabaseNames<T>(CollectionNames.ObjectNameMapping, modelBuilder);
-  
 }

@@ -3,6 +3,4 @@ using MongoDB.Bson;
 
 namespace ACore.Server.Storages.Models;
 
-public class MongoEntity() : PKEntity<ObjectId>(ObjectId.Empty)
-{
-}
+public class PKMongoEntity() : PKEntity<ObjectId>(ObjectId.Empty);

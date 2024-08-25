@@ -29,26 +29,6 @@ internal class TestModulePGStorageImpl(DbContextOptions<TestModulePGStorageImpl>
     SetDatabaseNames<TestPKGuidEntity>(modelBuilder);
     SetDatabaseNames<TestPKPKStringEntity>(modelBuilder);
   }
-
-  protected override int IdIntGenerator<T>()
-  {
-    return 0;
-  }
-
-  protected override long IdLongGenerator<T>()
-  {
-    return 0;
-  }
-
-  protected override string IdStringGenerator<T>()
-  {
-    return IdGuidGenerator<T>().ToString();
-  }
-
-  protected override Guid IdGuidGenerator<T>()
-  {
-    return Guid.NewGuid();
-  }
-
+  
   private static void SetDatabaseNames<T>(ModelBuilder modelBuilder) where T : class => SetDatabaseNames<T>(DefaultNames.ObjectNameMapping, modelBuilder);
 }

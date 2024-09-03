@@ -26,15 +26,15 @@ public class JMCacheTests : MemoryBaseTests
 
             // Assert.
             var result1 = await Mediator.Send(new CacheModuleGetQuery(cacheKey));
-            Assert.NotNull(result1!.Value);
-            Assert.Equal(result1.Value, cacheValue);
+            Assert.NotNull(result1!.ResultValue);
+            Assert.Equal(result1.ResultValue.CacheValue, cacheValue);
 
             // Test 2
             // Act.
             await Mediator.Send(new CacheModuleRemoveCommand(cacheKey));
 
             // Assert.
-            var result2 = await Mediator.Send(new CacheModuleGetQuery(cacheKey));
+            var result2 = (await Mediator.Send(new CacheModuleGetQuery(cacheKey))).ResultValue;
             Assert.Null(result2);
         });
     }
@@ -62,11 +62,11 @@ public class JMCacheTests : MemoryBaseTests
                 // Act.
                 cacheKey = JMCacheKey.Create(JMCacheTestCategoryT.TestCache, "Test" + i);
                 var cacheValueRes = cacheValue + i;
-                var result1 = await Mediator.Send(new CacheModuleGetQuery(cacheKey));
+                var result1 = (await Mediator.Send(new CacheModuleGetQuery(cacheKey))).ResultValue;
 
                 // Assert.
-                Assert.NotNull(result1!.Value);
-                Assert.Equal(result1.Value, cacheValueRes);
+                Assert.NotNull(result1!.CacheValue);
+                Assert.Equal(result1.CacheValue, cacheValueRes);
             }
             
             // Act.
@@ -76,7 +76,7 @@ public class JMCacheTests : MemoryBaseTests
             for (int i = 0; i < count; i++)
             {
                 cacheKey = JMCacheKey.Create(JMCacheTestCategoryT.TestCache, "Test" + i);
-                var result2 = await Mediator.Send(new CacheModuleGetQuery(cacheKey));
+                var result2 = (await Mediator.Send(new CacheModuleGetQuery(cacheKey))).ResultValue;
                 Assert.Null(result2);
             }
         });
@@ -109,7 +109,7 @@ public class JMCacheTests : MemoryBaseTests
             for (var i = 0; i < count; i++)
             {
                 cacheKey = JMCacheKey.Create(JMCacheTestCategoryT.TestCache, "Test" + i);
-                var result2 = await Mediator.Send(new CacheModuleGetQuery(cacheKey));
+                var result2 = (await Mediator.Send(new CacheModuleGetQuery(cacheKey))).ResultValue;
                 if (i > 4)
                     Assert.Null(result2);
                 else

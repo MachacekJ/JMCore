@@ -40,7 +40,8 @@ public static class AuditPKTHelper
 {
   private const string TestName = "AuditPK";
   private const string TestPKGuidEntityName = "TestPKGuidEntity";
-    private const string TestPKStringEntityName = "TestPKStringEntity";
+  private const string TestPKStringEntityName = "TestPKStringEntity";
+
   public static async Task GuidPK(IMediator mediator, Func<string, string> getTableName)
   {
     // Arrange.
@@ -50,13 +51,13 @@ public static class AuditPKTHelper
     };
 
     // Action 1
-    var res = await mediator.Send(new TestPKGuidSaveCommand(item));
-    res.Should().NotBeEmpty();
+    await mediator.Send(new TestPKGuidSaveCommand(item));
+    item.Id.Should().NotBeEmpty();
 
     // Assert 1
-    var allData = await mediator.Send(new TestPKGuidGetQuery());
+    var allData = (await mediator.Send(new TestPKGuidGetQuery())).ResultValue;
     allData.Should().HaveCount(1);
-    
+
     // var auditValues = await auditStorageModule.AuditItemsAsync(getTableName(TestPKGuidEntityName), item.Id.ToString());
     // var auditVwAuditEntities = auditValues as AuditVwAuditEntity[] ?? auditValues.ToArray();
     // auditVwAuditEntities.Count().Should().Be(2);
@@ -84,13 +85,13 @@ public static class AuditPKTHelper
     };
 
     // Action 1
-    var res = await mediator.Send(new TestPKStringSaveCommand(item));
-    res.Should().NotBeEmpty();
+    await mediator.Send(new TestPKStringSaveCommand(item));
+    item.Id.Should().NotBeEmpty();
 
     // Assert 1
-    var allData = await mediator.Send(new TestPKStringGetQuery());
+    var allData = (await mediator.Send(new TestPKStringGetQuery())).ResultValue;
     allData.Should().HaveCount(1);
-    
+
     // var auditValues = await auditStorageModule.AuditItemsAsync(getTableName(TestPKStringEntityName), item.Id);
     // var auditVwAuditEntities = auditValues as AuditVwAuditEntity[] ?? auditValues.ToArray();
     // auditVwAuditEntities.Count().Should().Be(2);

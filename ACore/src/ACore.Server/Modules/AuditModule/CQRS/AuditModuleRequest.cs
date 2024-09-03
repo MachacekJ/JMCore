@@ -2,4 +2,5 @@
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 
-public class AuditModuleRequest<TResponse> : LoggedRequest<TResponse>;
+public class AuditModuleRequest<TResponse> : IResultRequest<TResponse>;
+public class AuditModuleRequest : IResultRequest;

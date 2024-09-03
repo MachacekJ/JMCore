@@ -4,20 +4,19 @@ using ACore.Modules.CacheModule.CQRS.Models;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Services.JMCache;
 using FluentAssertions;
-using ACore.Modules.CacheModule;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
 using MediatR;
 using Xunit;
 
 namespace ACore.Tests.Server.Modules.SettingModule;
 
-public class Settings : SettingStorageModule
+public class MemorySettingStorageModule : SettingStorageModule
 {
   [Fact]
   public async Task SaveGetTest()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await CheckSettingEntity(Db, Mediator); });
+    await RunTestAsync(method, async () => { await CheckSettingEntity(MemorySettingStorageModule, Mediator); });
   }
 
  
@@ -40,7 +39,7 @@ public class Settings : SettingStorageModule
     // Check if is value in cache
     var keyCache = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
     var cacheValue = await mediator.Send(new CacheModuleGetQuery(keyCache));
-    var mem = cacheValue!.Value as List<SettingEntity>;
+    var mem = cacheValue!.ResultValue.CacheValue as List<SettingEntity>;
     Assert.True(mem != null && mem.First(a => a.Key == key).Value == value2);
 
     Exception? isError = null;

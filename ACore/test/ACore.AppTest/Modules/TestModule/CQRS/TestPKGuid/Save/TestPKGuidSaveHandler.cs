@@ -1,13 +1,15 @@
 ﻿using ACore.AppTest.Modules.TestModule.Storages.SQL.Models;
+using ACore.Models;
 using ACore.Server.Storages;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid.Save;
 
 internal class TestPKGuidSaveHandler(IStorageResolver storageResolver) 
-  : TestModuleRequestHandler<TestPKGuidSaveCommand, Guid>(storageResolver)
+  : TestModuleRequestHandler<TestPKGuidSaveCommand>(storageResolver)
 {
-  public override async Task<Guid> Handle(TestPKGuidSaveCommand request, CancellationToken cancellationToken)
+  public override async Task<Result> Handle(TestPKGuidSaveCommand request, CancellationToken cancellationToken)
   {
-    return await WriteStorage().Save<TestPKGuidEntity, Guid>(request.Data.ToEntity());
+    //await WriteStorages().Save<TestPKGuidEntity, Guid>(request.Data.ToEntity());
+    return Result.Success();
   }
 }

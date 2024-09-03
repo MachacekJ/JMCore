@@ -1,13 +1,13 @@
-﻿using ACore.Modules.CacheModule.CQRS.Models;
-using MediatR;
+﻿using ACore.Models;
+using ACore.Modules.CacheModule.CQRS.Models;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheGet;
 
-public class CacheGetHandler(IJMCache cache) : IRequestHandler<CacheModuleGetQuery, JMCacheValue?>
+public class CacheGetHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleGetQuery, JMCacheValue?>
 {
     private readonly IJMCache _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
 
-    public Task<JMCacheValue?> Handle(CacheModuleGetQuery request, CancellationToken cancellationToken)
+    public override Task<Result<JMCacheValue?>> Handle(CacheModuleGetQuery request, CancellationToken cancellationToken)
     {
         object? value;
         JMCacheValue? cacheValue = null;
@@ -15,6 +15,6 @@ public class CacheGetHandler(IJMCache cache) : IRequestHandler<CacheModuleGetQue
         if (result)
             cacheValue = new JMCacheValue(value);
 
-        return Task.FromResult(cacheValue);
+        return Task.FromResult(Result.Success(cacheValue));
     }
 }

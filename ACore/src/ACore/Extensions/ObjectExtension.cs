@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace ACore.Extensions;
 
@@ -47,32 +45,13 @@ public static class ObjectExtensionMethods
     }
   }
 
-  public static IEnumerable<(string propName, object? value)> AllProperties(this object self)
+  public static object? PropertyValue(this object self, string propertyName)
+    => self.GetType().GetProperty(propertyName)?.GetValue(self);
+
+  
+  public static IEnumerable<(string propName, object? value)> AllPropertiesValues(this object self)
     => GetProperties(self).Select(e=>new ValueTuple<string, object?>(e.Name, e.GetValue(self)));
   
-  public static List<(string propName, object? originalValue, object? newValue)> Differences<T>(this T original, T newValues)
-  {
-    var diffs = new List<(string propName, object? originalValue, object? newValue)>();
-    foreach (var prop in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public))
-    {
-      var newVal = prop.GetValue(newValues);
-      var origin = prop.GetValue(original);
-      var areEqual = AreEqual(newVal, origin);
-
-      if (!areEqual)
-      {
-        diffs.Add(new ValueTuple<string, object?, object?>(prop.Name, origin, newVal));
-      }
-    }
-
-    return diffs;
-  }
-
-  private static bool AreEqual<T>(T x, T y)
-  {
-    return EqualityComparer<T>.Default.Equals(x, y);
-  }
-
   private static PropertyInfo[] GetProperties(object obj)
   => obj.GetType().GetProperties();
 }

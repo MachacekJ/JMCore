@@ -1,12 +1,12 @@
-﻿using MediatR;
+﻿using ACore.Models;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheSave;
 
-public class CacheSaveHandler(IJMCache cache) : IRequestHandler<CacheModuleSaveCommand, bool>
+public class CacheSaveHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleSaveCommand, bool>
 {
     private readonly IJMCache _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
 
-    public Task<bool> Handle(CacheModuleSaveCommand request, CancellationToken cancellationToken)
+    public override Task<Result<bool>> Handle(CacheModuleSaveCommand request, CancellationToken cancellationToken)
     {
         if (request.Options != null)
             _cache.Set(request.Key, request.Value, request.Options);
@@ -18,6 +18,6 @@ public class CacheSaveHandler(IJMCache cache) : IRequestHandler<CacheModuleSaveC
             _cache.Set(request.Key, request.Value, request.AbsoluteExpirationRelativeToNow.Value);
         else
             _cache.Set(request.Key, request.Value);
-        return Task.FromResult(true);
+        return Task.FromResult(Result.Success(true));
     }
 }

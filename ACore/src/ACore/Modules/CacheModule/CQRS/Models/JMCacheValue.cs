@@ -1,6 +1,6 @@
 ﻿namespace ACore.Modules.CacheModule.CQRS.Models;
 
-public class JMCacheValue(object? value)
+public class JMCacheValue(object? cacheValue)
 {
-    public object? Value { get; } = value;
+    public object? CacheValue { get; } = cacheValue;
 }

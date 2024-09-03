@@ -2,7 +2,6 @@
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Server.Storages.Models;
-using ACore.Tests.Server.Modules.TestModule;
 using ACore.TestsIntegrations.BaseInfrastructure.Storages;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +14,7 @@ public abstract class AuditStructureBase : StorageBase
   {
     base.RegisterServices(sc);
     sc.AddScoped<IAuditConfiguration, AuditConfiguration>();
-    sc.AddSingleton<IAuditUserProvider>(TestAuditUserProvider.CreateDefaultUser());
+    sc.AddSingleton<IAuditUserProvider>(new AuditEmptyUserProvider());
     sc.AddTestServiceModule(GetTestConfig(TestData.GetDbName()));
   }
 

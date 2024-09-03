@@ -1,13 +1,16 @@
-﻿using ACore.Server.Storages;
+﻿using ACore.Models;
+using ACore.Server.Modules.SettingModule.Storage;
+using ACore.Server.Storages;
 
 namespace ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 
-public class SettingSaveHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingSaveCommand>(storageResolver)
+public class SettingSaveHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingSaveCommand>()
 {
-  public override async Task Handle(SettingSaveCommand request, CancellationToken cancellationToken)
+  public override async Task<Result> Handle(SettingSaveCommand command, CancellationToken cancellationToken)
   {
-    List<Task> task = [..AllBasicStorageWriteContexts(request.StorageType).Select(context 
-      => context.Setting_SaveAsync(request.Key, request.Value, request.IsSystem))];
+    List<Task> task = [..storageResolver.WriteStorages<ISettingStorageModule>(command.StorageType).Select(context 
+      => context.Setting_SaveAsync(command.Key, command.Value, command.IsSystem))];
     await Task.WhenAll(task);
+    return Result.Success();
   }
 }

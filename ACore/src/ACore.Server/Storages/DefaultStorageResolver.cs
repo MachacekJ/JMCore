@@ -41,61 +41,10 @@ public class DefaultStorageResolver : IStorageResolver
     }
   }
 
-  // public void RegisterServices(IServiceCollection services)
-  // {
-  //   
-  // }
-
-  // public void RegisterStorage(IServiceCollection sc, StorageConfigurationBase storageModule)
-  // {
-  //   if (storageModule.StorageMode.HasFlag(StorageModeEnum.Write))
-  //   {
-  //     var exists = _allStorageModules.SingleOrDefault(e => e.StorageType == storageModule.StorageType);
-  //     if (exists != null)
-  //       throw new Exception($"Storage type {Enum.GetName(typeof(StorageTypeEnum), storageModule.StorageType)} is already implemented for write context.");
-  //   }
-  //
-  //   _allStorageModules.Add(storageModule);
-  //   storageModule.RegisterServices(sc);
-  // }
-  //
-  // public async Task ConfigureStorages(IServiceProvider sp)
-  // {
-  //   foreach (var storage in _allStorageModules)
-  //   {
-  //     await storage.ConfigureServices(sp);
-  //   }
-  // }
-
-  // public ISettingStorageModule? FirstReadOnlySettingModule(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered)
-  // {
-  //   if (!_implementations.TryGetValue(nameof(ISettingStorageModule), out var storageImplementations)) 
-  //     throw new Exception($"Storage module '{nameof(ISettingStorageModule)}' has no registered implementation.");
-  //   
-  //   var storageImplementationByMode = storageImplementations.Where(e => e.Mode.HasFlag(StorageModeEnum.Read)).Select(storageModule => storageModule.Implementation).OfType<ISettingStorageModule>().ToList();
-  //
-  //   if (storageType != StorageTypeEnum.AllRegistered)
-  //     storageImplementationByMode = storageImplementationByMode.Where(a => a.StorageDefinition.Type == storageType).ToList();
-  //     
-  //   return storageImplementationByMode.Count > 0 ? storageImplementationByMode.First() : null;
-  // }
-
   public T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
     => AllStorages<T>(StorageModeEnum.Write, storageType).First();
 
-  // public T FirstReadWriteStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered, StorageModeEnum storageMode = StorageModeEnum.ReadWrite) where T : IStorage
-  // {
-  //   var storageImplementation = _implementations.Where(sm => storageType.HasFlag(sm.StorageType) && sm.StorageMode.HasFlag(storageMode))
-  //     .Select(storageModule => storageModule.StorageModuleImplementation<T>()).OfType<T>()
-  //     .FirstOrDefault();
-  //
-  //   if (storageImplementation != null)
-  //     return storageImplementation;
-  //
-  //   throw new Exception($"Storage module '{typeof(T).Name}' has no registered implementation.");
-  // }
-
-  public List<T> AllWriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
+  public IEnumerable<T> WriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
   {
     return AllStorages<T>(StorageModeEnum.Write, storageType);
   }

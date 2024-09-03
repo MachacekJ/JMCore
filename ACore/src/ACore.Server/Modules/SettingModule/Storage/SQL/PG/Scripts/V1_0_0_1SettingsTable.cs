@@ -18,15 +18,13 @@ CREATE TABLE setting
 (
     setting_id INT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
-    key VARCHAR(100) NOT NULL,
-    value VARCHAR NOT NULL,
+    key VARCHAR(256) NOT NULL,
+    value TEXT NOT NULL,
     is_system BOOL
 );
 "
 
       ];
-
-
       return l;
     }
   }

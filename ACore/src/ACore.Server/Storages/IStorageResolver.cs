@@ -10,5 +10,5 @@ public interface IStorageResolver
 
  // ISettingStorageModule? FirstReadOnlySettingModule(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered);
   T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage;
-  List<T> AllWriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage;
+  IEnumerable<T> WriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage;
 }

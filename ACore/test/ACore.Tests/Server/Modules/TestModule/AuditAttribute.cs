@@ -69,16 +69,16 @@ public static class AuditAttributeTHelper
       Name = testName,
     };
 
-    var res = await mediator.Send(new TestSaveCommand(item));
-    res.Should().BeGreaterThan(0);
+    var res = (await mediator.Send(new TestSaveCommand(item))).ResultValue;
+    res.Id.Should().BeGreaterThan(0);
 
     // Assert.
-    var allTestData = await mediator.Send(new TestGetQuery());
+    var allTestData = (await mediator.Send(new TestGetQuery())).ResultValue;
     var savedItem = allTestData as TestData[] ?? allTestData.ToArray();
     savedItem.Should().NotBeNull();
     savedItem.Length.Should().Be(1);
 
-    var resAuditItems = await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), savedItem.First().Id));
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), savedItem.First().Id))).ResultValue;
     resAuditItems.Should().HaveCount(0);
   }
 
@@ -96,15 +96,15 @@ public static class AuditAttributeTHelper
       NotAuditableColumn = "Audit"
     };
 
-    var res = await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
-    res.Should().BeGreaterThan(0);
+    await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
+    item.Id.Should().BeGreaterThan(0);
 
     // Assert.
-    var allData = await mediator.Send(new TestAttributeAuditGetQuery<int>());
+    var allData = (await mediator.Send(new TestAttributeAuditGetQuery<int>())).ResultValue;
     allData.Should().HaveCount(1);
 
     var savedItem = allData.Single();
-    var resAuditItems = await mediator.Send(new AuditGetQuery<long>(getTableName(entityName), savedItem.Id));
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<long>(getTableName(entityName), savedItem.Id))).ResultValue;
     resAuditItems.Should().HaveCount(1);
     resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
 
@@ -141,21 +141,20 @@ public static class AuditAttributeTHelper
       NotAuditableColumn = "Audit"
     };
 
-    var res = await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
-    res.Should().BeGreaterThan(0);
-
-    item.Id = res;
+    await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
+    var itemId = item.Id;
+    item.Id.Should().BeGreaterThan(0);
     item.Name = testNameNew;
 
-    var res2 = await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
-    res2.Should().Be(res);
+    await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
+    item.Id.Should().Be(itemId);
 
     // Assert.
-    var allData = await mediator.Send(new TestAttributeAuditGetQuery<int>());
+    var allData = (await mediator.Send(new TestAttributeAuditGetQuery<int>())).ResultValue;
     allData.Should().HaveCount(1);
 
     var savedItem = allData.Single();
-    var resAuditItems = await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), savedItem.Id));
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), savedItem.Id))).ResultValue;
 
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
@@ -186,19 +185,18 @@ public static class AuditAttributeTHelper
       NotAuditableColumn = "Audit"
     };
 
-    var res = await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
-    res.Should().BeGreaterThan(0);
-
-    item.Id = res;
+    await mediator.Send(new TestAttributeAuditSaveCommand<int>(item));
+    item.Id.Should().BeGreaterThan(0);
+    
 
     var res2 = await mediator.Send(new TestAttributeAuditDeleteCommand<int>(item));
     res2.Should().Be(true);
 
     // Assert.
-    var allData = await mediator.Send(new TestAttributeAuditGetQuery<int>());
+    var allData = (await mediator.Send(new TestAttributeAuditGetQuery<int>())).ResultValue;
     allData.Should().HaveCount(0);
 
-    var resAuditItems = await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), res));
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), item.Id))).ResultValue;
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
 

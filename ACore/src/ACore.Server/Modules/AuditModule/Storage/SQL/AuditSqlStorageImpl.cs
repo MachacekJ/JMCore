@@ -109,11 +109,11 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     var keyCache = AuditUserCacheKey(userId);
 
     var cacheValue = await Mediator.Send(new CacheModuleGetQuery(keyCache));
-    if (cacheValue?.Value != null)
+    if (cacheValue?.ResultValue != null)
     {
       // This message is also used in unit test.
       Logger.LogDebug("Value from cache:{GetAuditUserIdAsync}:{keyCache}:{userId}", nameof(GetAuditUserIdAsync), keyCache, userId);
-      return ((AuditUserEntity)cacheValue.Value).Id;
+      return ((AuditUserEntity)cacheValue.ResultValue.CacheValue).Id;
     }
 
     var userEntity = await AuditUsers.FirstOrDefaultAsync(u => u.UserId == userId);
@@ -141,11 +141,11 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     var keyCache = AuditTableCacheKey(tableName, tableSchema);
 
     var cacheValue = await Mediator.Send(new CacheModuleGetQuery(keyCache));
-    if (cacheValue?.Value != null)
+    if (cacheValue?.ResultValue != null)
     {
       // This message is also used in unit test.
       Logger.LogDebug("Value from cache:{GetAuditTableIdAsync}:{keyCache}:{tableName}:{tableSchema}", nameof(GetAuditTableIdAsync), keyCache, tableName, tableSchema);
-      return ((AuditTableEntity)cacheValue.Value).Id;
+      return ((AuditTableEntity)cacheValue.ResultValue.CacheValue).Id;
     }
 
     var tableEntity = await AuditTables.FirstOrDefaultAsync(u => u.TableName == tableName && u.SchemaName == tableSchema);
@@ -175,11 +175,11 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     var res = new Dictionary<string, int>();
 
     var cacheValue = await Mediator.Send(new CacheModuleGetQuery(keyCache));
-    if (cacheValue?.Value != null)
+    if (cacheValue?.ResultValue != null)
     {
       // This message is also used in unit test.
       Logger.LogDebug("Value from cache:{GetAuditColumnIdAsync}:{keyCache}", nameof(GetAuditColumnIdAsync), keyCache);
-      res = (Dictionary<string, int>)cacheValue.Value;
+      res = (Dictionary<string, int>)cacheValue.ResultValue.CacheValue;
     }
 
     // Check if I have all columns from cache.

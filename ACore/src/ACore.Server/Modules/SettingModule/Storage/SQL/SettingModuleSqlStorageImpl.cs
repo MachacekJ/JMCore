@@ -6,7 +6,6 @@ using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
 using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Models.PK;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -16,9 +15,7 @@ namespace ACore.Server.Modules.SettingModule.Storage.SQL;
 internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISettingStorageModule
 {
   private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
-
-  protected abstract int IdIntGenerator<T>() where T : class;
-
+  
   protected override string ModuleName => nameof(ISettingStorageModule);
 
   public DbSet<SettingEntity> Settings { get; set; }
@@ -39,7 +36,7 @@ internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISetti
     set.Value = value;
     set.IsSystem = isSystem;
 
-    await SaveInternalWithAudit<SettingEntity, int>(set); //(i) => i.Id = IdIntGenerator<SettingEntity>()) 
+    await SaveWithAudit<SettingEntity, int>(set); //(i) => i.Id = IdIntGenerator<SettingEntity>()) 
     
     await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
   }
@@ -48,18 +45,18 @@ internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISetti
   {
     List<SettingEntity>? allSettings;
 
-    var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
+    var allSettingsCacheResult = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
 
-    if (allSettingsCache != null)
+    if (allSettingsCacheResult.IsSuccess &&  allSettingsCacheResult.ResultValue != null)
     {
-      if (allSettingsCache.Value == null)
+      if (allSettingsCacheResult.ResultValue.CacheValue == null)
       {
         var ex = new Exception("The key '" + key + "' is not represented in settings table.");
         Logger.LogCritical("GetSettingsValue->" + key, ex);
         throw ex;
       }
 
-      allSettings = allSettingsCache.Value as List<SettingEntity>;
+      allSettings = allSettingsCacheResult.ResultValue.CacheValue as List<SettingEntity>;
     }
     else
     {
@@ -78,20 +75,7 @@ internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISetti
   }
 
   #endregion
-
-  // public override async Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity : PKEntity<TPK>
-  // {
-  //   if (id == null)
-  //     throw new ArgumentNullException($"{nameof(id)} is null.");
-  //
-  //   var res = typeof(TEntity) switch
-  //   {
-  //     { } entityType when entityType == typeof(SettingEntity) => await Settings.SingleOrDefaultAsync(i => i.Id == Convert.ToInt32(id)) as TEntity,
-  //     _ => throw new Exception($"Unknown entity data type {typeof(TEntity).Name} with primary key {id}.")
-  //   };
-  //   return res ?? throw new ArgumentNullException(nameof(res), @"Save function returned null value.");
-  // }
-
+  
   protected SettingModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<SettingModuleSqlStorageImpl> logger) : this(options, mediator, null, logger)
   {
   }

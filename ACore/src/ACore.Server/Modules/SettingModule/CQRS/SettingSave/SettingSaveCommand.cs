@@ -1,9 +1,8 @@
 ﻿using ACore.Server.Storages.Models;
-using MediatR;
 
 namespace ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 
-public class SettingSaveCommand(StorageTypeEnum storageType, string key, string value, bool isSystem = false) : IRequest
+public class SettingSaveCommand(StorageTypeEnum storageType, string key, string value, bool isSystem = false) : SettingModuleRequest
 {
   public StorageTypeEnum StorageType { get; } = storageType;
   public string Key { get; } = key;

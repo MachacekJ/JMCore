@@ -15,9 +15,9 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
   : DbContext(options), IStorage
 {
   private string AuditSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(IAuditStorageModule)}";
-  
+
   private bool? _isAuditEnabled;
-  
+
   public abstract DbScriptBase UpdateScripts { get; }
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
@@ -57,8 +57,8 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     if (!await DbIsEmpty())
     {
       var ver = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, StorageVersionKey));
-      if (ver != null)
-        lastVersion = new Version(ver);
+      if (ver is { IsSuccess: true, ResultValue: not null })
+        lastVersion = new Version(ver.ResultValue);
     }
 
     var updatedToVersion = new Version("0.0.0.0");
@@ -131,7 +131,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     try
     {
       var isSettingTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, StorageVersionBaseSettingKey));
-      res = isSettingTable == null;
+      res = isSettingTable is { IsSuccess: true, ResultValue: null };
     }
     catch
     {
@@ -140,7 +140,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
 
     return res;
   }
-  
+
   /// <summary>
   /// Resolves problem with this situation. We have settings table where is audit on and audit structure is not created yet.
   /// In this case is audit will be skipped.  
@@ -149,16 +149,16 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
   {
     if (_isAuditEnabled != null)
       return _isAuditEnabled.Value;
-    
+
     // Check if db structure is already created.
     var isAuditTable = await Mediator.Send(new SettingGetQuery(StorageDefinition.Type, AuditSettingKey));
 
-    if (string.IsNullOrEmpty(isAuditTable))
+    if (isAuditTable.IsSuccess && string.IsNullOrEmpty(isAuditTable.ResultValue))
     {
       _isAuditEnabled = false;
       return false;
     }
-    
+
     _isAuditEnabled = true;
     return true;
   }

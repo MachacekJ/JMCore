@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.Test.Get;
 
-public class TestGetQuery: TestModuleRequest<IEnumerable<TestData>>
+public class TestGetQuery: TestModuleRequest<TestData[]>
 {
   
 }

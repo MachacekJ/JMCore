@@ -5,7 +5,7 @@ namespace ACore.AppTest.Modules.TestModule.Storages;
 
 public interface ITestStorageModule : IStorage
 {
-  Task<TPK> Save<TEntity, TPK>(TEntity data)
+  Task Save<TEntity, TPK>(TEntity data)
     where TEntity : class
     ;
 

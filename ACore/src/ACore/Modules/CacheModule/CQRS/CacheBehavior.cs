@@ -1,10 +1,12 @@
 ﻿using ACore.CQRS;
+using ACore.Models;
 using MediatR;
 
 namespace ACore.Modules.CacheModule.CQRS;
 
 public class CacheBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-  where TRequest : CacheModuleRequest<TResponse>
+  where TRequest : IRequest<TResponse>
+  where TResponse : Result
 {
   /// <summary>
   /// Do not use for logging. Look at <see cref="CacheModuleRequest{TResponse}"/> and <see cref="LoggedRequest{TResponse}"/>.

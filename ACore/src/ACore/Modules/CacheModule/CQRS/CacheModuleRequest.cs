@@ -2,4 +2,4 @@
 
 namespace ACore.Modules.CacheModule.CQRS;
 
-public class CacheModuleRequest<TResponse> : LoggedRequest<TResponse>;
+public class CacheModuleRequest<TResponse> : IResultRequest<TResponse>;

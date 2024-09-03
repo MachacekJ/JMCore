@@ -12,7 +12,7 @@ public class Settings : BasicStructureBase
     await RunStorageTestAsync(StorageTypesToTest, method, async (storageType) =>
     {
       var db = GetBasicStorageModule(storageType);
-      await Tests.Server.Modules.SettingModule.Settings.CheckSettingEntity(db, Mediator); 
+      await Tests.Server.Modules.SettingModule.MemorySettingStorageModule.CheckSettingEntity(db, Mediator); 
     });
   }
 }

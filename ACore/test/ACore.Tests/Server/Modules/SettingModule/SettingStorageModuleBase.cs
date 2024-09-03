@@ -9,7 +9,7 @@ namespace ACore.Tests.Server.Modules.SettingModule;
 
 public class SettingStorageModule : StorageBase
 {
-  protected ISettingStorageModule Db = null!;
+  protected ISettingStorageModule? MemorySettingStorageModule;
 
   private readonly ACoreStorageOptions _aCoreStorageOptions = new()
   {
@@ -26,6 +26,6 @@ public class SettingStorageModule : StorageBase
   {
     await base.GetServicesAsync(sp);
     await sp.UseSettingServiceModule(_aCoreStorageOptions);
-    Db = StorageResolver?.FirstReadOnlyStorage<ISettingStorageModule>(StorageTypeEnum.Memory) ?? throw new ArgumentNullException($"{nameof(ISettingStorageModule)} is not implemented.");
+    MemorySettingStorageModule = StorageResolver?.FirstReadOnlyStorage<ISettingStorageModule>(StorageTypeEnum.Memory) ?? throw new ArgumentNullException($"{nameof(ISettingStorageModule)} is not implemented.");
   }
 }

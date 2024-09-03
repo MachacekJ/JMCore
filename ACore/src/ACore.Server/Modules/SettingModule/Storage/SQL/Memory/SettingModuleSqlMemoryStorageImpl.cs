@@ -17,16 +17,7 @@ internal class SettingModuleSqlMemoryStorageImpl(DbContextOptions<SettingModuleS
   public SettingModuleSqlMemoryStorageImpl(DbContextOptions<SettingModuleSqlMemoryStorageImpl> options, IMediator mediator, ILogger<SettingModuleSqlMemoryStorageImpl> logger) : this(options, mediator, null, logger)
   {
   }
-
-  protected override int IdIntGenerator<TEntity>()
-  {
-    return typeof(TEntity) switch
-    {
-      { } entityType when entityType == typeof(SettingEntity) => !Settings.Any() ? 1 : Settings.Max(i => i.Id) + 1,
-      _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
-    };
-  }
-
+  
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);

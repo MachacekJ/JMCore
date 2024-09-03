@@ -60,19 +60,18 @@ public static class AuditValuesTHelper
     };
 
     // Act.
-    var res = await mediator.Send(new TestValueTypeSaveCommand(item));
-    item.Id = res;
+    await mediator.Send(new TestValueTypeSaveCommand(item));
     // Assert
-    res.Should().BeGreaterThan(0);
+    item.Id.Should().BeGreaterThan(0);
 
     logInMemorySink.Should().HaveMessage("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}")
       .Appearing().Once().WithLevel(LogEventLevel.Error);
 
-    var allData = await mediator.Send(new TestValueTypeGetQuery());
+    var allData = (await mediator.Send(new TestValueTypeGetQuery())).ResultValue;
     allData.Should().HaveCount(1);
 
     var savedItem = allData.Single();
-    var resAuditItems = await mediator.Send(new AuditGetQuery<long>(getTableName(entityName), savedItem.Id));
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<long>(getTableName(entityName), savedItem.Id))).ResultValue;
     resAuditItems.Should().HaveCount(1);
     resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
 

@@ -33,16 +33,17 @@ public class AuditAttributeTests : MongoAuditBase
         NotAuditableColumn = "Audit"
       };
 
-      var res = await Mediator.Send(new TestAttributeAuditSaveCommand<ObjectId>(item));
-      res.Should().NotBeNull();
-      res.Should().NotBe(ObjectId.Empty);
+      await Mediator.Send(new TestAttributeAuditSaveCommand<ObjectId>(item));
+      var itemId = item.Id;
+      itemId.Should().NotBeNull();
+      itemId.Should().NotBe(ObjectId.Empty);
 
       // Assert.
-      var allData = await Mediator.Send(new TestAttributeAuditGetQuery<ObjectId>());
+      var allData = (await Mediator.Send(new TestAttributeAuditGetQuery<ObjectId>())).ResultValue;
       allData.Should().HaveCount(1);
 
       var savedItem = allData.Single();
-      var resAuditItems = await Mediator.Send(new AuditGetQuery<ObjectId>(GetTestTableName(storageType, entityName), savedItem.Id));
+      var resAuditItems = (await Mediator.Send(new AuditGetQuery<ObjectId>(GetTestTableName(storageType, entityName), savedItem.Id))).ResultValue;
       resAuditItems.Should().HaveCount(1);
       resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
 

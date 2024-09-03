@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestPKGuid.Save;
 
-public class TestPKGuidSaveCommand(TestPKGuidData data): TestModuleRequest<Guid>
+public class TestPKGuidSaveCommand(TestPKGuidData data): TestModuleRequest
 {
   public TestPKGuidData Data => data;
 }

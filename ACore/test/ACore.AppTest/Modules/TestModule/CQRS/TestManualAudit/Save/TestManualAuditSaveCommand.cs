@@ -2,7 +2,7 @@
 
 namespace ACore.AppTest.Modules.TestModule.CQRS.TestManualAudit.Save;
 
-public class TestManualAuditSaveCommand(TestManualAuditData data): TestModuleRequest<long>
+public class TestManualAuditSaveCommand(TestManualAuditData data): TestModuleRequest<TestManualAuditData>
 {
   public TestManualAuditData Data => data;
 }

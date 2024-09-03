@@ -1,20 +1,16 @@
-﻿using ACore.Server.Modules.SettingModule.Storage;
-using ACore.Server.Storages;
-using ACore.Server.Storages.Models;
-using MediatR;
+﻿using ACore.CQRS;
+using ACore.Models;
 
 namespace ACore.Server.Modules.SettingModule.CQRS;
 
-public abstract class SettingModuleRequestHandler<TRequest>(IStorageResolver storageResolver) : IRequestHandler<TRequest>
-  where TRequest : IRequest
+public abstract class SettingModuleRequestHandler<TRequest> : ICQRSRequestHandler<TRequest>
+  where TRequest : IResultRequest
 {
-  public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
-
-  protected IEnumerable<ISettingStorageModule> AllBasicStorageWriteContexts(StorageTypeEnum storageType) => storageResolver.AllWriteStorages<ISettingStorageModule>(storageType);
+  public abstract Task<Result> Handle(TRequest request, CancellationToken cancellationToken);
 }
 
-public abstract class SettingModuleRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
-  where TRequest : IRequest<TResponse>
+public abstract class SettingModuleRequestHandler<TRequest, TResponse> : ICQRSRequestHandler<TRequest, TResponse>
+  where TRequest : IResultRequest<TResponse>
 {
-  public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+  public abstract Task<Result<TResponse>> Handle(TRequest request, CancellationToken cancellationToken);
 }

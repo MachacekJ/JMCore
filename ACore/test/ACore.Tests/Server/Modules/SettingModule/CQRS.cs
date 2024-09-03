@@ -1,26 +1,98 @@
 ﻿using System.Reflection;
+using ACore.Extensions;
+using ACore.Models;
 using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 using ACore.Server.Modules.SettingModule.CQRS.SettingSave;
+using FluentAssertions;
+using FluentValidation;
 using Xunit;
 
 namespace ACore.Tests.Server.Modules.SettingModule;
 
-    public class CQRS : SettingStorageModule
+public class CQRS : SettingStorageModule
+{
+  [Fact]
+  public async Task SettingsCommandAndQueryTest_OK()
+  {
+    const string key = "key";
+    const string value = "value";
+
+    var method = MethodBase.GetCurrentMethod();
+    await RunTestAsync(method, async () =>
     {
-        [Fact]
-        public async Task SettingsCommandAndQueryTest()
-        {
-            const string key = "key";
-            const string value = "value";
+      var resultCommand = await Mediator.Send(new SettingSaveCommand(key, value));
+      resultCommand.IsSuccess.Should().BeTrue();
+      
+      var result = await Mediator.Send(new SettingGetQuery(key));
+      result.ResultValue.Should().Be(value);
+    });
+  }
 
-            var method = MethodBase.GetCurrentMethod();
-            await RunTestAsync(method, async () =>
-            {
-                await Mediator.Send(new SettingSaveCommand(key, value));
-                var result = await Mediator.Send(new SettingGetQuery(key));
+  [Fact]
+  public async Task SettingsCommandAndQueryTest_EmptyKey()
+  {
+    const string key = "";
+    const string value = "value";
 
-                Assert.Equal(value, result);
-            });
-        }
-    }
+    var method = MethodBase.GetCurrentMethod();
+    await RunTestAsync(method, async () =>
+    {
+      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      result.IsFailure.Should().Be(true);
+      result.IsSuccess.Should().Be(false);
+      result.Error.Should().NotBeNull();
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Message.Should().NotBeNull();
+      var validationResult = result as ValidationResult;
+      validationResult.Should().NotBeNull();
+      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+    });
+  }
+  
+  [Fact]
+  public async Task SettingsCommandAndQueryTest_MaxLengthKey()
+  {
+    var key = new string('*', 257);
+    const string value = "value";
 
+    var method = MethodBase.GetCurrentMethod();
+    await RunTestAsync(method, async () =>
+    {
+      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      result.IsFailure.Should().Be(true);
+      result.IsSuccess.Should().Be(false);
+      result.Error.Should().NotBeNull();
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Message.Should().NotBeNull();
+      var validationResult = result as ValidationResult;
+      validationResult.Should().NotBeNull();
+      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+    });
+  }
+  
+  [Fact]
+  public async Task SettingsCommandAndQueryTest_MaxLengthValue()
+  {
+    const string key = "test";
+    var value = new string('*', 65537);;
+
+    var method = MethodBase.GetCurrentMethod();
+    await RunTestAsync(method, async () =>
+    {
+      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      result.IsFailure.Should().Be(true);
+      result.IsSuccess.Should().Be(false);
+      result.Error.Should().NotBeNull();
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Message.Should().NotBeNull();
+      var validationResult = result as ValidationResult;
+      validationResult.Should().NotBeNull();
+      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+      validationResult?.Errors[0].FormattedMessagePlaceholderValues.Should().HaveCountGreaterThan(4);
+      validationResult?.Errors[0].Code.Should().NotBeEmpty();
+      validationResult?.Errors[0].Message.Should().NotBeEmpty();
+      validationResult?.Errors[0].ParamName.Should().NotBeEmpty();
+      validationResult?.Errors[0].Severity.Should().Be(Severity.Error);
+    });
+  }
+}

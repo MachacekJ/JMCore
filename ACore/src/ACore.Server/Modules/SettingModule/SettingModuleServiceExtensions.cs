@@ -1,3 +1,4 @@
+using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Modules.SettingModule.Storage.Mongo;
 using ACore.Server.Storages;
@@ -21,7 +22,8 @@ public static class SettingModuleServiceExtensions
   
   public static void AddSettingServiceModule(this IServiceCollection services, ACoreStorageOptions testOptions)
   {
-    services.AddMediatR((c) => { c.RegisterServicesFromAssemblyContaining(typeof(ISettingStorageModule)); });
+    services.AddCQRS();
+    
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
     
     if (testOptions.MongoDb != null)

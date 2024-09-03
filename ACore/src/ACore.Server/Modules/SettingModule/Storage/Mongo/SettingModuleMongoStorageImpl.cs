@@ -60,14 +60,14 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
 
     if (allSettingsCache != null)
     {
-      if (allSettingsCache.Value == null)
+      if (allSettingsCache.ResultValue == null)
       {
         var ex = new Exception("The key '" + key + "' is not represented in settings table.");
         Logger.LogCritical("GetSettingsValue->" + key, ex);
         throw ex;
       }
 
-      allSettings = allSettingsCache.Value as List<SettingPKMongoEntity>;
+      allSettings = allSettingsCache.ResultValue.CacheValue as List<SettingPKMongoEntity>;
     }
     else
     {

@@ -1,8 +1,5 @@
-﻿using MediatR;
-
-namespace ACore.CQRS;
-
-public class LoggedRequest<TResponse> : IRequest<TResponse>
-{
-  public Guid Id { get; } = Guid.NewGuid();
-}
+﻿// namespace ACore.CQRS;
+//
+// public class LoggedRequest<TResponse> : IResultRequest<TResponse>;
+//
+// public class LoggedRequest : IResultRequest;

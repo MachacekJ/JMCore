@@ -9,9 +9,9 @@ namespace ACore.Server.Modules.SettingModule.Storage.SQL.Models;
 [Auditable]
 public class SettingEntity: PKIntEntity
 {
-  [MaxLength(1024)]
+  [MaxLength(256)]
   public string Key { get; set; }
-  [MaxLength(1024)]
+  [MaxLength(65536)]
   public string Value { get; set; }
   public bool? IsSystem { get; set; }
 }

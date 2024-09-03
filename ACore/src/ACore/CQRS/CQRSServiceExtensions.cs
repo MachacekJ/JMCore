@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.CQRS;
@@ -11,6 +12,10 @@ public static class CQRSExtensions
     {
       c.RegisterServicesFromAssemblyContaining(typeof(CQRSExtensions));
     });
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+    services.AddValidatorsFromAssembly(ACore.AssemblyReference.Assembly,
+      includeInternalTypes: true);
+
   }
 }

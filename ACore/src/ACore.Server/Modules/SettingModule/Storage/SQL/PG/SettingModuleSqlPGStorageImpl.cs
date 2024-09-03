@@ -33,8 +33,4 @@ internal class SettingModuleSqlPGStorageImpl : SettingModuleSqlStorageImpl
   }
   
   private static void SetDatabaseNames<T>(ModelBuilder modelBuilder) where T : class => SetDatabaseNames<T>(DefaultNames.ObjectNameMapping, modelBuilder);
-  protected override int IdIntGenerator<T>()
-  {
-    return 0;
-  }
 }

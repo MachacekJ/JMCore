@@ -4,7 +4,7 @@ using ACore.Server.Storages;
 
 namespace ACore.Server.Modules.SettingModule.CQRS.SettingSave;
 
-public class SettingSaveHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingSaveCommand>()
+public class SettingSaveHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingSaveCommand, Result>
 {
   public override async Task<Result> Handle(SettingSaveCommand command, CancellationToken cancellationToken)
   {

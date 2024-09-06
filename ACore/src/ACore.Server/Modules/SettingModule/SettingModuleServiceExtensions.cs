@@ -1,10 +1,12 @@
 using ACore.Server.Configuration;
+using ACore.Server.Modules.SettingModule.CQRS;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Modules.SettingModule.Storage.Mongo;
 using ACore.Server.Storages;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Memory;
 using ACore.Server.Modules.SettingModule.Storage.SQL.PG;
 using ACore.Server.Storages.Configuration.Options;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -22,7 +24,8 @@ public static class SettingModuleServiceExtensions
   
   public static void AddSettingServiceModule(this IServiceCollection services, ACoreStorageOptions testOptions)
   {
-    services.AddCQRS();
+    
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SettingModulePipelineBehavior<,>));
     
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
     

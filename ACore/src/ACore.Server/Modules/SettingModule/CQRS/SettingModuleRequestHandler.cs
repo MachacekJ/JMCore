@@ -1,16 +1,11 @@
-﻿using ACore.CQRS;
-using ACore.Models;
+﻿using ACore.Models;
+using MediatR;
 
 namespace ACore.Server.Modules.SettingModule.CQRS;
 
-public abstract class SettingModuleRequestHandler<TRequest> : ICQRSRequestHandler<TRequest>
-  where TRequest : IResultRequest
+public abstract class SettingModuleRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
+  where TRequest : IRequest<TResponse>
+  where TResponse : Result
 {
-  public abstract Task<Result> Handle(TRequest request, CancellationToken cancellationToken);
-}
-
-public abstract class SettingModuleRequestHandler<TRequest, TResponse> : ICQRSRequestHandler<TRequest, TResponse>
-  where TRequest : IResultRequest<TResponse>
-{
-  public abstract Task<Result<TResponse>> Handle(TRequest request, CancellationToken cancellationToken);
+  public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
 }

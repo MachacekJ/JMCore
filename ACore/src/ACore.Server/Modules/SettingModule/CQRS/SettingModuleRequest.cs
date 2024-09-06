@@ -1,6 +1,7 @@
-using ACore.CQRS;
+using ACore.Models;
+using MediatR;
 
 namespace ACore.Server.Modules.SettingModule.CQRS;
 
-public class SettingModuleRequest<TResponse> : IResultRequest<TResponse>;
-public class SettingModuleRequest : IResultRequest;
+public class SettingModuleRequest<TResponse> : IRequest<TResponse>
+  where TResponse : Result;

@@ -1,10 +1,11 @@
-﻿using ACore.Modules.CacheModule.CQRS.Models;
+﻿using ACore.Models;
+using ACore.Modules.CacheModule.CQRS.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheSave;
 
-public class CacheModuleSaveCommand(JMCacheKey key, object value) : CacheModuleRequest<bool>
+public class CacheModuleSaveCommand(JMCacheKey key, object value) : CacheModuleRequest<Result<bool>>
 {
     public JMCacheKey Key { get; } = key;
     public object Value { get; } = value;

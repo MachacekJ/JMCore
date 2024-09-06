@@ -86,6 +86,7 @@ public abstract class BaseTests
             .WithAllOpenGenericHandlerTypesRegistered()
             .Build();
         containerBuilder.RegisterMediatR(configuration);
+       // containerBuilder.RegisterGeneric(typeof(Result<>)).AsImplementedInterfaces();
     }
     
     protected virtual void RegisterServices(ServiceCollection services)

@@ -2,7 +2,7 @@
 
 namespace ACore.Modules.CacheModule.CQRS.CacheSave;
 
-public class CacheSaveHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleSaveCommand, bool>
+public class CacheSaveHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleSaveCommand, Result<bool>>
 {
     private readonly IJMCache _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
 

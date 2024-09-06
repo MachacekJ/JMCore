@@ -4,7 +4,7 @@ using ACore.Server.Storages;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
 
-public class AuditGetHandler<T>(IStorageResolver storageResolver) : AuditModuleRequestHandler<AuditGetQuery<T>, AuditGetQueryDataOut[]>(storageResolver)
+public class AuditGetHandler<T>(IStorageResolver storageResolver) : AuditModuleRequestHandler<AuditGetQuery<T>, Result<AuditGetQueryDataOut[]>>(storageResolver)
 {
   public override async Task<Result<AuditGetQueryDataOut[]>> Handle(AuditGetQuery<T> request, CancellationToken cancellationToken)
   {

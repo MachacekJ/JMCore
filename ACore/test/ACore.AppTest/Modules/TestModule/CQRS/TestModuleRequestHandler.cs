@@ -6,13 +6,13 @@ using MediatR;
 
 namespace ACore.AppTest.Modules.TestModule.CQRS;
 
-public abstract class TestModuleRequestHandler<TRequest>(IStorageResolver storageResolver) : TestModuleRequestHandlerBase(storageResolver), ICQRSRequestHandler<TRequest>
+public abstract class TestModuleRequestHandler<TRequest>(IStorageResolver storageResolver) : TestModuleRequestHandlerBase(storageResolver), IResultRequestHandler<TRequest>
   where TRequest : IResultRequest
 {
   public abstract Task<Result> Handle(TRequest request, CancellationToken cancellationToken);
 }
 
-public abstract class TestModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : TestModuleRequestHandlerBase(storageResolver), ICQRSRequestHandler<TRequest, TResponse>
+public abstract class TestModuleRequestHandler<TRequest, TResponse>(IStorageResolver storageResolver) : TestModuleRequestHandlerBase(storageResolver), IResultRequestHandler<TRequest, TResponse>
   where TRequest : IResultRequest<TResponse>
 {
   public abstract Task<Result<TResponse>> Handle(TRequest request, CancellationToken cancellationToken);

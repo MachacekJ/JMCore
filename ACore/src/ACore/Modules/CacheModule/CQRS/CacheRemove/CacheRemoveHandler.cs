@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheRemove;
 
-public class CacheRemoveHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleRemoveCommand, bool>
+public class CacheRemoveHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleRemoveCommand, Result<bool>>
 {
   private readonly IJMCache _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
 

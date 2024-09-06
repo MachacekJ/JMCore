@@ -1,8 +1,9 @@
-﻿using ACore.Modules.CacheModule.CQRS.Models;
+﻿using ACore.Models;
+using ACore.Modules.CacheModule.CQRS.Models;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheRemove;
 
-public class CacheModuleRemoveCommand : CacheModuleRequest<bool>
+public class CacheModuleRemoveCommand : CacheModuleRequest<Result<bool>>
 {
     public JMCacheKey? Key { get; }
 

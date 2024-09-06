@@ -1,9 +1,9 @@
-﻿using ACore.CQRS;
+﻿using ACore.Models;
 using ACore.Server.Storages.Models;
 
 namespace ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 
-public class SettingGetQuery(StorageTypeEnum storageType, string key, bool isRequired = false) : SettingModuleRequest<string?>
+public class SettingGetQuery(StorageTypeEnum storageType, string key, bool isRequired = false) : SettingModuleRequest<Result<string?>>
 {
   public StorageTypeEnum StorageType { get; } = storageType;
 

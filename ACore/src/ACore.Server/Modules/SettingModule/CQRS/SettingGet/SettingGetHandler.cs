@@ -4,7 +4,7 @@ using ACore.Server.Storages;
 
 namespace ACore.Server.Modules.SettingModule.CQRS.SettingGet;
 
-public class SettingGetHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingGetQuery, string?>
+public class SettingGetHandler(IStorageResolver storageResolver) : SettingModuleRequestHandler<SettingGetQuery, Result<string?>>
 {
   public override async Task<Result<string?>> Handle(SettingGetQuery request, CancellationToken cancellationToken)
   {

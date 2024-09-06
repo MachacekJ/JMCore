@@ -1,6 +1,6 @@
 ﻿using ACore.CQRS;
+using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 
-public class AuditModuleRequest<TResponse> : IResultRequest<TResponse>;
-public class AuditModuleRequest : IResultRequest;
+public class AuditModuleRequest<TResponse> : IRequest<TResponse>;

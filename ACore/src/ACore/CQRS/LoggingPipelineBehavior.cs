@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
-using ACore.Extensions;
 using ACore.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,27 +14,23 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
   {
     var id = Guid.NewGuid();
     var duration = new Stopwatch();
-    logger.LogInformation("Request '{request}'.Id:{id};Data:{data}", typeof(TRequest).Name, id, JsonSerializer.Serialize(request));
-    duration.Start();
-    var response = await next();
-    duration.Stop();
-    logger.LogInformation("Response '{request}'.Id:{id};Duration:{duration};Data:{data}", typeof(TRequest).Name, id, duration, JsonSerializer.Serialize(response));
-    return response;
-  }
-
-  private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
-  {
-    while (toCheck != null && toCheck != typeof(object))
+    
+    // Serialization could be expensive.
+    if (logger.IsEnabled(LogLevel.Debug))
     {
-      var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-      if (generic == cur)
-      {
-        return true;
-      }
-
-      toCheck = toCheck.BaseType;
+      logger.LogDebug("Request '{request}'.Id:{id};Data:{data}", typeof(TRequest).Name, id, JsonSerializer.Serialize(request));
+      duration.Start();
     }
 
-    return false;
+    var response = await next();
+    
+    // Serialization could be expensive.
+    if (logger.IsEnabled(LogLevel.Debug))
+    {
+      duration.Stop();
+      logger.LogDebug("Response '{request}'.Id:{id};Duration:{duration};Data:{data}", typeof(TRequest).Name, id, duration, JsonSerializer.Serialize(response));
+    }
+    
+    return response;
   }
 }

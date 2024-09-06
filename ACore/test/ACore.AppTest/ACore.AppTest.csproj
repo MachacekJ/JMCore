@@ -18,7 +18,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Modules\TestModule\appsettings.TestModule.json" />
+      <Folder Include="Modules\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Modules\TestModule\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Modules\TestModule\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Modules\TestModule\**" />
     </ItemGroup>
 
 </Project>

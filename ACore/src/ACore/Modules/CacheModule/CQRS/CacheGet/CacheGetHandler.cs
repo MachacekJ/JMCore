@@ -3,7 +3,7 @@ using ACore.Modules.CacheModule.CQRS.Models;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheGet;
 
-public class CacheGetHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleGetQuery, JMCacheValue?>
+public class CacheGetHandler(IJMCache cache) : CacheModuleRequestHandler<CacheModuleGetQuery, Result<JMCacheValue?>>
 {
     private readonly IJMCache _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
 

@@ -1,4 +1,5 @@
-﻿using ACore.Modules.CacheModule.CQRS.Models;
+﻿using ACore.Models;
+using ACore.Modules.CacheModule.CQRS.Models;
 
 namespace ACore.Modules.CacheModule.CQRS.CacheGet;
 
@@ -7,7 +8,7 @@ namespace ACore.Modules.CacheModule.CQRS.CacheGet;
 /// null = cache value is not saved in cache.
 /// <see cref="JMCacheValue"/>.<see cref="JMCacheValue.CacheValue"/> = null, cache value is null, but is in cache.
 /// </summary>
-public class CacheModuleGetQuery(JMCacheKey key) : CacheModuleRequest<JMCacheValue?>
+public class CacheModuleGetQuery(JMCacheKey key) : CacheModuleRequest<Result<JMCacheValue?>>
 {
     public JMCacheKey Key { get; } = key;
 }

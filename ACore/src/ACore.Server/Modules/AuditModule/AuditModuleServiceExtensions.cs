@@ -26,7 +26,7 @@ public static class AuditModuleServiceExtensions
 
     if (storageOptions.MongoDb != null)
     {
-      services.AddDbContext<AuditModuleMongoStorageImpl>(opt => opt.UseMongoDB(storageOptions.MongoDb.ReadWrite, storageOptions.MongoDb.DbName));
+      services.AddDbContext<AuditModuleMongoStorageImpl>(opt => opt.UseMongoDB(storageOptions.MongoDb.ReadWriteConnectionString, storageOptions.MongoDb.CollectionName));
     }
 
     if (storageOptions.PGDb != null)

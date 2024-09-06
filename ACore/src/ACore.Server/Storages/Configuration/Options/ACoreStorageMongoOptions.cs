@@ -1,8 +1,8 @@
 namespace ACore.Server.Storages.Configuration.Options;
 
-public class ACoreStorageMongoOptions(string readWrite, string dbName, string? readOnly = null)
+public class ACoreStorageMongoOptions(string readWriteConnectionString, string collectionName, string? readOnlyConnectionString = null)
 {
-  public string ReadOnly => readOnly ?? readWrite; 
-  public string ReadWrite => readWrite;
-  public string DbName => dbName;
+  public string ReadOnlyConnectionString => readOnlyConnectionString ?? readWriteConnectionString; 
+  public string ReadWriteConnectionString => readWriteConnectionString;
+  public string CollectionName => collectionName;
 }

@@ -1,10 +1,17 @@
 using ACore.Configuration;
+using ACore.Server.Modules.SettingModule.Configuration;
+using ACore.Server.Storages.Configuration.Options;
 
 namespace ACore.Server.Configuration;
 
 public class ACoreServerServiceOptions
 {
-  public ACoreServiceOptions ACoreServiceOptions { get; set; } = new ACoreServiceOptions();
+  public ACoreServiceOptions ACoreServiceOptions { get; init; } = new ();
 
-  public string ServerName { get; set; } = "ServefName";
+  /// <summary>
+  /// All modules using the storage take this default setting first.
+  /// </summary>
+  public ACoreStorageOptions? DefaultStorages { get; init; } = null;
+  
+  public SettingModuleOptions SettingModuleOptions { get; init; } = new();
 }

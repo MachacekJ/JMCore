@@ -1,6 +1,6 @@
-namespace ACore.Server.Storages.Configuration.Options;
+namespace ACore.Server.Storages.Configuration;
 
-public class ACoreStoragePGOptions(string readWriteConnectionString, string? readOnlyConnectionString = null)
+public class StoragePGOptions(string readWriteConnectionString, string? readOnlyConnectionString = null)
 {
   public string ReadOnlyConnectionString => readOnlyConnectionString ?? readWriteConnectionString; 
   public string ReadWriteConnectionString => readWriteConnectionString;

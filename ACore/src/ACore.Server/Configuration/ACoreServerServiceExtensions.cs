@@ -1,8 +1,11 @@
 using ACore.Configuration;
 using ACore.CQRS;
+using ACore.Server.Modules.AuditModule;
 using ACore.Server.Modules.SettingModule;
+using ACore.Server.Storages;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace ACore.Server.Configuration;
@@ -19,7 +22,12 @@ public static class ACoreServerServiceExtensions
 
   public static async Task UseACoreServer(this IServiceProvider provider)
   {
-    await provider.UseSettingServiceModule();
+    var opt = provider.GetService<IOptions<ACoreServerServiceOptions>>()?.Value ?? throw new Exception($"{nameof(ACoreServiceOptions)} is not registered.");
+   
+    if (opt.SettingModuleOptions.IsActive)
+      await provider.UseSettingServiceModule();
+    if (opt.AuditModuleOptions.IsActive)
+      await provider.UseAuditServiceModule(opt.AuditModuleOptions);
   }
 
   private static void AddACoreServer(this IServiceCollection services, ACoreServerServiceOptions opt)
@@ -29,13 +37,16 @@ public static class ACoreServerServiceExtensions
     var myOptionsInstance = Options.Create(opt);
     services.AddSingleton(myOptionsInstance);
 
-
     services.AddCQRS();
     services.AddMediatR((c) => { c.RegisterServicesFromAssemblyContaining(typeof(ACoreServerServiceExtensions)); });
-
     services.AddValidatorsFromAssembly(typeof(ACoreServerServiceExtensions).Assembly,
       includeInternalTypes: true);
 
-    services.AddSettingServiceModule(opt.SettingModuleOptions);
+    services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
+    if (opt.SettingModuleOptions.IsActive)
+      services.AddSettingServiceModule(opt.SettingModuleOptions);
+
+    if (opt.AuditModuleOptions.IsActive)
+      services.AddAuditServiceModule(opt.AuditModuleOptions);
   }
 }

@@ -11,7 +11,7 @@ using ACore.Server.Modules.LocalizationModule;
 using ACore.Server.Modules.LocalizationModule.Configuration;
 using ACore.Server.Modules.LocalizationModule.ResX;
 using ACore.Server.Modules.LocalizationModule.Storage.Memory;
-using ACore.Server.Storages.Configuration.Options;
+using ACore.Server.Storages.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,14 +26,14 @@ public class LocalizeBase : StorageBase
   protected IStringLocalizer<TestClient> ResXTestClient = null!;
   protected IStringLocalizer<ResX_Errors> ResXCoreErrors = null!;
   protected LocalizationMemoryEfStorageImpl LocalizationMemoryEfStorageImpl = null!;
-  private readonly ACoreStorageOptions _testConfig = new()
+  private readonly StorageOptions _testConfig = new()
   {
     UseMemoryStorage = true
   };
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
-    sc.AddLocalizationServiceModule(_testConfig);
+    //sc.AddLocalizationServiceModule(_testConfig);
    // StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(ILocalizationStorageModule) }));
     sc.AddJMMemoryCache<JMCacheServerCategory>();
     var addLanguageResources = new List<ResXSource>
@@ -73,7 +73,7 @@ public class LocalizeBase : StorageBase
   protected override async Task GetServicesAsync(IServiceProvider sp)
   {
     await base.GetServicesAsync(sp);
-    await sp.UseAuditServiceModule(_testConfig);
+   // await sp.UseAuditServiceModule(_testConfig);
     await sp.UseJMServerLocalization();
 
     LocalizationStorageModule = StorageResolver?.FirstReadOnlyStorage<ILocalizationStorageModule>() ?? throw new ArgumentException($"{nameof(ILocalizationStorageModule)} is not implemented.");

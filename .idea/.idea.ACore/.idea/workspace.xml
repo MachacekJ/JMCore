@@ -22,19 +22,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceOptionBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptionBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageOptionBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ACore/src/ACore/Configuration/ACoreServiceOptionBuilder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/Modules/ModuleOptionBuilder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/Modules/ModuleOptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Configuration/AuditModuleOptionBuilder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Configuration/AuditModuleOptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageServiceExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceOptionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceOptionBuilder.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceOptions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/AuditModuleServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/AuditModuleServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/LocalizationModule/LocalizationModuleServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/LocalizationModule/LocalizationModuleServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptionBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/Configuration/SettingModuleOptions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/SettingModuleServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/SettingModuleServiceExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/Options/ACoreStorageMongoOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/Options/ACoreStorageMongoOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Configuration/ACoreServiceExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Configuration/ACoreServiceExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Configuration/ACoreServiceOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Configuration/ACoreServiceOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/Options/ACoreStorageMongoOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageMongoOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/Options/ACoreStorageOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/Options/ACoreStoragePGOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StoragePGOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageOptionBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageOptionBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/IStorageResolver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/IStorageResolver.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/LocalizationModule/LocalizeT/LocalizeBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/LocalizationModule/LocalizeT/LocalizeBase.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingModule/SettingStorageModuleBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingModule/SettingStorageModuleBase.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -183,6 +190,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9b8579c61c1131ec7bf0253f254c8b2a5204bc2e64e4c9237ee291963d/BsonElementAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/CQRS/Analytics/WriteAnalyticsHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/Components/Testable.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/MTest/ACore/ACore/src/ACore.Server/Modules/SettingModule/SettingModuleServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/AuditDbContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/Test/Save/TestSaveCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.AppTest/Modules/TestModule/CQRS/Test/Save/TestSaveHandler.cs" root0="FORCE_HIGHLIGHTING" />
@@ -580,6 +588,8 @@
       <workItem from="1725525310312" duration="290000" />
       <workItem from="1725614930643" duration="12273000" />
       <workItem from="1725651508767" duration="5968000" />
+      <workItem from="1725775115915" duration="517000" />
+      <workItem from="1725973807660" duration="8462000" />
     </task>
     <task id="LOCAL-00010" summary="MAUI">
       <option name="closed" value="true" />
@@ -1415,17 +1425,69 @@
           <option name="timeStamp" value="585" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingModule/SettingStorageModuleBase.cs</url>
-          <line>22</line>
-          <properties documentPath="D:\MTest\ACore\ACore\test\ACore.Tests\Server\Modules\SettingModule\SettingStorageModuleBase.cs" containingFunctionPresentation="Method 'RegisterServices'">
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Configuration/StorageOptionBuilder.cs</url>
+          <line>50</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\Configuration\StorageOptionBuilder.cs" containingFunctionPresentation="Method 'CheckAtLeastOneDB'">
             <startOffsets>
-              <option value="674" />
+              <option value="1299" />
             </startOffsets>
             <endOffsets>
-              <option value="745" />
+              <option value="1360" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="590" />
+          <option name="timeStamp" value="592" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingModule/SettingStorageModuleBase.cs</url>
+          <line>27</line>
+          <properties documentPath="D:\MTest\ACore\ACore\test\ACore.Tests\Server\Modules\SettingModule\SettingStorageModuleBase.cs" containingFunctionPresentation="Method 'GetServicesAsync'">
+            <startOffsets>
+              <option value="776" />
+            </startOffsets>
+            <endOffsets>
+              <option value="981" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="599" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/DefaultStorageResolver.cs</url>
+          <line>19</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\DefaultStorageResolver.cs" containingFunctionPresentation="Method 'ConfigureStorage'">
+            <startOffsets>
+              <option value="637" />
+            </startOffsets>
+            <endOffsets>
+              <option value="670" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="601" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/EF/DbContextBase.cs</url>
+          <line>89</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\EF\DbContextBase.cs" containingFunctionPresentation="Method 'UpdateDatabase'">
+            <startOffsets>
+              <option value="3342" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3423" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="602" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingModule/CQRS/SettingGet/SettingGetHandler.cs</url>
+          <line>10</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Modules\SettingModule\CQRS\SettingGet\SettingGetHandler.cs" containingFunctionPresentation="Method 'Handle'">
+            <startOffsets>
+              <option value="417" />
+            </startOffsets>
+            <endOffsets>
+              <option value="526" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="603" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

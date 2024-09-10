@@ -1,12 +1,10 @@
-using ACore.Server.Storages.Configuration.Options;
-
 namespace ACore.Server.Storages.Configuration;
 
 public class StorageOptionBuilder
 {
   private bool _isMem;
-  private ACoreStoragePGOptions? _storagePGOptions;
-  private ACoreStorageMongoOptions? _storageMongoOptions;
+  private StoragePGOptions? _storagePGOptions;
+  private StorageMongoOptions? _storageMongoOptions;
 
   private StorageOptionBuilder() { }
 
@@ -20,20 +18,20 @@ public class StorageOptionBuilder
 
   public StorageOptionBuilder AddPG(string readWriteConnectionString, string? readOnlyConnectionString = null)
   {
-    _storagePGOptions = new ACoreStoragePGOptions(readWriteConnectionString, readOnlyConnectionString);
+    _storagePGOptions = new StoragePGOptions(readWriteConnectionString, readOnlyConnectionString);
     return this;
   }
 
   public StorageOptionBuilder AddMongo(string readWriteConnectionString, string collectionName, string? readOnlyConnectionString = null)
   {
-    _storageMongoOptions = new ACoreStorageMongoOptions(readWriteConnectionString, collectionName, readOnlyConnectionString);
+    _storageMongoOptions = new StorageMongoOptions(readWriteConnectionString, collectionName, readOnlyConnectionString);
     return this;
   }
 
-  public ACoreStorageOptions Build()
+  public StorageOptions Build()
   {
     CheckAtLeastOneDB();
-    return new ACoreStorageOptions
+    return new StorageOptions
     {
       UseMemoryStorage = _isMem,
       PGDb = _storagePGOptions,

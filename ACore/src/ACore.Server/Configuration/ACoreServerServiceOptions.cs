@@ -1,6 +1,7 @@
 using ACore.Configuration;
+using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Configuration;
-using ACore.Server.Storages.Configuration.Options;
+using ACore.Server.Storages.Configuration;
 
 namespace ACore.Server.Configuration;
 
@@ -11,7 +12,9 @@ public class ACoreServerServiceOptions
   /// <summary>
   /// All modules using the storage take this default setting first.
   /// </summary>
-  public ACoreStorageOptions? DefaultStorages { get; init; } = null;
+  public StorageOptions? DefaultStorages { get; init; } = null;
   
-  public SettingModuleOptions SettingModuleOptions { get; init; } = new();
+  public SettingModuleOptions SettingModuleOptions { get; init; } = new(false);
+
+  public AuditModuleOptions AuditModuleOptions { get; init; } = new(false);
 }

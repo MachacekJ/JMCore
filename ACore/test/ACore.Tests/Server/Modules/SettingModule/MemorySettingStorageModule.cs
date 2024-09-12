@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using ACore.Modules.CacheModule.CQRS.CacheGet;
-using ACore.Modules.CacheModule.CQRS.Models;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
+using ACore.Server;
 using ACore.Server.Modules.SettingModule.Storage;
-using ACore.Server.Services.JMCache;
 using FluentAssertions;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
+using ACore.Services.Cache.Models;
 using MediatR;
 using Xunit;
 
@@ -37,9 +37,9 @@ public class MemorySettingStorageModule : SettingStorageModule
     val2.Should().Be(value2);
 
     // Check if is value in cache
-    var keyCache = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
-    var cacheValue = await mediator.Send(new CacheModuleGetQuery(keyCache));
-    var mem = cacheValue!.ResultValue.CacheValue as List<SettingEntity>;
+    var keyCache = CacheKey.Create(CacheCategories.Entity, nameof(SettingEntity));
+    var cacheValue = await mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
+    var mem = cacheValue!.ResultValue.ObjectValue as List<SettingEntity>;
     Assert.True(mem != null && mem.First(a => a.Key == key).Value == value2);
 
     Exception? isError = null;

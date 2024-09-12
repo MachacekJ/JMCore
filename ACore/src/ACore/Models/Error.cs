@@ -7,7 +7,7 @@ public class Error(string code, string message, Severity severity = Severity.Inf
   : IEquatable<Error>
 {
   public static readonly Error None = new(string.Empty, string.Empty);
-
+  
   public string? ParamName { get; } = paramName;
 
   public Severity Severity { get; } = severity;
@@ -23,7 +23,7 @@ public class Error(string code, string message, Severity severity = Severity.Inf
     return new Error(vf.ErrorCode, vf.ErrorMessage, vf.Severity, vf.PropertyName, vf.FormattedMessagePlaceholderValues);
   }
 
-  //public static implicit operator string(Error error) => error.Code;
+  
 
   public static bool operator ==(Error? a, Error? b)
   {

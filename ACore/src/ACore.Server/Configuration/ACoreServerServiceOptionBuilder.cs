@@ -7,9 +7,9 @@ namespace ACore.Server.Configuration;
 
 public class ACoreServerServiceOptionBuilder
 {
-  private readonly ACoreServiceOptionBuilder _aCoreServiceOptionBuilder = ACoreServiceOptionBuilder.Empty();
-  private readonly SettingModuleOptionBuilder _settingModuleOptionBuilder = SettingModuleOptionBuilder.Empty();
-  private  readonly AuditModuleOptionBuilder _auditModuleOptionBuilder = AuditModuleOptionBuilder.Empty();
+  private readonly ACoreOptionBuilder _aCoreOptionBuilder = ACoreOptionBuilder.Empty();
+  private readonly SettingServerModuleOptionBuilder _settingServerModuleOptionBuilder = SettingServerModuleOptionBuilder.Empty();
+  private  readonly AuditServerModuleOptionBuilder _auditServerModuleOptionBuilder = AuditServerModuleOptionBuilder.Empty();
   private StorageOptionBuilder? _storageOptionBuilder;
 
   private ACoreServerServiceOptionBuilder()
@@ -25,23 +25,23 @@ public class ACoreServerServiceOptionBuilder
     return this;
   }
 
-  public ACoreServerServiceOptionBuilder AddSettingModule(Action<SettingModuleOptionBuilder>? action = null)
+  public ACoreServerServiceOptionBuilder AddSettingModule(Action<SettingServerModuleOptionBuilder>? action = null)
   {
-    action?.Invoke(_settingModuleOptionBuilder);
-    _settingModuleOptionBuilder.Activate();
+    action?.Invoke(_settingServerModuleOptionBuilder);
+    _settingServerModuleOptionBuilder.Activate();
     return this;
   }
 
-  public ACoreServerServiceOptionBuilder AddAuditModule(Action<AuditModuleOptionBuilder> action)
+  public ACoreServerServiceOptionBuilder AddAuditModule(Action<AuditServerModuleOptionBuilder> action)
   {
-    action(_auditModuleOptionBuilder);
-    _auditModuleOptionBuilder.Activate();
+    action(_auditServerModuleOptionBuilder);
+    _auditServerModuleOptionBuilder.Activate();
     return this;
   }
 
-  public ACoreServerServiceOptionBuilder ACore(Action<ACoreServiceOptionBuilder> action)
+  public ACoreServerServiceOptionBuilder ACore(Action<ACoreOptionBuilder>? action = null)
   {
-    action(_aCoreServiceOptionBuilder);
+    action?.Invoke(_aCoreOptionBuilder);
     return this;
   }
 
@@ -50,9 +50,9 @@ public class ACoreServerServiceOptionBuilder
     return new ACoreServerServiceOptions
     {
       DefaultStorages = _storageOptionBuilder?.Build(),
-      ACoreServiceOptions = _aCoreServiceOptionBuilder.Build(),
-      SettingModuleOptions = _settingModuleOptionBuilder.Build(_storageOptionBuilder),
-      AuditModuleOptions = _auditModuleOptionBuilder.Build(_storageOptionBuilder)
+      ACoreOptions = _aCoreOptionBuilder.Build(),
+      SettingServerModuleOptions = _settingServerModuleOptionBuilder.Build(_storageOptionBuilder),
+      AuditServerModuleOptions = _auditServerModuleOptionBuilder.Build(_storageOptionBuilder)
     };
   }
 }

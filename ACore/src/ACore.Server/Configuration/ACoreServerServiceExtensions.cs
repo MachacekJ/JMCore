@@ -1,7 +1,7 @@
 using ACore.Configuration;
 using ACore.CQRS;
-using ACore.Server.Modules.AuditModule;
-using ACore.Server.Modules.SettingModule;
+using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.SettingModule.Configuration;
 using ACore.Server.Storages;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,17 +22,17 @@ public static class ACoreServerServiceExtensions
 
   public static async Task UseACoreServer(this IServiceProvider provider)
   {
-    var opt = provider.GetService<IOptions<ACoreServerServiceOptions>>()?.Value ?? throw new Exception($"{nameof(ACoreServiceOptions)} is not registered.");
+    var opt = provider.GetService<IOptions<ACoreServerServiceOptions>>()?.Value ?? throw new Exception($"{nameof(ACoreOptions)} is not registered.");
    
-    if (opt.SettingModuleOptions.IsActive)
+    if (opt.SettingServerModuleOptions.IsActive)
       await provider.UseSettingServiceModule();
-    if (opt.AuditModuleOptions.IsActive)
-      await provider.UseAuditServiceModule(opt.AuditModuleOptions);
+    if (opt.AuditServerModuleOptions.IsActive)
+      await provider.UseAuditServiceModule();
   }
 
   private static void AddACoreServer(this IServiceCollection services, ACoreServerServiceOptions opt)
   {
-    services.AddACore(opt.ACoreServiceOptions);
+    services.AddACore(opt.ACoreOptions);
 
     var myOptionsInstance = Options.Create(opt);
     services.AddSingleton(myOptionsInstance);
@@ -43,10 +43,10 @@ public static class ACoreServerServiceExtensions
       includeInternalTypes: true);
 
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
-    if (opt.SettingModuleOptions.IsActive)
-      services.AddSettingServiceModule(opt.SettingModuleOptions);
+    if (opt.SettingServerModuleOptions.IsActive)
+      services.AddSettingServiceModule(opt.SettingServerModuleOptions);
 
-    if (opt.AuditModuleOptions.IsActive)
-      services.AddAuditServiceModule(opt.AuditModuleOptions);
+    if (opt.AuditServerModuleOptions.IsActive)
+      services.AddAuditServiceModule(opt.AuditServerModuleOptions);
   }
 }

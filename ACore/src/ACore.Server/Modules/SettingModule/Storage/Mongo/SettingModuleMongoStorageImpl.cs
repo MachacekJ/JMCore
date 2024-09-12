@@ -1,14 +1,12 @@
-﻿using ACore.Modules.CacheModule.CQRS.CacheGet;
-using ACore.Modules.CacheModule.CQRS.CacheRemove;
-using ACore.Modules.CacheModule.CQRS.CacheSave;
-using ACore.Modules.CacheModule.CQRS.Models;
+﻿using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
-using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Models.PK;
 using ACore.Server.Storages.Scripts;
+using ACore.Services.Cache.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,7 +16,7 @@ namespace ACore.Server.Modules.SettingModule.Storage.Mongo;
 
 internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStorageModule
 {
-  private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingPKMongoEntity));
+  private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingPKMongoEntity));
 
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
@@ -49,14 +47,14 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
 
     await SaveChangesAsync();
 
-    await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
+    await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(CacheKeyTableSetting));
   }
 
   private async Task<SettingPKMongoEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
     List<SettingPKMongoEntity>? allSettings;
 
-    var allSettingsCache = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
+    var allSettingsCache = await Mediator.Send(new MemoryCacheModuleGetQuery(CacheKeyTableSetting));
 
     if (allSettingsCache != null)
     {
@@ -67,12 +65,12 @@ internal class SettingModuleMongoStorageImpl : AuditableDbContext, ISettingStora
         throw ex;
       }
 
-      allSettings = allSettingsCache.ResultValue.CacheValue as List<SettingPKMongoEntity>;
+      allSettings = allSettingsCache.ResultValue.ObjectValue as List<SettingPKMongoEntity>;
     }
     else
     {
       allSettings = await Settings.ToListAsync();
-      await Mediator.Send(new CacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
+      await Mediator.Send(new MemoryCacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
     }
 
     if (allSettings == null)

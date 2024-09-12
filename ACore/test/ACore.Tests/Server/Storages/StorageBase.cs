@@ -1,22 +1,25 @@
-﻿using ACore.Server.Services.JMCache;
+﻿using ACore.Server;
 using ACore.Server.Storages;
-using ACore.Modules.CacheModule;
+using ACore.Server.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.Tests.Server.Storages;
 
-/// <summary>
-/// Working with memory EF.
-/// </summary>
 public class StorageBase : ServerBase
 {
   protected IStorageResolver? StorageResolver;
+
+  protected readonly Action<ACoreServerServiceOptionBuilder> StorageConfiguration = builder =>
+  {
+    builder.DefaultStorage(storageOptionBuilder => storageOptionBuilder.AddMemoryDb());
+    builder.ACore(a => a.AddMemoryCacheModule(memoryCacheOptionsBuilder => memoryCacheOptionsBuilder.AddCacheCategories(CacheCategories.Entity)));
+  };
 
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
 
-    sc.AddJMMemoryCache<JMCacheServerCategory>();
+  //  sc.AddMemoryCacheModule(b=>b.AddCacheCategories());
   }
 
   protected override async Task GetServicesAsync(IServiceProvider sp)

@@ -1,11 +1,10 @@
-﻿using ACore.Modules.CacheModule.CQRS.CacheGet;
-using ACore.Modules.CacheModule.CQRS.CacheRemove;
-using ACore.Modules.CacheModule.CQRS.CacheSave;
-using ACore.Modules.CacheModule.CQRS.Models;
+﻿using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
-using ACore.Server.Services.JMCache;
 using ACore.Server.Storages.EF;
+using ACore.Services.Cache.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,7 @@ namespace ACore.Server.Modules.SettingModule.Storage.SQL;
 
 internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISettingStorageModule
 {
-  private static readonly JMCacheKey CacheKeyTableSetting = JMCacheKey.Create(JMCacheServerCategory.DbTable, nameof(SettingEntity));
+  private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingEntity));
   
   protected override string ModuleName => nameof(ISettingStorageModule);
 
@@ -38,30 +37,30 @@ internal abstract class SettingModuleSqlStorageImpl : AuditableDbContext, ISetti
 
     await SaveWithAudit<SettingEntity, int>(set); //(i) => i.Id = IdIntGenerator<SettingEntity>()) 
     
-    await Mediator.Send(new CacheModuleRemoveCommand(CacheKeyTableSetting));
+    await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(CacheKeyTableSetting));
   }
 
   private async Task<SettingEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
     List<SettingEntity>? allSettings;
 
-    var allSettingsCacheResult = await Mediator.Send(new CacheModuleGetQuery(CacheKeyTableSetting));
+    var allSettingsCacheResult = await Mediator.Send(new MemoryCacheModuleGetQuery(CacheKeyTableSetting));
 
     if (allSettingsCacheResult.IsSuccess &&  allSettingsCacheResult.ResultValue != null)
     {
-      if (allSettingsCacheResult.ResultValue.CacheValue == null)
+      if (allSettingsCacheResult.ResultValue.ObjectValue == null)
       {
         var ex = new Exception("The key '" + key + "' is not represented in settings table.");
         Logger.LogCritical("GetSettingsValue->" + key, ex);
         throw ex;
       }
 
-      allSettings = allSettingsCacheResult.ResultValue.CacheValue as List<SettingEntity>;
+      allSettings = allSettingsCacheResult.ResultValue.ObjectValue as List<SettingEntity>;
     }
     else
     {
       allSettings = await Settings.ToListAsync();
-      await Mediator.Send(new CacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
+      await Mediator.Send(new MemoryCacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
     }
 
     if (allSettings == null)

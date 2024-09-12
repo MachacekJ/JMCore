@@ -9,14 +9,14 @@ namespace ACore.Tests.Server.Modules.SettingModule;
 public class SettingStorageModule : StorageBase
 {
   protected ISettingStorageModule? MemorySettingStorageModule;
+
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
     sc.AddACoreServer(o =>
     {
-      o.ACore(a => a.Name("YYY"))
-        .DefaultStorage(a => a.AddMemoryDb())
-        .AddSettingModule();
+      StorageConfiguration.Invoke(o);
+      o.AddSettingModule();
     });
   }
 
@@ -24,7 +24,7 @@ public class SettingStorageModule : StorageBase
   {
     await base.GetServicesAsync(sp);
     await sp.UseACoreServer();
-    
+
     MemorySettingStorageModule = StorageResolver?.FirstReadOnlyStorage<ISettingStorageModule>(StorageTypeEnum.Memory) ?? throw new ArgumentNullException($"{nameof(ISettingStorageModule)} is not implemented.");
   }
 }

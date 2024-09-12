@@ -41,11 +41,11 @@ public class CQRS : SettingStorageModule
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
-      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+      validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
     });
   }
   
@@ -62,11 +62,11 @@ public class CQRS : SettingStorageModule
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
-      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+      validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
     });
   }
   
@@ -83,16 +83,16 @@ public class CQRS : SettingStorageModule
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorValidationTypeCodes.ValidationInput);
+      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
-      validationResult?.Errors.Should().NotBeNull().And.HaveCountGreaterThan(0);
-      validationResult?.Errors[0].FormattedMessagePlaceholderValues.Should().HaveCountGreaterThan(4);
-      validationResult?.Errors[0].Code.Should().NotBeEmpty();
-      validationResult?.Errors[0].Message.Should().NotBeEmpty();
-      validationResult?.Errors[0].ParamName.Should().NotBeEmpty();
-      validationResult?.Errors[0].Severity.Should().Be(Severity.Error);
+      validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
+      validationResult?.ValidationErrors[0].FormattedMessagePlaceholderValues.Should().HaveCountGreaterThan(4);
+      validationResult?.ValidationErrors[0].Code.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].Message.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].ParamName.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].Severity.Should().Be(Severity.Error);
     });
   }
 }

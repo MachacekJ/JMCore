@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Reflection;
-using ACore.Modules.CacheModule.CQRS.Models;
 using ACore.Tests.BaseInfrastructure.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ACore.Extensions;
-using ACore.Modules.CacheModule;
+using ACore.Services.Cache.Models;
 using MediatR;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
@@ -82,7 +81,7 @@ public abstract class BaseTests
         RegisterServices(services);
 
         var configuration = MediatRConfigurationBuilder
-            .Create(typeof(BaseTests).Assembly, typeof(JMCacheKey).Assembly)
+            .Create(typeof(BaseTests).Assembly, typeof(CacheKey).Assembly)
             .WithAllOpenGenericHandlerTypesRegistered()
             .Build();
         containerBuilder.RegisterMediatR(configuration);
@@ -116,7 +115,7 @@ public abstract class BaseTests
         services.AddMediatR((c) =>
         {
             c.RegisterServicesFromAssemblyContaining<BaseTests>();
-            c.RegisterServicesFromAssemblyContaining<JMCacheKey>();
+            c.RegisterServicesFromAssemblyContaining<CacheKey>();
         });
     }
 

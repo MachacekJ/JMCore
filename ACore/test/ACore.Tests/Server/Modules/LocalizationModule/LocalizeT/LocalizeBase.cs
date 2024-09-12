@@ -3,11 +3,8 @@ using System.Resources;
 using ACore.Localizer;
 using ACore.ResX;
 using ACore.Server.Modules.LocalizationModule.Storage;
-using ACore.Server.Services.JMCache;
 using ACore.Tests.Server.Modules.LocalizationModule.LocalizeT.ResX;
 using ACore.Tests.Server.Storages;
-using ACore.Modules.CacheModule;
-using ACore.Server.Modules.LocalizationModule;
 using ACore.Server.Modules.LocalizationModule.Configuration;
 using ACore.Server.Modules.LocalizationModule.ResX;
 using ACore.Server.Modules.LocalizationModule.Storage.Memory;
@@ -35,7 +32,7 @@ public class LocalizeBase : StorageBase
     base.RegisterServices(sc);
     //sc.AddLocalizationServiceModule(_testConfig);
    // StorageResolver.RegisterStorage(sc, new MemoryStorageConfiguration(new[] { nameof(IBasicStorageModule), nameof(ILocalizationStorageModule) }));
-    sc.AddJMMemoryCache<JMCacheServerCategory>();
+    //sc.AddMemoryCache<CacheServerCategory>();
     var addLanguageResources = new List<ResXSource>
     {
       new(

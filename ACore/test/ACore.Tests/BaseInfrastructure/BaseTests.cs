@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using System.Reflection;
+using ACore.Base.Cache;
 using ACore.Tests.BaseInfrastructure.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ACore.Extensions;
-using ACore.Services.Cache.Models;
 using MediatR;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
@@ -60,7 +60,7 @@ public abstract class BaseTests
         }
         catch (Exception ex)
         {
-            Log.LogError("RunTestAsync-{Ex}", ex.MessageRecur());
+            Log.LogError("RunTestAsync-{Ex}", ex.MessageRecursive());
             throw;
         }
         finally

@@ -1,4 +1,5 @@
 using ACore.Base;
+using ACore.Base.Modules;
 using ACore.Server.Configuration.Modules;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Storages.Configuration;

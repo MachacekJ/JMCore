@@ -1,12 +1,11 @@
-﻿using ACore.Extensions;
+﻿using ACore.Base.Cache;
+using ACore.Extensions;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Scripts;
-using ACore.Services.Cache;
-using ACore.Services.Cache.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

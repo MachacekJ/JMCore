@@ -1,5 +1,4 @@
-﻿using ACore.CQRS;
-using MediatR;
+﻿using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;
 

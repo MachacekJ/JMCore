@@ -1,16 +1,17 @@
-﻿using ACore.Models;
+﻿using ACore.Base.CQRS.Models;
+using ACore.Models;
 using ACore.Modules.MemoryCacheModule.Storages;
 
 namespace ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;
 
-public class MemoryCacheRemoveKeyHandler(IMemoryCacheStorage cache) : MemoryCacheModuleRequestHandler<MemoryCacheModuleRemoveKeyCommand, Result<bool>>
+public class MemoryCacheRemoveKeyHandler(IMemoryCacheModuleStorage cacheModule) : MemoryCacheModuleRequestHandler<MemoryCacheModuleRemoveKeyCommand, Result<bool>>
 {
-  private readonly IMemoryCacheStorage _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
+  private readonly IMemoryCacheModuleStorage _cacheModule = cacheModule ?? throw new ArgumentException($"{nameof(cacheModule)} is null.");
 
   public override Task<Result<bool>> Handle(MemoryCacheModuleRemoveKeyCommand request, CancellationToken cancellationToken)
   {
     if (request.Key != null)
-      _cache.Remove(request.Key);
+      _cacheModule.Remove(request.Key);
     
     return Task.FromResult(Result.Success(true));
   }

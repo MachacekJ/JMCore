@@ -1,19 +1,19 @@
-﻿using ACore.Models;
+﻿using ACore.Base.Cache;
+using ACore.Base.CQRS.Models;
+using ACore.Models;
 using ACore.Modules.MemoryCacheModule.Storages;
-using ACore.Services.Cache;
-using ACore.Services.Cache.Models;
 
 namespace ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 
-public class MemoryMemoryCacheGetHandler(IMemoryCacheStorage cache) : MemoryCacheModuleRequestHandler<MemoryCacheModuleGetQuery, Result<CacheValue?>>
+public class MemoryMemoryCacheGetHandler(IMemoryCacheModuleStorage cacheModule) : MemoryCacheModuleRequestHandler<MemoryCacheModuleGetQuery, Result<CacheValue?>>
 {
-    private readonly IMemoryCacheStorage _cache = cache ?? throw new ArgumentException($"{nameof(cache)} is null.");
+    private readonly IMemoryCacheModuleStorage _cacheModule = cacheModule ?? throw new ArgumentException($"{nameof(cacheModule)} is null.");
 
     public override Task<Result<CacheValue?>> Handle(MemoryCacheModuleGetQuery request, CancellationToken cancellationToken)
     {
         object? value;
         CacheValue? cacheValue = null;
-        var result = _cache.TryGetValue(request.Key, out value);
+        var result = _cacheModule.TryGetValue(request.Key, out value);
         if (result)
             cacheValue = new CacheValue(value);
 

@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
+using ACore.Base.Cache;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Server;
 using ACore.Server.Modules.SettingModule.Storage;
 using FluentAssertions;
 using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
-using ACore.Services.Cache.Models;
 using MediatR;
 using Xunit;
 

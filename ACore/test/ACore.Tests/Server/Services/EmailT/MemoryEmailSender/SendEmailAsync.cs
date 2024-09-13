@@ -6,7 +6,7 @@ namespace ACore.Tests.Server.Services.EmailT.MemoryEmailSender;
 public class SendEmailAsync : MemoryEmailSenderBase
 {
     [Fact]
-    public async Task Ok()
+    public async Task BaseTest()
     {
         var method = MethodBase.GetCurrentMethod();
         await RunTestAsync(method, async () =>

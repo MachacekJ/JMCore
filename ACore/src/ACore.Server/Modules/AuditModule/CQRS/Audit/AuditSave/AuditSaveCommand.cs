@@ -1,4 +1,5 @@
-﻿using ACore.Models;
+﻿using ACore.Base.CQRS.Models;
+using ACore.Models;
 using ACore.Server.Modules.AuditModule.Models;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.Audit.AuditSave;

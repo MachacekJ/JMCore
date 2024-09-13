@@ -1,4 +1,5 @@
-﻿using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
+﻿using ACore.Base.Cache;
+using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.AuditModule.Configuration;
@@ -6,7 +7,6 @@ using ACore.Server.Modules.SettingModule.Storage.Mongo.Models;
 using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Scripts;
-using ACore.Services.Cache.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

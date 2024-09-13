@@ -7,7 +7,7 @@ namespace ACore.Tests.Server.Services.SMST.MemorySMSSenderT
     public class SendSmsAsync : MemorySmsSenderBase
     {
         [Fact]
-        public async Task Ok()
+        public async Task BaseTest()
         {
             var method = MethodBase.GetCurrentMethod();
             await RunTestAsync(method, async () =>

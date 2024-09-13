@@ -1,5 +1,5 @@
 using ACore.Configuration;
-using ACore.CQRS;
+using ACore.Configuration.CQRS;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.SettingModule.Configuration;
 using ACore.Server.Storages;

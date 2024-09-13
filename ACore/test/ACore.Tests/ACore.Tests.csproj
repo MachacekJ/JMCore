@@ -37,6 +37,8 @@
 
 	<ItemGroup>
 		<Folder Include="Client\ServicesT\" />
+		<Folder Include="TestImplemantations\Core\Modules\TestErrorModule\Configuration\" />
+		<Folder Include="TestImplemantations\Core\Modules\TestErrorModule\CQRS\" />
 	</ItemGroup>
 
 	<ItemGroup>

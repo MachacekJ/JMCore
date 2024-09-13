@@ -1,3 +1,5 @@
+using ACore.Base;
+using ACore.Base.Modules;
 using ACore.Configuration;
 using ACore.Server.Configuration.Modules;
 

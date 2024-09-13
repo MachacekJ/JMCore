@@ -1,4 +1,5 @@
-﻿using ACore.Models;
+﻿using ACore.Base.CQRS.Models;
+using ACore.Models;
 using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages;
 

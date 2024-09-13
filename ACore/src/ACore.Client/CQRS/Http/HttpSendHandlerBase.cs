@@ -97,7 +97,7 @@ public class HttpSendHandlerBase<TResponse>
                     apiResponse.Exception = new Exception("API response returned null.");
                     apiResponse.Code = ApiResponseBase.Code_ErrorParseJson;
                     apiResponse.ShortMessage = _resxCoreErrors[ResX_Errors.ApiResponseBaseStatusCode_ERROR_PARSEJSON];
-                    apiResponse.Message = apiResponse.Exception.MessageRecur();
+                    apiResponse.Message = apiResponse.Exception.MessageRecursive();
                     return apiResponse;
                 }
                 apiResponse = resp; 
@@ -109,7 +109,7 @@ public class HttpSendHandlerBase<TResponse>
                 apiResponse.Exception = ex;
                 apiResponse.Code = ApiResponseBase.Code_ErrorParseJson;
                 apiResponse.ShortMessage = _resxCoreErrors[ResX_Errors.ApiResponseBaseStatusCode_ERROR_PARSEJSON];
-                apiResponse.Message = ex.MessageRecur();
+                apiResponse.Message = ex.MessageRecursive();
 
             }
 

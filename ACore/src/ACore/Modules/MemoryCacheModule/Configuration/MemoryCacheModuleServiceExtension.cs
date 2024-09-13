@@ -17,7 +17,7 @@ public static class MemoryCacheModuleServiceExtension
     else
       services.AddMemoryCache();
     
-    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheBehavior<,>));
-    services.AddSingleton<IMemoryCacheStorage, MemoryCacheStorageModule>();
+    services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MemoryCacheModulePipelineBehavior<,>));
+    services.AddSingleton<IMemoryCacheModuleStorage, MemoryCacheModuleModuleStorage>();
   }
 }

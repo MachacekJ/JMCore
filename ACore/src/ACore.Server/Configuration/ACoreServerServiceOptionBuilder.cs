@@ -7,7 +7,7 @@ namespace ACore.Server.Configuration;
 
 public class ACoreServerServiceOptionBuilder
 {
-  private readonly ACoreOptionBuilder _aCoreOptionBuilder = ACoreOptionBuilder.Empty();
+  private readonly ACoreOptionsBuilder _aCoreOptionsBuilder = ACoreOptionsBuilder.Empty();
   private readonly SettingServerModuleOptionBuilder _settingServerModuleOptionBuilder = SettingServerModuleOptionBuilder.Empty();
   private  readonly AuditServerModuleOptionBuilder _auditServerModuleOptionBuilder = AuditServerModuleOptionBuilder.Empty();
   private StorageOptionBuilder? _storageOptionBuilder;
@@ -39,9 +39,9 @@ public class ACoreServerServiceOptionBuilder
     return this;
   }
 
-  public ACoreServerServiceOptionBuilder ACore(Action<ACoreOptionBuilder>? action = null)
+  public ACoreServerServiceOptionBuilder ACore(Action<ACoreOptionsBuilder>? action = null)
   {
-    action?.Invoke(_aCoreOptionBuilder);
+    action?.Invoke(_aCoreOptionsBuilder);
     return this;
   }
 
@@ -50,7 +50,7 @@ public class ACoreServerServiceOptionBuilder
     return new ACoreServerServiceOptions
     {
       DefaultStorages = _storageOptionBuilder?.Build(),
-      ACoreOptions = _aCoreOptionBuilder.Build(),
+      ACoreOptions = _aCoreOptionsBuilder.Build(),
       SettingServerModuleOptions = _settingServerModuleOptionBuilder.Build(_storageOptionBuilder),
       AuditServerModuleOptions = _auditServerModuleOptionBuilder.Build(_storageOptionBuilder)
     };

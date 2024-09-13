@@ -1,3 +1,4 @@
+using ACore.Base.CQRS.Models;
 using ACore.Models;
 using MediatR;
 

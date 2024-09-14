@@ -1,7 +1,7 @@
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.SettingModule.Configuration;
+using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +24,7 @@ public static class ACoreServerServiceExtensions
   {
     var opt = provider.GetService<IOptions<ACoreServerServiceOptions>>()?.Value ?? throw new Exception($"{nameof(ACoreOptions)} is not registered.");
    
-    if (opt.SettingServerModuleOptions.IsActive)
+    if (opt.SettingsDbModuleOptions.IsActive)
       await provider.UseSettingServiceModule();
     if (opt.AuditServerModuleOptions.IsActive)
       await provider.UseAuditServiceModule();
@@ -43,8 +43,8 @@ public static class ACoreServerServiceExtensions
       includeInternalTypes: true);
 
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
-    if (opt.SettingServerModuleOptions.IsActive)
-      services.AddSettingServiceModule(opt.SettingServerModuleOptions);
+    if (opt.SettingsDbModuleOptions.IsActive)
+      services.AddSettingServiceModule(opt.SettingsDbModuleOptions);
 
     if (opt.AuditServerModuleOptions.IsActive)
       services.AddAuditServiceModule(opt.AuditServerModuleOptions);

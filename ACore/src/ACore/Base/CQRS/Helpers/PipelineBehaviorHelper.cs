@@ -18,7 +18,7 @@ public class PipelineBehaviorHelper<TResponse>
     return false;
   }
 
-  public static TResult CreateErrorValidationResult<TResult>(ErrorValidationTypeEnum validationTypeEnum, Error[] errors)
+  public static TResult CreateErrorValidationResult<TResult>(ValidationTypeEnum validationTypeEnum, Error[] errors)
     where TResult : Result
   {
     if (typeof(TResult) == typeof(Result))

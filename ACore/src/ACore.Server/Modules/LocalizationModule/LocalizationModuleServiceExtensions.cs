@@ -1,7 +1,6 @@
 using ACore.Server.Modules.LocalizationModule.Storage;
 using ACore.Server.Modules.LocalizationModule.Storage.Memory;
 using ACore.Server.Modules.SettingModule;
-using ACore.Server.Modules.SettingModule.Storage;
 using ACore.Server.Storages;
 using ACore.Server.Storages.Configuration;
 using Microsoft.EntityFrameworkCore;

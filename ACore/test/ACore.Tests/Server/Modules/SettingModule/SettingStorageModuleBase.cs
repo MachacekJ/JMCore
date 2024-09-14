@@ -1,5 +1,5 @@
 ﻿using ACore.Server.Configuration;
-using ACore.Server.Modules.SettingModule.Storage;
+using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Models;
 using ACore.Tests.Server.Storages;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ namespace ACore.Tests.Server.Modules.SettingModule;
 
 public class SettingStorageModule : StorageBase
 {
-  protected ISettingStorageModule? MemorySettingStorageModule;
+  protected ISettingsDbStorageModule? MemorySettingStorageModule;
 
   protected override void RegisterServices(ServiceCollection sc)
   {
@@ -25,6 +25,6 @@ public class SettingStorageModule : StorageBase
     await base.GetServicesAsync(sp);
     await sp.UseACoreServer();
 
-    MemorySettingStorageModule = StorageResolver?.FirstReadOnlyStorage<ISettingStorageModule>(StorageTypeEnum.Memory) ?? throw new ArgumentNullException($"{nameof(ISettingStorageModule)} is not implemented.");
+    MemorySettingStorageModule = StorageResolver?.FirstReadOnlyStorage<ISettingsDbStorageModule>(StorageTypeEnum.Memory) ?? throw new ArgumentNullException($"{nameof(ISettingsDbStorageModule)} is not implemented.");
   }
 }

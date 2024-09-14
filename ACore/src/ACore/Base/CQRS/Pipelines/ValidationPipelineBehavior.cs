@@ -27,7 +27,7 @@ public class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValida
 
     if (errors.Length != 0)
     {
-      return PipelineBehaviorHelper<TResponse>.CreateErrorValidationResult<TResponse>(ErrorValidationTypeEnum.ValidationInput, errors);
+      return PipelineBehaviorHelper<TResponse>.CreateErrorValidationResult<TResponse>(ValidationTypeEnum.ValidationInput, errors);
     }
     
     return await next();

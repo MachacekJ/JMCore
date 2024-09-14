@@ -1,6 +1,6 @@
 using ACore.Configuration;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.SettingModule.Configuration;
+using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages.Configuration;
 
 namespace ACore.Server.Configuration;
@@ -14,7 +14,7 @@ public class ACoreServerServiceOptions
   /// </summary>
   public StorageOptions? DefaultStorages { get; init; } = null;
   
-  public SettingServerModuleOptions SettingServerModuleOptions { get; init; } = new();
+  public SettingsDbModuleOptions SettingsDbModuleOptions { get; init; } = new();
 
   public AuditServerModuleOptions AuditServerModuleOptions { get; init; } = new();
 }

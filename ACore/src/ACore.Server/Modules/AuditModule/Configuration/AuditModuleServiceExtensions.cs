@@ -2,7 +2,7 @@ using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Modules.AuditModule.Storage.Mongo;
 using ACore.Server.Modules.AuditModule.Storage.SQL.Memory;
 using ACore.Server.Modules.AuditModule.Storage.SQL.PG;
-using ACore.Server.Modules.SettingModule.Configuration;
+using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,7 +31,7 @@ internal static class AuditModuleServiceExtensions
   public static async Task UseAuditServiceModule(this IServiceProvider provider)
   {
     var opt = provider.GetService<IOptions<AuditServerModuleOptions>>()?.Value
-              ?? throw new ArgumentException($"{nameof(SettingServerModuleOptions)} is not configured.");
+              ?? throw new ArgumentException($"{nameof(SettingsDbModuleOptions)} is not configured.");
 
     if (opt.Storages == null)
       throw new ArgumentException($"{nameof(opt.Storages)} is null.");

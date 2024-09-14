@@ -2,9 +2,9 @@
 using ACore.Base.Cache;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Server;
-using ACore.Server.Modules.SettingModule.Storage;
+using ACore.Server.Modules.SettingsDbModule.Storage;
+using ACore.Server.Modules.SettingsDbModule.Storage.SQL.Models;
 using FluentAssertions;
-using ACore.Server.Modules.SettingModule.Storage.SQL.Models;
 using MediatR;
 using Xunit;
 
@@ -21,7 +21,7 @@ public class MemorySettingStorageModule : SettingStorageModule
 
  
 #pragma warning disable xUnit1013
-  public static async Task CheckSettingEntity(ISettingStorageModule db, IMediator mediator)
+  public static async Task CheckSettingEntity(ISettingsDbStorageModule db, IMediator mediator)
 #pragma warning restore xUnit1013
   {
     string key = "key";
@@ -37,9 +37,9 @@ public class MemorySettingStorageModule : SettingStorageModule
     val2.Should().Be(value2);
 
     // Check if is value in cache
-    var keyCache = CacheKey.Create(CacheCategories.Entity, nameof(SettingEntity));
+    var keyCache = CacheKey.Create(CacheCategories.Entity, nameof(SettingsEntity));
     var cacheValue = await mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
-    var mem = cacheValue!.ResultValue.ObjectValue as List<SettingEntity>;
+    var mem = cacheValue!.ResultValue.ObjectValue as List<SettingsEntity>;
     Assert.True(mem != null && mem.First(a => a.Key == key).Value == value2);
 
     Exception? isError = null;

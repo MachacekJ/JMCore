@@ -3,8 +3,8 @@ using ACore.Base.CQRS.Models;
 using ACore.Base.CQRS.Models.Validation;
 using ACore.Extensions;
 using ACore.Models;
-using ACore.Server.Modules.SettingModule.CQRS.SettingGet;
-using ACore.Server.Modules.SettingModule.CQRS.SettingSave;
+using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsGet;
+using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsSave;
 using FluentAssertions;
 using FluentValidation;
 using Xunit;
@@ -22,10 +22,10 @@ public class CQRS : SettingStorageModule
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var resultCommand = await Mediator.Send(new SettingSaveCommand(key, value));
+      var resultCommand = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       resultCommand.IsSuccess.Should().BeTrue();
       
-      var result = await Mediator.Send(new SettingGetQuery(key));
+      var result = await Mediator.Send(new SettingsesDbDbGetQuery(key));
       result.ResultValue.Should().Be(value);
     });
   }
@@ -39,7 +39,7 @@ public class CQRS : SettingStorageModule
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
@@ -60,7 +60,7 @@ public class CQRS : SettingStorageModule
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
@@ -81,7 +81,7 @@ public class CQRS : SettingStorageModule
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var result = await Mediator.Send(new SettingSaveCommand(key, value));
+      var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();

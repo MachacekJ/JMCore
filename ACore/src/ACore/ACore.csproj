@@ -71,4 +71,8 @@
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	  </EmbeddedResource>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Modules\MetricsModule\" />
+	</ItemGroup>
 </Project>

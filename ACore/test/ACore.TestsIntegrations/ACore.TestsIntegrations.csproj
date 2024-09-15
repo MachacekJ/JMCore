@@ -38,8 +38,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="BaseInfrastructure\Modules\" />
 	  <Folder Include="Logs\" />
-	  <Folder Include="BaseInfrastructure\" />
 	</ItemGroup>
 
 </Project>

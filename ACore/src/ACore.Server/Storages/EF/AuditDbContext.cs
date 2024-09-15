@@ -14,7 +14,7 @@ using MongoDB.Bson;
 
 namespace ACore.Server.Storages.EF;
 
-public abstract class AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger, IAuditConfiguration? auditConfiguration)
+public abstract class AuditableDbContext(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger)
   : DbContextBase(options, mediator, logger)
 {
   public abstract override DbScriptBase UpdateScripts { get; }
@@ -26,7 +26,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
   protected void RegisterDbSet<T>(DbSet<T>? dbSet) where T : class
   {
     if (dbSet == null)
-      throw new Exception("fdsga fdsaf asdf asdf as");
+      throw new ArgumentException($"{nameof(dbSet)} is null.");
 
     _registeredDbSets.Add(GetEntityTypeName<T>(), dbSet);
   }
@@ -35,17 +35,17 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     where TEntity : class
   {
     ArgumentNullException.ThrowIfNull(data);
-    
+
     TEntity existsEntity;
 
     var id = GetIdValue<TPK>(data);
     if (id == null)
       ArgumentNullException.ThrowIfNull(id);
-    
+
     var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Modified);
     var dbSet = GetDbSet<TEntity>();
     var isNew = IsNew(id);
-    
+
     if (!isNew)
     {
       existsEntity = await GetEntityById<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
@@ -69,7 +69,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     await SaveChangesAsync();
     id = (existsEntity as PKEntity<TPK> ?? throw new Exception("poifdsa fdsoujifnio ikgkjm.")).Id;
     //data.CopyPropertiesFrom(existsEntity);
-    
+
     if (audit == null)
       return;
 
@@ -91,18 +91,18 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
   protected async Task DeleteWithAudit<TEntity, TPK>(TPK id)
     where TEntity : class
   {
-    var en = await GetEntityById<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
+    var entityToDelete = await GetEntityById<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
     if (id == null)
       throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
 
     var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Deleted);
 
     var dbSet = GetDbSet<TEntity>();
-    dbSet.Remove(en);
+    dbSet.Remove(entityToDelete);
 
     if (audit != null)
     {
-      foreach (var p in en.AllPropertiesValues())
+      foreach (var p in entityToDelete.AllPropertiesValues())
       {
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
@@ -110,7 +110,6 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       }
 
       await Mediator.Send(new AuditSaveCommand(audit.Value.auditEntryItem));
-      // _auditService?.SaveAuditAsync(audit.Value.auditEntryItem);
     }
 
     await SaveChangesAsync();
@@ -124,7 +123,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
     throw new Exception($"No registered {nameof(DbSet<T>)} has not been found. Please call the function {nameof(RegisterDbSet)} in ctor.");
   }
-  
+
   private async Task<TEntity?> GetEntityById<TEntity, TPK>(TPK id)
     where TEntity : class
   {
@@ -164,7 +163,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
     return false;
   }
-  
+
   private static string GetEntityTypeName<T>()
   {
     return typeof(T).FullName ?? throw new Exception("fgjtygh ioikj");
@@ -234,13 +233,16 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
   private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> CreateAuditEntryItem<TEntity>(object id, EntityState state)
   {
-    if (!await IsAuditEnabledAsync() || !typeof(TEntity).IsAuditable(auditConfiguration?.AuditEntities))
+    if (!await IsAuditEnabledAsync())
       return null;
 
     var dbEntityType = Model.FindEntityType(typeof(TEntity)) ?? throw new Exception($"Unknown db entity class '{typeof(TEntity).Name}'");
+    var auditableAttribute = dbEntityType.ClrType.IsAuditable();
+    if (auditableAttribute == null)
+      return null;
     var tableName = GetTableName(dbEntityType) ?? throw new Exception($"Unknown db table name for entity class '{typeof(TEntity).Name}'");
     var schemaName = dbEntityType.GetSchema();
-    var audit = new AuditEntryItem(tableName, schemaName, id, state);
+    var audit = new AuditEntryItem(tableName, schemaName, auditableAttribute.Version, id, state);
     return (audit, dbEntityType);
   }
 
@@ -259,7 +261,8 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
   private string? GetColumnName<T>(string propName, IEntityType dbEntityType)
   {
-    if (!typeof(T).IsAuditable(propName, auditConfiguration?.NotAuditProperty))
+    var auditableAttribute = typeof(T).IsAuditable(propName); //auditConfiguration?.NotAuditProperty
+    if (auditableAttribute == null)
       return null;
 
     var property = dbEntityType.GetProperties().SingleOrDefault(property => property.Name.Equals(propName, StringComparison.OrdinalIgnoreCase));

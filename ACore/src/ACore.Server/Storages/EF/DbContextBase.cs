@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using ACore.Server.Modules.AuditModule.Storage;
-using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsGet;
-using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsSave;
+using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbGet;
+using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Scripts;
@@ -22,7 +22,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
   public abstract StorageTypeDefinition StorageDefinition { get; }
   protected abstract string ModuleName { get; }
 
-  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(ISettingsDbStorageModule)}";
+  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(ISettingsDbModuleStorage)}";
   private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
 
   protected readonly ILogger<DbContextBase> Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
@@ -56,7 +56,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     // Get the latest implemented version, if any.
     if (!await DbIsEmpty())
     {
-      var ver = await Mediator.Send(new SettingsesDbDbGetQuery(StorageDefinition.Type, StorageVersionKey));
+      var ver = await Mediator.Send(new SettingsDbGetQuery(StorageDefinition.Type, StorageVersionKey));
       if (ver is { IsSuccess: true, ResultValue: not null })
         lastVersion = new Version(ver.ResultValue);
     }
@@ -85,7 +85,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
       }
     }
 
-    if (this is ISettingsDbStorageModule aa)
+    if (this is ISettingsDbModuleStorage aa)
     {
       await aa.Setting_SaveAsync(StorageVersionKey, updatedToVersion.ToString(), true);
       return;
@@ -130,7 +130,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
     var res = true;
     try
     {
-      var isSettingTable = await Mediator.Send(new SettingsesDbDbGetQuery(StorageDefinition.Type, StorageVersionBaseSettingKey));
+      var isSettingTable = await Mediator.Send(new SettingsDbGetQuery(StorageDefinition.Type, StorageVersionBaseSettingKey));
       res = isSettingTable is { IsSuccess: true, ResultValue: null };
     }
     catch
@@ -151,7 +151,7 @@ public abstract class DbContextBase(DbContextOptions options, IMediator mediator
       return _isAuditEnabled.Value;
 
     // Check if db structure is already created.
-    var isAuditTable = await Mediator.Send(new SettingsesDbDbGetQuery(StorageDefinition.Type, AuditSettingKey));
+    var isAuditTable = await Mediator.Send(new SettingsDbGetQuery(StorageDefinition.Type, AuditSettingKey));
 
     if (isAuditTable.IsSuccess && string.IsNullOrEmpty(isAuditTable.ResultValue))
     {

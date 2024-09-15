@@ -1,5 +1,4 @@
 ﻿using ACore.Base.CQRS.Models;
-using ACore.Models;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Storages;
 using MediatR;
@@ -11,6 +10,6 @@ public abstract class AuditModuleRequestHandler<TRequest, TResponse>(IStorageRes
   where TResponse : Result
 {
   public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
-  protected IAuditStorageModule ReadAuditContexts() => storageResolver.FirstReadOnlyStorage<IAuditStorageModule>();
-  protected IEnumerable<IAuditStorageModule> AllBasicStorageWriteContexts() => storageResolver.WriteStorages<IAuditStorageModule>();
+  protected IAuditStorageModule ReadAuditContext() => storageResolver.FirstReadOnlyStorage<IAuditStorageModule>();
+  protected IEnumerable<IAuditStorageModule> WriteAuditContexts() => storageResolver.WriteStorages<IAuditStorageModule>();
 }

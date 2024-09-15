@@ -11,18 +11,11 @@ namespace ACore.Server.Modules.SettingsDbModule.Storage.SQL.PG;
 
 using ScriptRegistrations = ScriptRegistrations;
 
-internal class SettingsDbModuleSqlPGStorageImpl : SettingsDbModuleSqlStorageImpl
+internal class SettingsDbModuleSqlPGStorageImpl(DbContextOptions<SettingsDbModuleSqlPGStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleSqlPGStorageImpl> logger) : SettingsDbModuleSqlStorageImpl(options, mediator, logger)
 {
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
-  public SettingsDbModuleSqlPGStorageImpl(DbContextOptions<SettingsDbModuleSqlPGStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleSqlPGStorageImpl> logger) : base(options, mediator, logger)
-  {
-  }
-
-  public SettingsDbModuleSqlPGStorageImpl(DbContextOptions<SettingsDbModuleSqlPGStorageImpl> options, IMediator mediator, IAuditConfiguration auditConfiguration, ILogger<SettingsDbModuleSqlPGStorageImpl> logger) : base(options, mediator, auditConfiguration, logger)
-  {
-  }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

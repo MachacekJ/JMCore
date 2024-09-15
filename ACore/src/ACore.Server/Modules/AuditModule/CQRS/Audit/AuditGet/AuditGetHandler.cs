@@ -12,7 +12,7 @@ public class AuditGetHandler<T>(IStorageResolver storageResolver) : AuditModuleR
     if (request.PKValue == null)
       throw new Exception($"Primary key is not found. TableName: {request.TableName}; Schema: {request.SchemaName ?? string.Empty}");
 
-    var r= (await ReadAuditContexts().AuditItemsAsync(request.TableName, request.PKValue, request.SchemaName))
+    var r= (await ReadAuditContext().AuditItemsAsync(request.TableName, request.PKValue, request.SchemaName))
       .Select(AuditGetQueryDataOut.Create).ToArray();
 
     return Result.Success(r);

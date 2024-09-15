@@ -3,8 +3,8 @@ using ACore.Server.Configuration.Modules;
 
 namespace ACore.Server.Modules.SettingsDbModule.Configuration;
 
-public class SettingsDbModuleOptions : ServerModuleOptions, IModuleOptions
+public class SettingsDbModuleOptions : StorageModuleOptions, IModuleOptions
 {
   public bool IsActive { get; init; }
-  public string ModuleName => "SettingServerModule";
+  public string ModuleName => nameof(SettingsDbModule);
 }

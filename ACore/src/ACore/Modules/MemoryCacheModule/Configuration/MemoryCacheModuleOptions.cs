@@ -1,4 +1,3 @@
-using ACore.Base;
 using ACore.Base.Modules;
 using ACore.Configuration.Cache;
 using Microsoft.Extensions.Caching.Memory;

@@ -2,15 +2,16 @@ namespace ACore.Server.Modules.AuditModule.Models;
 
 public class AuditEntryColumnItem(string columnName, object? oldValue, object? newValue)
 {
-  public Type DataType
+  public string DataType
   {
     get
     {
-      Type? valueDataType = null;
+      string? valueDataType = null;
       if (newValue != null)
-        valueDataType = newValue.GetType();
+        valueDataType = newValue.GetType().FullName;
       if (oldValue != null)
-        valueDataType = oldValue.GetType();
+        valueDataType = oldValue.GetType().FullName;
+      
       if (valueDataType == null)
         throw new Exception($"Unknown data type of value. ColumnName: {columnName}");
       return valueDataType;

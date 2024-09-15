@@ -14,13 +14,13 @@ using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ACore.Server.Modules.SettingsDbModule.Storage.Mongo;
 
-internal class SettingsDbModuleMongoStorageImpl : AuditableDbContext, ISettingsDbStorageModule
+internal class SettingsDbModuleMongoStorageImpl(DbContextOptions<SettingsDbModuleMongoStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleMongoStorageImpl> logger) : AuditableDbContext(options, mediator, logger), ISettingsDbModuleStorage
 {
   private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingsPKMongoEntity));
 
   public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
-  protected override string ModuleName => nameof(ISettingsDbStorageModule);
+  protected override string ModuleName => nameof(ISettingsDbModuleStorage);
 
   public DbSet<SettingsPKMongoEntity> Settings { get; set; }
 
@@ -85,19 +85,7 @@ internal class SettingsDbModuleMongoStorageImpl : AuditableDbContext, ISettingsD
 
   #endregion
 
-  // public override Task<TEntity?> Get<TEntity, TPK>(TPK id) where TEntity :  PKEntity<TPK>
-  // {
-  //   throw new NotImplementedException();
-  // }
 
-  public SettingsDbModuleMongoStorageImpl(DbContextOptions<SettingsDbModuleMongoStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleMongoStorageImpl> logger) : base(options, mediator, logger, null)
-  {
-  }
-
-  public SettingsDbModuleMongoStorageImpl(DbContextOptions<SettingsDbModuleMongoStorageImpl> options, IMediator mediator, IAuditConfiguration auditConfiguration, ILogger<SettingsDbModuleMongoStorageImpl> logger) : base(options, mediator, logger, auditConfiguration)
-  {
-  }
-  
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);

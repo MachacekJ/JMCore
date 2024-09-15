@@ -24,7 +24,7 @@ public class AuditGetQueryDataOut(string tableName)
       PKValue = auditEntryItem.PkValue,
       SchemaName = auditEntryItem.SchemaName,
       Columns = auditEntryItem.ChangedColumns
-        .Select(e => new AuditGetQueryColumnDataOut(e.ColumnName,e.DataType, e.OldValue, e.NewValue))
+        .Select(e => new AuditGetQueryColumnDataOut(e.ColumnName,e.DataType.GetType(), e.OldValue, e.NewValue))
         .ToArray()
     };
   }

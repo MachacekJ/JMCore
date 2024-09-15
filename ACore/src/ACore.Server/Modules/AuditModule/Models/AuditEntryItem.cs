@@ -6,6 +6,7 @@ public class AuditEntryItem
 {
   public string TableName { get; }
   public string? SchemaName { get; }
+  public int Version { get; }
   public List<AuditEntryColumnItem> ChangedColumns { get; } = [];
   public EntityState EntityState { get; private set; }
   public (string userId, string userName) ByUser { get; private set; }
@@ -14,11 +15,12 @@ public class AuditEntryItem
   
   public DateTime Created { get; set; }
 
-  public AuditEntryItem(string tableName, string? schemaName, object pkValue, EntityState entityState)
+  public AuditEntryItem(string tableName, string? schemaName, int version, object pkValue, EntityState entityState)
   {
     TableName = tableName;
     SchemaName = schemaName;
     EntityState = entityState;
+    Version = version;
    // ByUser = auditUserProvider.GetUser();
     SetPK(pkValue);
   }

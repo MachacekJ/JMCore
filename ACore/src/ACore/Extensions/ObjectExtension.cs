@@ -20,26 +20,32 @@ public static class ObjectExtensionMethods
         var oldValue = toProperty.GetValue(self);
 
         if (newValue == null && oldValue == null)
+        {
+          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
           continue;
+        }
 
+        var isNew = false;
         if (newValue == null && oldValue != null)
         {
           toProperty.SetValue(self, newValue);
-          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
+          isNew = true;
         }
 
         if (oldValue == null && newValue != null)
         {
           toProperty.SetValue(self, newValue);
-          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
+          isNew = true;
         }
         
         if (newValue != null && !newValue.Equals(oldValue))
         {
           toProperty.SetValue(self, newValue);
-          updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
+          isNew = true;
         }
-
+        
+        updatingValue?.Invoke(new(toProperty.Name, oldValue, isNew ? newValue : null));
+        
         break;
       }
     }

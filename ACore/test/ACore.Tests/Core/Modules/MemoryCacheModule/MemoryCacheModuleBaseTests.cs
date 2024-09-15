@@ -1,5 +1,6 @@
 ﻿using ACore.Configuration;
 using ACore.Modules.MemoryCacheModule.Storages;
+using ACore.Server.Configuration;
 using ACore.Tests.BaseInfrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,13 +18,14 @@ namespace ACore.Tests.Core.Modules.MemoryCacheModule
           op.AddCacheCategories(
             CacheTestCategories.CacheTest,
             CacheTestCategories.CacheTest2
-            )
-          ));
+          )
+        ));
     }
 
-    protected override async Task GetServicesAsync(IServiceProvider sp)
+    protected override async Task GetServices(IServiceProvider sp)
     {
-      await base.GetServicesAsync(sp);
+      await base.GetServices(sp);
+      await sp.UseACoreServer();
       MemoryCacheStorage = sp.GetService<IMemoryCacheModuleStorage>() ?? throw new ArgumentException($"{nameof(IMemoryCacheModuleStorage)} is null.");
     }
   }

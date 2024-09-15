@@ -10,8 +10,6 @@ public static class MemoryCacheModuleServiceExtension
 {
   public static void AddMemoryCacheModule(this IServiceCollection services, MemoryCacheModuleOptions options)
   {
-    services.TryAddSingleton(options);
-    
     if (options.MemoryCacheOptionAction != null)
       services.AddMemoryCache(options.MemoryCacheOptionAction);
     else

@@ -13,6 +13,9 @@ internal class AuditMongoEntity
   [BsonElement("oid")]
   public string ObjectId { get; set; } = string.Empty;
   
+  [BsonElement("v")]
+  public int Version { get; set; }
+  
   [BsonElement("c")]
   public List<AuditMongoValueEntity>? Columns { get; set; }
   

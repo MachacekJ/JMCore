@@ -1,5 +1,4 @@
-﻿using ACore.Server.Storages.Configuration.Options;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.TestsIntegrations.BaseInfrastructure.Storages;
 

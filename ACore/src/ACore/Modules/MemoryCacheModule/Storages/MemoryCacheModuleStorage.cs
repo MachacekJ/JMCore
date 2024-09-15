@@ -3,14 +3,14 @@ using System.Reflection;
 using System.Reflection.Emit;
 using ACore.Base.Cache;
 using ACore.Configuration.Cache;
-using ACore.Modules.MemoryCacheModule.Configuration;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace ACore.Modules.MemoryCacheModule.Storages;
 
-public class MemoryCacheModuleModuleStorage(IMemoryCache memoryCache, MemoryCacheModuleOptions memoryCacheModuleOptions) : IMemoryCacheModuleStorage
+public class MemoryCacheModuleModuleStorage(IMemoryCache memoryCache, IOptions<ACore.Configuration.ACoreOptions> aCoreOptions) : IMemoryCacheModuleStorage
 {
-  public CacheCategory[] Categories => memoryCacheModuleOptions.Categories.ToArray();
+  public CacheCategory[] Categories => aCoreOptions.Value.MemoryCacheModuleOptions.Categories.ToArray();
 
   public TItem? Get<TItem>(CacheKey key)
   {
@@ -50,7 +50,7 @@ public class MemoryCacheModuleModuleStorage(IMemoryCache memoryCache, MemoryCach
 
   private string GetKey(CacheKey key)
   {
-    if (memoryCacheModuleOptions.Categories.All(k => k.CategoryNameKey != key.MainCategory.CategoryNameKey))
+    if (Categories.All(k => k.CategoryNameKey != key.MainCategory.CategoryNameKey))
       throw new Exception($"Cache - Category '{key.MainCategory.CategoryNameKey}' is not created. Please register this category in {nameof(CacheOptionsBuilder.AddCacheCategories)}");
 
     return key.ToString();

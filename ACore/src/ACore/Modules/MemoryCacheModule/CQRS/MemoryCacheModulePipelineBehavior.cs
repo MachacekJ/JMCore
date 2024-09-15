@@ -1,9 +1,6 @@
-﻿using ACore.Base;
-using ACore.Base.CQRS;
-using ACore.Base.CQRS.Helpers;
+﻿using ACore.Base.CQRS.Helpers;
 using ACore.Base.CQRS.Models;
 using ACore.Configuration;
-using ACore.Models;
 using MediatR;
 using Microsoft.Extensions.Options;
 

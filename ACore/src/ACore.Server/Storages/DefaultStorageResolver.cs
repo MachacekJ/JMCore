@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using ACore.Server.Storages.Models;
+﻿using ACore.Server.Storages.Models;
 
 namespace ACore.Server.Storages;
 
@@ -23,10 +22,23 @@ public class DefaultStorageResolver : IStorageResolver
 
     if (implementation.Implementation is not TStorage)
       throw new Exception($"Cannot find any implementation of {name}.");
-      
+
+
+
 
     if (_implementations.TryGetValue(name, out var list))
+    {
+      // Only one database mode type (write/read) is allowed for particular storage type. e.g.  2 database for storage in reading mode is not allowed.  
+      if (implementation.Mode.HasFlag(StorageModeEnum.Read) &&
+          list.Any(e => e.Mode.HasFlag(StorageModeEnum.Read)))
+        throw new Exception($"For the type {Enum.GetName(StorageModeEnum.Read)} only one storage '{name}' is allowed.");
+      
+      if (implementation.Mode.HasFlag(StorageModeEnum.Write) &&
+          list.Any(e => e.Mode.HasFlag(StorageModeEnum.Write)))
+        throw new Exception($"For the type {Enum.GetName(StorageModeEnum.Write)} only one storage '{name}' is allowed.");
+      
       list.Add(implementation);
+    }
     else
       _implementations.Add(name, [implementation]);
 
@@ -41,7 +53,7 @@ public class DefaultStorageResolver : IStorageResolver
   }
 
   public T FirstReadOnlyStorage<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
-    => AllStorages<T>(StorageModeEnum.Write, storageType).First();
+    => AllStorages<T>(StorageModeEnum.Read, storageType).First();
 
   public IEnumerable<T> WriteStorages<T>(StorageTypeEnum storageType = StorageTypeEnum.AllRegistered) where T : IStorage
   {

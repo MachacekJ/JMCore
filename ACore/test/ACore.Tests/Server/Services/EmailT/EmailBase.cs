@@ -7,9 +7,9 @@ public class EmailBase : ServerBase
 {
     protected IEmailSenderJM EmailSenderJM = null!;
 
-    protected override async Task GetServicesAsync(IServiceProvider sp)
+    protected override async Task GetServices(IServiceProvider sp)
     {
-        await base.GetServicesAsync(sp);
+        await base.GetServices(sp);
 
         EmailSenderJM = sp.GetRequiredService<IEmailSenderJM>();
         if (EmailSenderJM == null)

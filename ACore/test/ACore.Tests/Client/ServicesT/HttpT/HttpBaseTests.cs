@@ -49,10 +49,9 @@ public class HttpBaseTests : BaseTests
         
     }
 
-    protected override void RegisterAutofacContainer(ServiceCollection services, ContainerBuilder containerBuilder)
+    protected override void SetContainer(ContainerBuilder containerBuilder)
     {
-       
-        base.RegisterAutofacContainer(services, containerBuilder);
+        base.SetContainer(containerBuilder);
         containerBuilder.RegisterGeneric(typeof(HttpAuthorizedHandler<>)).AsImplementedInterfaces();
         containerBuilder.RegisterGeneric(typeof(HttpNonAuthorizedHandler<>)).AsImplementedInterfaces();
     }

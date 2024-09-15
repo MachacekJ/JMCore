@@ -26,7 +26,7 @@ internal class AuditSqlValueItem(string columName, Type dataType)
 
   public static AuditSqlValueItem? CreateValue(ILogger logger, AuditEntryColumnItem coll)
   {
-    var value = new AuditSqlValueItem(coll.ColumnName, coll.DataType);
+    var value = new AuditSqlValueItem(coll.ColumnName, coll.DataType.GetType());
 
     if (coll.OldValue != null)
     {

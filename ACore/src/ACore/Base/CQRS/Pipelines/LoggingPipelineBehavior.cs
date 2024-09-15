@@ -39,10 +39,10 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
     if (response.IsFailure)
     {
       // It is only validation error, it may not be logged.
-      var isSeriousError = (response is ValidationResult || response.GetType().GetGenericTypeDefinition() == typeof(ValidationResult<>));
+      var isSeriousError = (response is ValidationResult || (response.GetType().IsGenericType && response.GetType().GetGenericTypeDefinition() == typeof(ValidationResult<>)));
 
       // This is a serious exception error.
-      if (!isSeriousError && (response is ExceptionResult || response.GetType().GetGenericTypeDefinition() == typeof(ExceptionResult<>)))
+      if (!isSeriousError && (response is ExceptionResult || (response.GetType().IsGenericType && response.GetType().GetGenericTypeDefinition() == typeof(ExceptionResult<>))))
       {
         var aa = (Exception)(response.PropertyValue(nameof(ExceptionResult.Exception)) ?? throw new Exception($"{nameof(ExceptionResult.Exception)} doesn't exist."));
         LogError(request, response, aa.MessageRecursive(true));

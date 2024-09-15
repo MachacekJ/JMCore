@@ -18,8 +18,8 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
   public static CacheKey AuditColumnCacheKey(int tableId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditColumnEntity)), tableId.ToString());
-  public static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditUserEntity)) ,userId);
-  public static CacheKey AuditTableCacheKey(string tableName, string? schema) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditTableEntity)), $"{tableName}-{schema ?? string.Empty}");
+  public static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditUserEntity)), userId);
+  public static CacheKey AuditTableCacheKey(string tableName, string? schema, int version) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditTableEntity)), $"{tableName}-{schema ?? string.Empty}--{version}");
 
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override string ModuleName => nameof(IAuditStorageModule);
@@ -39,19 +39,19 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
                {
                  tableName = e.Audit.AuditTable.TableName,
                  schemaName = e.Audit.AuditTable.SchemaName,
+                 version = e.Audit.AuditTable.Version,
                  pk = e.Audit.PKValue,
                  pkString = e.Audit.PKValueString,
                  entityState = e.Audit.EntityState,
-                 user= e.Audit.User,
+                 user = e.Audit.User,
                  created = e.Audit.DateTime
                }))
     {
-
       var primaryKeyValue = (grItem.Key.pk == null) ? grItem.Key.pkString : grItem.Key.pk as object;
       if (primaryKeyValue == null)
         throw new Exception("Primary key is null");
-        
-      var aab = new AuditEntryItem(grItem.Key.tableName, grItem.Key.schemaName, primaryKeyValue, grItem.Key.entityState)
+
+      var aab = new AuditEntryItem(grItem.Key.tableName, grItem.Key.schemaName, grItem.Key.version, primaryKeyValue, grItem.Key.entityState)
       {
         Created = grItem.Key.created
       };
@@ -60,19 +60,20 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       {
         aab.AddEntry(col.AuditColumn.ColumnName, col.GetOldValueObject(), col.GetNewValueObject());
       }
+
       res.Add(aab);
     }
 
     return res.ToArray();
   }
- 
+
   public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
   {
     var valuesTable = auditEntryItem.ChangedColumns
       .Select(change => AuditSqlValueItem.CreateValue(Logger, change))
       .OfType<AuditSqlValueItem>().ToList();
 
-    var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName);
+    var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName, auditEntryItem.Version);
     var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable
       .ToDictionary(k => k.AuditColumnName, v => v.AuditColumnDataType.FullName ?? string.Empty));
 
@@ -133,9 +134,9 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     return userEntity.Id;
   }
 
-  public async Task<int> GetAuditTableIdAsync(string tableName, string? tableSchema)
+  public async Task<int> GetAuditTableIdAsync(string tableName, string? tableSchema, int version)
   {
-    var keyCache = AuditTableCacheKey(tableName, tableSchema);
+    var keyCache = AuditTableCacheKey(tableName, tableSchema, version);
 
     var cacheValue = await Mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
     if (cacheValue.ResultValue?.ObjectValue != null)
@@ -151,7 +152,8 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       tableEntity = new AuditTableEntity
       {
         TableName = tableName,
-        SchemaName = tableSchema
+        SchemaName = tableSchema,
+        Version = version
       };
 
       await AuditTables.AddAsync(tableEntity);

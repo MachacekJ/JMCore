@@ -17,7 +17,8 @@ CREATE TABLE audit_table
     audit_table_id INT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
     table_name VARCHAR(255) NOT NULL,
-    schema_name VARCHAR(255)
+    schema_name VARCHAR(255),
+    version INT NOT NULL
 );
 
 CREATE TABLE audit_user

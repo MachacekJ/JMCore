@@ -9,7 +9,7 @@ public class StorageBase : ServerBase
 {
   protected IStorageResolver? StorageResolver;
 
-  protected readonly Action<ACoreServerServiceOptionBuilder> StorageConfiguration = builder =>
+  protected readonly Action<ACoreServerOptionBuilder> MemoryStorageConfiguration = builder =>
   {
     builder.DefaultStorage(storageOptionBuilder => storageOptionBuilder.AddMemoryDb());
     builder.ACore(a => a.AddMemoryCacheModule(memoryCacheOptionsBuilder => memoryCacheOptionsBuilder.AddCacheCategories(CacheCategories.Entity)));
@@ -22,9 +22,9 @@ public class StorageBase : ServerBase
   //  sc.AddMemoryCacheModule(b=>b.AddCacheCategories());
   }
 
-  protected override async Task GetServicesAsync(IServiceProvider sp)
+  protected override async Task GetServices(IServiceProvider sp)
   {
-    await base.GetServicesAsync(sp);
+    await base.GetServices(sp);
     StorageResolver = sp.GetService<IStorageResolver>() ?? throw new ArgumentNullException($"{nameof(IStorageResolver)} not found.");
   }
 }

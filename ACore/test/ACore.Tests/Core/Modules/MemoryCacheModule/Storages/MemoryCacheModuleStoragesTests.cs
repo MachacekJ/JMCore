@@ -12,9 +12,9 @@ public class MemoryCacheModuleStoragesTests : MemoryCacheModuleBaseTests
 {
   private IOptions<ACoreOptions>? _options;
 
-  protected override async Task GetServicesAsync(IServiceProvider sp)
+  protected override async Task GetServices(IServiceProvider sp)
   {
-    await base.GetServicesAsync(sp);
+    await base.GetServices(sp);
     _options = sp.GetService<IOptions<ACoreOptions>>() ?? throw new ArgumentException($"{nameof(ACoreOptions)} is null.");
   }
 

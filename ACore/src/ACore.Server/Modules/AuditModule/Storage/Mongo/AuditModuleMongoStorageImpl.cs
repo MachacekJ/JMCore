@@ -29,6 +29,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     var auditEntity = new AuditMongoEntity
     {
       ObjectId = GetObjectId(auditEntryItem.TableName, new ObjectId(auditEntryItem.PkValueString)),
+      Version = auditEntryItem.Version,
       User = new AuditMongoUserEntity
       {
         Id = auditEntryItem.ByUser.userId,
@@ -39,7 +40,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
       Columns = auditEntryItem.ChangedColumns.Select(e => new AuditMongoValueEntity()
       {
         Property = e.ColumnName,
-        DataType = e.DataType.FullName ?? string.Empty,
+        DataType = e.DataType,
         NewValue = ConvertValue(e.NewValue),
         OldValue = ConvertValue(e.OldValue),
       }).ToList()
@@ -61,16 +62,16 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     };
   }
 
-  public async Task<AuditEntryItem[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null)
+  public async Task<AuditEntryItem[]> AuditItemsAsync<T>(string collectionName, T pkValue, string? schemaName = null)
   {
     if (pkValue == null)
       throw new Exception("Primary key is null");
-    
-    var valuesTable = await Audits.Where(e => e.ObjectId == GetObjectId(tableName, new ObjectId(pkValue.ToString()))).ToArrayAsync();
+
+    var valuesTable = await Audits.Where(e => e.ObjectId == GetObjectId(collectionName, new ObjectId(pkValue.ToString()))).ToArrayAsync();
     var ll = new List<AuditEntryItem>();
     foreach (var auditMongoEntity in valuesTable)
     {
-      var aa = new AuditEntryItem(tableName, null, pkValue, auditMongoEntity.EntityState);
+      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState);
       aa.Created = auditMongoEntity.Created;
       if (auditMongoEntity.User != null)
         aa.SetUser((auditMongoEntity.User.Id, auditMongoEntity.User.Name));
@@ -81,14 +82,6 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
         {
           var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity._id}'");
           aa.AddEntry(col.Property, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
-          // var bb = new AuditGetQueryColumnDataOut
-          // (
-          //   col.Property,
-          //   coltype,
-          //   ConvertToObject(col.OldValue, coltype),
-          //   ConvertToObject(col.NewValue, coltype)
-          // );
-          // ccc.Add(bb);
         }
       }
 

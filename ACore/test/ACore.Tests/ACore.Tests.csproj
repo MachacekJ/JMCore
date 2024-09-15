@@ -37,13 +37,12 @@
 
 	<ItemGroup>
 		<Folder Include="Client\ServicesT\" />
-		<Folder Include="TestImplemantations\Core\Modules\TestErrorModule\Configuration\" />
-		<Folder Include="TestImplemantations\Core\Modules\TestErrorModule\CQRS\" />
+		<Folder Include="Server\Modules\TestModule\" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\ACore.Client\ACore.Client.csproj" />
-		<ProjectReference Include="..\ACore.AppTest\ACore.AppTest.csproj" />
+		<ProjectReference Include="..\..\src\ACore.Server\ACore.Server.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,7 +52,8 @@
 		<None Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 		<None Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
 		<None Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
-		<None Remove="Server\Modules\TestModule\**" />
+		<None Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+		<None Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -84,13 +84,15 @@
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>TestServer.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
-	  <EmbeddedResource Remove="Server\Modules\TestModule\**" />
+	  <EmbeddedResource Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+	  <EmbeddedResource Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Compile Remove="ServerT\DbT\TestDBContext\Scripts\MSSQL\**" />
 	  <Compile Remove="ServerT\DbT\DbContexts\AuditStructureT\**" />
 	  <Compile Remove="ServerT\DbT\TestStorageModule\Scripts\MSSQL\**" />
-	  <Compile Remove="Server\Modules\TestModule\**" />
+	  <Compile Remove="TestImplementations\Server\Modules\TestModule\CQRS\TestManualAudit\**" />
+	  <Compile Remove="Server\Modules\LocalizationModule\**" />
 	</ItemGroup>
 </Project>

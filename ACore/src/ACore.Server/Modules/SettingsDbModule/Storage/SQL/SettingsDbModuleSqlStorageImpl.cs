@@ -11,11 +11,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Modules.SettingsDbModule.Storage.SQL;
 
-internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISettingsDbStorageModule
+internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISettingsDbModuleStorage
 {
   private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingsEntity));
-  
-  protected override string ModuleName => nameof(ISettingsDbStorageModule);
+
+  protected override string ModuleName => nameof(ISettingsDbModuleStorage);
 
   public DbSet<SettingsEntity> Settings { get; set; }
 
@@ -35,8 +35,8 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
     set.Value = value;
     set.IsSystem = isSystem;
 
-    await SaveWithAudit<SettingsEntity, int>(set); //(i) => i.Id = IdIntGenerator<SettingEntity>()) 
-    
+    await SaveWithAudit<SettingsEntity, int>(set);
+
     await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(CacheKeyTableSetting));
   }
 
@@ -46,7 +46,7 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
 
     var allSettingsCacheResult = await Mediator.Send(new MemoryCacheModuleGetQuery(CacheKeyTableSetting));
 
-    if (allSettingsCacheResult.IsSuccess &&  allSettingsCacheResult.ResultValue != null)
+    if (allSettingsCacheResult.IsSuccess && allSettingsCacheResult.ResultValue != null)
     {
       if (allSettingsCacheResult.ResultValue.ObjectValue == null)
       {
@@ -74,12 +74,8 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
   }
 
   #endregion
-  
-  protected SettingsDbModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<SettingsDbModuleSqlStorageImpl> logger) : this(options, mediator, null, logger)
-  {
-  }
 
-  protected SettingsDbModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, IAuditConfiguration? auditConfiguration, ILogger<SettingsDbModuleSqlStorageImpl> logger) : base(options, mediator, logger, auditConfiguration)
+  protected SettingsDbModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<SettingsDbModuleSqlStorageImpl> logger) : base(options, mediator, logger)
   {
     RegisterDbSet(Settings);
   }

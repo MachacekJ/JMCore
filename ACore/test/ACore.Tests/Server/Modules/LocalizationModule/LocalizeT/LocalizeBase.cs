@@ -67,9 +67,9 @@ public class LocalizeBase : StorageBase
     CultureInfo.CurrentCulture = new CultureInfo(1033);
   }
 
-  protected override async Task GetServicesAsync(IServiceProvider sp)
+  protected override async Task GetServices(IServiceProvider sp)
   {
-    await base.GetServicesAsync(sp);
+    await base.GetServices(sp);
    // await sp.UseAuditServiceModule(_testConfig);
     await sp.UseJMServerLocalization();
 

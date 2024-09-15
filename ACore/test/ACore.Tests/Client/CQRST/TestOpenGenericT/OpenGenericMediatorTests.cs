@@ -14,12 +14,11 @@ public class OpenGenericMediatorTests : HttpBaseTests
     protected override void RegisterServices(ServiceCollection sc)
     {
         base.RegisterServices(sc);
-       // sc.AddMediatrExplicitHandlers();
     }
 
-    protected override void RegisterAutofacContainer(ServiceCollection services, ContainerBuilder containerBuilder)
+    protected override void SetContainer(ContainerBuilder containerBuilder)
     {
-        base.RegisterAutofacContainer(services, containerBuilder);
+        base.SetContainer(containerBuilder);
         containerBuilder.RegisterGeneric(typeof(CountFruitRequestHandler<,>)).AsImplementedInterfaces();
     }
 

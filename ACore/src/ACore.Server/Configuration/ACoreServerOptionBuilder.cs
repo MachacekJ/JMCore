@@ -1,5 +1,6 @@
 using ACore.Configuration;
 using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages.Configuration;
 
@@ -9,7 +10,8 @@ public class ACoreServerOptionBuilder
 {
   private readonly ACoreOptionsBuilder _aCoreOptionsBuilder = ACoreOptionsBuilder.Empty();
   private readonly SettingsDbModuleOptionsBuilder _settingsDbModuleOptionsBuilder = SettingsDbModuleOptionsBuilder.Empty();
-  private  readonly AuditModuleOptionBuilder _auditModuleOptionBuilder = AuditModuleOptionBuilder.Empty();
+  private  readonly AuditModuleOptionsBuilder _auditModuleOptionsBuilder = AuditModuleOptionsBuilder.Empty();
+  private  readonly ICAMModuleOptionsBuilder _icamModuleOptionsBuilder = ICAMModuleOptionsBuilder.Empty();
   public StorageOptionBuilder? DefaultStorageOptionBuilder;
   
   private ACoreServerOptionBuilder()
@@ -32,11 +34,19 @@ public class ACoreServerOptionBuilder
     return this;
   }
 
-  public ACoreServerOptionBuilder AddAuditModule(Action<AuditModuleOptionBuilder>? action)
+  public ACoreServerOptionBuilder AddAuditModule(Action<AuditModuleOptionsBuilder>? action)
   {
-    action?.Invoke(_auditModuleOptionBuilder);
+    action?.Invoke(_auditModuleOptionsBuilder);
     _settingsDbModuleOptionsBuilder.Activate();
-    _auditModuleOptionBuilder.Activate();
+    _auditModuleOptionsBuilder.Activate();
+    _icamModuleOptionsBuilder.Activate();
+    return this;
+  }
+
+  public ACoreServerOptionBuilder AddICAMModule(Action<ICAMModuleOptionsBuilder>? action)
+  {
+    action?.Invoke(_icamModuleOptionsBuilder);
+    _icamModuleOptionsBuilder.Activate();
     return this;
   }
 
@@ -53,7 +63,8 @@ public class ACoreServerOptionBuilder
       DefaultStorages = DefaultStorageOptionBuilder?.Build(),
       ACoreOptions = _aCoreOptionsBuilder.Build(),
       SettingsDbModuleOptions = _settingsDbModuleOptionsBuilder.Build(DefaultStorageOptionBuilder),
-      AuditModuleOptions = _auditModuleOptionBuilder.Build(DefaultStorageOptionBuilder)
+      AuditModuleOptions = _auditModuleOptionsBuilder.Build(DefaultStorageOptionBuilder),
+      ICAMModuleOptions = _icamModuleOptionsBuilder.Build()
     };
   }
 }

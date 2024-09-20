@@ -4,5 +4,6 @@ namespace ACore.Configuration;
 
 public class ACoreOptions
 {
-  public MemoryCacheModuleOptions MemoryCacheModuleOptions { get; init; } = new();
+  public string SaltForHash { get; init; } = string.Empty;
+  public MemoryCacheModuleOptions MemoryCacheModuleOptions { get; init; } = new(false);
 }

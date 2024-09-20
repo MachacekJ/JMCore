@@ -1,8 +1,9 @@
+using ACore.Base.CQRS.Configuration;
 using ACore.Server.Storages.Configuration;
 
 namespace ACore.Server.Configuration.Modules;
 
-public class StorageModuleOptionBuilder
+public class StorageModuleOptionBuilder : ModuleOptionsBuilder
 {
   private StorageOptionBuilder? _storageOptionBuilder;
   protected void StoragesBase(Action<StorageOptionBuilder> action)

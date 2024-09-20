@@ -22,8 +22,8 @@ internal class TestModulePGStorageImpl(DbContextOptions<TestModulePGStorageImpl>
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    SetDatabaseNames<TestEntity>(modelBuilder);
-    SetDatabaseNames<TestAttributeAuditPKIntEntity>(modelBuilder);
+    SetDatabaseNames<TestNoAuditEntity>(modelBuilder);
+    SetDatabaseNames<TestAuditEntity>(modelBuilder);
   //  SetDatabaseNames<TestManualAuditEntity>(modelBuilder);
     SetDatabaseNames<TestValueTypeEntity>(modelBuilder);
     SetDatabaseNames<TestPKGuidEntity>(modelBuilder);

@@ -1,10 +1,10 @@
-﻿using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditGet;
+﻿using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Storages.Configuration;
 using ACore.Tests.TestImplementations.Server.Configuration;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAttributeAudit.Delete;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAttributeAudit.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAttributeAudit.Save;
+using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
+using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
+using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Memory;
@@ -35,10 +35,10 @@ public static class TestModuleServiceExtensions
 
   public static void ConfigureAutofacTestModule(this ContainerBuilder containerBuilder)
   {
-    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditGetHandler<>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditSaveHandler<>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(TestAttributeAuditDeleteHandler<>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(TestAuditGetHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(TestAuditSaveHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(TestAuditDeleteHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<,>)).AsImplementedInterfaces();
   }
 
   public static async Task UseTestModule(this IServiceProvider provider)

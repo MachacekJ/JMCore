@@ -1,5 +1,4 @@
-﻿using ACore.Server.Storages.Configuration.Options;
-using ACore.Tests.BaseInfrastructure.Models;
+﻿using ACore.Tests.Base.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -12,14 +11,9 @@ public class MongoStorageRegistrationT(TestData testData) : IStorageRegistration
   private string _dbName = testData.GetDbName();
 
   private string ConnectionStringMongo { get; set; } = null!;
-
-  // public void SetTestData(TestData testData2)
-  // {
-  //   testData = testData2;
-  //   _dbName = testData.GetDbName();
-  // }
   
-  public void RegisterServices(ServiceCollection sc, ACoreStorageOptions config)
+  
+  public void RegisterServices(ServiceCollection sc)
   {
     ConnectionStringMongo = config.MongoDb?.ReadWrite ?? throw new InvalidOperationException();
   //  storageResolver.RegisterStorage(sc, new MongoTestStorageConfiguration(ConnectionStringMongo, _dbName, requiredBaseStorageModules));

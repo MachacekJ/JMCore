@@ -32,9 +32,14 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
 
   public async Task<AuditEntryItem[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null)
   {
-    var en = await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == Convert.ToInt64(pkValue)).ToArrayAsync();
+    AuditValueEntity[] auditValueEntities;
+    if (typeof(T) == typeof(int) || typeof(T) == typeof(long))
+      auditValueEntities = await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValue == Convert.ToInt64(pkValue)).ToArrayAsync();
+    else
+      auditValueEntities = await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == Convert.ToString(pkValue)).ToArrayAsync();
+
     var res = new List<AuditEntryItem>();
-    foreach (var grItem in en.GroupBy(e =>
+    foreach (var grItem in auditValueEntities.GroupBy(e =>
                new
                {
                  tableName = e.Audit.AuditTable.TableName,
@@ -43,7 +48,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
                  pk = e.Audit.PKValue,
                  pkString = e.Audit.PKValueString,
                  entityState = e.Audit.EntityState,
-                 user = e.Audit.User,
+                 user = e.Audit.User.UserId,
                  created = e.Audit.DateTime
                }))
     {
@@ -51,17 +56,17 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       if (primaryKeyValue == null)
         throw new Exception("Primary key is null");
 
-      var aab = new AuditEntryItem(grItem.Key.tableName, grItem.Key.schemaName, grItem.Key.version, primaryKeyValue, grItem.Key.entityState)
+      var auditEntryItem = new AuditEntryItem(grItem.Key.tableName, grItem.Key.schemaName, grItem.Key.version, primaryKeyValue, grItem.Key.entityState, grItem.Key.user)
       {
         Created = grItem.Key.created
       };
-      aab.SetUser((grItem.Key.user.UserId, grItem.Key.user.UserName ?? string.Empty));
+
       foreach (var col in grItem.ToArray())
       {
-        aab.AddEntry(col.AuditColumn.ColumnName, col.GetOldValueObject(), col.GetNewValueObject());
+        auditEntryItem.AddEntry(col.AuditColumn.ColumnName, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject());
       }
 
-      res.Add(aab);
+      res.Add(auditEntryItem);
     }
 
     return res.ToArray();
@@ -82,7 +87,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       AuditTableId = auditTableId,
       PKValue = auditEntryItem.PkValue,
       PKValueString = auditEntryItem.PkValueString,
-      AuditUserId = await GetAuditUserIdAsync(auditEntryItem.ByUser.userId, auditEntryItem.ByUser.userName),
+      AuditUserId = await GetAuditUserIdAsync(auditEntryItem.UserId),
       DateTime = DateTime.UtcNow,
       EntityState = auditEntryItem.EntityState,
       AuditValues = new ObservableCollectionListSource<AuditValueEntity>()
@@ -102,7 +107,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     await SaveChangesAsync();
   }
 
-  private async Task<int> GetAuditUserIdAsync(string userId, string userName)
+  private async Task<int> GetAuditUserIdAsync(string userId)
   {
     var keyCache = AuditUserCacheKey(userId);
 
@@ -119,8 +124,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     {
       userEntity = new AuditUserEntity
       {
-        UserId = userId,
-        UserName = userName
+        UserId = userId
       };
       await AuditUsers.AddAsync(userEntity);
       await SaveChangesAsync();

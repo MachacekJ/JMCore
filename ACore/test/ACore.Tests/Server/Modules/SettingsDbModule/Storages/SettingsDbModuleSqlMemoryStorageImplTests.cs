@@ -10,7 +10,7 @@ using Xunit;
 
 namespace ACore.Tests.Server.Modules.SettingsDbModule.Storages;
 
-public class SettingsDbModuleSqlMemoryStorageImplTests : SettingsDbModuleBase
+public class SettingsDbModuleSqlMemoryStorageImplTests : SettingsDbModuleTestsBase
 {
   [Fact]
   public async Task SaveGetTest()

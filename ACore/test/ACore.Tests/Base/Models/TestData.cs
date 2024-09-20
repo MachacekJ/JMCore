@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace ACore.Tests.BaseInfrastructure.Models;
+namespace ACore.Tests.Base.Models;
 
 public class TestData
 {

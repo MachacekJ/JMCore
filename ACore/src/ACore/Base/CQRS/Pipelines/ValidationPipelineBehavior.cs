@@ -1,6 +1,7 @@
 using ACore.Base.CQRS.Helpers;
 using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Validation;
+using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Models.Results.Validation;
 using FluentValidation;
 using MediatR;
 
@@ -22,7 +23,7 @@ public class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValida
       .Select(validator => validator.Validate(request))
       .SelectMany(validationResult => validationResult.Errors)
       .Where(validationFailure => validationFailure is not null)
-      .Select(Error.Create)
+      .Select(ValidationError.Create)
       .ToArray();
 
     if (errors.Length != 0)

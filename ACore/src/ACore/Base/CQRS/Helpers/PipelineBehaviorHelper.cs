@@ -1,6 +1,6 @@
-using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Validation;
-using ACore.Base.Modules;
+using ACore.Base.CQRS.Configuration;
+using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Models.Results.Validation;
 
 namespace ACore.Base.CQRS.Helpers;
 
@@ -18,7 +18,7 @@ public class PipelineBehaviorHelper<TResponse>
     return false;
   }
 
-  public static TResult CreateErrorValidationResult<TResult>(ValidationTypeEnum validationTypeEnum, Error[] errors)
+  public static TResult CreateErrorValidationResult<TResult>(ValidationTypeEnum validationTypeEnum, ValidationError[] errors)
     where TResult : Result
   {
     if (typeof(TResult) == typeof(Result))

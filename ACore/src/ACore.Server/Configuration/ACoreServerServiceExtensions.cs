@@ -1,6 +1,7 @@
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
 using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages;
 using ACore.Server.Storages.Configuration;
@@ -43,6 +44,9 @@ public static class ACoreServerServiceExtensions
 
     if (aCoreServerOptions.AuditModuleOptions.IsActive)
       services.AddAuditModule(aCoreServerOptions.AuditModuleOptions);
+
+    if (aCoreServerOptions.ICAMModuleOptions.IsActive)
+      services.AddICAMModule(aCoreServerOptions.ICAMModuleOptions);
   }
 
   public static async Task UseACoreServer(this IServiceProvider provider)
@@ -57,8 +61,8 @@ public static class ACoreServerServiceExtensions
 
   private static void ValidateDependencyInConfiguration(ACoreServerOptions aCoreServerOptions)
   {
-    ValidateAuditModuleOptions(aCoreServerOptions);
     ValidateSettingsDbOptions(aCoreServerOptions);
+    ValidateAuditModuleOptions(aCoreServerOptions);
   }
 
   private static void ValidateAuditModuleOptions(ACoreServerOptions aCoreServerOptions)
@@ -66,6 +70,9 @@ public static class ACoreServerServiceExtensions
     if (!aCoreServerOptions.AuditModuleOptions.IsActive)
       return;
 
+    if (!aCoreServerOptions.ICAMModuleOptions.IsActive)
+      throw new Exception($"Module {nameof(ACore.Server.Modules.ICAMModule)} must be activated.");
+    
     if (aCoreServerOptions.SettingsDbModuleOptions.IsActive == false)
       throw new Exception($"Module {nameof(ACore.Server.Modules.SettingsDbModule)} must be activated.");
 

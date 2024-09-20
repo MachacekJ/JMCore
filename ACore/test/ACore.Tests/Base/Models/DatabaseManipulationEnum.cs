@@ -1,4 +1,4 @@
-﻿namespace ACore.Tests.BaseInfrastructure.Models;
+﻿namespace ACore.Tests.Base.Models;
 
 [Flags]
 public enum DatabaseManipulationEnum

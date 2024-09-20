@@ -1,5 +1,3 @@
 namespace ACore.Server.Storages.Models.PK;
 
-public class PKIntEntity() : PKEntity<int>(0)
-{
-}
+public abstract class PKIntEntity() : PKEntity<int>(0);

@@ -1,7 +1,9 @@
 namespace ACore.Server.Modules.AuditModule.Models;
 
-public class AuditEntryColumnItem(string columnName, object? oldValue, object? newValue)
+public class AuditEntryColumnItem(string columnName, bool isChanged, object? oldValue, object? newValue)
 {
+  public bool IsChanged => isChanged;
+  
   public string DataType
   {
     get

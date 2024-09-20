@@ -11,18 +11,19 @@ public class CacheKey
   public TimeSpan? Duration { get; }
   public CacheCategory MainCategory { get; }
 
-  public CacheCategory? SubCategory { get; }
-  public string Key { get; }
+  private CacheCategory? SubCategory { get; }
+  private string Key { get; }
 
-  private CacheKey(CacheCategory mainCategory, string key, TimeSpan? duration)
+  private CacheKey(CacheCategory mainCategory, string key, TimeSpan? duration) : this(mainCategory, null, key, duration)
   {
-    MainCategory = mainCategory;
-    Key = key;
-    Duration = duration;
   }
-  
+
   private CacheKey(CacheCategory mainCategory, CacheCategory? subCategory, string key, TimeSpan? duration)
   {
+    CheckForbiddenLettres(mainCategory.CategoryNameKey);
+    if (subCategory != null)
+      CheckForbiddenLettres(subCategory.CategoryNameKey);
+    
     MainCategory = mainCategory;
     SubCategory = subCategory;
     Key = key;
@@ -42,5 +43,11 @@ public class CacheKey
   public override string ToString()
   {
     return $"C:{MainCategory.CategoryNameKey}^S:{SubCategory?.CategoryNameKey ?? string.Empty}^K:{Key}";
+  }
+
+  private void CheckForbiddenLettres(string key)
+  {
+    if (key.Contains('^'))
+      throw new Exception($"Cache key '{key}' contains forbidden letter '^'.");
   }
 }

@@ -1,27 +1,20 @@
-using ACore.Base.Modules;
 using ACore.Server.Configuration.Modules;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Configuration;
 
 namespace ACore.Server.Modules.SettingsDbModule.Configuration;
 
-public class SettingsDbModuleOptionsBuilder : StorageModuleOptionBuilder, IModuleOptionsBuilder
+public class SettingsDbModuleOptionsBuilder : StorageModuleOptionBuilder
 {
-  private bool _isActive;
+
   public static SettingsDbModuleOptionsBuilder Empty() => new();
 
 
   public SettingsDbModuleOptions Build(StorageOptionBuilder? defaultStorages)
   {
-    return new SettingsDbModuleOptions
+    return new SettingsDbModuleOptions(IsActive)
     {
       Storages = BuildStorage(defaultStorages, nameof(ISettingsDbModuleStorage)),
-      IsActive = _isActive
     };
-  }
-
-  public void Activate()
-  {
-    _isActive = true;
   }
 }

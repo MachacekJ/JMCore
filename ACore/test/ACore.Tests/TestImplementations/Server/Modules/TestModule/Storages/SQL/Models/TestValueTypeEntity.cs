@@ -45,6 +45,8 @@ internal class TestValueTypeEntity : PKIntEntity
   {
     var en = new TestValueTypeEntity();
     en.CopyPropertiesFrom(data);
+    if (data.HashToCheck != null)
+      throw new NotImplementedException();
     return en;
   }
 }

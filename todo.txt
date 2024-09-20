@@ -1,1 +1,10 @@
+1 Concurrency
+--https://learn.microsoft.com/en-us/ef/core/saving/concurrency?tabs=data-annotations#optimistic-concurrency
+--https://www.mongodb.com/docs/entity-framework/current/fundamentals/optimistic-concurrency/
+--https://www.npgsql.org/efcore/modeling/concurrency.html?tabs=data-annotations
+--https://github.com/npgsql/efcore.pg/issues/2069
+
+2. Hash data
+3. Why have GetNames class, I can take the value from attribute - get data annotations
+   - entity class shloud be internal
 

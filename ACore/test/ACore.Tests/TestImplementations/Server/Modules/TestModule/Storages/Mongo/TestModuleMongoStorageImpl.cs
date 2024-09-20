@@ -27,9 +27,9 @@ internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModu
   // public DbSet<TestRootCategory> TestParents { get; set; }
   //public DbSet<TestCategory> TestChildren { get; set; }
 
-  public async Task Save<TEntity, TPK>(TEntity data)
+  public async Task Save<TEntity, TPK>(TEntity data, string? hashToCheck = null)
     where TEntity : class
-    => await SaveWithAudit<TEntity, TPK>(data);
+    => await SaveWithAudit<TEntity, TPK>(data, hashToCheck);
 
 
   public async Task Delete<T, TPK>(TPK id)

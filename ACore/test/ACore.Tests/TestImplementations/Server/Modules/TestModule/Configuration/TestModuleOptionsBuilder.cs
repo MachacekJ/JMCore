@@ -1,27 +1,19 @@
-using ACore.Base.Modules;
 using ACore.Server.Configuration.Modules;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Configuration;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.Configuration;
 
-public class TestModuleOptionsBuilder: StorageModuleOptionBuilder, IModuleOptionsBuilder
+public class TestModuleOptionsBuilder: StorageModuleOptionBuilder
 {
-  private bool _isActive;
   public static TestModuleOptionsBuilder Empty() => new();
 
 
   public TestModuleOptions Build(StorageOptionBuilder? defaultStorages)
   {
-    return new TestModuleOptions
+    return new TestModuleOptions(IsActive)
     {
-      Storages = BuildStorage(defaultStorages, nameof(ISettingsDbModuleStorage)),
-      IsActive = _isActive
+      Storages = BuildStorage(defaultStorages, nameof(ISettingsDbModuleStorage))
     };
-  }
-
-  public void Activate()
-  {
-    _isActive = true;
   }
 }

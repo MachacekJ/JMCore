@@ -9,9 +9,8 @@ internal class AuditUserEntity
 {
   [Key]
   public int Id { get; set; }
-  [MaxLength(450)]
-  public string UserId { get; set; } = null!;
   
-  [MaxLength(255)]
-  public string? UserName { get; set; }
+  [MaxLength(450)]
+  [Required]
+  public string UserId { get; set; } = string.Empty;
 }

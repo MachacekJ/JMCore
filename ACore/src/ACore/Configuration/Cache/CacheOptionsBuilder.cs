@@ -1,8 +1,9 @@
 using ACore.Base.Cache;
+using ACore.Base.CQRS.Configuration;
 
 namespace ACore.Configuration.Cache;
 
-public class CacheOptionsBuilder
+public class CacheOptionsBuilder : ModuleOptionsBuilder
 {
   private readonly List<CacheCategory> _categories = [];
 
@@ -19,7 +20,7 @@ public class CacheOptionsBuilder
 
   protected CacheOptions BuildBase()
   {
-    return new CacheOptions
+    return new CacheOptions()
     {
       Categories = _categories
     };

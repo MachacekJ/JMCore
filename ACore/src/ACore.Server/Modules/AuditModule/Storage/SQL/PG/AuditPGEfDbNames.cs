@@ -44,14 +44,14 @@ public static class AuditPGEfDbNames
   private static Dictionary<Expression<Func<AuditUserEntity, object>>, string> AuditUserEntityColumnNames => new()
   {
     { e => e.Id, "audit_user_id" },
-    { e => e.UserId, "user_id" },
-    { e => e.UserName!, "user_name" }
+    { e => e.UserId, "user_id" }
   };
   
   private static Dictionary<Expression<Func<AuditValueEntity, object>>, string> AuditValueColumnNames => new()
   {
     { e => e.Id, "audit_value_id" },
     { e => e.AuditId, "audit_id" },
+    { e => e.IsChanged, "is_changed" },
     { e => e.AuditColumnId, "audit_column_id" },
     { e => e.OldValueString!, "old_value_string" },
     { e => e.NewValueString!, "new_value_string" },

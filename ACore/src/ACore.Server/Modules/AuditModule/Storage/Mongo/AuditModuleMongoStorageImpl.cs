@@ -32,12 +32,11 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
       Version = auditEntryItem.Version,
       User = new AuditMongoUserEntity
       {
-        Id = auditEntryItem.ByUser.userId,
-        Name = auditEntryItem.ByUser.userName
+        Id = auditEntryItem.UserId
       },
       EntityState = auditEntryItem.EntityState,
       Created = DateTime.UtcNow,
-      Columns = auditEntryItem.ChangedColumns.Select(e => new AuditMongoValueEntity()
+      Columns = auditEntryItem.ChangedColumns.Select(e => new AuditMongoValueEntity
       {
         Property = e.ColumnName,
         DataType = e.DataType,
@@ -71,17 +70,15 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     var ll = new List<AuditEntryItem>();
     foreach (var auditMongoEntity in valuesTable)
     {
-      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState);
+      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState, auditMongoEntity.User?.Id);
       aa.Created = auditMongoEntity.Created;
-      if (auditMongoEntity.User != null)
-        aa.SetUser((auditMongoEntity.User.Id, auditMongoEntity.User.Name));
 
       if (auditMongoEntity.Columns != null)
       {
         foreach (var col in auditMongoEntity.Columns)
         {
           var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity._id}'");
-          aa.AddEntry(col.Property, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
+          aa.AddEntry(col.Property, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
         }
       }
 

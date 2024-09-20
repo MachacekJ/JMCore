@@ -4,7 +4,7 @@ using ACore.Extensions;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Models.PK;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAttributeAudit.Models;
+using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -35,7 +35,7 @@ public class TestAttributeAuditPKMongoEntity: PKMongoEntity
   [BsonElement("created")]
   public DateTime Created { get; set; }
   
-  public static TestAttributeAuditPKMongoEntity Create<T>(TestAttributeAuditData<T> data)
+  public static TestAttributeAuditPKMongoEntity Create<T>(TestAuditData<T> data)
   {
     var en = new TestAttributeAuditPKMongoEntity();
     en.CopyPropertiesFrom(data);

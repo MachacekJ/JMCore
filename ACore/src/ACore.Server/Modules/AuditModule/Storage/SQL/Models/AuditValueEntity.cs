@@ -13,6 +13,7 @@ internal class AuditValueEntity
   [Key]
   public long Id { get; set; }
 
+  public bool IsChanged { get; set; }
   public long AuditId { get; set; }
   public int AuditColumnId { get; set; }
   public string? OldValueString { get; set; }

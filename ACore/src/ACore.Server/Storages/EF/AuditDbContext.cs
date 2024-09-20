@@ -1,8 +1,10 @@
+using System.Data;
 using ACore.Extensions;
-using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.AuditModule.CQRS.Audit.AuditSave;
+using ACore.Server.Configuration.CQRS.OptionsGet;
+using ACore.Server.Modules.AuditModule.CQRS.AuditSave;
 using ACore.Server.Modules.AuditModule.Extensions;
 using ACore.Server.Modules.AuditModule.Models;
+using ACore.Server.Modules.ICAMModule.CQRS.ICAMGetCurrentUser;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Models.PK;
 using ACore.Server.Storages.Scripts;
@@ -31,24 +33,40 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     _registeredDbSets.Add(GetEntityTypeName<T>(), dbSet);
   }
 
-  protected async Task SaveWithAudit<TEntity, TPK>(TEntity data)
+  private async Task<string> GetUserId()
+  {
+    var user = await Mediator.Send(new ICAMGetCurrentUserQuery());
+    if (user.IsFailure)
+      throw new Exception(user.Error.ToString());
+    ArgumentNullException.ThrowIfNull(user.ResultValue);
+    return user.ResultValue.ToString();
+  }
+
+  protected async Task SaveWithAudit<TEntity, TPK>(TEntity data, string? hashToCheck = null)
     where TEntity : class
   {
     ArgumentNullException.ThrowIfNull(data);
-
     TEntity existsEntity;
 
     var id = GetIdValue<TPK>(data);
     if (id == null)
       ArgumentNullException.ThrowIfNull(id);
 
-    var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Modified);
+    var audit = await CreateAuditEntryItem<TEntity>(id, await GetUserId(), EntityState.Modified);
     var dbSet = GetDbSet<TEntity>();
     var isNew = IsNew(id);
 
     if (!isNew)
     {
       existsEntity = await GetEntityById<TEntity, TPK>(id) ?? throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
+      //check db entity concurrency with hash
+      if (hashToCheck != null)
+      {
+        var options = (await Mediator.Send(new OptionsGetQuery())).ResultValue ?? throw new Exception($"Mediator for {nameof(OptionsGetQuery)} returned null value.");
+        if (hashToCheck != existsEntity.HashObject(options.ACoreOptions.SaltForHash))
+          throw new DBConcurrencyException($"Entity '{typeof(TEntity).Name}' with id '{id.ToString()}' has been changed.");
+      }
+
       existsEntity.CopyPropertiesFrom(data, (p) =>
       {
         if (audit == null)
@@ -56,7 +74,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, p.oldValue, p.newValue);
+          audit.Value.auditEntryItem.AddEntry(colName, p.oldValue != p.newValue, p.oldValue, p.newValue);
       });
     }
     else
@@ -81,7 +99,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       {
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, null, p.value);
+          audit.Value.auditEntryItem.AddEntry(colName, true, null, p.value);
       }
     }
 
@@ -95,7 +113,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     if (id == null)
       throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
 
-    var audit = await CreateAuditEntryItem<TEntity>(id, EntityState.Deleted);
+    var audit = await CreateAuditEntryItem<TEntity>(id, await GetUserId(), EntityState.Deleted);
 
     var dbSet = GetDbSet<TEntity>();
     dbSet.Remove(entityToDelete);
@@ -106,7 +124,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       {
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, p.value, null);
+          audit.Value.auditEntryItem.AddEntry(colName, true, p.value, null);
       }
 
       await Mediator.Send(new AuditSaveCommand(audit.Value.auditEntryItem));
@@ -158,7 +176,10 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
         return true;
       }
 
-      toCheck = toCheck.BaseType;
+      if (toCheck.BaseType != null)
+        toCheck = toCheck.BaseType;
+      else
+        break;
     }
 
     return false;
@@ -231,7 +252,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     };
   }
 
-  private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> CreateAuditEntryItem<TEntity>(object id, EntityState state)
+  private async Task<(AuditEntryItem auditEntryItem, IEntityType dbEntityType)?> CreateAuditEntryItem<TEntity>(object id, string userId, EntityState state)
   {
     if (!await IsAuditEnabledAsync())
       return null;
@@ -242,7 +263,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       return null;
     var tableName = GetTableName(dbEntityType) ?? throw new Exception($"Unknown db table name for entity class '{typeof(TEntity).Name}'");
     var schemaName = dbEntityType.GetSchema();
-    var audit = new AuditEntryItem(tableName, schemaName, auditableAttribute.Version, id, state);
+    var audit = new AuditEntryItem(tableName, schemaName, auditableAttribute.Version, id, state, userId);
     return (audit, dbEntityType);
   }
 

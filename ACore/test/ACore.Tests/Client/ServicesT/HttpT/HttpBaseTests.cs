@@ -2,8 +2,8 @@
 using ACore.Client.CQRS.Http;
 using ACore.Client.Services.Http;
 using ACore.ResX;
-using ACore.Tests.BaseInfrastructure;
-using ACore.Tests.BaseInfrastructure.Models;
+using ACore.Tests.Base;
+using ACore.Tests.Base.Models;
 using ACore.Tests.Client.ServicesT.HttpT.Implementations;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ using Moq;
 
 namespace ACore.Tests.Client.ServicesT.HttpT;
 
-public class HttpBaseTests : BaseTests
+public class HttpBaseTests : TestsBase
 {
     protected const string FakeUrl = "http://fake/";
     private List<FakeHttpClientConfiguration> _mockedResponses = new();

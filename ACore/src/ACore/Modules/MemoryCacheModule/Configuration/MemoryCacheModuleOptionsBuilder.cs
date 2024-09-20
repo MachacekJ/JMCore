@@ -1,14 +1,11 @@
-using ACore.Base;
-using ACore.Base.Modules;
 using ACore.Configuration.Cache;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ACore.Modules.MemoryCacheModule.Configuration;
 
-public class MemoryCacheModuleOptionsBuilder : CacheOptionsBuilder, IModuleOptionsBuilder
+public class MemoryCacheModuleOptionsBuilder : CacheOptionsBuilder
 {
   private Action<MemoryCacheOptions>? _memoryCacheOptionsAction;
-  private bool _isActive = false;
   
   public static MemoryCacheModuleOptionsBuilder Empty() => new();
 
@@ -25,16 +22,10 @@ public class MemoryCacheModuleOptionsBuilder : CacheOptionsBuilder, IModuleOptio
   public MemoryCacheModuleOptions Build()
   {
     var baseBuild = BuildBase();
-    return new MemoryCacheModuleOptions
+    return new MemoryCacheModuleOptions(IsActive)
     {
       MemoryCacheOptionAction = _memoryCacheOptionsAction,
-      Categories = baseBuild.Categories,
-      IsActive = _isActive
+      Categories = baseBuild.Categories
     };
-  }
-
-  public void Activate()
-  {
-    _isActive = true;
   }
 }

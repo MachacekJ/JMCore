@@ -16,15 +16,14 @@ internal static class SettingsDbModuleServiceExtensions
 {
   public static void AddSettingsDbModule(this IServiceCollection services, SettingsDbModuleOptions options)
   {
-    services.AddMediatR(c => { c.RegisterServicesFromAssemblyContaining(typeof(ISettingsDbModuleStorage)); });
     services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(SettingsDbModulePipelineBehavior<,>));
-
+    
     if (options.Storages == null)
       throw new ArgumentException($"{nameof(options.Storages)} is null.");
     
     services.AddDbMongoStorage<SettingsDbModuleMongoStorageImpl>(options.Storages);
     services.AddDbPGStorage<SettingsDbModuleSqlPGStorageImpl>(options.Storages);
-    services.AddDbMemoryStorage<SettingsDbModuleSqlMemoryStorageImpl>(options.Storages, nameof(ISettingsDbModuleStorage));
+    services.AddDbMemoryStorage<SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl>(options.Storages, nameof(ISettingsDbModuleStorage));
   }
 
   public static async Task UseSettingServiceModule(this IServiceProvider provider)
@@ -42,6 +41,6 @@ internal static class SettingsDbModuleServiceExtensions
 
     await provider.ConfigureMongoStorage<ISettingsDbModuleStorage, SettingsDbModuleMongoStorageImpl>(storageOptions);
     await provider.ConfigurePGStorage<ISettingsDbModuleStorage, SettingsDbModuleSqlPGStorageImpl>(storageOptions);
-    await provider.ConfigureMemoryStorage<ISettingsDbModuleStorage, SettingsDbModuleSqlMemoryStorageImpl>(storageOptions);
+    await provider.ConfigureMemoryStorage<ISettingsDbModuleStorage, SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl>(storageOptions);
   }
 }

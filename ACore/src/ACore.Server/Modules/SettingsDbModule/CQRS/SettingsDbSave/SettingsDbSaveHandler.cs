@@ -1,11 +1,13 @@
-﻿using ACore.Base.CQRS.Models;
+﻿using ACore.Base.CQRS.Models.Results;
+using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages;
 using ACore.Server.Storages.CQRS;
+using Microsoft.Extensions.Options;
 
 namespace ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
 
-public class SettingsDbSaveHandler(IStorageResolver storageResolver) : SettingsDbModuleRequestHandler<SettingsDbSaveCommand, Result>
+public class SettingsDbSaveHandler(IStorageResolver storageResolver, IOptions<ACoreServerOptions> serverOptions) : SettingsDbModuleRequestHandler<SettingsDbSaveCommand, Result>
 {
   public override async Task<Result> Handle(SettingsDbSaveCommand request, CancellationToken cancellationToken)
   {
@@ -17,6 +19,6 @@ public class SettingsDbSaveHandler(IStorageResolver storageResolver) : SettingsD
     }
 
     await Task.WhenAll(allTask.Select(e => e.Task));
-    return DbSaveResult.SuccessWithPkValues(allTask.ToDictionary(k => k.Storage.StorageDefinition.Type, v => (object)v.Entity));
+    return DbSaveResult.SuccessWithData(allTask, serverOptions.Value.ACoreOptions.SaltForHash);
   }
 }

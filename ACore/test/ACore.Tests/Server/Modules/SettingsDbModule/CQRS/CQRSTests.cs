@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Validation;
+using ACore.Base.CQRS.Models.Results.Error;
+using ACore.Base.CQRS.Models.Results.Validation;
 using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbGet;
 using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
 using FluentAssertions;
@@ -9,7 +10,7 @@ using Xunit;
 
 namespace ACore.Tests.Server.Modules.SettingsDbModule.CQRS;
 
-public class CQRSTests : SettingsDbModuleBase
+public class CQRSTests : SettingsDbModuleTestsBase
 {
   [Fact]
   public async Task BaseTest()
@@ -41,7 +42,7 @@ public class CQRSTests : SettingsDbModuleBase
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
+      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
@@ -62,7 +63,7 @@ public class CQRSTests : SettingsDbModuleBase
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
+      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
@@ -83,7 +84,7 @@ public class CQRSTests : SettingsDbModuleBase
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
       result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(ErrorTypes.ErrorValidationInput.Code);
+      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
       result.Error.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();

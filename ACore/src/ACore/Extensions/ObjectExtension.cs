@@ -5,7 +5,7 @@ namespace ACore.Extensions;
 
 public static class ObjectExtensionMethods
 {
-  public static void CopyPropertiesFrom(this object self, object parent, Action<(string propName, object? oldValue, object? newValue)>? updatingValue = null)
+  public static void CopyPropertiesFrom(this object self, object parent, Action<(string propName, string dataType, bool isChange, object? oldValue, object? newValue)>? updatingValue = null)
   {
     var fromProperties = GetProperties(parent);
     var toProperties = GetProperties(self);
@@ -20,32 +20,16 @@ public static class ObjectExtensionMethods
         var newValue = fromProperty.GetValue(parent);
         var oldValue = toProperty.GetValue(self);
         toProperty.SetValue(self, newValue);
-        updatingValue?.Invoke(new ValueTuple<string, object?, object?>(toProperty.Name, oldValue, newValue));
-        // if (newValue == null && oldValue == null)
-        // {
-        //   updatingValue?.Invoke(new(toProperty.Name, oldValue, newValue));
-        //   continue;
-        // }
-        //
-        // if (newValue == null && oldValue != null)
-        // {
-        //   toProperty.SetValue(self, newValue);
-        // }
-        //
-        // if (oldValue == null && newValue != null)
-        // {
-        //   toProperty.SetValue(self, newValue);
-        //   isNew = true;
-        // }
-        //
-        // if (newValue != null && !newValue.Equals(oldValue))
-        // {
-        //   toProperty.SetValue(self, newValue);
-        //   isNew = true;
-        // }
-        //
-        // updatingValue?.Invoke(new(toProperty.Name, oldValue, isNew ? newValue : null));
-        //
+
+        if (updatingValue == null)
+          break;
+        
+        var isChange = (newValue == null && oldValue != null)
+                       || (newValue != null && oldValue == null)
+                       || (newValue != null && oldValue != null && !newValue.Equals(oldValue));
+
+        updatingValue.Invoke(new ValueTuple<string, string, bool, object?, object?>(toProperty.Name, FullName(fromProperty.PropertyType), isChange, oldValue, newValue));
+
         break;
       }
     }
@@ -56,10 +40,13 @@ public static class ObjectExtensionMethods
 
   public static string HashObject(this object? text, string salt = "")
     => text == null ? string.Empty : JsonSerializer.Serialize(text).HashString(salt);
-  
-  public static IEnumerable<(string propName, object? value)> AllPropertiesValues(this object self)
-    => GetProperties(self).Select(e => new ValueTuple<string, object?>(e.Name, e.GetValue(self)));
+
+  public static IEnumerable<(string propName, string dataType, object? value)> AllPropertiesValues(this object self)
+    => GetProperties(self).Select(e => new ValueTuple<string, string, object?>(e.Name, FullName(e.PropertyType), e.GetValue(self)));
 
   private static PropertyInfo[] GetProperties(object obj)
     => obj.GetType().GetProperties();
+
+  private static string FullName(Type self)
+    => self.FullName ?? throw new Exception($"{nameof(Type.FullName)} is null for datatype name {self.Name}");
 }

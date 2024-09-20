@@ -78,7 +78,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
         foreach (var col in auditMongoEntity.Columns)
         {
           var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity._id}'");
-          aa.AddEntry(col.Property, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
+          aa.AddColumnEntry(col.Property, col.DataType, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
         }
       }
 

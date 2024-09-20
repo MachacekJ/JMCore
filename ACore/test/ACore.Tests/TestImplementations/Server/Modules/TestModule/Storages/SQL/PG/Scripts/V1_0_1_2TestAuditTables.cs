@@ -15,11 +15,14 @@ internal class V1_0_1_2TestAuditTables : DbVersionScriptsBase
             List<string> l =
             [
                 @"
-CREATE TABLE test_attribute_audit
+CREATE TABLE test_audit
 (
-    test_attribute_audit_id INT GENERATED ALWAYS AS IDENTITY
+    test_audit_id INT GENERATED ALWAYS AS IDENTITY
         PRIMARY KEY,
-    name VARCHAR(50),
+    name VARCHAR(50) NOT NULL,
+    null_value VARCHAR(50),
+    null_value2 VARCHAR(50),
+    null_value3 VARCHAR(50),
     not_auditable_column VARCHAR(50),
     created timestamp
 );

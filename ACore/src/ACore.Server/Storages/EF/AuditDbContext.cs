@@ -74,7 +74,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, p.oldValue != p.newValue, p.oldValue, p.newValue);
+          audit.Value.auditEntryItem.AddColumnEntry(colName, p.dataType, p.isChange, p.oldValue, p.newValue);
       });
     }
     else
@@ -86,7 +86,6 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
     await SaveChangesAsync();
     id = (existsEntity as PKEntity<TPK> ?? throw new Exception("poifdsa fdsoujifnio ikgkjm.")).Id;
-    //data.CopyPropertiesFrom(existsEntity);
 
     if (audit == null)
       return;
@@ -99,7 +98,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       {
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, true, null, p.value);
+          audit.Value.auditEntryItem.AddColumnEntry(colName, p.dataType, true, null, p.value);
       }
     }
 
@@ -124,7 +123,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
       {
         var colName = GetColumnName<TEntity>(p.propName, audit.Value.dbEntityType);
         if (colName != null)
-          audit.Value.auditEntryItem.AddEntry(colName, true, p.value, null);
+          audit.Value.auditEntryItem.AddColumnEntry(colName, p.dataType, true, p.value, null);
       }
 
       await Mediator.Send(new AuditSaveCommand(audit.Value.auditEntryItem));

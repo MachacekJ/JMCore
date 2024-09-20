@@ -31,7 +31,7 @@ public class AuditGetQueryDataOut<TEntity, TPK>(string tableName)
       PK = auditEntryItem.GetPK<TPK>() ?? throw new Exception("Primary key is null."),
       SchemaName = auditEntryItem.SchemaName,
       Columns = auditEntryItem.ChangedColumns
-        .Select(e => new AuditGetQueryColumnDataOut(e.ColumnName, e.IsChanged, e.DataType.GetType(), e.OldValue, e.NewValue))
+        .Select(e => new AuditGetQueryColumnDataOut(e.ColumnName, e.IsChanged, e.DataType, e.OldValue, e.NewValue))
         .ToArray()
     };
   }

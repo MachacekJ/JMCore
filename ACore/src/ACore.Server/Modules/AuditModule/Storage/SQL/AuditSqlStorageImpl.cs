@@ -63,7 +63,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
 
       foreach (var col in grItem.ToArray())
       {
-        auditEntryItem.AddEntry(col.AuditColumn.ColumnName, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject());
+        auditEntryItem.AddColumnEntry(col.AuditColumn.ColumnName, col.DataType, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject());
       }
 
       res.Add(auditEntryItem);
@@ -80,7 +80,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
 
     var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName, auditEntryItem.Version);
     var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable
-      .ToDictionary(k => k.AuditColumnName, v => v.AuditColumnDataType.FullName ?? string.Empty));
+      .ToDictionary(k => k.AuditColumnName, v => v.DataType));
 
     var auditEntity = new AuditEntity
     {

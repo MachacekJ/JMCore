@@ -81,7 +81,8 @@ public static class AuditCRUDHelper
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.NewValue.Should().NotBeNull();
-
+    aCreated.DataType.ToLower().Should().NotContain("string");
+    
     aid?.NewValue.Should().Be(itemId);
     aName?.NewValue.Should().Be(TestName);
     new DateTime(Convert.ToInt64(aCreated.NewValue)).Should().Be(TestDateTime);
@@ -99,6 +100,8 @@ public static class AuditCRUDHelper
     {
       Created = testDateTime,
       Name = testNameOld,
+      NullValue = testNameNew,
+      NullValue2 = null,
       NotAuditableColumn = "Audit"
     };
 
@@ -110,6 +113,9 @@ public static class AuditCRUDHelper
 
     item.Id = itemId;
     item.Name = testNameNew;
+    item.NullValue = null;
+    item.NullValue2 = testNameNew;
+    
     // Update
     await mediator.Send(new TestAuditSaveCommand<int>(item));
 
@@ -122,11 +128,14 @@ public static class AuditCRUDHelper
 
     var auditItem = resAuditItems.Single(a=>a.EntityState == AuditStateEnum.Modified);
     // only Name was changed
-    auditItem.Columns.Should().HaveCount(3);
+    auditItem.Columns.Should().HaveCount(6);
 
     var aid = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Id)));
     var aName = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Name)));
     var aCreated = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Created)));
+    var aNullValue = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue)));
+    var aNullValue2 = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue2)));
+    var aNullValue3 = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue3)));
 
     aid.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aid);
@@ -145,6 +154,25 @@ public static class AuditCRUDHelper
     aCreated.IsChange.Should().BeFalse();
     aCreated.OldValue.Should().NotBeNull();
     aCreated.NewValue.Should().BeNull();
+    aCreated.DataType.ToLower().Should().NotContain("string");
+    
+    aNullValue.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue);
+    aNullValue.IsChange.Should().BeTrue();
+    aNullValue.OldValue.Should().Be(testNameNew);
+    aNullValue.NewValue.Should().BeNull();
+    
+    aNullValue2.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue2);
+    aNullValue2.IsChange.Should().BeTrue();
+    aNullValue2.OldValue.Should().BeNull();
+    aNullValue2.NewValue.Should().Be(testNameNew);
+    
+    aNullValue3.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue3);
+    aNullValue3.IsChange.Should().BeFalse();
+    aNullValue3.OldValue.Should().BeNull();
+    aNullValue3.NewValue.Should().BeNull();
   }
 
   public static async Task DeleteItemTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)

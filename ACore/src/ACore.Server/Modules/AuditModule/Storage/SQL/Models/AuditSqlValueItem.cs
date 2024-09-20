@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 
-internal class AuditSqlValueItem(string columName, bool isChanged, Type dataType)
+internal class AuditSqlValueItem(string columName, bool isChanged, string dataType)
 {
   public const int MaxStringSize = 10000;
   public string AuditColumnName => columName;
-  public Type AuditColumnDataType => dataType;
+  public string DataType => dataType;
   public bool IsChanged => isChanged;
   public string? OldValueString { get; set; }
   public string? NewValueString { get; set; }
@@ -26,7 +26,7 @@ internal class AuditSqlValueItem(string columName, bool isChanged, Type dataType
 
   public static AuditSqlValueItem? CreateValue(ILogger logger, AuditEntryColumnItem coll)
   {
-    var value = new AuditSqlValueItem(coll.ColumnName, coll.IsChanged, coll.DataType.GetType());
+    var value = new AuditSqlValueItem(coll.ColumnName, coll.IsChanged, coll.DataType);
 
     if (coll.OldValue != null)
     {
@@ -68,7 +68,7 @@ internal class AuditSqlValueItem(string columName, bool isChanged, Type dataType
       }
     }
 
-    if (coll.NewValue != null)
+    if (coll.IsChanged && coll.NewValue != null)
     {
       switch (coll.NewValue)
       {
@@ -107,15 +107,6 @@ internal class AuditSqlValueItem(string columName, bool isChanged, Type dataType
           break;
       }
     }
-
-    // if (coll.IsChanged == false &&
-    //     value.OldValueInt == value.NewValueInt &&
-    //     value.OldValueLong == value.NewValueLong &&
-    //     value.OldValueBool == value.NewValueBool &&
-    //     value.OldValueString == value.NewValueString &&
-    //     value.OldValueGuid == value.NewValueGuid)
-    //   return null;
-
     return value;
   }
 

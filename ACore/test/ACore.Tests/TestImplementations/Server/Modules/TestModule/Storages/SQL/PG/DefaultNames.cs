@@ -11,8 +11,7 @@ public static class DefaultNames
   public static Dictionary<string, StorageEntityNameDefinition> ObjectNameMapping => new()
   {
     { nameof(TestNoAuditEntity), new StorageEntityNameDefinition("test", TestEntityColumnNames) },
-    { nameof(TestAuditEntity), new StorageEntityNameDefinition("test_attribute_audit", TestAttributeAuditEntityColumnNames) },
-  //  { nameof(TestManualAuditEntity), new StorageEntityNameDefinition("test_manual_audit", TestManualAuditEntityColumnNames) },
+    { nameof(TestAuditEntity), new StorageEntityNameDefinition("test_audit", TestAttributeAuditEntityColumnNames) },
     { nameof(TestValueTypeEntity), new StorageEntityNameDefinition("test_value_type", TestValueTypeEntityColumnNames) },
     { nameof(TestPKGuidEntity), new StorageEntityNameDefinition("test_pk_guid", TestPKGuidEntityColumnNames) },
     { nameof(TestPKStringEntity), new StorageEntityNameDefinition("test_pk_string", TestPKStringEntityColumnNames) }
@@ -27,20 +26,15 @@ public static class DefaultNames
 
   private static Dictionary<Expression<Func<TestAuditEntity, object>>, string> TestAttributeAuditEntityColumnNames => new()
   {
-    { e => e.Id, "test_attribute_audit_id" },
+    { e => e.Id, "test_audit_id" },
     { e => e.Name, "name" },
+    { e => e.NullValue, "null_value" },
+    { e => e.NullValue2, "null_value2" },
+    { e => e.NullValue3, "null_value3" },
     { e => e.NotAuditableColumn, "not_auditable_column" },
     { e => e.Created, "created" }
   };
-
-  // private static Dictionary<Expression<Func<TestManualAuditEntity, object>>, string> TestManualAuditEntityColumnNames => new()
-  // {
-  //   { e => e.Id, "test_manual_audit_id" },
-  //   { e => e.Name, "name" },
-  //   { e => e.NotAuditableColumn, "not_auditable_column" },
-  //   { e => e.Created, "created" }
-  // };
-
+  
   private static Dictionary<Expression<Func<TestValueTypeEntity, object>>, string> TestValueTypeEntityColumnNames => new()
   {
     { e => e.Id, "test_value_type_id" },

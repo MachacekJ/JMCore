@@ -21,7 +21,7 @@ public class DbSaveResult : Result
 
   public static DbSaveResult SuccessWithData(IEnumerable<SaveHandlerData> data, string saltForHash = "")
   {
-    return DbSaveResult.SuccessWithValues(data.ToDictionary(
+    return SuccessWithValues(data.ToDictionary(
       k => k.Storage.StorageDefinition.Type,
       v => new DbSaveResultData(
         v.Entity.PropertyValue(nameof(PKEntity<int>.Id)) ?? throw new Exception($"{nameof(PKEntity<int>.Id)} is null."),

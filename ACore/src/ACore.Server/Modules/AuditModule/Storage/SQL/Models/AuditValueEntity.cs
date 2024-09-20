@@ -14,6 +14,7 @@ internal class AuditValueEntity
   public long Id { get; set; }
 
   public bool IsChanged { get; set; }
+  public string DataType { get; set; } = string.Empty;
   public long AuditId { get; set; }
   public int AuditColumnId { get; set; }
   public string? OldValueString { get; set; }

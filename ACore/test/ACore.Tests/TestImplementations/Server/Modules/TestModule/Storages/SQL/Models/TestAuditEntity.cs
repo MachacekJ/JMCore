@@ -22,6 +22,15 @@ internal class TestAuditEntity: PKIntEntity
 {
   [MaxLength(50)]
   public string Name { get; set; } = string.Empty;
+  
+  [MaxLength(50)]
+  public string? NullValue { get; set; }
+  
+  [MaxLength(50)]
+  public string? NullValue2 { get; set; }
+  
+  [MaxLength(50)]
+  public string? NullValue3 { get; set; }
 
   [NotAuditable]
   [MaxLength(50)]

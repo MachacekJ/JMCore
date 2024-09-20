@@ -24,9 +24,9 @@ public class AuditEntryItem
     SetPK(pkValue);
   }
 
-  public void AddEntry(string columnName, bool isChanged, object? oldValue, object? newValue)
+  public void AddColumnEntry(string columnName, string dataType, bool isChanged, object? oldValue, object? newValue)
   {
-    ChangedColumns.Add(new AuditEntryColumnItem(columnName, isChanged, oldValue, newValue));
+    ChangedColumns.Add(new AuditEntryColumnItem(columnName, isChanged, dataType, oldValue, newValue));
   }
 
   public void SetEntityState(EntityState entityState)

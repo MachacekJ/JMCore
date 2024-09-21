@@ -1,5 +1,4 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Storages;
 using ACore.Server.Storages.CQRS;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL;

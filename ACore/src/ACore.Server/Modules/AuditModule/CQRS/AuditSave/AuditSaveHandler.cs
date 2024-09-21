@@ -12,10 +12,6 @@ internal class AuditSaveHandler(IStorageResolver storageResolver, IOptions<ACore
 {
   public override async Task<Result> Handle(AuditSaveCommand request, CancellationToken cancellationToken)
   {
-    // var userProvider = serverOptions.Value.AuditModuleOptions.AuditUserProvider;
-    // if (userProvider != null)
-    //   request.AuditEntryItem.SetUser(userProvider.GetUser());
-
     var allTask = new List<SaveHandlerData>();
     foreach (var storage in WriteAuditContexts())
     {

@@ -15,8 +15,7 @@ public class AuditGetQueryDataOut<TEntity, TPK>(string tableName)
   public DateTime DateTime { get; set; }
   public AuditStateEnum EntityState { get; set; }
   public AuditGetQueryColumnDataOut[] Columns { get; set; } = [];
-
-  public TEntity Entity { get; set; }
+  
   public TPK PK { get; set; }
 
   public static AuditGetQueryDataOut<TEntity, TPK> Create(AuditEntryItem auditEntryItem)

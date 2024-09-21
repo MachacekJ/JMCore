@@ -20,7 +20,7 @@ public class TestAuditDeleteHandler<T>(IStorageResolver storageResolver)
       switch (storage)
       {
         case TestModuleMongoStorageImpl:
-          var t = storage.Delete<TestAttributeAuditPKMongoEntity, T>(request.Id);
+          var t = storage.Delete<TestPKMongoEntity, T>(request.Id);
           allTask.Add(t);
           break;
         default:

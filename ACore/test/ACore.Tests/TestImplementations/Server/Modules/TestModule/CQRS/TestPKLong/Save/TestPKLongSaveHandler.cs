@@ -6,9 +6,9 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Mod
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Save;
 
-internal class TestPKLongAuditSaveHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestPKLongAuditSaveCommand, Result>(storageResolver)
+internal class TestPKLongSaveHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestPKLongSaveCommand, Result>(storageResolver)
 {
-  public override async Task<Result> Handle(TestPKLongAuditSaveCommand request, CancellationToken cancellationToken)
+  public override async Task<Result> Handle(TestPKLongSaveCommand request, CancellationToken cancellationToken)
   {
     var allTask = new List<SaveHandlerData<TestPKLongEntity>>();
     foreach (var storage in WriteTestContexts())
@@ -19,7 +19,7 @@ internal class TestPKLongAuditSaveHandler(IStorageResolver storageResolver) : Te
         allTask.Add(new SaveHandlerData<TestPKLongEntity>(en, storage, storage.Save<TestPKLongEntity, long>(en)));
       }
       else
-        throw new Exception($"{nameof(TestPKLongAuditSaveHandler)} cannot be used for storage {storage.GetType().Name}");
+        throw new Exception($"{nameof(TestPKLongSaveHandler)} cannot be used for storage {storage.GetType().Name}");
     }
 
     await Task.WhenAll(allTask.Select(e => e.Task));

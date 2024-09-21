@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 
 namespace ACore.Server.Modules.AuditModule.Models;
 
@@ -49,9 +50,21 @@ public class AuditEntryItem
     if (PkValue != null)
       return (TPK)Convert.ChangeType(PkValue.Value, typeof(TPK));
 
-    if (PkValueString != null)
-      return (TPK)Convert.ChangeType(PkValueString, typeof(TPK));
+    if (PkValueString == null)
+      return default;
 
-    return default;
+    if (typeof(TPK) == typeof(Guid))
+    {
+      var g = new Guid(PkValueString);
+      return (TPK)Convert.ChangeType(g, typeof(TPK));
+    }
+
+    if (typeof(TPK) == typeof(ObjectId))
+    {
+      var g = new ObjectId(PkValueString);
+      return (TPK)Convert.ChangeType(g, typeof(TPK));
+    }
+
+    return (TPK)Convert.ChangeType(PkValueString, typeof(TPK));
   }
 }

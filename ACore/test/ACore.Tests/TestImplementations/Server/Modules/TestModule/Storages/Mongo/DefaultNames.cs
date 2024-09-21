@@ -11,14 +11,14 @@ public static class DefaultNames
   public static Dictionary<string, StorageEntityNameDefinition> ObjectNameMapping => new()
   {
     //  { nameof(TestEntity), new StorageEntityNameDefinition("test", TestEntityColumnNames) },
-    { nameof(TestAttributeAuditPKMongoEntity), new StorageEntityNameDefinition("testAttribute", TestAttributeAuditEntityColumnNames) },
+    { nameof(TestPKMongoEntity), new StorageEntityNameDefinition("testAttribute", TestAttributeAuditEntityColumnNames) },
     //   { nameof(TestManualAuditEntity), new StorageEntityNameDefinition("test_manual_audit", TestManualAuditEntityColumnNames) },
     //  { nameof(TestValueTypeEntity), new StorageEntityNameDefinition("test_value_type", TestValueTypeEntityColumnNames) },
     //   { nameof(TestPKGuidEntity), new StorageEntityNameDefinition("test_pk_guid", TestPKGuidEntityColumnNames) },
     //   { nameof(TestPKStringEntity), new StorageEntityNameDefinition("test_pk_string", TestPKStringEntityColumnNames) }
   };
   
-  private static Dictionary<Expression<Func<TestAttributeAuditPKMongoEntity, object>>, string> TestAttributeAuditEntityColumnNames => new()
+  private static Dictionary<Expression<Func<TestPKMongoEntity, object>>, string> TestAttributeAuditEntityColumnNames => new()
   {
     { e => e.Id, "_id" },
     { e => e.Name, "name" },

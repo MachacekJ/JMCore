@@ -17,7 +17,7 @@ public class TestAuditGetHandler<T>(IStorageResolver storageResolver)
     var st = ReadTestContext();
     if (st is TestModuleMongoStorageImpl)
     {
-      var dbMongo = st.DbSet<TestAttributeAuditPKMongoEntity>() ?? throw new Exception();
+      var dbMongo = st.DbSet<TestPKMongoEntity>() ?? throw new Exception();
       var allItemsM = await dbMongo.ToArrayAsync(cancellationToken: cancellationToken);
       var r = allItemsM.Select(TestAuditData<T>.Create<T>).ToArray();
       return Result.Success(r);

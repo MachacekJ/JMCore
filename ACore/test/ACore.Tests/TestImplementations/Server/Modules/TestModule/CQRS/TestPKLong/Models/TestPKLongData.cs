@@ -3,16 +3,16 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Mod
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Models;
 
-public class TestPKLongAuditData
+public class TestPKLongData
 {
   public long Id { get; set; }
   public string Name { get; set; } = null!;
   public string NotAuditableColumn { get; set; } = null!;
   public DateTime Created { get; set; }
 
-  internal static TestPKLongAuditData Create(TestPKLongEntity entity)
+  internal static TestPKLongData Create(TestPKLongEntity entity)
   {
-    var testPKGuidData = new TestPKLongAuditData();
+    var testPKGuidData = new TestPKLongData();
     testPKGuidData.CopyPropertiesFrom(entity);
     return testPKGuidData;
   }

@@ -20,8 +20,8 @@ public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
       switch (storage)
       {
         case TestModuleMongoStorageImpl:
-          var enMongo = TestAttributeAuditPKMongoEntity.Create(request.Data);
-          allTask.Add(new SaveHandlerData(enMongo, storage, storage.Save<TestAttributeAuditPKMongoEntity, T>(enMongo)));
+          var enMongo = TestPKMongoEntity.Create(request.Data);
+          allTask.Add(new SaveHandlerData(enMongo, storage, storage.Save<TestPKMongoEntity, T>(enMongo)));
           break;
         default:
           var en = TestAuditEntity.Create(request.Data);

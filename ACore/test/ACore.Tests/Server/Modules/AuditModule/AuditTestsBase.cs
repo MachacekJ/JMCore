@@ -10,8 +10,7 @@ namespace ACore.Tests.Server.Modules.AuditModule;
 
 public class AuditTestsBase : StorageTestsBase
 {
-  public IAuditUserProvider UserProvider = TestAuditUserProvider.CreateDefaultUser();
- 
+  protected IAuditUserProvider UserProvider = TestAuditUserProvider.CreateDefaultUser();
   
   protected override void RegisterServices(ServiceCollection sc)
   {

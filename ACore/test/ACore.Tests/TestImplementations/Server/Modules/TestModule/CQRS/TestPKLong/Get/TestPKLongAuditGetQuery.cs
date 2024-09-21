@@ -4,4 +4,4 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Get;
 
-public class TestPKLongAuditGetQuery: TestModuleRequest<Result<TestPKLongAuditData[]>>;
+public class TestPKLongAuditGetQuery: TestModuleRequest<Result<TestPKLongData[]>>;

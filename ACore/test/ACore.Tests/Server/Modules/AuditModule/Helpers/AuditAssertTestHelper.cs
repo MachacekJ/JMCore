@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace ACore.Tests.Server.Modules.AuditModule.Helpers;
 
-public static class AuditAssertHelpers
+public static class AuditAssertTestHelper
 {
   public static TPK AssertSinglePrimaryKeyWithResult<T, TPK>(DbSaveResult? result, T[]? data)
     where T : class
@@ -12,6 +12,7 @@ public static class AuditAssertHelpers
     ArgumentNullException.ThrowIfNull(result);
     ArgumentNullException.ThrowIfNull(data);
     
+    result.IsSuccess.Should().BeTrue();
     result.Should().NotBeNull();
     result.ReturnedValues.Should().HaveCount(1);
     data.Should().HaveCount(1);

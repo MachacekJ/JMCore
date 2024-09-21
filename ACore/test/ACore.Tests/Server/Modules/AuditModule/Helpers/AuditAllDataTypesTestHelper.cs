@@ -1,7 +1,8 @@
-﻿using System.Reflection;
 using System.Text.Json;
+using ACore.Extensions;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.Models;
+using ACore.Server.Storages.CQRS;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
@@ -11,29 +12,15 @@ using MediatR;
 using Serilog.Events;
 using Serilog.Sinks.InMemory;
 using Serilog.Sinks.InMemory.Assertions;
-using Xunit;
 
-namespace ACore.Tests.Server.Modules.AuditModule;
+namespace ACore.Tests.Server.Modules.AuditModule.Helpers;
 
-/// <summary>
-/// Test for different C# types and their persistence.
-/// </summary>
-public class AuditValueTypesTests : AuditTestsBase
+public static class AuditAllDataTypesTestHelper
 {
-  [Fact]
-  public async Task AllTypes()
-  {
-    var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => await AuditValuesTHelper.AllTypes(Mediator, LogInMemorySink, GetTableName, GetColumnName));
-  }
-}
-
-public static class AuditValuesTHelper
-{
-  public static async Task AllTypes(IMediator mediator, InMemorySink logInMemorySink, Func<string, string> getTableName, Func<string, string, string> getColumnName)
+  public static async Task AllDataTypes(IMediator mediator, InMemorySink logInMemorySink, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
     var entityName = "TestValueTypeEntity";
-    
+
     // Arrange
     var item = new TestValueTypeData
     {
@@ -57,25 +44,27 @@ public static class AuditValuesTHelper
     };
 
     // Act.
-    await mediator.Send(new TestValueTypeSaveHashCommand(item));
+    var result = await mediator.Send(new TestValueTypeSaveHashCommand(item)) as DbSaveResult;
     // Assert
-    item.Id.Should().BeGreaterThan(0);
+    
+    var allData = (await mediator.Send(new TestValueTypeGetQuery(false))).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestValueTypeData, int>(result, allData);
+    itemId.Should().BeGreaterThan(0);
 
     logInMemorySink.Should().HaveMessage("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}")
       .Appearing().Once().WithLevel(LogEventLevel.Error);
 
-    var allData = (await mediator.Send(new TestValueTypeGetQuery(false))).ResultValue;
+    ArgumentNullException.ThrowIfNull(allData);
     allData.Should().HaveCount(1);
 
     var savedItem = allData.Single();
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestValueTypeEntity, int>(getTableName(entityName), savedItem.Id))).ResultValue;
-    resAuditItems.Should().HaveCount(1);
-    resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
-
+    ArgumentNullException.ThrowIfNull(resAuditItems);
+    
     var auditItem = resAuditItems.Single();
     // 17 fields + 1 Id
     auditItem.Columns.Should().HaveCount(18);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Id))).NewValue.Should().Be(item.Id);
+    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Id))).NewValue.Should().Be(itemId);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.IntNotNull))).NewValue.Should().Be(item.IntNotNull);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.IntNull))).NewValue.Should().Be(item.IntNull);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.BigIntNotNull))).NewValue.Should().Be(item.BigIntNotNull);

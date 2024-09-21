@@ -1,4 +1,5 @@
 ﻿using ACore.Base.CQRS.Models.Results;
+using ACore.Extensions;
 using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages;
@@ -15,10 +16,15 @@ public class SettingsDbSaveHandler(IStorageResolver storageResolver, IOptions<AC
 
     foreach (var storage in storageResolver.WriteStorages<ISettingsDbModuleStorage>())
     {
-        allTask.Add(new SaveHandlerData<string>(request.Key, storage, storage.Setting_SaveAsync(request.Key, request.Value, request.IsSystem)));
+      allTask.Add(new SaveHandlerData<string>(request.Key, storage, storage.Setting_SaveAsync(request.Key, request.Value, request.IsSystem)));
     }
 
     await Task.WhenAll(allTask.Select(e => e.Task));
-    return DbSaveResult.SuccessWithData(allTask, serverOptions.Value.ACoreOptions.SaltForHash);
+    return DbSaveResult.SuccessWithValues(allTask.ToDictionary(
+      k => k.Storage.StorageDefinition.Type,
+      v => new DbSaveResultData(
+        v.Entity,
+        v.WithHash ? v.Entity.HashObject(serverOptions.Value.ACoreOptions.SaltForHash) : null
+      )));
   }
 }

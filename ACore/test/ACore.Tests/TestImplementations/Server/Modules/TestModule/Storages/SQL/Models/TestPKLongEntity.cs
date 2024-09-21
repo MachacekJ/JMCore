@@ -13,7 +13,7 @@ internal class TestPKLongEntity : PKLongEntity
   [MaxLength(200)]
   public string Name { get; set; } = string.Empty;
 
-  public static TestPKLongEntity Create(TestPKLongAuditData data)
+  public static TestPKLongEntity Create(TestPKLongData data)
   {
     var en = new TestPKLongEntity();
     en.CopyPropertiesFrom(data);

@@ -15,15 +15,16 @@ using MediatR;
 
 namespace ACore.Tests.Server.Modules.AuditModule.Helpers;
 
-public static class AuditCRUDHelper
+public static class AuditCRUDTestHelper
 {
   private static readonly DateTime TestDateTime = DateTime.UtcNow;
   private const string TestName = "AuditTest";
+  private const string TestNameUpdate = "AuditTestUpdate";
+  const string TestAuditEntityName = nameof(TestAuditEntity);
+  const string TestNoAuditEntityName = nameof(TestNoAuditEntity);
 
   public static async Task NoAuditAsyncTest(IMediator mediator, Func<string, string> getTableName)
   {
-    const string entityName = nameof(TestNoAuditEntity);
-
     // Arrange
     var item = new TestNoAuditData(TestName)
     {
@@ -35,16 +36,14 @@ public static class AuditCRUDHelper
 
     // Assert
     var allData = (await mediator.Send(new TestNoAuditGetQuery())).ResultValue;
-    var itemId = AuditAssertHelpers.AssertSinglePrimaryKeyWithResult<TestNoAuditData, int>(result, allData);
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestNoAuditEntity, int>(getTableName(entityName), itemId))).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestNoAuditData, int>(result, allData);
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestNoAuditEntity, int>(getTableName(TestNoAuditEntityName), itemId))).ResultValue;
 
     resAuditItems.Should().HaveCount(0);
   }
 
   public static async Task AddItemAsyncTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
-    const string entityName = nameof(TestAuditEntity);
-
     // Arrange
     var item = new TestAuditData<int>
     {
@@ -59,8 +58,8 @@ public static class AuditCRUDHelper
 
     // Assert.
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
-    var itemId = AuditAssertHelpers.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(entityName), itemId))).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
 
     resAuditItems.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(resAuditItems);
@@ -68,16 +67,20 @@ public static class AuditCRUDHelper
     resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
 
     var auditItem = resAuditItems.Single();
-    auditItem.Columns.Should().HaveCount(3);
+    auditItem.Columns.Should().HaveCount(6);
     auditItem.Columns.All(c => c.IsChange).Should().Be(true);
 
-    var aid = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Id)));
-    var aName = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Name)));
-    var aCreated = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Created)));
+    var noAuditableColumn = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NotAuditableColumn)));
+    var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Id)));
+    var aName = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Name)));
+    var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
 
+    noAuditableColumn.Should().BeNull();
+    
     aid.Should().NotBeNull();
     aName.Should().NotBeNull();
     aName?.NewValue.Should().NotBeNull();
+    
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.NewValue.Should().NotBeNull();
@@ -90,17 +93,12 @@ public static class AuditCRUDHelper
 
   public static async Task UpdateItemAsyncTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
-    var testDateTime = DateTime.UtcNow;
-    var testNameOld = "AuditTest";
-    var testNameNew = "AuditTestNew";
-    var entityName = nameof(TestAuditEntity);
-
     // Action.
-    var item = new TestAuditData<int>()
+    var item = new TestAuditData<int>
     {
-      Created = testDateTime,
-      Name = testNameOld,
-      NullValue = testNameNew,
+      Created = TestDateTime,
+      Name = TestName,
+      NullValue = TestName,
       NullValue2 = null,
       NotAuditableColumn = "Audit"
     };
@@ -109,18 +107,18 @@ public static class AuditCRUDHelper
     var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
 
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
-    var itemId = AuditAssertHelpers.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
 
     item.Id = itemId;
-    item.Name = testNameNew;
+    item.Name = TestNameUpdate;
     item.NullValue = null;
-    item.NullValue2 = testNameNew;
+    item.NullValue2 = TestNameUpdate;
     
     // Update
     await mediator.Send(new TestAuditSaveCommand<int>(item));
 
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(entityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
@@ -130,12 +128,12 @@ public static class AuditCRUDHelper
     // only Name was changed
     auditItem.Columns.Should().HaveCount(6);
 
-    var aid = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Id)));
-    var aName = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Name)));
-    var aCreated = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.Created)));
-    var aNullValue = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue)));
-    var aNullValue2 = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue2)));
-    var aNullValue3 = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditEntity.NullValue3)));
+    var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Id)));
+    var aName = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Name)));
+    var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
+    var aNullValue = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue)));
+    var aNullValue2 = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue2)));
+    var aNullValue3 = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue3)));
 
     aid.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aid);
@@ -146,27 +144,27 @@ public static class AuditCRUDHelper
     aName.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aName);
     aName.IsChange.Should().BeTrue();
-    aName.OldValue.Should().NotBeNull();
-    aName.NewValue.Should().Be(testNameNew);
+    aName.OldValue.Should().Be(TestName);
+    aName.NewValue.Should().Be(TestNameUpdate);
     
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.IsChange.Should().BeFalse();
-    aCreated.OldValue.Should().NotBeNull();
+    aCreated.OldValue.Should().Be(TestDateTime.Ticks);
     aCreated.NewValue.Should().BeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
     
     aNullValue.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue);
     aNullValue.IsChange.Should().BeTrue();
-    aNullValue.OldValue.Should().Be(testNameNew);
+    aNullValue.OldValue.Should().Be(TestName);
     aNullValue.NewValue.Should().BeNull();
     
     aNullValue2.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue2);
     aNullValue2.IsChange.Should().BeTrue();
     aNullValue2.OldValue.Should().BeNull();
-    aNullValue2.NewValue.Should().Be(testNameNew);
+    aNullValue2.NewValue.Should().Be(TestNameUpdate);
     
     aNullValue3.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue3);
@@ -177,50 +175,72 @@ public static class AuditCRUDHelper
 
   public static async Task DeleteItemTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
-    var testDateTimeOld = DateTime.UtcNow;
-    var testNameOld = "AuditTest";
-    var entityName = nameof(TestAuditEntity);
-
     // Arrange.
-    var item = new TestAuditData<int>()
+    var item = new TestAuditData<int>
     {
-      Created = testDateTimeOld,
-      Name = testNameOld,
-      NotAuditableColumn = "Audit"
+      Created = TestDateTime,
+      Name = TestName,
+      NotAuditableColumn = "Audit",
+      NullValue = TestName
     };
 
-    var res = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
-    ArgumentNullException.ThrowIfNull(res);
-    var itemId = (int)res.ReturnedValues.First().Value.PK;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
 
     // Action.
-    var res2 = await mediator.Send(new TestAuditDeleteCommand<int>(itemId));
-
+    var resultDelete = await mediator.Send(new TestAuditDeleteCommand<int>(itemId));
+    
     // Assert.
-    res2.IsSuccess.Should().Be(true);
-
-    var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
-    allData.Should().HaveCount(0);
-
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(entityName), itemId))).ResultValue;
+    resultDelete.IsSuccess.Should().BeTrue();
+    
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
 
 
     var auditItem = resAuditItems.Last();
-    auditItem.Columns.Should().HaveCount(3);
-
-    var aid = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditData<int>.Id)));
-    var aName = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditData<int>.Name)));
-    var aCreated = auditItem.GetColumn(getColumnName(entityName, nameof(TestAuditData<int>.Created)));
+    auditItem.Columns.Should().HaveCount(6);
+    auditItem.Columns.All(c => c.IsChange).Should().Be(true);
+    
+    var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Id)));
+    var aName = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Name)));
+    var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
+    var aNullValue = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue)));
+    var aNullValue2 = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue2)));
+    var aNullValue3 = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NullValue3)));
 
     aid.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aid);
+    aid.OldValue.Should().Be(itemId);
+    aid.NewValue.Should().BeNull();
+    aid.DataType.ToLower().Should().NotContain("string");
+    
     aName.Should().NotBeNull();
-    aName!.OldValue.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aName);
+    aName.OldValue.Should().Be(TestName);
     aName.NewValue.Should().BeNull();
+    
     aCreated.Should().NotBeNull();
-    aCreated!.OldValue.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aCreated);
+    aCreated.OldValue.Should().Be(TestDateTime.Ticks);
     aCreated.NewValue.Should().BeNull();
+    aCreated.DataType.ToLower().Should().NotContain("string");
+    
+    aNullValue.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue);
+    aNullValue.OldValue.Should().Be(TestName);
+    aNullValue.NewValue.Should().BeNull();
+    
+    aNullValue2.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue2);
+    aNullValue2.OldValue.Should().BeNull();
+    aNullValue2.NewValue.Should().BeNull();
+    
+    aNullValue3.Should().NotBeNull();
+    ArgumentNullException.ThrowIfNull(aNullValue3);
+    aNullValue3.OldValue.Should().BeNull();
+    aNullValue3.NewValue.Should().BeNull();
   }
 }

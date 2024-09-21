@@ -28,17 +28,6 @@ CREATE TABLE test_audit
 );
 "
             ];
-/*
- CREATE TABLE test_manual_audit
-(
-    test_manual_audit_id INT GENERATED ALWAYS AS IDENTITY
-        PRIMARY KEY,
-    name VARCHAR(50),
-    not_auditable_column VARCHAR(50),
-    created timestamp
-);
-*/
-
             return l;
         }
     }

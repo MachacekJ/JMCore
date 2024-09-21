@@ -17,7 +17,7 @@ public class DbSaveResult : Result
 {
   public ReadOnlyDictionary<StorageTypeEnum, DbSaveResultData> ReturnedValues { get; }
 
-  private static DbSaveResult SuccessWithValues(Dictionary<StorageTypeEnum, DbSaveResultData> pkValues) => new(pkValues);
+  public static DbSaveResult SuccessWithValues(Dictionary<StorageTypeEnum, DbSaveResultData> pkValues) => new(pkValues);
 
   public static DbSaveResult SuccessWithData(IEnumerable<SaveHandlerData> data, string saltForHash = "")
   {

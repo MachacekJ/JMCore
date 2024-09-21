@@ -23,7 +23,7 @@ public class TestAuditData<T>
     return d;
   }
   
-  internal static TestAuditData<T> Create<T>(TestAttributeAuditPKMongoEntity entity)
+  internal static TestAuditData<T> Create<T>(TestPKMongoEntity entity)
   {
     var d = new TestAuditData<T>();
     d.CopyPropertiesFrom(entity);

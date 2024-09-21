@@ -161,7 +161,7 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
     if (IsSubclassOfRawGeneric(typeof(PKMongoEntity), typeof(TEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKMongoEntity).Id == (ObjectId)Convert.ChangeType(id, typeof(ObjectId)));
 
-    throw new Exception("tyuyh thyh ghyj tyihndfbfdsf dtyhyjhghjkopohsg");
+    throw new Exception($"Unsupported type of primary key for entity '{typeof(TEntity).Name}.'");
   }
 
 
@@ -186,19 +186,17 @@ public abstract class AuditableDbContext(DbContextOptions options, IMediator med
 
   private static string GetEntityTypeName<T>()
   {
-    return typeof(T).FullName ?? throw new Exception("fgjtygh ioikj");
+    return typeof(T).FullName ?? throw new Exception($"{nameof(Type.FullName)} cannot be retrieved.");
   }
 
   private T GetIdValue<T>(object obj)
   {
     if (obj is PKEntity<T> intV)
     {
-      return (T)(Convert.ChangeType(intV.Id, typeof(T)) ?? throw new Exception("fdas piouy erwqghmnjk jisdf"));
+      return (T)(Convert.ChangeType(intV.Id, typeof(T)) ?? throw new Exception($"Cannot convert type of primary key '{intV.Id}' to type '{typeof(T).Name}'."));
     }
-
-
-    throw new Exception("fdsafsad fdsaghikojhbnmns ghdh tjh");
-    //obj.GetType().GetProperty("Id").GetValue(obj) ?? ;
+    
+    throw new Exception($"Primary key type '{typeof(T).Name}' is not supported for storage {Enum.GetName(StorageDefinition.Type)}.");
   }
 
   private void SetNewId<TEntity>(TEntity obj)

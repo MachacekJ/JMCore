@@ -20,7 +20,7 @@ namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mon
 /// Column name <see cref="ColumnAttribute"/> for saving in storage is defined e.g. <see cref="SQL.PG.DefaultNames"/>.
 /// </summary>
 [Auditable(1)]
-public class TestAttributeAuditPKMongoEntity: PKMongoEntity
+public class TestPKMongoEntity: PKMongoEntity
 {
 
   [MaxLength(50)]
@@ -35,9 +35,9 @@ public class TestAttributeAuditPKMongoEntity: PKMongoEntity
   [BsonElement("created")]
   public DateTime Created { get; set; }
   
-  public static TestAttributeAuditPKMongoEntity Create<T>(TestAuditData<T> data)
+  public static TestPKMongoEntity Create<T>(TestAuditData<T> data)
   {
-    var en = new TestAttributeAuditPKMongoEntity();
+    var en = new TestPKMongoEntity();
     en.CopyPropertiesFrom(data);
     return en;
   }

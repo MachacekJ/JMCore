@@ -17,9 +17,9 @@ namespace ACore.Server.Modules.AuditModule.Storage.SQL;
 internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<AuditSqlStorageImpl> logger)
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
-  public static CacheKey AuditColumnCacheKey(int tableId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditColumnEntity)), tableId.ToString());
-  public static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditUserEntity)), userId);
-  public static CacheKey AuditTableCacheKey(string tableName, string? schema, int version) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditTableEntity)), $"{tableName}-{schema ?? string.Empty}--{version}");
+  private static CacheKey AuditColumnCacheKey(int tableId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditColumnEntity)), tableId.ToString());
+  private static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditUserEntity)), userId);
+  private static CacheKey AuditTableCacheKey(string tableName, string? schema, int version) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditTableEntity)), $"{tableName}-{schema ?? string.Empty}--{version}");
 
   public override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override string ModuleName => nameof(IAuditStorageModule);
@@ -195,7 +195,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       missingColumnNamesInCache.Add(columnName.Key);
       // This message is also used in unit test.
       Logger.LogDebug("Missing value in cache:{GetAuditColumnIdAsync}:{keyCache}:{columnName}",
-        nameof(GetAuditColumnIdAsync), keyCache, columnName);
+        nameof(GetAuditColumnIdAsync), keyCache, columnName.Key);
     }
 
     if (missingColumnNamesInCache.Count == 0)

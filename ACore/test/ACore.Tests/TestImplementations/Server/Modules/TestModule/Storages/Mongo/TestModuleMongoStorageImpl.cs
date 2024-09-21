@@ -19,13 +19,10 @@ internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModu
 
   public TestModuleMongoStorageImpl(DbContextOptions<TestModuleMongoStorageImpl> options, IMediator mediator, ILogger<TestModuleMongoStorageImpl> logger) : base(options, mediator, logger)
   {
-    RegisterDbSet(TestAttributeAudits);
+    RegisterDbSet(TestAudits);
   }
 
-  internal DbSet<TestAttributeAuditPKMongoEntity> TestAttributeAudits { get; set; }
-
-  // public DbSet<TestRootCategory> TestParents { get; set; }
-  //public DbSet<TestCategory> TestChildren { get; set; }
+  internal DbSet<TestPKMongoEntity> TestAudits { get; set; }
 
   public async Task Save<TEntity, TPK>(TEntity data, string? hashToCheck = null)
     where TEntity : class
@@ -40,12 +37,7 @@ internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModu
   {
     var res = typeof(TEntity) switch
     {
-      // { } entityType when entityType == typeof(TestEntity) => Tests as DbSet<TEntity>,
-      { } entityType when entityType == typeof(TestAttributeAuditPKMongoEntity) => TestAttributeAudits as DbSet<TEntity>,
-      // { } entityType when entityType == typeof(TestPKGuidEntity) => TestPKGuid as DbSet<TEntity>,
-      // { } entityType when entityType == typeof(TestManualAuditEntity) => TestManualAudits as DbSet<TEntity>,
-      // { } entityType when entityType == typeof(TestPKStringEntity) => TestPKString as DbSet<TEntity>,
-      // { } entityType when entityType == typeof(TestValueTypeEntity) => TestValueTypes as DbSet<TEntity>,
+      { } entityType when entityType == typeof(TestPKMongoEntity) => TestAudits as DbSet<TEntity>,
       _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
     };
     return res ?? throw new ArgumentNullException(nameof(res), @"DbSet function returned null value.");
@@ -54,9 +46,9 @@ internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModu
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    modelBuilder.Entity<TestAttributeAuditPKMongoEntity>().ToCollection(DefaultNames.ObjectNameMapping[nameof(TestAttributeAuditPKMongoEntity)].TableName);
-    modelBuilder.Entity<TestAttributeAuditPKMongoEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestAttributeAuditPKMongoEntity>(builder =>
+    modelBuilder.Entity<TestPKMongoEntity>().ToCollection(DefaultNames.ObjectNameMapping[nameof(TestPKMongoEntity)].TableName);
+    modelBuilder.Entity<TestPKMongoEntity>().HasKey(p => p.Id);
+    modelBuilder.Entity<TestPKMongoEntity>(builder =>
       builder.Property(entity => entity.Id).HasElementName("_id")
     );
   }

@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Get;
 
-internal class TestPKLongAuditGetHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestPKLongAuditGetQuery, Result<TestPKLongAuditData[]>>(storageResolver)
+internal class TestPKLongAuditGetHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestPKLongAuditGetQuery, Result<TestPKLongData[]>>(storageResolver)
 {
-  public override async Task<Result<TestPKLongAuditData[]>> Handle(TestPKLongAuditGetQuery request, CancellationToken cancellationToken)
+  public override async Task<Result<TestPKLongData[]>> Handle(TestPKLongAuditGetQuery request, CancellationToken cancellationToken)
   {
     var st = ReadTestContext();
     var db = st.DbSet<TestPKLongEntity>() ?? throw new Exception();
     var allItems = await db.ToArrayAsync(cancellationToken: cancellationToken);
-    var rr = allItems.Select(TestPKLongAuditData.Create).ToArray();
+    var rr = allItems.Select(TestPKLongData.Create).ToArray();
     return Result.Success(rr);
   }
 }

@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
+// ReSharper disable EntityFramework.ModelValidation.UnlimitedStringLength
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 

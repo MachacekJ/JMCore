@@ -1,7 +1,5 @@
 using System.Text.Json;
-using ACore.Extensions;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
-using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Storages.CQRS;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
@@ -44,10 +42,10 @@ public static class AuditAllDataTypesTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestValueTypeSaveHashCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestValueTypeSaveCommand(item)) as DbSaveResult;
     // Assert
     
-    var allData = (await mediator.Send(new TestValueTypeGetQuery(false))).ResultValue;
+    var allData = (await mediator.Send(new TestValueTypeGetQuery())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestValueTypeData, int>(result, allData);
     itemId.Should().BeGreaterThan(0);
 

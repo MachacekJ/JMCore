@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models.PK;
 

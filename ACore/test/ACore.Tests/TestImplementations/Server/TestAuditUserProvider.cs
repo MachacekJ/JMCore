@@ -1,6 +1,6 @@
 ﻿using ACore.Server.Modules.AuditModule.UserProvider;
 
-namespace ACore.Tests.Server.Modules.AuditModule;
+namespace ACore.Tests.TestImplementations.Server;
 
 public enum TestAuditUserTypeEnum
 {

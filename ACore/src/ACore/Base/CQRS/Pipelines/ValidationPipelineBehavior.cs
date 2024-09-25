@@ -1,5 +1,4 @@
 using ACore.Base.CQRS.Helpers;
-using ACore.Base.CQRS.Models;
 using ACore.Base.CQRS.Models.Results;
 using ACore.Base.CQRS.Models.Results.Validation;
 using FluentValidation;

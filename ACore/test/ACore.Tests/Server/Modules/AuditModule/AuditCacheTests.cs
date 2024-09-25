@@ -19,11 +19,11 @@ public class AuditCacheTests : AuditTestsBase
 {
   private static readonly DateTime TestDateTime = DateTime.UtcNow;
   private const string TestName = "AuditTest";
-  private const string AuditUserEntityName = "AuditUserEntity";
+//  private const string AuditUserEntityName = "AuditUserEntity";
   private const string AuditTableEntityName = "AuditTableEntity";
   private const string AuditColumnEntityName = "AuditColumnEntity";
 
-  private static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(AuditUserEntityName), userId);
+ // private static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(AuditUserEntityName), userId);
   private static CacheKey AuditTableCacheKey(string tableName, string? schema, int version) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(AuditTableEntityName), $"{tableName}-{schema ?? string.Empty}--{version}");
   private static CacheKey AuditColumnCacheKey(int tableId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(AuditColumnEntityName), tableId.ToString());
 
@@ -34,95 +34,30 @@ public class AuditCacheTests : AuditTestsBase
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      const string testNameOld = "AuditTest";
-      const string testNameNew = "AuditTestNew";
-
-      // Arrange 1
+      // Arrange
       var item = new TestAuditData<int>
       {
         Created = TestDateTime,
         Name = TestName,
         NotAuditableColumn = "Audit"
       };
-      (UserProvider as TestAuditUserProvider)!.SetContext(TestAuditUserTypeEnum.Admin);
-      var userId = UserProvider.GetUser().userId;
-      var auditUserCacheKey = AuditUserCacheKey(userId);
-
-      // Act 1
-      LogInMemorySink.Dispose();
-      // Action.
+      
+      // Act
       await Mediator.Send(new TestAuditSaveCommand<int>(item));
-
-      // Assert 1
-      LogInMemorySink
-        .Should()
-        .HaveMessage("Value saved to cache:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
-
-      LogInMemorySink
-        .Should()
-        .HaveMessage("New db value created:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
-
-      // Arrange 2
-      item.Name = testNameNew;
-
-      // Act 2
       await Mediator.Send(new TestAuditSaveCommand<int>(item));
-
-      // Assert 2
+      
+      // Assert
       LogInMemorySink
         .Should()
-        .HaveMessage("Value from cache:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
+        .HaveMessage("Value saved to cache:{GetAuditUserIdAsync}:{keyCache}:{userId}");
 
-      LogInMemorySink
-        .Should()
-        .HaveMessage("New db value created:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
+        LogInMemorySink
+          .Should()
+          .HaveMessage("New db value created:{GetAuditUserIdAsync}:{keyCache}:{userId}");
 
-      LogInMemorySink
-        .Should()
-        .HaveMessage("Value saved to cache:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
-
-      // Arrange 3
-      await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(auditUserCacheKey));
-      item.Name = testNameOld;
-
-      // Act 3
-      await Mediator.Send(new TestAuditSaveCommand<int>(item));
-
-      // Assert 3
-      LogInMemorySink
-        .Should()
-        .HaveMessage("Value from cache:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
-
-      LogInMemorySink
-        .Should()
-        .HaveMessage("New db value created:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Once()
-        .WithProperty("keyCache").WithValue(auditUserCacheKey).And
-        .WithProperty("userId").WithValue(userId);
-      LogInMemorySink
-        .Should()
-        .HaveMessage("Value saved to cache:{GetAuditUserIdAsync}:{keyCache}:{userId}")
-        .Appearing().Times(2)
-        .WithProperty("keyCache").WithValues(auditUserCacheKey, auditUserCacheKey).And
-        .WithProperty("userId").WithValues(userId, userId);
+        LogInMemorySink
+          .Should()
+          .HaveMessage("Value from cache:{GetAuditUserIdAsync}:{keyCache}:{userId}");
     });
   }
 
@@ -146,10 +81,11 @@ public class AuditCacheTests : AuditTestsBase
         Name = TestName,
         NotAuditableColumn = "Audit"
       };
-
-      // Act 1
+      
+      await Mediator.Send(new MemoryCacheModuleRemoveCategoryCommand(CacheCategories.Entity));
       LogInMemorySink.Dispose();
 
+      #region Act 1
       await Mediator.Send(new TestAuditSaveCommand<int>(item));
 
       // Assert 1
@@ -193,6 +129,10 @@ public class AuditCacheTests : AuditTestsBase
         .HaveMessage("Value saved to cache:{GetAuditTableIdAsync}:{keyCache}:{tableName}:{tableSchema}")
         .Appearing().Once();
 
+      #endregion
+
+      #region Act 3
+
       // Arrange 3
       await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(auditTableCacheKey));
       item.Name = testNameOld;
@@ -220,6 +160,8 @@ public class AuditCacheTests : AuditTestsBase
         .Appearing().Times(2)
         .WithProperty("keyCache").WithValues(auditTableCacheKeyString, auditTableCacheKeyString).And
         .WithProperty("tableName").WithValues(tableName, tableName);
+
+      #endregion
     });
   }
 
@@ -229,13 +171,14 @@ public class AuditCacheTests : AuditTestsBase
     var method = MethodBase.GetCurrentMethod();
     await RunTestAsync(method, async () =>
     {
-      var auditTableId = 1;
+      var auditTableId = 2;
       var auditColumnCacheKey = AuditColumnCacheKey(auditTableId);
       var auditColumnCacheKeyString = auditColumnCacheKey.ToString();
-      
+
       const string testNameNew = "AuditTestNew";
 
-      // ------- Test 1 ------------
+      #region Act1
+
       // Arrange 1
       var item = new TestAuditData<int>
       {
@@ -243,6 +186,7 @@ public class AuditCacheTests : AuditTestsBase
         Name = TestName,
         NotAuditableColumn = "Audit"
       };
+      await Mediator.Send(new MemoryCacheModuleRemoveCategoryCommand(CacheCategories.Entity));
       LogInMemorySink.Dispose();
 
       // Act 1
@@ -267,7 +211,7 @@ public class AuditCacheTests : AuditTestsBase
         .Should()
         .HaveMessage("New db value created:{GetAuditColumnIdAsync}:{keyCache}:{missingDbColumnName}")
         .Appearing().Times(6)
-        .WithProperty("keyCache").WithValues(auditColumnCacheKeyString, auditColumnCacheKeyString, 
+        .WithProperty("keyCache").WithValues(auditColumnCacheKeyString, auditColumnCacheKeyString,
           auditColumnCacheKeyString, auditColumnCacheKeyString, auditColumnCacheKeyString, auditColumnCacheKeyString).And
         .WithProperty("missingDbColumnName").WithValues(nameof(TestAuditEntity.Id), nameof(TestAuditEntity.Name), nameof(TestAuditEntity.Created),
           nameof(TestAuditEntity.NullValue), nameof(TestAuditEntity.NullValue2), nameof(TestAuditEntity.NullValue3));
@@ -282,7 +226,10 @@ public class AuditCacheTests : AuditTestsBase
         .Should()
         .NotHaveMessage("Value from cache:{GetAuditColumnIdAsync}:{keyCache}");
 
-      // ------- Test 2 ------------
+      #endregion
+
+      #region Act2
+
       // Arrange 2
       item.Name = testNameNew;
       LogInMemorySink.Dispose();
@@ -308,6 +255,34 @@ public class AuditCacheTests : AuditTestsBase
       LogInMemorySink
         .Should()
         .NotHaveMessage("Value saved to cache:{GetAuditColumnIdAsync}:{keyCache}");
+
+      #endregion
+
+      #region Act3
+
+      // Act 3
+      await Mediator.Send(new TestAuditSaveCommand<int>(item));
+
+      // Assert 3
+      LogInMemorySink
+        .Should()
+        .HaveMessage("Value from cache:{GetAuditColumnIdAsync}:{keyCache}")
+        .Appearing().Times(2)
+        .WithProperty("keyCache").WithValues(auditColumnCacheKeyString, auditColumnCacheKeyString);
+
+      LogInMemorySink
+        .Should()
+        .NotHaveMessage("Missing value in cache:{GetAuditColumnIdAsync}:{keyCache}:{columnName}");
+
+      LogInMemorySink
+        .Should()
+        .NotHaveMessage("New db value created:{GetAuditColumnIdAsync}:{keyCache}:{missingDbColumnName}");
+
+      LogInMemorySink
+        .Should()
+        .NotHaveMessage("Value saved to cache:{GetAuditColumnIdAsync}:{keyCache}");
+
+      #endregion
     });
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Security.Permissions;
 using System.Text.Json;
 
 namespace ACore.Extensions;
@@ -35,8 +36,11 @@ public static class ObjectExtensionMethods
     }
   }
 
+  public static PropertyInfo? GetProperty(this object self, string propertyName)
+    => self.GetType().GetProperty(propertyName);
+
   public static object? PropertyValue(this object self, string propertyName)
-    => self.GetType().GetProperty(propertyName)?.GetValue(self);
+    => GetProperty(self, propertyName)?.GetValue(self);
 
   public static string HashObject(this object? text, string salt = "")
     => text == null ? string.Empty : JsonSerializer.Serialize(text).HashString(salt);
@@ -44,9 +48,9 @@ public static class ObjectExtensionMethods
   public static IEnumerable<(string propName, string dataType, object? value)> AllPropertiesValues(this object self)
     => GetProperties(self).Select(e => new ValueTuple<string, string, object?>(e.Name, FullName(e.PropertyType), e.GetValue(self)));
 
-  private static PropertyInfo[] GetProperties(object obj)
+  public static PropertyInfo[] GetProperties(object obj)
     => obj.GetType().GetProperties();
 
-  private static string FullName(Type self)
+  public static string FullName(Type self)
     => self.FullName ?? throw new Exception($"{nameof(Type.FullName)} is null for datatype name {self.Name}");
 }

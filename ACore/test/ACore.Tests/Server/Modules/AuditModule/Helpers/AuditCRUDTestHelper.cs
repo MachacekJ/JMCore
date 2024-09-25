@@ -32,11 +32,11 @@ public static class AuditCRUDTestHelper
     };
 
     // Action
-    var result = (await mediator.Send(new TestNoAuditSaveCommand(item))) as DbSaveResult;
+    var result = (await mediator.Send(new TestNoAuditSaveCommand(item, null))) as DbSaveResult;
 
     // Assert
     var allData = (await mediator.Send(new TestNoAuditGetQuery())).ResultValue;
-    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestNoAuditData, int>(result, allData);
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestNoAuditData, int>(result, allData?.Values.ToArray());
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestNoAuditEntity, int>(getTableName(TestNoAuditEntityName), itemId))).ResultValue;
 
     resAuditItems.Should().HaveCount(0);
@@ -76,16 +76,16 @@ public static class AuditCRUDTestHelper
     var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
 
     noAuditableColumn.Should().BeNull();
-    
+
     aid.Should().NotBeNull();
     aName.Should().NotBeNull();
     aName?.NewValue.Should().NotBeNull();
-    
+
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.NewValue.Should().NotBeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
-    
+
     aid?.NewValue.Should().Be(itemId);
     aName?.NewValue.Should().Be(TestName);
     new DateTime(Convert.ToInt64(aCreated.NewValue)).Should().Be(TestDateTime);
@@ -113,7 +113,7 @@ public static class AuditCRUDTestHelper
     item.Name = TestNameUpdate;
     item.NullValue = null;
     item.NullValue2 = TestNameUpdate;
-    
+
     // Update
     await mediator.Send(new TestAuditSaveCommand<int>(item));
 
@@ -124,7 +124,7 @@ public static class AuditCRUDTestHelper
     resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
 
 
-    var auditItem = resAuditItems.Single(a=>a.EntityState == AuditStateEnum.Modified);
+    var auditItem = resAuditItems.Single(a => a.EntityState == AuditStateEnum.Modified);
     // only Name was changed
     auditItem.Columns.Should().HaveCount(6);
 
@@ -140,37 +140,73 @@ public static class AuditCRUDTestHelper
     aid.IsChange.Should().BeFalse();
     aid.OldValue.Should().Be(itemId);
     aid.NewValue.Should().BeNull();
-    
+
     aName.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aName);
     aName.IsChange.Should().BeTrue();
     aName.OldValue.Should().Be(TestName);
     aName.NewValue.Should().Be(TestNameUpdate);
-    
+
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.IsChange.Should().BeFalse();
     aCreated.OldValue.Should().Be(TestDateTime.Ticks);
     aCreated.NewValue.Should().BeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
-    
+
     aNullValue.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue);
     aNullValue.IsChange.Should().BeTrue();
     aNullValue.OldValue.Should().Be(TestName);
     aNullValue.NewValue.Should().BeNull();
-    
+
     aNullValue2.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue2);
     aNullValue2.IsChange.Should().BeTrue();
     aNullValue2.OldValue.Should().BeNull();
     aNullValue2.NewValue.Should().Be(TestNameUpdate);
-    
+
     aNullValue3.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue3);
     aNullValue3.IsChange.Should().BeFalse();
     aNullValue3.OldValue.Should().BeNull();
     aNullValue3.NewValue.Should().BeNull();
+  }
+
+  public static async Task UpdateItemWithoutChangesAsyncTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
+  {
+    // Action.
+    var item = new TestAuditData<int>
+    {
+      Created = TestDateTime,
+      Name = TestName,
+      NullValue = TestName,
+      NullValue2 = null,
+      NotAuditableColumn = "Audit"
+    };
+
+    // Act.
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+
+    var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
+
+    // Update
+    item.Id = itemId;
+    await mediator.Send(new TestAuditSaveCommand<int>(item));
+
+
+    // Assert.
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    ArgumentNullException.ThrowIfNull(resAuditItems);
+    resAuditItems.Should().HaveCount(2);
+    resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
+
+
+    var auditItem = resAuditItems.Single(a => a.EntityState == AuditStateEnum.Modified);
+    // only Name was changed
+    auditItem.Columns.Should().HaveCount(6);
+    auditItem.Columns.All(c => c.IsChange).Should().Be(false);
   }
 
   public static async Task DeleteItemTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
@@ -190,10 +226,10 @@ public static class AuditCRUDTestHelper
 
     // Action.
     var resultDelete = await mediator.Send(new TestAuditDeleteCommand<int>(itemId));
-    
+
     // Assert.
     resultDelete.IsSuccess.Should().BeTrue();
-    
+
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
@@ -203,7 +239,7 @@ public static class AuditCRUDTestHelper
     var auditItem = resAuditItems.Last();
     auditItem.Columns.Should().HaveCount(6);
     auditItem.Columns.All(c => c.IsChange).Should().Be(true);
-    
+
     var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Id)));
     var aName = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Name)));
     var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
@@ -216,28 +252,28 @@ public static class AuditCRUDTestHelper
     aid.OldValue.Should().Be(itemId);
     aid.NewValue.Should().BeNull();
     aid.DataType.ToLower().Should().NotContain("string");
-    
+
     aName.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aName);
     aName.OldValue.Should().Be(TestName);
     aName.NewValue.Should().BeNull();
-    
+
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.OldValue.Should().Be(TestDateTime.Ticks);
     aCreated.NewValue.Should().BeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
-    
+
     aNullValue.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue);
     aNullValue.OldValue.Should().Be(TestName);
     aNullValue.NewValue.Should().BeNull();
-    
+
     aNullValue2.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue2);
     aNullValue2.OldValue.Should().BeNull();
     aNullValue2.NewValue.Should().BeNull();
-    
+
     aNullValue3.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aNullValue3);
     aNullValue3.OldValue.Should().BeNull();

@@ -14,7 +14,7 @@ namespace ACore.Server.Modules.AuditModule.Storage.Mongo;
 internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStorageImpl> options, IMediator mediator, ILogger<AuditModuleMongoStorageImpl> logger)
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
-  public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
   protected override string ModuleName => nameof(IAuditStorageModule);
 
@@ -70,14 +70,14 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     var ll = new List<AuditEntryItem>();
     foreach (var auditMongoEntity in valuesTable)
     {
-      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState, auditMongoEntity.User?.Id);
+      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState, auditMongoEntity.User.Id);
       aa.Created = auditMongoEntity.Created;
 
       if (auditMongoEntity.Columns != null)
       {
         foreach (var col in auditMongoEntity.Columns)
         {
-          var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity._id}'");
+          var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity.Id}'");
           aa.AddColumnEntry(col.Property, col.DataType, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
         }
       }

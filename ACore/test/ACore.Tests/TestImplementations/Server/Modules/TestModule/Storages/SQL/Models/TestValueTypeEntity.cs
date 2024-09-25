@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
@@ -40,13 +41,7 @@ internal class TestValueTypeEntity : PKIntEntity
 
   [MaxLength(100)]
   public string VarChar2 { get; set; } = string.Empty;
-  
+
   public static TestValueTypeEntity Create(TestValueTypeData data)
-  {
-    var en = new TestValueTypeEntity();
-    en.CopyPropertiesFrom(data);
-    if (data.HashToCheck != null)
-      throw new NotImplementedException();
-    return en;
-  }
+    => ToEntity<TestValueTypeEntity>(data);
 }

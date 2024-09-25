@@ -7,9 +7,6 @@ public class ICAMModuleOptionsBuilder: ModuleOptionsBuilder
   public static ICAMModuleOptionsBuilder Empty() => new();
   public ICAMModuleOptions Build()
   {
-    return new ICAMModuleOptions(IsActive)
-    {
-      
-    };
+    return new ICAMModuleOptions(IsActive);
   }
 }

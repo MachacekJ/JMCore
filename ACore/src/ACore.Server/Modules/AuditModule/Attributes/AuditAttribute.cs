@@ -1,4 +1,4 @@
-﻿namespace ACore.Server.Modules.AuditModule.Configuration;
+﻿namespace ACore.Server.Modules.AuditModule.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class AuditableAttribute(int version) : Attribute

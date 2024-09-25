@@ -1,6 +1,7 @@
 ﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
 using System.ComponentModel.DataAnnotations;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Models;
@@ -14,10 +15,6 @@ internal class TestPKLongEntity : PKLongEntity
   public string Name { get; set; } = string.Empty;
 
   public static TestPKLongEntity Create(TestPKLongData data)
-  {
-    var en = new TestPKLongEntity();
-    en.CopyPropertiesFrom(data);
-    return en;
-  }
+    => ToEntity<TestPKLongEntity>(data);
 }
 

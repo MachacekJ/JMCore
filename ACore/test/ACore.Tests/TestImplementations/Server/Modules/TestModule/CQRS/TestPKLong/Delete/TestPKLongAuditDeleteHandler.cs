@@ -1,5 +1,4 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Storages;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 
@@ -13,7 +12,7 @@ internal class TestPKLongAuditDeleteHandler(IStorageResolver storageResolver) : 
     
     foreach (var storage in WriteTestContexts())
     {
-      var t2 = storage.Delete<TestPKLongEntity, long>(request.Id);
+      var t2 = storage.DeleteTestEntity<TestPKLongEntity, long>(request.Id);
       allTask.Add(t2);
     }
     

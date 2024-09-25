@@ -1,5 +1,4 @@
 ﻿using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
-using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Scripts;
 using MediatR;
@@ -10,7 +9,7 @@ namespace ACore.Server.Modules.AuditModule.Storage.SQL.PG;
 
 internal class AuditPGEfStorageImpl(DbContextOptions<AuditPGEfStorageImpl> options, IMediator mediator, ILogger<AuditSqlStorageImpl> logger) : AuditSqlStorageImpl(options, mediator, logger)
 {
-  public override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
   
   protected override void OnModelCreating(ModelBuilder modelBuilder)

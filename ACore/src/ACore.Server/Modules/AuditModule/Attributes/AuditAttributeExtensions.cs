@@ -1,8 +1,6 @@
-﻿using ACore.Server.Modules.AuditModule.Configuration;
+﻿namespace ACore.Server.Modules.AuditModule.Attributes;
 
-namespace ACore.Server.Modules.AuditModule.Extensions;
-
-internal static class AuditDbExtensions
+internal static class AuditAttributeExtensions
 {
   internal static AuditableAttribute? IsAuditable(this Type entityEntry)
   {

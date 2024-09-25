@@ -10,7 +10,7 @@ internal class TestValueTypeGetHandler(IStorageResolver storageResolver) : TestM
 {
   public override async Task<Result<TestValueTypeData[]>> Handle(TestValueTypeGetQuery request, CancellationToken cancellationToken)
   {
-    var db = ReadTestContext().DbSet<TestValueTypeEntity>() ?? throw new Exception();
+    var db = ReadTestContext().DbSet<TestValueTypeEntity, int>() ?? throw new Exception();
     var r= await db
       .Select(a => TestValueTypeData.Create(a))
       .ToArrayAsync(cancellationToken: cancellationToken);

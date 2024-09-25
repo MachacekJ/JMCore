@@ -1,5 +1,7 @@
+using Autofac;
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
+using ACore.Server.Configuration.CQRS.OptionsGet;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
@@ -59,6 +61,11 @@ public static class ACoreServerServiceExtensions
       await provider.UseAuditServiceModule();
   }
 
+  public static void ConfigureAutofacACoreServer(this ContainerBuilder containerBuilder)
+  {
+    containerBuilder.RegisterGeneric(typeof(AppOptionHandler<>)).AsImplementedInterfaces();
+  }
+  
   private static void ValidateDependencyInConfiguration(ACoreServerOptions aCoreServerOptions)
   {
     ValidateSettingsDbOptions(aCoreServerOptions);

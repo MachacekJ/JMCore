@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.PG;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
@@ -37,11 +37,7 @@ internal class TestAuditEntity: PKIntEntity
   public string NotAuditableColumn { get; set; } = string.Empty;
   
   public DateTime Created { get; set; }
-  
+
   public static TestAuditEntity Create<T>(TestAuditData<T> data)
-  {
-    var en = new TestAuditEntity();
-    en.CopyPropertiesFrom(data);
-    return en;
-  }
+    => ToEntity<TestAuditEntity>(data);
 }

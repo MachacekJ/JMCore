@@ -1,18 +1,12 @@
 using System.Reflection;
-using System.Text.Json;
-using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
-using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Storages.CQRS;
 using ACore.Tests.Server.Storages;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using FluentAssertions;
 using MediatR;
-using Serilog.Events;
 using Serilog.Sinks.InMemory;
-using Serilog.Sinks.InMemory.Assertions;
 using Xunit;
 
 namespace ACore.Tests.Server.Modules.TestModule;
@@ -57,18 +51,18 @@ public static class AuditValuesTHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestValueTypeSaveHashCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestValueTypeSaveCommand(item)) as DbSaveResult;
     
     // Assert
     ArgumentNullException.ThrowIfNull(result);
-    var allData = (await mediator.Send(new TestValueTypeGetQuery(true))).ResultValue;
+    var allData = (await mediator.Send(new TestValueTypeGetQuery())).ResultValue;
     ArgumentNullException.ThrowIfNull(allData);
     allData.Should().HaveCount(1);
     item = allData[0];
     item.VarChar2 = "test";
    
     
-    await mediator.Send(new TestValueTypeSaveHashCommand(item));
+    await mediator.Send(new TestValueTypeSaveCommand(item));
     
   }
 }

@@ -19,15 +19,21 @@ namespace ACore.Tests.Base;
 
 public abstract class TestsBase
 {
+  private  IMediator? _mediator;
   private ServiceCollection _services = new();
-  protected IConfigurationRoot Configuration { get; set; } = null!;
-  protected IMediator Mediator = null!;
-  protected TestData TestData { get; private set; } = null!;
+  private IConfigurationRoot? Configuration { get; set; }
+  protected IMediator Mediator
+  {
+    get => _mediator ?? throw new NullReferenceException();
+    private set => _mediator = value;
+  }
 
-  protected ILogger<TestsBase> Log { get; set; } = null!;
+  private TestData? TestData { get; set; }
+
+  private ILogger<TestsBase>? Log { get; set; }
   protected InMemorySink LogInMemorySink { get; set; } = new();
 
-  protected string RootDir { get; set; } = string.Empty;
+  private string RootDir { get; set; } = string.Empty;
 
   protected async Task RunTestAsync(MemberInfo? method, Func<Task> testCode)
   {
@@ -52,6 +58,7 @@ public abstract class TestsBase
     if (CheckTest() == false)
       return;
 
+    ArgumentNullException.ThrowIfNull(Log);
     Log.LogInformation("Start test Test {TestName}", TestData.TestName);
 
     try
@@ -109,7 +116,7 @@ public abstract class TestsBase
     var logDir = Path.Combine(RootDir, "Logs");
     var serilog = new LoggerConfiguration()
       .MinimumLevel.Verbose()
-      .WriteTo.File(Path.Combine(logDir, TestData.TestName) + ".txt", retainedFileTimeLimit: TimeSpan.FromDays(1), retainedFileCountLimit: 1)
+      .WriteTo.File(Path.Combine(logDir, TestData?.TestName ?? "unknownTestName") + ".txt", retainedFileTimeLimit: TimeSpan.FromDays(1), retainedFileCountLimit: 1)
       .WriteTo.Sink(LogInMemorySink)
       .WriteTo.InMemory(restrictedToMinimumLevel: LogEventLevel.Debug)
       .CreateLogger();
@@ -143,11 +150,8 @@ public abstract class TestsBase
 
   private bool CheckTest()
   {
-    if (string.IsNullOrEmpty(TestData.TestId))
+    if (string.IsNullOrEmpty(TestData?.TestId))
       throw new Exception("Test does not have id.");
-
-    // if ((TestData.TestEnvironmentType & TestConfig.TestType) == 0)
-    //     return false;
 
     return true;
   }

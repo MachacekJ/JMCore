@@ -31,7 +31,7 @@ public static class ResXLoader
                     {
                         ContextId = resx.ContextId,
                         Lcid = culture.LCID,
-                        MsgId = entry.Key.ToString()!,
+                        MsgId = entry.Key.ToString(),
                         Translation = entry.Value == null
                             ? string.Empty
                             : entry.Value.ToString()!,

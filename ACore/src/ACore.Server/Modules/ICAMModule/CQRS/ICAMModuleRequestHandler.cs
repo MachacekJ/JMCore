@@ -1,5 +1,4 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Models.Results;
 using MediatR;
 
 namespace ACore.Server.Modules.ICAMModule.CQRS;

@@ -1,11 +1,11 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Storages;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
 
@@ -17,13 +17,13 @@ public class TestAuditGetHandler<T>(IStorageResolver storageResolver)
     var st = ReadTestContext();
     if (st is TestModuleMongoStorageImpl)
     {
-      var dbMongo = st.DbSet<TestPKMongoEntity>() ?? throw new Exception();
+      var dbMongo = st.DbSet<TestPKMongoEntity, ObjectId>() ?? throw new Exception();
       var allItemsM = await dbMongo.ToArrayAsync(cancellationToken: cancellationToken);
       var r = allItemsM.Select(TestAuditData<T>.Create<T>).ToArray();
       return Result.Success(r);
     }
 
-    var db = st.DbSet<TestAuditEntity>() ?? throw new Exception();
+    var db = st.DbSet<TestAuditEntity, int>() ?? throw new Exception();
     var allItems = await db.ToArrayAsync(cancellationToken: cancellationToken);
     var rr = allItems.Select(TestAuditData<T>.Create<T>).ToArray();
     return Result.Success(rr);

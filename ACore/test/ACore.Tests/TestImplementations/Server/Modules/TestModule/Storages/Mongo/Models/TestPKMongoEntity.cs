@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
@@ -36,9 +34,5 @@ public class TestPKMongoEntity: PKMongoEntity
   public DateTime Created { get; set; }
   
   public static TestPKMongoEntity Create<T>(TestAuditData<T> data)
-  {
-    var en = new TestPKMongoEntity();
-    en.CopyPropertiesFrom(data);
-    return en;
-  }
+    => ToEntity<TestPKMongoEntity>(data);
 }

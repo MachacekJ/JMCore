@@ -10,13 +10,13 @@ internal class TestPKLongSaveHandler(IStorageResolver storageResolver) : TestMod
 {
   public override async Task<Result> Handle(TestPKLongSaveCommand request, CancellationToken cancellationToken)
   {
-    var allTask = new List<SaveHandlerData<TestPKLongEntity>>();
+    var allTask = new List<SavingProcessData<TestPKLongEntity>>();
     foreach (var storage in WriteTestContexts())
     {
       if (storage is TestModuleSqlStorageImpl)
       {
         var en = TestPKLongEntity.Create(request.Data);
-        allTask.Add(new SaveHandlerData<TestPKLongEntity>(en, storage, storage.Save<TestPKLongEntity, long>(en)));
+        allTask.Add(new SavingProcessData<TestPKLongEntity>(en, storage, storage.SaveTestEntity<TestPKLongEntity, long>(en)));
       }
       else
         throw new Exception($"{nameof(TestPKLongSaveHandler)} cannot be used for storage {storage.GetType().Name}");

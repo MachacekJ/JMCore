@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 // ReSharper disable EntityFramework.ModelValidation.UnlimitedStringLength
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
 namespace ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 
 internal class AuditValueEntity
@@ -29,11 +27,11 @@ internal class AuditValueEntity
   public Guid? NewValueGuid { get; set; }
 
   [ForeignKey("AuditId")]
-  public AuditEntity Audit { get; set; } = null!;
+  public AuditEntity Audit { get; set; }
 
 
   [ForeignKey("AuditColumnId")]
-  public AuditColumnEntity AuditColumn { get; set; } = null!;
+  public AuditColumnEntity AuditColumn { get; set; }
 }
 
 internal static class AuditValueEntityExtensions

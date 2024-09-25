@@ -46,6 +46,7 @@ public static class ACoreTestServiceExtensions
   public static void AddACoreTest(this ContainerBuilder containerBuilder)
   {
     containerBuilder.ConfigureAutofacTestModule();
+    containerBuilder.ConfigureAutofacACoreServer();
   }
 
   private static void ValidateDependencyInConfiguration(ACoreTestOptions aCoreTestOptions)

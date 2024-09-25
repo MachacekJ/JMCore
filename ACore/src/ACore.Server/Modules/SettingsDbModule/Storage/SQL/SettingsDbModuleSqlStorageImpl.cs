@@ -7,13 +7,14 @@ using ACore.Server.Storages.EF;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace ACore.Server.Modules.SettingsDbModule.Storage.SQL;
 
-internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISettingsDbModuleStorage
+internal abstract class SettingsDbModuleSqlStorageImpl : DbContextBase, ISettingsDbModuleStorage
 {
   private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingsEntity));
-
+  private readonly IMediator _mediator;
   protected override string ModuleName => nameof(ISettingsDbModuleStorage);
 
   public DbSet<SettingsEntity> Settings { get; set; }
@@ -34,16 +35,16 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
     set.Value = value;
     set.IsSystem = isSystem;
 
-    await SaveWithAudit<SettingsEntity, int>(set);
+    await Save<SettingsEntity, int>(set);
 
-    await Mediator.Send(new MemoryCacheModuleRemoveKeyCommand(CacheKeyTableSetting));
+    await _mediator.Send(new MemoryCacheModuleRemoveKeyCommand(CacheKeyTableSetting));
   }
 
   private async Task<SettingsEntity?> GetSettingsAsync(string key, bool exceptedValue = true)
   {
     List<SettingsEntity>? allSettings;
 
-    var allSettingsCacheResult = await Mediator.Send(new MemoryCacheModuleGetQuery(CacheKeyTableSetting));
+    var allSettingsCacheResult = await _mediator.Send(new MemoryCacheModuleGetQuery(CacheKeyTableSetting));
 
     if (allSettingsCacheResult.IsSuccess && allSettingsCacheResult.ResultValue != null)
     {
@@ -59,7 +60,7 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
     else
     {
       allSettings = await Settings.ToListAsync();
-      await Mediator.Send(new MemoryCacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
+      await _mediator.Send(new MemoryCacheModuleSaveCommand(CacheKeyTableSetting, allSettings));
     }
 
     if (allSettings == null)
@@ -76,6 +77,7 @@ internal abstract class SettingsDbModuleSqlStorageImpl : AuditableDbContext, ISe
 
   protected SettingsDbModuleSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<SettingsDbModuleSqlStorageImpl> logger) : base(options, mediator, logger)
   {
+    _mediator = mediator;
     RegisterDbSet(Settings);
   }
 }

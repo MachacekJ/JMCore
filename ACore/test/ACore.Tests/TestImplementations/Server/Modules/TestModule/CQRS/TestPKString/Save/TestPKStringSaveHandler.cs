@@ -1,8 +1,6 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Storages;
 using ACore.Server.Storages.CQRS;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Save;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 
@@ -12,13 +10,13 @@ internal class TestPKStringSaveHandler(IStorageResolver storageResolver) : TestM
 {
   public override async Task<Result> Handle(TestPKStringSaveCommand request, CancellationToken cancellationToken)
   {
-    var allTask = new List<SaveHandlerData<TestPKStringEntity>>();
+    var allTask = new List<SavingProcessData<TestPKStringEntity>>();
     foreach (var storage in WriteTestContexts())
     {
       if (storage is TestModuleSqlStorageImpl)
       {
         var en = TestPKStringEntity.Create(request.Data);
-        allTask.Add(new SaveHandlerData<TestPKStringEntity>(en, storage, storage.Save<TestPKStringEntity, string>(en)));
+        allTask.Add(new SavingProcessData<TestPKStringEntity>(en, storage, storage.SaveTestEntity<TestPKStringEntity, string>(en)));
       }
       else
         throw new Exception($"{nameof(TestPKStringSaveHandler)} cannot be used for storage {storage.GetType().Name}");

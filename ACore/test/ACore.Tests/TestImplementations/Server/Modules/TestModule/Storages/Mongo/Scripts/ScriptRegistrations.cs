@@ -14,7 +14,7 @@ internal class ScriptRegistrations : DbScriptBase
         new V1_0_1_2TestAuditTables(),
         //  new V1_0_1_3TestAuditTypes(),
         //   new V1_0_1_4TestPK()
-        new V1_0_1_5TestChildPropeties()
+        new V1_0_1_5TestChildProperties()
       };
       return all;
     }

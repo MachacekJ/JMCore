@@ -12,10 +12,10 @@ public class TestNoAuditData(string name)
 
   public DateTime Created { get; set; }
 
-  internal static TestNoAuditData Create(TestNoAuditEntity noAuditEntity)
+  internal static KeyValuePair<string, TestNoAuditData> Create(TestNoAuditEntity noAuditEntity, string saltForHash)
   {
     var testPKGuidData = new TestNoAuditData(noAuditEntity.Name);
     testPKGuidData.CopyPropertiesFrom(noAuditEntity);
-    return testPKGuidData;
+    return new KeyValuePair<string, TestNoAuditData>(noAuditEntity.HashObject(saltForHash), testPKGuidData);
   }
 }

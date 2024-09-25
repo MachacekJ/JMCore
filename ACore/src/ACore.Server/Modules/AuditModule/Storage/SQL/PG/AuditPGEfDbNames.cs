@@ -27,9 +27,9 @@ public static class AuditPGEfDbNames
   {
     { e => e.Id, "audit_id" },
     { e => e.AuditTableId, "audit_table_id" },
-    { e => e.PKValue!, "pk_value" },
-    { e => e.PKValueString!, "pk_value_string" },
-    { e => e.AuditUserId!, "audit_user_id" },
+    { e => e.PKValue ?? 0, "pk_value" },
+    { e => e.PKValueString ?? string.Empty, "pk_value_string" },
+    { e => e.AuditUserId ?? 0, "audit_user_id" },
     { e => e.DateTime, "date_time" },
     { e => e.EntityState, "entity_state" }
   };
@@ -38,7 +38,7 @@ public static class AuditPGEfDbNames
   {
     { e => e.Id, "audit_table_id" },
     { e => e.TableName, "table_name" },
-    { e => e.SchemaName!, "schema_name" }
+    { e => e.SchemaName ?? string.Empty, "schema_name" }
   };
   
   private static Dictionary<Expression<Func<AuditUserEntity, object>>, string> AuditUserEntityColumnNames => new()
@@ -53,16 +53,16 @@ public static class AuditPGEfDbNames
     { e => e.AuditId, "audit_id" },
     { e => e.IsChanged, "is_changed" },
     { e => e.AuditColumnId, "audit_column_id" },
-    { e => e.OldValueString!, "old_value_string" },
-    { e => e.NewValueString!, "new_value_string" },
-    { e => e.OldValueInt!, "old_value_int" },
-    { e => e.NewValueInt!, "new_value_int" },
-    { e => e.OldValueLong!, "old_value_long" },
-    { e => e.NewValueLong!, "new_value_long" },
-    { e => e.OldValueBool!, "old_value_bool" },
-    { e => e.NewValueBool!, "new_value_bool" },
-    { e => e.OldValueGuid!, "old_value_guid" },
-    { e => e.NewValueGuid!, "new_value_guid" }
+    { e => e.OldValueString ?? string.Empty, "old_value_string" },
+    { e => e.NewValueString ?? string.Empty, "new_value_string" },
+    { e => e.OldValueInt ?? 0, "old_value_int" },
+    { e => e.NewValueInt ?? 0, "new_value_int" },
+    { e => e.OldValueLong ?? 0, "old_value_long" },
+    { e => e.NewValueLong ?? 0, "new_value_long" },
+    { e => e.OldValueBool ?? false, "old_value_bool" },
+    { e => e.NewValueBool ?? false, "new_value_bool" },
+    { e => e.OldValueGuid ?? new Guid(), "old_value_guid" },
+    { e => e.NewValueGuid ?? new Guid(), "new_value_guid" }
   };
 }
 

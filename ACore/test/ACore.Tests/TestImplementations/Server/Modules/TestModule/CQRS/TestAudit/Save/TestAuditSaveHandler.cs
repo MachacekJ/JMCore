@@ -4,6 +4,7 @@ using ACore.Server.Storages.CQRS;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using MongoDB.Bson;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
 
@@ -13,7 +14,7 @@ public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
 {
   public override async Task<Result> Handle(TestAuditSaveCommand<T> request, CancellationToken cancellationToken)
   {
-    var allTask = new List<SaveHandlerData>();
+    var allTask = new List<SavingProcessData>();
 
     foreach (var storage in WriteTestContexts())
     {
@@ -21,11 +22,11 @@ public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
       {
         case TestModuleMongoStorageImpl:
           var enMongo = TestPKMongoEntity.Create(request.Data);
-          allTask.Add(new SaveHandlerData(enMongo, storage, storage.Save<TestPKMongoEntity, T>(enMongo)));
+          allTask.Add(new SavingProcessData(enMongo, storage, storage.SaveTestEntity<TestPKMongoEntity, ObjectId>(enMongo)));
           break;
         default:
           var en = TestAuditEntity.Create(request.Data);
-          allTask.Add(new SaveHandlerData(en, storage, storage.Save<TestAuditEntity, T>(en)));
+          allTask.Add(new SavingProcessData(en, storage, storage.SaveTestEntity<TestAuditEntity, int>(en)));
           break;
       }
     }

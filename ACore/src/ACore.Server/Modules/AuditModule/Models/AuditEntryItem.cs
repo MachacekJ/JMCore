@@ -8,14 +8,14 @@ public class AuditEntryItem
   public string TableName { get; }
   public string? SchemaName { get; }
   public int Version { get; }
-  public List<AuditEntryColumnItem> ChangedColumns { get; } = [];
+  public List<AuditEntryColumnItem> ChangedColumns { get; set; } = [];
   public EntityState EntityState { get; private set; }
-  public string? UserId { get; private set; }
+  public string UserId { get; private set; }
   public long? PkValue { get; private set; }
   public string? PkValueString { get; set; }
   public DateTime Created { get; set; }
 
-  public AuditEntryItem(string tableName, string? schemaName, int version, object pkValue, EntityState entityState, string? userId)
+  public AuditEntryItem(string tableName, string? schemaName, int version, object pkValue, EntityState entityState, string userId)
   {
     TableName = tableName;
     SchemaName = schemaName;

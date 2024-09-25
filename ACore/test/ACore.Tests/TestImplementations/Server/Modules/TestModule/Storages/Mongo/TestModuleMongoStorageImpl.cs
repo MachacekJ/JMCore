@@ -1,5 +1,6 @@
 ﻿using ACore.Server.Storages.EF;
 using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Models.PK;
 using ACore.Server.Storages.Scripts;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using MediatR;
@@ -11,9 +12,9 @@ using ScriptRegistrations = ACore.Tests.TestImplementations.Server.Modules.TestM
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo;
 
-internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModule
+internal class TestModuleMongoStorageImpl : DbContextBase, ITestStorageModule
 {
-  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override string ModuleName => nameof(ITestStorageModule);
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
 
@@ -24,16 +25,16 @@ internal class TestModuleMongoStorageImpl : AuditableDbContext, ITestStorageModu
 
   internal DbSet<TestPKMongoEntity> TestAudits { get; set; }
 
-  public async Task Save<TEntity, TPK>(TEntity data, string? hashToCheck = null)
-    where TEntity : class
-    => await SaveWithAudit<TEntity, TPK>(data, hashToCheck);
+  public async Task SaveTestEntity<TEntity, TPK>(TEntity data, string? hashToCheck = null)
+    where TEntity : PKEntity<TPK>
+    => await Save<TEntity, TPK>(data, hashToCheck);
+  
+  
+  public async Task DeleteTestEntity<TEntity, TPK>(TPK id)
+    where TEntity : PKEntity<TPK>
+    => await Delete<TEntity, TPK>(id);
 
-
-  public async Task Delete<T, TPK>(TPK id)
-    where T : class
-    => await DeleteWithAudit<T, TPK>(id);
-
-  public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
+  public DbSet<TEntity> DbSet<TEntity, TPK>()  where TEntity : PKEntity<TPK>
   {
     var res = typeof(TEntity) switch
     {

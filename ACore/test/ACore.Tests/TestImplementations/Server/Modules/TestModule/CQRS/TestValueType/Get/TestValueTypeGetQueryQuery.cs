@@ -3,7 +3,7 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueTy
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
 
-public class TestValueTypeGetQuery(bool withEntityHash): TestModuleHashEntityQueryRequest<Result<TestValueTypeData[]>>(withEntityHash)
+public class TestValueTypeGetQuery: TestModuleQueryRequest<Result<TestValueTypeData[]>>
 {
   
 }

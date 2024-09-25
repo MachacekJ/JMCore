@@ -6,17 +6,17 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Mod
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
 
-internal class TestValueTypeSaveHashHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestValueTypeSaveHashCommand, Result>(storageResolver)
+internal class TestValueTypeSaveHashHandler(IStorageResolver storageResolver) : TestModuleRequestHandler<TestValueTypeSaveCommand, Result>(storageResolver)
 {
-  public override async Task<Result> Handle(TestValueTypeSaveHashCommand request, CancellationToken cancellationToken)
+  public override async Task<Result> Handle(TestValueTypeSaveCommand request, CancellationToken cancellationToken)
   {
-    var allTask = new List<SaveHandlerData<TestValueTypeEntity>>();
+    var allTask = new List<SavingProcessData<TestValueTypeEntity>>();
     foreach (var storage in WriteTestContexts())
     {
       if (storage is TestModuleSqlStorageImpl)
       {
         var en = TestValueTypeEntity.Create(request.Data);
-        allTask.Add(new SaveHandlerData<TestValueTypeEntity>(en, storage, storage.Save<TestValueTypeEntity, int>(en, request.Hash)));
+        allTask.Add(new SavingProcessData<TestValueTypeEntity>(en, storage, storage.SaveTestEntity<TestValueTypeEntity, int>(en, request.Hash)));
       }
       else
         throw new Exception($"{nameof(TestValueTypeSaveHashHandler)} cannot be used for storage {storage.GetType().Name}");

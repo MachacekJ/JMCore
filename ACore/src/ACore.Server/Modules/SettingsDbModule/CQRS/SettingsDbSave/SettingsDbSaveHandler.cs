@@ -12,11 +12,11 @@ public class SettingsDbSaveHandler(IStorageResolver storageResolver, IOptions<AC
 {
   public override async Task<Result> Handle(SettingsDbSaveCommand request, CancellationToken cancellationToken)
   {
-    var allTask = new List<SaveHandlerData<string>>();
+    var allTask = new List<SavingProcessData<string>>();
 
     foreach (var storage in storageResolver.WriteStorages<ISettingsDbModuleStorage>())
     {
-      allTask.Add(new SaveHandlerData<string>(request.Key, storage, storage.Setting_SaveAsync(request.Key, request.Value, request.IsSystem)));
+      allTask.Add(new SavingProcessData<string>(request.Key, storage, storage.Setting_SaveAsync(request.Key, request.Value, request.IsSystem)));
     }
 
     await Task.WhenAll(allTask.Select(e => e.Task));

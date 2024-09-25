@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Server.Storages.Models.PK;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 
 internal class AuditTableEntity : PKIntEntity

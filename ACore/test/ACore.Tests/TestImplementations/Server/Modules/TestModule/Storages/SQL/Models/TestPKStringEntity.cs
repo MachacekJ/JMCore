@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Extensions;
+using ACore.Server.Modules.AuditModule.Attributes;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Models;
@@ -16,9 +17,5 @@ internal class TestPKStringEntity : PKStringEntity
   public string? Name { get; set; }
   
   public static TestPKStringEntity Create(TestPKStringData data)
-  {
-    var en = new TestPKStringEntity();
-    en.CopyPropertiesFrom(data);
-    return en;
-  }
+    => ToEntity<TestPKStringEntity>(data);
 }

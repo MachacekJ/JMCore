@@ -1,9 +1,5 @@
 ﻿using ACore.Base.Cache;
-using ACore.Base.CQRS.Models;
 using ACore.Base.CQRS.Models.Results;
-using ACore.Models;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Primitives;
 
 namespace ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 

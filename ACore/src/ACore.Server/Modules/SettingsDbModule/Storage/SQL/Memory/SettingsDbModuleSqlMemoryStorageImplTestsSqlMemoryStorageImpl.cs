@@ -10,7 +10,7 @@ namespace ACore.Server.Modules.SettingsDbModule.Storage.SQL.Memory;
 internal class SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl(DbContextOptions<SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl> logger)
   : SettingsDbModuleSqlStorageImpl(options, mediator, logger)
 {
-  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
   
   protected override void OnModelCreating(ModelBuilder modelBuilder)

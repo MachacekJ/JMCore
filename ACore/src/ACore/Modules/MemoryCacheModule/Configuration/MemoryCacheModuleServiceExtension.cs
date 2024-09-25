@@ -2,7 +2,6 @@
 using ACore.Modules.MemoryCacheModule.Storages;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ACore.Modules.MemoryCacheModule.Configuration;
 

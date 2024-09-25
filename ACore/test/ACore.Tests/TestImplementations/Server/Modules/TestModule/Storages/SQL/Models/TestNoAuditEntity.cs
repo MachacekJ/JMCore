@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Extensions;
+using ACore.Server.Storages.Attributes;
 using ACore.Server.Storages.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Models;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 
+[CheckSum]
 internal class TestNoAuditEntity : PKIntEntity
 {
   [MaxLength(200)]
@@ -12,10 +14,6 @@ internal class TestNoAuditEntity : PKIntEntity
 
   public DateTime Created { get; set; }
 
-  public static TestNoAuditEntity Create(TestNoAuditData noAuditData)
-  {
-    var en = new TestNoAuditEntity();
-    en.CopyPropertiesFrom(noAuditData);
-    return en;
-  }
+  public static TestNoAuditEntity Create(TestNoAuditData data)
+    => ToEntity<TestNoAuditEntity>(data);
 }

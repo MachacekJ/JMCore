@@ -1,5 +1,6 @@
 ﻿using ACore.Base.CQRS.Models;
 using ACore.Base.CQRS.Models.Results;
+using ACore.Server.Storages.Attributes;
 using MediatR;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS;
@@ -10,13 +11,10 @@ public class TestModuleRequest<TResponse> : IRequest<TResponse>
   
 }
 
-public class TestModuleHashEntityQueryRequest<TResponse>(bool withEntityHash) : HashEntityQueryRequest<TResponse>(withEntityHash)
-  where TResponse : Result
-{
-  
-}
+public class TestModuleQueryRequest<TResponse> : EntityQueryRequest<TResponse>
+  where TResponse : Result;
 
-public class TestModuleHashEntityCommandRequest<TResponse>(string? hashToCheck) : HashEntityCommandRequest<TResponse>(hashToCheck)
+public class TestModuleCommandRequest<TResponse>(string? hashToCheck) : EntityCommandRequest<TResponse>(hashToCheck)
   where TResponse : Result
 {
   

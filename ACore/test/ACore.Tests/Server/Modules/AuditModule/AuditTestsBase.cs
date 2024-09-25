@@ -1,6 +1,7 @@
 ﻿using ACore.Server.Configuration;
 using ACore.Server.Modules.AuditModule.UserProvider;
 using ACore.Tests.Server.Storages;
+using ACore.Tests.TestImplementations.Server;
 using ACore.Tests.TestImplementations.Server.Configuration;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,7 @@ namespace ACore.Tests.Server.Modules.AuditModule;
 public class AuditTestsBase : StorageTestsBase
 {
   protected IAuditUserProvider UserProvider = TestAuditUserProvider.CreateDefaultUser();
-  
+
   protected override void RegisterServices(ServiceCollection sc)
   {
     base.RegisterServices(sc);
@@ -19,13 +20,10 @@ public class AuditTestsBase : StorageTestsBase
     {
       ot.AddTestModule()
         .ACoreServer(o =>
-      {
-        MemoryStorageConfiguration.Invoke(o);
-        o.AddAuditModule(a =>
         {
-          a.UserProvider(UserProvider);
+          MemoryStorageConfiguration.Invoke(o);
+          o.AddAuditModule(a => { a.UserProvider(UserProvider); });
         });
-      });
     });
   }
 

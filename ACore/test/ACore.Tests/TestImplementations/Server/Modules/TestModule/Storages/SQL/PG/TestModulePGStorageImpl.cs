@@ -1,5 +1,4 @@
-﻿using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Storages.Models;
+﻿using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Scripts;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MediatR;
@@ -17,7 +16,7 @@ internal class TestModulePGStorageImpl(DbContextOptions<TestModulePGStorageImpl>
   public DbSet<TestCategoryEntity> TestCategories { get; set; }
 
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
-  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

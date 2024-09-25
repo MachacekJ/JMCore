@@ -34,6 +34,14 @@ public class AuditTests : AuditTestsBase
   }
 
   [Fact]
+  public async Task UpdateItemWithoutChangesTest()
+  {
+    var method = MethodBase.GetCurrentMethod();
+    await RunTestAsync(method, async () => { await AuditCRUDTestHelper.UpdateItemWithoutChangesAsyncTest(Mediator, GetTableName, GetColumnName); });
+  }
+
+
+  [Fact]
   public async Task DeleteItemTest()
   {
     var method = MethodBase.GetCurrentMethod();

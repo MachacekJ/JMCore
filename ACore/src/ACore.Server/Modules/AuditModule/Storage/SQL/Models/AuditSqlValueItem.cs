@@ -24,7 +24,7 @@ internal class AuditSqlValueItem(string columName, bool isChanged, string dataTy
   public Guid? OldValueGuid { get; set; }
   public Guid? NewValueGuid { get; set; }
 
-  public static AuditSqlValueItem? CreateValue(ILogger logger, AuditEntryColumnItem coll)
+  public static AuditSqlValueItem CreateValue(ILogger logger, AuditEntryColumnItem coll)
   {
     var value = new AuditSqlValueItem(coll.ColumnName, coll.IsChanged, coll.DataType);
 

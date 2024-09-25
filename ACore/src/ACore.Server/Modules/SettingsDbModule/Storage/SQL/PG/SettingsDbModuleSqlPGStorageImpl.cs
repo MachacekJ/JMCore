@@ -1,5 +1,4 @@
-﻿using ACore.Server.Modules.AuditModule.Configuration;
-using ACore.Server.Modules.SettingsDbModule.Storage.SQL.Models;
+﻿using ACore.Server.Modules.SettingsDbModule.Storage.SQL.Models;
 using ACore.Server.Storages.Models;
 using ACore.Server.Storages.Scripts;
 using MediatR;
@@ -13,7 +12,7 @@ using ScriptRegistrations = ScriptRegistrations;
 
 internal class SettingsDbModuleSqlPGStorageImpl(DbContextOptions<SettingsDbModuleSqlPGStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleSqlPGStorageImpl> logger) : SettingsDbModuleSqlStorageImpl(options, mediator, logger)
 {
-  public override DbScriptBase UpdateScripts => new ScriptRegistrations();
+  protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
   public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
 
 

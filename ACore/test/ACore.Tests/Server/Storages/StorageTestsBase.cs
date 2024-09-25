@@ -12,16 +12,12 @@ public class StorageTestsBase : ServerTestsBase
   protected readonly Action<ACoreServerOptionBuilder> MemoryStorageConfiguration = builder =>
   {
     builder.DefaultStorage(storageOptionBuilder => storageOptionBuilder.AddMemoryDb());
-    builder.ACore(a => a.AddMemoryCacheModule(memoryCacheOptionsBuilder => memoryCacheOptionsBuilder.AddCacheCategories(CacheCategories.Entity)));
+    builder.ACore(a => 
+      a.AddMemoryCacheModule(memoryCacheOptionsBuilder => memoryCacheOptionsBuilder.AddCacheCategories(CacheCategories.Entity))
+        .AddSaltForHash("fakesalt")
+      );
   };
-
-  protected override void RegisterServices(ServiceCollection sc)
-  {
-    base.RegisterServices(sc);
-
-  //  sc.AddMemoryCacheModule(b=>b.AddCacheCategories());
-  }
-
+  
   protected override async Task GetServices(IServiceProvider sp)
   {
     await base.GetServices(sp);

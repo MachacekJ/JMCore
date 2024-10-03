@@ -20,6 +20,8 @@
 		<Compile Remove="Models\Account\**" />
 		<EmbeddedResource Remove="Localizer\Providers\Models\**" />
 		<EmbeddedResource Remove="Models\Account\**" />
+		<Compile Remove="Localizer\**" />
+		<EmbeddedResource Remove="Localizer\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -74,6 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Modules\MetricsModule\" />
+	  <None Remove="Localizer\**" />
 	</ItemGroup>
 </Project>

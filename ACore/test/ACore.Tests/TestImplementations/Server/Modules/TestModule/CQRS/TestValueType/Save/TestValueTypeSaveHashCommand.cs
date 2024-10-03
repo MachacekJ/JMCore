@@ -3,7 +3,7 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueTy
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
 
-public class TestValueTypeSaveCommand(TestValueTypeData data): TestModuleCommandRequest<Result>(data.HashToCheck)
+public class TestValueTypeSaveCommand(TestValueTypeData data): TestModuleCommandRequest<Result>(null)
 {
   public TestValueTypeData Data => data;
 }

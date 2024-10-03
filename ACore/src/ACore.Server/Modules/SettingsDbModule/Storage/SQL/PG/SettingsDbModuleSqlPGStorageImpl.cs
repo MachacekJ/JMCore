@@ -1,6 +1,9 @@
 ﻿using ACore.Server.Modules.SettingsDbModule.Storage.SQL.Models;
-using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Scripts;
+using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.PGStorage;
+using ACore.Server.Storages.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,9 +16,8 @@ using ScriptRegistrations = ScriptRegistrations;
 internal class SettingsDbModuleSqlPGStorageImpl(DbContextOptions<SettingsDbModuleSqlPGStorageImpl> options, IMediator mediator, ILogger<SettingsDbModuleSqlPGStorageImpl> logger) : SettingsDbModuleSqlStorageImpl(options, mediator, logger)
 {
   protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
-
-
+  protected override EFStorageDefinition EFStorageDefinition => new PGStorageDefinition();
+  
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);

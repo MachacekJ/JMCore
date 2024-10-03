@@ -5,6 +5,7 @@
 /// 1 - Main category (required)
 /// 2 - Sub category (optional)
 /// 3 - Key
+/// <see cref="ToString"/>
 /// </summary>
 public class CacheKey
 {

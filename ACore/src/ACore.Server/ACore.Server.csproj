@@ -52,6 +52,9 @@
 	  <EmbeddedResource Update="Modules\LocalizationModule\ResX\Resources\ResX_DataAnnotation.cs-cz.resx">
 	    <DependentUpon>ResX_DataAnnotation.resx</DependentUpon>
 	  </EmbeddedResource>
+	  <Compile Remove="Modules\LocalizationModule\**" />
+	  <EmbeddedResource Remove="Modules\LocalizationModule\**" />
+	  <None Remove="Modules\LocalizationModule\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -74,10 +77,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ACore\ACore.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Modules\LocalizationModule\CQRS\" />
 	</ItemGroup>
 
 </Project>

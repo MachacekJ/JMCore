@@ -1,6 +1,6 @@
-﻿using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Models.PK;
-using ACore.Server.Storages.Scripts;
+﻿using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

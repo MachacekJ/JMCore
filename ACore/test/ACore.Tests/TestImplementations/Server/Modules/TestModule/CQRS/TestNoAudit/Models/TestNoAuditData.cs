@@ -1,5 +1,6 @@
 using ACore.Extensions;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using Mapster;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Models;
 
@@ -14,8 +15,15 @@ public class TestNoAuditData(string name)
 
   internal static KeyValuePair<string, TestNoAuditData> Create(TestNoAuditEntity noAuditEntity, string saltForHash)
   {
-    var testPKGuidData = new TestNoAuditData(noAuditEntity.Name);
-    testPKGuidData.CopyPropertiesFrom(noAuditEntity);
+
+    
+    var testPKGuidData = noAuditEntity.Adapt<TestNoAuditData>();
     return new KeyValuePair<string, TestNoAuditData>(noAuditEntity.HashObject(saltForHash), testPKGuidData);
+  }
+
+  public static void MapConfig()
+  {
+    TypeAdapterConfig<TestNoAuditEntity, TestNoAuditData>.NewConfig()
+      .ConstructUsing(src => new TestNoAuditData(src.Name));
   }
 }

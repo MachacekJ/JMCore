@@ -1,6 +1,6 @@
 ﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
-using ACore.Server.Storages.Models.PK;
+using ACore.Server.Storages.Definitions.Models.PK;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 

@@ -1,9 +1,9 @@
-﻿using ACore.Server.Storages.Models;
+﻿using ACore.Server.Storages.Definitions;
 
 namespace ACore.Server.Storages;
 
 public interface IStorage
 {
-  StorageTypeDefinition StorageDefinition { get; }
+  StorageDefinition StorageDefinition { get; }
   Task UpdateDatabase();
 }

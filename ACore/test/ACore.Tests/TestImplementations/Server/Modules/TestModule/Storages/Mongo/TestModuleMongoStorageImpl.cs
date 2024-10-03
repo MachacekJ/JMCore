@@ -1,7 +1,10 @@
-﻿using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Models.PK;
-using ACore.Server.Storages.Scripts;
+﻿using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.MongoStorage;
+using ACore.Server.Storages.Definitions.Models.PK;
+using ACore.Server.Storages.Services;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +19,7 @@ internal class TestModuleMongoStorageImpl : DbContextBase, ITestStorageModule
 {
   protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
   protected override string ModuleName => nameof(ITestStorageModule);
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
+  protected override EFStorageDefinition EFStorageDefinition => new MongoStorageDefinition();
 
   public TestModuleMongoStorageImpl(DbContextOptions<TestModuleMongoStorageImpl> options, IMediator mediator, ILogger<TestModuleMongoStorageImpl> logger) : base(options, mediator, logger)
   {

@@ -1,5 +1,5 @@
 using ACore.Server.Modules.AuditModule.Models;
-using ACore.Server.Storages.Models.PK;
+using ACore.Server.Storages.Definitions.Models.PK;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;

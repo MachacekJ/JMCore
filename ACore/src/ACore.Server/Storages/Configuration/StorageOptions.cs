@@ -1,3 +1,6 @@
+using ACore.Server.Storages.Definitions.EF.MongoStorage.Configuration;
+using ACore.Server.Storages.Definitions.EF.PGStorage.Configuration;
+
 namespace ACore.Server.Storages.Configuration;
 
 public class StorageOptions

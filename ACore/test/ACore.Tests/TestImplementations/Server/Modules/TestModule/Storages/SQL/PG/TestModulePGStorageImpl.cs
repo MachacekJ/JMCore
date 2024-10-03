@@ -1,5 +1,8 @@
-﻿using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Scripts;
+﻿using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.PGStorage;
+using ACore.Server.Storages.Services;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +18,7 @@ internal class TestModulePGStorageImpl(DbContextOptions<TestModulePGStorageImpl>
   public DbSet<TestMenuEntity> TestMenus { get; set; }
   public DbSet<TestCategoryEntity> TestCategories { get; set; }
 
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Postgres);
+  protected override EFStorageDefinition EFStorageDefinition => new PGStorageDefinition();
   protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ACore.Extensions;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using Mapster;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Models;
 
@@ -12,9 +13,5 @@ public class TestPKGuidData
   public string? Name { get; set; }
   
   internal static TestPKGuidData Create(TestPKGuidEntity entity)
-  {
-    var testPKGuidData = new TestPKGuidData();
-    testPKGuidData.CopyPropertiesFrom(entity);
-    return testPKGuidData;
-  }
+    => entity.Adapt<TestPKGuidData>();
 }

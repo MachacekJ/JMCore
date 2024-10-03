@@ -1,10 +1,9 @@
-using ACore.Base.CQRS.Models.HashData;
-using ACore.Extensions;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using Mapster;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
 
-public class TestValueTypeData : HashData
+public class TestValueTypeData //: HashData
 {
   public int Id { get; set; }
   public int IntNotNull { get; set; }
@@ -26,9 +25,5 @@ public class TestValueTypeData : HashData
   public string VarChar2 { get; set; } = string.Empty;
 
   internal static TestValueTypeData Create(TestValueTypeEntity entity)
-  {
-    var testPKGuidData = new TestValueTypeData();
-    testPKGuidData.CopyPropertiesFrom(entity);
-    return testPKGuidData;
-  }
+    => entity.Adapt<TestValueTypeData>();
 }

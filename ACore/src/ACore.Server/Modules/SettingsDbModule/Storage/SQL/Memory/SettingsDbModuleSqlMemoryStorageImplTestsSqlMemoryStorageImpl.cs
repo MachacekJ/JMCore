@@ -1,6 +1,7 @@
 ﻿using ACore.Server.Modules.SettingsDbModule.Storage.SQL.Models;
-using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Scripts;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.MemoryEFStorage;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ internal class SettingsDbModuleSqlMemoryStorageImplTestsSqlMemoryStorageImpl(DbC
   : SettingsDbModuleSqlStorageImpl(options, mediator, logger)
 {
   protected override DbScriptBase UpdateScripts => new ScriptRegistrations();
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Memory);
+  protected override EFStorageDefinition EFStorageDefinition => new MemoryEFStorageDefinition();
   
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

@@ -1,4 +1,4 @@
-﻿using ACore.Server.Storages.Scripts;
+﻿using ACore.Server.Storages.Definitions.EF.Base.Scripts;
 
 // ReSharper disable InconsistentNaming
 

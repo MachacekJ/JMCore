@@ -3,9 +3,13 @@ using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.SettingsDbModule.Storage.Mongo.Models;
-using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Scripts;
+using ACore.Server.Storages;
+using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.MongoStorage;
+using ACore.Server.Storages.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,7 +22,7 @@ internal class SettingsDbModuleMongoStorageImpl(DbContextOptions<SettingsDbModul
   private static readonly CacheKey CacheKeyTableSetting = CacheKey.Create(CacheCategories.Entity, nameof(SettingsPKMongoEntity));
 
   protected override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
+  protected override EFStorageDefinition EFStorageDefinition => new MongoStorageDefinition();
   protected override string ModuleName => nameof(ISettingsDbModuleStorage);
 
   public DbSet<SettingsPKMongoEntity> Settings { get; set; }

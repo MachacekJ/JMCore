@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using ACore.Server.Modules.SettingsDbModule.Storage.Mongo.Models;
-using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Definitions.Models;
 
 namespace ACore.Server.Modules.SettingsDbModule.Storage.Mongo;
 #pragma warning disable CS8603 // Possible null reference return.

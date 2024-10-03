@@ -1,8 +1,11 @@
 ﻿using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage.Mongo.Models;
-using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Models;
-using ACore.Server.Storages.Scripts;
+using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.EF;
+using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Definitions.EF.MongoStorage;
+using ACore.Server.Storages.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -15,7 +18,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
   protected override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
-  public override StorageTypeDefinition StorageDefinition => new(StorageTypeEnum.Mongo);
+  protected override EFStorageDefinition EFStorageDefinition => new MongoStorageDefinition();
   protected override string ModuleName => nameof(IAuditStorageModule);
 
   public DbSet<AuditMongoEntity> Audits { get; set; }

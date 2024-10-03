@@ -21,9 +21,5 @@ public class TestAuditData<T>
     => entity.Adapt<TestAuditData<TEntity>>();
 
   internal static TestAuditData<TEntity> Create<TEntity>(TestPKMongoEntity entity)
-  {
-    var d = new TestAuditData<TEntity>();
-    d.CopyPropertiesFrom(entity);
-    return d;
-  }
+    => entity.Adapt<TestAuditData<TEntity>>();
 }

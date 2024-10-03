@@ -1,5 +1,5 @@
-﻿using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Scripts;
+﻿using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

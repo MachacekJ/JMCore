@@ -1,6 +1,7 @@
 ﻿using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Storage;
-using ACore.Server.Storages.Models;
+using ACore.Server.Storages.Definitions;
+using ACore.Server.Storages.Definitions.Models;
 using ACore.Tests.Server.Storages;
 using Microsoft.Extensions.DependencyInjection;
 

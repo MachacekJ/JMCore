@@ -4,8 +4,10 @@ using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheGet;
 using ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheSave;
 using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
-using ACore.Server.Storages.EF;
-using ACore.Server.Storages.Scripts;
+using ACore.Server.Storages;
+using ACore.Server.Storages.Definitions.EF.Base;
+using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -95,11 +97,8 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
 
     foreach (var value in valuesTable)
     {
-      var valueEntity = new AuditValueEntity
-      {
-        AuditColumnId = auditColumnIds[value.AuditColumnName]
-      };
-      valueEntity.CopyPropertiesFrom(value);
+      var valueEntity = value.Adapt<AuditValueEntity>();
+      valueEntity.AuditColumnId = auditColumnIds[value.AuditColumnName];
       auditEntity.AuditValues.Add(valueEntity);
     }
 

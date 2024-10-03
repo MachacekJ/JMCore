@@ -5,6 +5,7 @@ using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
+using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Memory;
@@ -30,6 +31,8 @@ public static class TestModuleServiceExtensions
     services.AddDbMongoStorage<TestModuleMongoStorageImpl>(options.Storages);
     services.AddDbPGStorage<TestModulePGStorageImpl>(options.Storages);
     services.AddDbMemoryStorage<TestModuleMemoryStorageImpl>(options.Storages, nameof(ITestStorageModule));
+    
+    TestNoAuditData.MapConfig();
   }
 
 

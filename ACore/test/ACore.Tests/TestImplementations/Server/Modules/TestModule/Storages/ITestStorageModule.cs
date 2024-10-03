@@ -1,5 +1,5 @@
 ﻿using ACore.Server.Storages;
-using ACore.Server.Storages.Models.PK;
+using ACore.Server.Storages.Definitions.Models.PK;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages;

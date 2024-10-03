@@ -2,6 +2,7 @@
 using ACore.Server.Configuration;
 using ACore.Server.Storages;
 using ACore.Server.Storages.CQRS;
+using ACore.Server.Storages.Services.StorageResolvers;
 using Microsoft.Extensions.Options;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditSave;

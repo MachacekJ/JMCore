@@ -1,6 +1,7 @@
 ﻿using ACore.Base.CQRS.Models.Results;
 using ACore.Server.Modules.AuditModule.Storage;
 using ACore.Server.Storages;
+using ACore.Server.Storages.Services.StorageResolvers;
 using MediatR;
 
 namespace ACore.Server.Modules.AuditModule.CQRS;

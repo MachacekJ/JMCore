@@ -1,4 +1,6 @@
 using ACore.Base.CQRS;
+using ACore.Base.CQRS.Extensions;
+using ACore.Base.CQRS.Notifications;
 using ACore.Server.Configuration;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Configuration;
 using Autofac;
@@ -31,7 +33,7 @@ public static class ACoreTestServiceExtensions
     services.AddMediatR((c) =>
     {
       c.RegisterServicesFromAssemblyContaining(typeof(ACoreTestServiceExtensions));
-      c.ACoreMediatorConfiguration();
+      c.AllNotificationWithoutException();
     });
     services.AddValidatorsFromAssembly(typeof(ACoreTestServiceExtensions).Assembly, includeInternalTypes: true);
 

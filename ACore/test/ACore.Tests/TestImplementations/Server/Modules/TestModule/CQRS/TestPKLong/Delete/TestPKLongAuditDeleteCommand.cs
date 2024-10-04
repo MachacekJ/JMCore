@@ -1,4 +1,4 @@
-﻿using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Results;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Delete;
 

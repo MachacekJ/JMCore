@@ -1,4 +1,4 @@
-﻿using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Results;
 using ACore.Modules.MemoryCacheModule.Storages;
 
 namespace ACore.Modules.MemoryCacheModule.CQRS.MemoryCacheRemove;

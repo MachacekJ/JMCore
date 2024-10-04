@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using ACore.Base.CQRS.Helpers;
-using ACore.Base.CQRS.Models.Results;
-using ACore.Base.CQRS.Models.Results.Validation;
+using ACore.Base.CQRS.Results;
 using ACore.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -79,6 +78,6 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
     }
 
     logger.LogError("ErrorId:'{errorId}'; Request:'{requestName}'; ErrorCode:{errorCode}; Error{error}; DataRequest{dataRequest}; DataResponse{dataResponse}",
-      response.Id, typeof(TRequest).Name, response.Error.Code, response.Error.Message + exception, dataRequest, dataResponse);
+      response.Id, typeof(TRequest).Name, response.ResultErrorItem.Code, response.ResultErrorItem.Message + exception, dataRequest, dataResponse);
   }
 }

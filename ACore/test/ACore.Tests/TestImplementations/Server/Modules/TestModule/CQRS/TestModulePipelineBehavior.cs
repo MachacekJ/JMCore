@@ -1,5 +1,5 @@
 ﻿using ACore.Base.CQRS.Helpers;
-using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results;
 using ACore.Tests.TestImplementations.Server.Configuration;
 using MediatR;
 using Microsoft.Extensions.Options;

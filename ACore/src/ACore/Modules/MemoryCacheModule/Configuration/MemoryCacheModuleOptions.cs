@@ -1,4 +1,4 @@
-using ACore.Base.CQRS.Configuration;
+using ACore.Base.Modules.Configuration;
 using ACore.Configuration.Cache;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;

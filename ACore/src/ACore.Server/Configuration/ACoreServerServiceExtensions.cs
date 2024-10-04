@@ -1,4 +1,6 @@
 using ACore.Base.CQRS;
+using ACore.Base.CQRS.Extensions;
+using ACore.Base.CQRS.Notifications;
 using Autofac;
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
@@ -42,7 +44,7 @@ public static class ACoreServerServiceExtensions
     services.AddMediatR(c =>
     {
       c.RegisterServicesFromAssemblyContaining(typeof(ACoreServerServiceExtensions));
-      c.ACoreMediatorConfiguration();
+      c.AllNotificationWithoutException();
     });
     services.AddValidatorsFromAssembly(typeof(ACoreServerServiceExtensions).Assembly, includeInternalTypes: true);
 

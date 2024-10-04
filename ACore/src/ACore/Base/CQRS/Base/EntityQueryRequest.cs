@@ -1,7 +1,7 @@
-using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results;
 using MediatR;
 
-namespace ACore.Base.CQRS.Models;
+namespace ACore.Base.CQRS.Base;
 
 public class EntityQueryRequest<TResponse> : IRequest<TResponse>
   where TResponse : Result;

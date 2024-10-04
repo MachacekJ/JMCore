@@ -1,9 +1,15 @@
-namespace ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results.Models;
+
+namespace ACore.Base.CQRS.Results;
 
 public class ExceptionResult : Result
 {
+  public static readonly ResultErrorItem ResultErrorItemInternalServer = new(
+    "InternalServer",
+    "Internal server error.");
+  
   public Exception Exception { get; }
-  private ExceptionResult(Exception exception) : base(false, Results.Error.Error.ErrorInternalServer)
+  private ExceptionResult(Exception exception) : base(false, ResultErrorItemInternalServer)
   {
     Exception = exception;
   }
@@ -14,7 +20,7 @@ public class ExceptionResult<TValue> : Result<TValue>
 {
   public Exception Exception { get; }
   private ExceptionResult(Exception exception)
-    : base(default, false, Results.Error.Error.ErrorInternalServer) =>
+    : base(default, false, ExceptionResult.ResultErrorItemInternalServer) =>
     Exception = exception;
   
   public static ExceptionResult<TValue> WithException(Exception exception) => new(exception);

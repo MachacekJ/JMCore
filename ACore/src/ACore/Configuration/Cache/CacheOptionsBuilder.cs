@@ -1,5 +1,5 @@
 using ACore.Base.Cache;
-using ACore.Base.CQRS.Configuration;
+using ACore.Base.Modules.Configuration;
 
 namespace ACore.Configuration.Cache;
 

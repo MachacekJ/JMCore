@@ -1,4 +1,4 @@
-using ACore.Base.CQRS.Configuration;
+using ACore.Base.Modules.Configuration;
 using ACore.Server.Storages.Configuration;
 
 namespace ACore.Server.Configuration.Modules;

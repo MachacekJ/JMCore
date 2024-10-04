@@ -1,4 +1,4 @@
-﻿using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Results;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Models;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Save;

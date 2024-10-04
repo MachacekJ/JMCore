@@ -1,4 +1,4 @@
-namespace ACore.Base.CQRS.Configuration;
+namespace ACore.Base.Modules.Configuration;
 
 public abstract class ModuleOptions(string moduleName, bool isActive) : IModuleOptions
 {

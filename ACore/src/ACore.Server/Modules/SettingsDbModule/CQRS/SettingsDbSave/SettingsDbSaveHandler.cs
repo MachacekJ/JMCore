@@ -1,4 +1,4 @@
-﻿using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Results;
 using ACore.Extensions;
 using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Storage;

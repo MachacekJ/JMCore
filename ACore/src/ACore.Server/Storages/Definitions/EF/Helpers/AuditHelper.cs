@@ -157,7 +157,7 @@ public class AuditHelper<TEntity, TPK>(IMediator mediator, IModel model, EFStora
   {
     var user = await mediator.Send(new ICAMGetCurrentUserQuery());
     if (user.IsFailure)
-      throw new Exception(user.Error.ToString());
+      throw new Exception(user.ResultErrorItem.ToString());
     ArgumentNullException.ThrowIfNull(user.ResultValue);
     return user.ResultValue.ToString();
   }

@@ -1,8 +1,8 @@
 using ACore.Extensions;
-using ACore.UnitTests.Core.Extensions.ObjectExtensions.FakeData;
+using ACore.UnitTests.Core.Extensions.TypeExtensions.FakeData;
 using FluentAssertions;
 
-namespace ACore.UnitTests.Core.Extensions.ObjectExtensions;
+namespace ACore.UnitTests.Core.Extensions.TypeExtensions;
 
 public class IsSubclassOfRawGenericTests
 {

@@ -1,4 +1,4 @@
-using ACore.Base.CQRS.Configuration;
+using ACore.Base.Modules.Configuration;
 
 namespace ACore.Server.Modules.ICAMModule.Configuration;
 

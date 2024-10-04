@@ -1,4 +1,4 @@
-using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 using ACore.Server.Storages.CQRS;
@@ -137,7 +137,7 @@ public static class AuditPKTestHelper
     // Act.
     var result = await mediator.Send(new TestAuditSaveCommand<ObjectId>(item));
     result.IsFailure.Should().BeTrue();
-    result.Error.Code.Should().Be(ACore.Base.CQRS.Models.Results.Error.Error.ErrorInternalServer.Code);
+    result.ResultErrorItem.Code.Should().Be(ExceptionResult.ResultErrorItemInternalServer.Code);
     result.Should().BeOfType(typeof(ExceptionResult));
   }
 

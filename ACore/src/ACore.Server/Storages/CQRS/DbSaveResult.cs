@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
-using ACore.Base.CQRS.Models.Results;
-using ACore.Base.CQRS.Models.Results.Error;
+using ACore.Base.CQRS.Results;
+using ACore.Base.CQRS.Results.Models;
 using ACore.Extensions;
 using ACore.Server.Storages.Definitions.Models;
 using ACore.Server.Storages.Definitions.Models.PK;
@@ -39,7 +39,7 @@ public class DbSaveResult : Result
       )));
   }
 
-  private DbSaveResult(IDictionary<StorageTypeEnum, DbSaveResultData> pkValues) : base(true, Error.None)
+  private DbSaveResult(IDictionary<StorageTypeEnum, DbSaveResultData> pkValues) : base(true, ResultErrorItem.None)
   {
     ReturnedValues = pkValues.AsReadOnly();
   }

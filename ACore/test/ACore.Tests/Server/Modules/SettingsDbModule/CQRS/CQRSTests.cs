@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
-using ACore.Base.CQRS.Models.Results.Error;
-using ACore.Base.CQRS.Models.Results.Validation;
+using ACore.Base.CQRS.Results;
 using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbGet;
 using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
 using FluentAssertions;
@@ -40,9 +39,9 @@ public class CQRSTests : SettingsDbModuleTestsBase
       var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
-      result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
-      result.Error.Message.Should().NotBeNull();
+      result.ResultErrorItem.Should().NotBeNull();
+      result.ResultErrorItem.Code.Should().NotBeNull().And.Be(ValidationResult.ResultErrorItemValidationInput.Code);
+      result.ResultErrorItem.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
       validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
@@ -61,9 +60,9 @@ public class CQRSTests : SettingsDbModuleTestsBase
       var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
-      result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
-      result.Error.Message.Should().NotBeNull();
+      result.ResultErrorItem.Should().NotBeNull();
+      result.ResultErrorItem.Code.Should().NotBeNull().And.Be(ValidationResult.ResultErrorItemValidationInput.Code);
+      result.ResultErrorItem.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
       validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
@@ -82,17 +81,17 @@ public class CQRSTests : SettingsDbModuleTestsBase
       var result = await Mediator.Send(new SettingsDbSaveCommand(key, value));
       result.IsFailure.Should().Be(true);
       result.IsSuccess.Should().Be(false);
-      result.Error.Should().NotBeNull();
-      result.Error.Code.Should().NotBeNull().And.Be(Error.ErrorValidationInput.Code);
-      result.Error.Message.Should().NotBeNull();
+      result.ResultErrorItem.Should().NotBeNull();
+      result.ResultErrorItem.Code.Should().NotBeNull().And.Be(ValidationResult.ResultErrorItemValidationInput.Code);
+      result.ResultErrorItem.Message.Should().NotBeNull();
       var validationResult = result as ValidationResult;
       validationResult.Should().NotBeNull();
       validationResult?.ValidationErrors.Should().NotBeNull().And.HaveCountGreaterThan(0);
-      validationResult?.ValidationErrors[0].FormattedMessagePlaceholderValues.Should().HaveCountGreaterThan(4);
-      validationResult?.ValidationErrors[0].Code.Should().NotBeEmpty();
-      validationResult?.ValidationErrors[0].Message.Should().NotBeEmpty();
-      validationResult?.ValidationErrors[0].ParamName.Should().NotBeEmpty();
-      validationResult?.ValidationErrors[0].Severity.Should().Be(Severity.Error);
+      validationResult?.ValidationErrors[0].ValidationFailure.FormattedMessagePlaceholderValues.Should().HaveCountGreaterThan(4);
+      validationResult?.ValidationErrors[0].ValidationFailure.ErrorCode.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].ValidationFailure.ErrorMessage.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].ValidationFailure.PropertyName.Should().NotBeEmpty();
+      validationResult?.ValidationErrors[0].ValidationFailure.Severity.Should().Be(Severity.Error);
     });
   }
 }

@@ -78,4 +78,8 @@
 	<ItemGroup>
 	  <None Remove="Localizer\**" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Base\Modules\" />
+	</ItemGroup>
 </Project>

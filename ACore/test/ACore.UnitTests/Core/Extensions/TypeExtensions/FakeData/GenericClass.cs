@@ -1,4 +1,4 @@
-namespace ACore.UnitTests.Core.Extensions.ObjectExtensions.FakeData;
+namespace ACore.UnitTests.Core.Extensions.TypeExtensions.FakeData;
 
 public class GenericClass<T>(T value)
 {

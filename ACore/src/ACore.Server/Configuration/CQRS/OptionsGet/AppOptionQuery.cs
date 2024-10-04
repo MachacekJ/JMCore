@@ -1,4 +1,4 @@
-using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results;
 using MediatR;
 
 namespace ACore.Server.Configuration.CQRS.OptionsGet;

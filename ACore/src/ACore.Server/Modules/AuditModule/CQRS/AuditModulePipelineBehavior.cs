@@ -1,5 +1,5 @@
 using ACore.Base.CQRS.Helpers;
-using ACore.Base.CQRS.Models.Results;
+using ACore.Base.CQRS.Results;
 using ACore.Server.Configuration;
 using ACore.Server.Modules.SettingsDbModule.CQRS;
 using MediatR;

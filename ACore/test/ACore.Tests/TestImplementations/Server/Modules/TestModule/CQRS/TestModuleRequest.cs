@@ -1,5 +1,5 @@
-﻿using ACore.Base.CQRS.Models;
-using ACore.Base.CQRS.Models.Results;
+﻿using ACore.Base.CQRS.Base;
+using ACore.Base.CQRS.Results;
 using MediatR;
 
 namespace ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS;

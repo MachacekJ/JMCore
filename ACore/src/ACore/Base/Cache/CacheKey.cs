@@ -11,7 +11,6 @@ public class CacheKey
 {
   public TimeSpan? Duration { get; }
   public CacheCategory MainCategory { get; }
-
   private CacheCategory? SubCategory { get; }
   private string Key { get; }
 

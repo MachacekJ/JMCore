@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.TestsStress", "ACore\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A374D79E-ADEE-44A8-8A6D-277B55FB6138}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACore.UnitTests", "ACore\test\ACore.UnitTests\ACore.UnitTests.csproj", "{5860A426-2CEE-4EEA-A0B2-2971AE84CE37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1421E39D-8188-41C2-9D73-E8B44E2DB676}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5860A426-2CEE-4EEA-A0B2-2971AE84CE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5860A426-2CEE-4EEA-A0B2-2971AE84CE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5860A426-2CEE-4EEA-A0B2-2971AE84CE37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5860A426-2CEE-4EEA-A0B2-2971AE84CE37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +111,7 @@ Global
 		{1D75FD06-EF8F-407B-836A-15A2558D22CB} = {A374D79E-ADEE-44A8-8A6D-277B55FB6138}
 		{44FC45AD-6710-41CB-8534-A62EC57095FB} = {A374D79E-ADEE-44A8-8A6D-277B55FB6138}
 		{1421E39D-8188-41C2-9D73-E8B44E2DB676} = {A374D79E-ADEE-44A8-8A6D-277B55FB6138}
+		{5860A426-2CEE-4EEA-A0B2-2971AE84CE37} = {A374D79E-ADEE-44A8-8A6D-277B55FB6138}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BD692FAC-E043-44E5-B382-E939BE935E2E}

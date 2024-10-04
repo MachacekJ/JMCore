@@ -22,7 +22,7 @@ public static class TestModuleServiceExtensions
 {
   public static void AddTestModule(this IServiceCollection services, TestModuleOptions options)
   {
-    services.AddMediatR(c => { c.RegisterServicesFromAssemblyContaining(typeof(ITestStorageModule)); });
+   // services.AddMediatR(c => { c.RegisterServicesFromAssemblyContaining(typeof(ITestStorageModule)); });
     services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(TestModulePipelineBehavior<,>));
     
     if (options.Storages == null)
@@ -41,7 +41,6 @@ public static class TestModuleServiceExtensions
     containerBuilder.RegisterGeneric(typeof(TestAuditGetHandler<>)).AsImplementedInterfaces();
     containerBuilder.RegisterGeneric(typeof(TestAuditSaveHandler<>)).AsImplementedInterfaces();
     containerBuilder.RegisterGeneric(typeof(TestAuditDeleteHandler<>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<,>)).AsImplementedInterfaces();
   }
 
   public static async Task UseTestModule(this IServiceProvider provider)

@@ -1,3 +1,4 @@
+using ACore.Base.CQRS;
 using ACore.Server.Configuration;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Configuration;
 using Autofac;
@@ -27,7 +28,11 @@ public static class ACoreTestServiceExtensions
     services.AddSingleton(myOptionsInstance);
 
     // Adding CQRS from ACore.Tests assembly.
-    services.AddMediatR((c) => { c.RegisterServicesFromAssemblyContaining(typeof(ACoreTestServiceExtensions)); });
+    services.AddMediatR((c) =>
+    {
+      c.RegisterServicesFromAssemblyContaining(typeof(ACoreTestServiceExtensions));
+      c.ACoreMediatorConfiguration();
+    });
     services.AddValidatorsFromAssembly(typeof(ACoreTestServiceExtensions).Assembly, includeInternalTypes: true);
 
     if (aCoreTestOptions.TestModuleOptions.IsActive)
@@ -46,7 +51,6 @@ public static class ACoreTestServiceExtensions
   public static void AddACoreTest(this ContainerBuilder containerBuilder)
   {
     containerBuilder.ConfigureAutofacTestModule();
-    containerBuilder.ConfigureAutofacACoreServer();
   }
 
   private static void ValidateDependencyInConfiguration(ACoreTestOptions aCoreTestOptions)

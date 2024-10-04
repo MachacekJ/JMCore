@@ -4,15 +4,10 @@ namespace ACore.Extensions;
 
 public static class StringExtensions
 {
-  public static Type GetType(this string dataTypeAsString)
-    => Type.GetType(dataTypeAsString) ?? throw new Exception($"Unknown datatype {dataTypeAsString}.");
-
   public static string HashString(this string text, string salt = "")
   {
     if (string.IsNullOrEmpty(text))
-    {
       return String.Empty;
-    }
     
     using var sha256 = SHA256.Create();
 

@@ -25,68 +25,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="">
+    <list default="true" id="f3c904b6-9172-4299-aa1c-46ab49430f48" name="Changes" comment="das">
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/NotificationHandlers/EntitySaveNotificationHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/CQRS/Notifications/EntitySaveNotification.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore/Base/CQRS/TaskWhenAllPublisher.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/src/ACore/Extensions/TypeExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/ObjectExtensions/CompareTests.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/ObjectExtensions/FakeData/Fake1Class.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/FakeData/GenericClass.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/FakeData/InheritedGenericClass.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/IsSubclassOfRawGenericTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ACore/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore.sln" beforeDir="false" afterPath="$PROJECT_DIR$/ACore.sln" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Configuration/ACoreServerServiceExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditGet/AuditGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditGet/AuditGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditModuleRequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditModuleRequestHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditSave/AuditSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditSave/AuditSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Storage/Mongo/AuditModuleMongoStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Storage/Mongo/AuditModuleMongoStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Storage/SQL/AuditSqlStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Storage/SQL/AuditSqlStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbGet/SettingsDbGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbGet/SettingsDbGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbGet/SettingsDbGetQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbGet/SettingsDbGetQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbSave/SettingsDbSaveCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbSave/SettingsDbSaveCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbSave/SettingsDbSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/CQRS/SettingsDbSave/SettingsDbSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/Mongo/Models/SettingsPKMongoEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/Mongo/Models/SettingsPKMongoEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/Mongo/SettingsDbModuleMongoStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/Mongo/SettingsDbModuleMongoStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/Models/SettingsEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/Models/SettingsEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/PG/SettingsDbModuleSqlPGStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/PG/SettingsDbModuleSqlPGStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/SettingsDbModuleSqlStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Modules/SettingsDbModule/Storage/SQL/SettingsDbModuleSqlStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/CQRS/DbSaveResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/CQRS/DbSaveResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/EFStorageDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/EFStorageDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/MemoryEFStorage/MemoryEFStorageDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/MemoryEFStorage/MemoryEFStorageDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/MongoStorage/MongoStorageDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/MongoStorage/MongoStorageDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/PGStorage/PGStorageDefinition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/PGStorage/PGStorageDefinition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Services/StorageResolvers/DefaultStorageResolver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Services/StorageResolvers/DefaultStorageResolver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Services/StorageResolvers/IStorageResolver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Services/StorageResolvers/IStorageResolver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/AuditModule/AuditCacheTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/AuditModule/AuditCacheTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Base/DbContextBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Base/DbContextBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Helpers/AuditHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Helpers/AuditHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Configuration/CQRS/CQRSServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Configuration/CQRS/CQRSServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectComparision/ComparisonResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ComparisonResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectComparision/ObjectExtensions.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/ACore.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/ACore.Tests.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingsDbModule/SettingsDbModuleTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingsDbModule/SettingsDbModuleTestsBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingsDbModule/Storages/SettingsDbModuleSqlMemoryStorageImplTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Modules/SettingsDbModule/Storages/SettingsDbModuleSqlMemoryStorageImplTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Storages/StorageTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/Storages/StorageTestsBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Delete/TestAuditDeleteHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Delete/TestAuditDeleteHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Get/TestAuditGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Get/TestAuditGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Models/TestAuditData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Models/TestAuditData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Save/TestAuditSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestAudit/Save/TestAuditSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestModuleRequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestModuleRequestHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestNoAudit/Get/TestNoAuditGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestNoAudit/Get/TestNoAuditGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestNoAudit/Save/TestNoAuditSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestNoAudit/Save/TestNoAuditSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Get/TestPKGuidGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Get/TestPKGuidGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Models/TestPKGuidData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Models/TestPKGuidData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Save/TestPKGuidSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKGuid/Save/TestPKGuidSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Delete/TestPKLongAuditDeleteHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Delete/TestPKLongAuditDeleteHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Get/TestPKLongAuditGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Get/TestPKLongAuditGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Models/TestPKLongData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Models/TestPKLongData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Save/TestPKLongSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKLong/Save/TestPKLongSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Get/TestPKStringGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Get/TestPKStringGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Models/TestPKStringData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Models/TestPKStringData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Save/TestPKStringSaveHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestPKString/Save/TestPKStringSaveHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestValueType/Get/TestValueTypeGetHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestValueType/Get/TestValueTypeGetHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestValueType/Save/TestValueTypeSaveHashHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestValueType/Save/TestValueTypeSaveHashHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestPKMongoEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestPKMongoEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestRootCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/Models/TestRootCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/TestModuleMongoStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/Mongo/TestModuleMongoStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Memory/TestModuleMemoryStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Memory/TestModuleMemoryStorageImpl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestAuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestAuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestCategoryEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestCategoryEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestMenuEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestMenuEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestNoAuditEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestNoAuditEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKGuidEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKGuidEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKLongEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKLongEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKStringEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestPKStringEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestValueTypeEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/Models/TestValueTypeEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/PG/TestModulePGStorageImpl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Storages/SQL/PG/TestModulePGStorageImpl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/ServerTestsBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/Server/ServerTestsBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Configuration/ACoreTestServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Configuration/ACoreTestServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Configuration/TestModuleServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Configuration/TestModuleServiceExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA/test.qea" beforeDir="false" afterPath="$PROJECT_DIR$/EA/test.qea" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,6 +91,19 @@
     <option name="onto" value="3e79c77058c3df9326cd1d3b6562b4280666e9dc" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/3f1acb59718cadf111a0a796681e3d3509bb3381/src/Components/Authorization/src/AuthenticationStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/3f1acb59718cadf111a0a796681e3d3509bb3381/src/Components/WebAssembly/WebAssembly/src/Hosting/WebAssemblyHostBuilder.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/3f1acb59718cadf111a0a796681e3d3509bb3381/src/Http/Authentication.Abstractions/src/AuthenticationHttpContextExtensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -209,6 +185,8 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Private.CoreLib/src/System/Version.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/HashAlgorithm.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/5535e31a712343a63f5d7d796cd874e563e5ac14/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/SHA256.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b6bad9501a24a9f84456bf7a335e46224910/1d/515e5e26/ILogger`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3b6bad9501a24a9f84456bf7a335e46224910/6d/720532a1/ILogger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5abecb93434c4299acd01d522fdf8da2c9a910/13/21e575c2/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5abecb93434c4299acd01d522fdf8da2c9a910/88/1117209f/IAsyncResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e15ba24065646ab8edfdd48fa903c1426a830/6e/d54cbf03/DbSet`1.cs" root0="SKIP_HIGHLIGHTING" />
@@ -221,10 +199,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/12f8d680aa1c5ae78dc1fb7cf8212be01e323372dbe3b9b87360e27c58936a/IRequest.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1b555b241b69d56fb42b4bc489283287efca921d278ab43024db6091625b30/IMongoDatabase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/20885d5d627d4da82a4a22d7c55abb3d50afdd1ab121738514d59792dc9993/Select.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/225dd19ef9e59a5b94de2bcd4b7b38cdca205bdfea4a7361ed03c5f79a36/INotification.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2ffdea72127ffeec57f34fcc65de35c399bd9a7c222bd869f169e5c6deca8d23/RequestPreProcessorBehavior.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3192c3639b77d39d69ae158e51fa6ba1848a62f1aaa3de455f2cf186a15768/RequestPostProcessorBehavior.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/33e4a9b5d55040bc15fa55599b9863a48c2e75361e76b99714738e1efd3ce/BsonMemberMap.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3520bf5c151bbc5aed94ba6abea697eaaee2b96fe96341613fef02be1cc54/ValidationFailure.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/394cf11a64687141fd58fb926ff8b3d5a299eba3bbadaf2de9b93928d523d4/Type.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3bd4df5aff92cabbc4d630be64227073db1b8539b3a1e47786b4b189d7cdb7/DbContext.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/55d6cdd8a1abc750cfdf8776377ac68cd02d1130ec202ce24a8a56c538dc818/ObjectId.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/57ef264888488357640f23a308ccecd818012805b7b56dd32bd469a819f56ee/IPipelineBehavior.cs" root0="SKIP_HIGHLIGHTING" />
@@ -242,14 +222,20 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8aca45508683a6169bab9e8bd96b7cda607d638cacfaa31173c8c278c45/ISender.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/98e31c3f6ecff022e01ed9a79672c2e9d1a9c25d2dc1708c1f297150e0ceb55/LengthValidator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9a6b1457cbcf17db31a383ba49ef9bcc786cf3ef77146d997eee499b27a46d/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a1e830db66f4537520b48f395e1d155c5280a87c9832c95b2e918185764c773/INotificationHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ab3652e3e0c1780ce9b7fbb6938dbec71c093d375262e61691b468390c520/KeyValuePair.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b1d983e50758e97e69eda9665f65848f3d1ab7dc4e61bb5c3f547b8c641a6f/BsonDictionaryOptionsAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b28767e8d334c234b983d2245d26481eca6e5704ddf56423adca4f356fb7fbc/NotificationHandlerExecutor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b60386338a8235576eb5171c2bd3549113ab45319cda39ad1c281e85776ff6e/MediatrServiceConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b7208b3f72528d22781d25fde9a55271bdf2b5aade4f03b1324579a25493cd8/List.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c3ec25c53b94f51fa21da479c513e551efee2b5ae49a79934686d2bb714d46/TestInvoker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c62dbcc4ba2718769223d2edcbb462defa1d97c8f2ef066639d41ddd521e/XUnit2TestFramework.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c765e47ec58cf89220cd5779fc5cce70b01abab88edf4ed2b5deaba1244c610/IValidator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c838f74f3c63ac383bd36bc08623ea904f909c7cf61fe1fea9a87349c773394/Select.SpeedOpt.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ceb1ac48cf123a13013a5d2bbf953667cf9f0ec664e30b95bf87d9f726c23e1/AssertionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d2b3c529e4a413bf191cfde863ceeb6944917e98b49aba58db347ac3fd8/ContainerBuilderExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e5b3bf527769cb3295444e29d617bf2ebe5666bbe8e9c881a31444ba66846cfa/BooleanAsserts.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e7268004cea411c815a7ab3cb4144fbb696c52cfe11670e8ab0d8b26fa24/ServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e7268004cea411c815a7ab3cb4144fbb696c52cfe11670e8ab0d8b26fa24/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e85c15252741a0524aaa1e625a88e92d1040e1375014acc6a6a94e685ceb3ce9/ServiceRegistrar.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/edd372f635af6dbb10768bd65e84ceb3da88427cb41b5592ca49a354b12307c/RequestExceptionProcessorBehavior.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eec252cf40b8ff96a3a028a3eddc6ac8c0d3f385d85e6def3cfc7d63fbc5918e/DefaultValidatorExtensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -257,10 +243,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9b8579c61c1131ec7bf0253f254c8b2a5204bc2e64e4c9237ee291963d/BsonElementAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/CQRS/Analytics/WriteAnalyticsHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore.Blazor/src/ACore.Blazor/Components/Testable.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/MTest/ACore/ACore/src/ACore.Server/Configuration/ACoreServerServiceExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditModuleRequestHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/CQRS/AuditSave/AuditSaveHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Modules/AuditModule/Models/AuditEntryColumnItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/CQRS/DbSaveResult.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/MTest/ACore/ACore/test/ACore.Tests/Base/TestsBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestModuleRequest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/CQRS/TestModuleRequestHandler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.Tests/TestImplementations/Server/Modules/TestModule/Configuration/TestModuleServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -273,6 +261,9 @@
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/AuditStructureBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/Mongo/AuditAttributeTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ACore/test/ACore.TestsIntegrations/Modules/TestModule/PG/AuditAttributeTests.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/FakeData/GenericClass.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/FakeData/InheritedGenericClass.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ACore/test/ACore.UnitTests/Core/Extensions/TypeExtensions/IsSubclassOfRawGenericTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/App.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/AppStartConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/TestUI/Client/Pages/Index.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
@@ -862,15 +853,7 @@
       <workItem from="1727890683987" duration="2722000" />
       <workItem from="1727929110834" duration="6770000" />
       <workItem from="1727982088390" duration="1190000" />
-      <workItem from="1728029285384" duration="1854000" />
-    </task>
-    <task id="LOCAL-00018" summary="update readme about link to Azure App">
-      <option name="closed" value="true" />
-      <created>1705058858155</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1705058858155</updated>
+      <workItem from="1728029285384" duration="22871000" />
     </task>
     <task id="LOCAL-00019" summary="wasm loading - progress bar">
       <option name="closed" value="true" />
@@ -1256,7 +1239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727304885681</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="das">
+      <option name="closed" value="true" />
+      <created>1728031671605</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1728031671605</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1322,7 +1313,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="Mongo audit" />
     <MESSAGE value="big refactor" />
     <MESSAGE value="Modules + CQRS" />
     <MESSAGE value="Rename JMCore to ACore" />
@@ -1347,7 +1337,8 @@
     <MESSAGE value="audit eith DataType" />
     <MESSAGE value="Audit cache unit tests" />
     <MESSAGE value="adpot, refactor compare entity object" />
-    <option name="LAST_COMMIT_MESSAGE" value="adpot, refactor compare entity object" />
+    <MESSAGE value="das" />
+    <option name="LAST_COMMIT_MESSAGE" value="das" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1621,10 +1612,10 @@
           <line>70</line>
           <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\EF\Helpers\AuditHelper.cs" containingFunctionPresentation="Method 'UpdateDbAction'">
             <startOffsets>
-              <option value="2734" />
+              <option value="2716" />
             </startOffsets>
             <endOffsets>
-              <option value="2794" />
+              <option value="2776" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="699" />
@@ -1695,33 +1686,52 @@
           <option name="timeStamp" value="708" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Base/DbContextBase.cs</url>
-          <line>51</line>
-          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\Definitions\EF\Base\DbContextBase.cs" containingFunctionPresentation="Method 'Save'">
-            <startOffsets>
-              <option value="1988" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2031" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="709" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Helpers/AuditHelper.cs</url>
           <line>143</line>
           <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\Definitions\EF\Helpers\AuditHelper.cs" containingFunctionPresentation="Method 'GetTableName'">
             <startOffsets>
-              <option value="5075" />
+              <option value="5057" />
             </startOffsets>
             <endOffsets>
-              <option value="5076" />
+              <option value="5058" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="710" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ACore/src/ACore.Server/Storages/Definitions/EF/Base/DbContextBase.cs</url>
+          <line>100</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore.Server\Storages\Definitions\EF\Base\DbContextBase.cs" containingFunctionPresentation="Method 'Save'">
+            <startOffsets>
+              <option value="3980" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3990" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="721" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <condition expression="leftProperty.Name == &quot;MongoId&quot;" language="C#" />
+          <url>file://$PROJECT_DIR$/ACore/src/ACore/Extensions/ObjectExtensions.cs</url>
+          <line>49</line>
+          <properties documentPath="D:\MTest\ACore\ACore\src\ACore\Extensions\ObjectExtensions.cs" containingFunctionPresentation="Method 'Compare'">
+            <startOffsets>
+              <option value="1692" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1739" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="754" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="RiderUnitTests">
+        <watch expression="enumRight.SequenceEqual(enumLeft)" language="C#" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

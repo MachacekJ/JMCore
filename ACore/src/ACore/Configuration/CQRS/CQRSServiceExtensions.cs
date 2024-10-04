@@ -1,4 +1,5 @@
-﻿using ACore.Base.CQRS.Pipelines;
+﻿using ACore.Base.CQRS;
+using ACore.Base.CQRS.Pipelines;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ public static class CQRSExtensions
     services.AddMediatR((c) =>
     {
       c.RegisterServicesFromAssemblyContaining(typeof(CQRSExtensions));
+      c.ACoreMediatorConfiguration();
     });
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
     services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));

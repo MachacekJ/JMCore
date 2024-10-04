@@ -7,6 +7,7 @@ using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbGet;
 using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Attributes;
+using ACore.Server.Storages.CQRS.Notifications;
 using ACore.Server.Storages.Definitions.EF.Base.Scripts;
 using ACore.Server.Storages.Definitions.EF.Helpers;
 using ACore.Server.Storages.Definitions.Models;
@@ -94,6 +95,8 @@ public abstract class DbContextBase : DbContext, IStorage
     }
 
     await SaveChangesAsync();
+
+    await _mediator.Publish(new EntitySaveNotification<TEntity, TPK>(existsEntity, newData));
 
     if (isNew)
       await auditHelper.InsertDbAction(existsEntity);
@@ -253,9 +256,9 @@ public abstract class DbContextBase : DbContext, IStorage
   /// For some storage the id must be set manually.
   /// e.g. <see cref="StorageTypeEnum.Memory"/>
   /// </summary>
- // private void SetNewId<TEntity, TPK>(TEntity obj)
- //   where TEntity : PKEntity<TPK>
- // {
+  // private void SetNewId<TEntity, TPK>(TEntity obj)
+  //   where TEntity : PKEntity<TPK>
+  // {
 
 //     if (StorageDefinition.Type != StorageTypeEnum.Memory)
 //       return;
@@ -291,52 +294,32 @@ public abstract class DbContextBase : DbContext, IStorage
 //       case PKMongoEntity stringEntity:
 //         stringEntity.Id = ObjectId.GenerateNewId();
 //         break;
-    //   }
+  //   }
   //}
-
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
   private async Task<TEntity?> GetEntityById<TEntity, TPK>(TPK id)
     where TEntity : PKEntity<TPK>
   {
     var remap = GetDbSet<TEntity>();
 
-    if (IsSubclassOfRawGeneric(typeof(PKIntEntity), typeof(TEntity)))
+    if (typeof(TEntity).IsSubclassOfRawGeneric(typeof(PKIntEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKIntEntity).Id == Convert.ToInt32(id));
 
-    if (IsSubclassOfRawGeneric(typeof(PKLongEntity), typeof(TEntity)))
+    if (typeof(TEntity).IsSubclassOfRawGeneric(typeof(PKLongEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKLongEntity).Id == Convert.ToInt64(id));
 
-    if (IsSubclassOfRawGeneric(typeof(PKGuidEntity), typeof(TEntity)))
+    if (typeof(TEntity).IsSubclassOfRawGeneric(typeof(PKGuidEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKGuidEntity).Id == (Guid)(Convert.ChangeType(id, typeof(Guid)) ?? PKGuidEntity.EmptyId));
 
-    if (IsSubclassOfRawGeneric(typeof(PKStringEntity), typeof(TEntity)))
+    if (typeof(TEntity).IsSubclassOfRawGeneric(typeof(PKStringEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKStringEntity).Id == id.ToString());
 
-    if (IsSubclassOfRawGeneric(typeof(PKMongoEntity), typeof(TEntity)))
+    if (typeof(TEntity).IsSubclassOfRawGeneric(typeof(PKMongoEntity)))
       return await remap.SingleOrDefaultAsync(e => (e as PKMongoEntity).Id == (ObjectId)(Convert.ChangeType(id, typeof(ObjectId)) ?? PKMongoEntity.EmptyId));
 
     throw new Exception($"Unsupported type of primary key for entity '{typeof(TEntity).Name}.'");
   }
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-  private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
-  {
-    while (toCheck != null && toCheck != typeof(object))
-    {
-      var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
-      if (generic == cur)
-      {
-        return true;
-      }
-
-      if (toCheck.BaseType != null)
-        toCheck = toCheck.BaseType;
-      else
-        break;
-    }
-
-    return false;
-  }
 
   #endregion
 

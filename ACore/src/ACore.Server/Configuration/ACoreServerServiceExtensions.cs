@@ -1,8 +1,11 @@
+using ACore.Base.CQRS;
 using Autofac;
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
 using ACore.Server.Configuration.CQRS.OptionsGet;
 using ACore.Server.Modules.AuditModule.Configuration;
+using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
+using ACore.Server.Modules.AuditModule.CQRS.NotificationHandlers;
 using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages.Configuration;
@@ -36,7 +39,11 @@ public static class ACoreServerServiceExtensions
     // Adding CQRS only from ACore assembly.
     services.AddCQRS();
     // Adding CQRS from ACore.Server assembly.
-    services.AddMediatR((c) => { c.RegisterServicesFromAssemblyContaining(typeof(ACoreServerServiceExtensions)); });
+    services.AddMediatR(c =>
+    {
+      c.RegisterServicesFromAssemblyContaining(typeof(ACoreServerServiceExtensions));
+      c.ACoreMediatorConfiguration();
+    });
     services.AddValidatorsFromAssembly(typeof(ACoreServerServiceExtensions).Assembly, includeInternalTypes: true);
 
     services.TryAddSingleton<IStorageResolver>(new DefaultStorageResolver());
@@ -64,6 +71,9 @@ public static class ACoreServerServiceExtensions
   public static void ConfigureAutofacACoreServer(this ContainerBuilder containerBuilder)
   {
     containerBuilder.RegisterGeneric(typeof(AppOptionHandler<>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<,>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(EntitySaveNotificationHandler<,>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(EntitySaveNotificationHandler2<,>)).AsImplementedInterfaces();
   }
   
   private static void ValidateDependencyInConfiguration(ACoreServerOptions aCoreServerOptions)

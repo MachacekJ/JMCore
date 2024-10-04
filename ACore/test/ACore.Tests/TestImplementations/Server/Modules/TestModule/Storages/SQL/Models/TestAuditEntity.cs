@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ACore.Extensions;
 using ACore.Server.Modules.AuditModule.Attributes;
-using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Storages.Definitions.Models.PK;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
 using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.PG;

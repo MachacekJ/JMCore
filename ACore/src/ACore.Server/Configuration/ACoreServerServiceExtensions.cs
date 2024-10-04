@@ -5,7 +5,6 @@ using ACore.Server.Configuration.CQRS.OptionsGet;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
-using ACore.Server.Storages;
 using ACore.Server.Storages.Configuration;
 using ACore.Server.Storages.Services.StorageResolvers;
 using FluentValidation;

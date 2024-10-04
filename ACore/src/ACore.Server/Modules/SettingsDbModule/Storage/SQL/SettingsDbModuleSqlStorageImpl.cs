@@ -8,7 +8,6 @@ using ACore.Server.Storages.Definitions.EF.Base;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MongoDB.Driver;
 
 namespace ACore.Server.Modules.SettingsDbModule.Storage.SQL;
 

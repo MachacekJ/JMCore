@@ -16,13 +16,13 @@ public abstract class EFStorageDefinition : StorageDefinition
   public abstract long GetNewLongId<TEntity, TPK>(DbSet<TEntity> dbSet)
     where TEntity : PKEntity<TPK>;
 
-  public abstract Guid GetNewGuidId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public abstract Guid GetNewGuidId<TEntity, TPK>()
     where TEntity : PKEntity<TPK>;
 
-  public abstract string GetNewStringId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public abstract string GetNewStringId<TEntity, TPK>()
     where TEntity : PKEntity<TPK>;
 
-  public abstract ObjectId GetNewObjectId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public abstract ObjectId GetNewObjectId<TEntity, TPK>()
     where TEntity : PKEntity<TPK>;
 
 
@@ -33,9 +33,9 @@ public abstract class EFStorageDefinition : StorageDefinition
     {
       { } entityType when entityType == typeof(int) => (TPK)Convert.ChangeType(GetNewIntId<TEntity, TPK>(dbSet), typeof(TPK)),
       { } entityType when entityType == typeof(long) => (TPK)Convert.ChangeType(GetNewLongId<TEntity, TPK>(dbSet), typeof(TPK)),
-      { } entityType when entityType == typeof(string) => (TPK)Convert.ChangeType(GetNewStringId<TEntity, TPK>(dbSet), typeof(TPK)),
-      { } entityType when entityType == typeof(Guid) => (TPK)Convert.ChangeType(GetNewGuidId<TEntity, TPK>(dbSet), typeof(TPK)),
-      { } entityType when entityType == typeof(ObjectId) => (TPK)Convert.ChangeType(GetNewObjectId<TEntity, TPK>(dbSet), typeof(TPK)),
+      { } entityType when entityType == typeof(string) => (TPK)Convert.ChangeType(GetNewStringId<TEntity, TPK>(), typeof(TPK)),
+      { } entityType when entityType == typeof(Guid) => (TPK)Convert.ChangeType(GetNewGuidId<TEntity, TPK>(), typeof(TPK)),
+      { } entityType when entityType == typeof(ObjectId) => (TPK)Convert.ChangeType(GetNewObjectId<TEntity, TPK>(), typeof(TPK)),
       _ => throw new Exception("Unknown primary data type {}")
     };
   }

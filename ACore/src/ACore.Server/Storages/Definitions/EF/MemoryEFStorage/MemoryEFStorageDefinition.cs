@@ -20,12 +20,12 @@ public class MemoryEFStorageDefinition : EFStorageDefinition
     => !dbSet.Any() ? 1 : dbSet.Max(i => (i as PKLongEntity).Id) + 1;
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
   
-  public override Guid GetNewGuidId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override Guid GetNewGuidId<TEntity, TPK>()
     => PKGuidEntity.NewId;
 
-  public override string GetNewStringId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override string GetNewStringId<TEntity, TPK>()
     => PKStringEntity.NewId;
 
-  public override ObjectId GetNewObjectId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override ObjectId GetNewObjectId<TEntity, TPK>()
     => throw new Exception($"PK {nameof(ObjectId)} is not allowed for memory EF.");
 }

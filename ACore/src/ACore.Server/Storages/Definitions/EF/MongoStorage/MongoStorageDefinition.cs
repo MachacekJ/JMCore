@@ -20,12 +20,12 @@ public class MongoStorageDefinition : EFStorageDefinition
   public override long GetNewLongId<TEntity, TPK>(DbSet<TEntity> dbSet)
     => throw new NotImplementedException(ErrorNotSupportedPK);
 
-  public override Guid GetNewGuidId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override Guid GetNewGuidId<TEntity, TPK>()
     => throw new NotImplementedException(ErrorNotSupportedPK);
 
-  public override string GetNewStringId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override string GetNewStringId<TEntity, TPK>()
     => throw new NotImplementedException(ErrorNotSupportedPK);
 
-  public override ObjectId GetNewObjectId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override ObjectId GetNewObjectId<TEntity, TPK>()
     => PKMongoEntity.NewId;
 }

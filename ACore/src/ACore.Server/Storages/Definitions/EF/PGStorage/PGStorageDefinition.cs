@@ -18,12 +18,12 @@ public class PGStorageDefinition : EFStorageDefinition
   public override long GetNewLongId<TEntity, TPK>(DbSet<TEntity> dbSet)
     => PKLongEntity.NewId;
 
-  public override Guid GetNewGuidId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override Guid GetNewGuidId<TEntity, TPK>()
     => PKGuidEntity.NewId;
 
-  public override string GetNewStringId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override string GetNewStringId<TEntity, TPK>()
     => PKStringEntity.NewId;
 
-  public override ObjectId GetNewObjectId<TEntity, TPK>(DbSet<TEntity> dbSet)
+  public override ObjectId GetNewObjectId<TEntity, TPK>()
     => throw new Exception($"PK {nameof(ObjectId)} is not allowed for postgres.");
 }

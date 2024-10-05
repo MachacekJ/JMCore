@@ -1,5 +1,7 @@
-﻿using ACore.Server.Modules.AuditModule.Models;
+﻿using System.Globalization;
+using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Modules.AuditModule.Storage.Mongo.Models;
+using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 using ACore.Server.Storages.Definitions.EF;
 using ACore.Server.Storages.Definitions.EF.Base;
 using ACore.Server.Storages.Definitions.EF.Base.Scripts;
@@ -14,7 +16,7 @@ using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ACore.Server.Modules.AuditModule.Storage.Mongo;
 
-internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStorageImpl> options, IMediator mediator, ILogger<AuditModuleMongoStorageImpl> logger)
+internal class AuditMongoStorageImpl(DbContextOptions<AuditMongoStorageImpl> options, IMediator mediator, ILogger<AuditMongoStorageImpl> logger)
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
   protected override DbScriptBase UpdateScripts => new Scripts.ScriptRegistrations();
@@ -28,7 +30,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
   {
     if (saveInfoItem.IsAuditable == false || !saveInfoItem.ChangedColumns.Any())
       return;
-    
+
     var auditEntity = new AuditMongoEntity
     {
       ObjectId = GetObjectId(saveInfoItem.TableName, new ObjectId(saveInfoItem.PkValueString)),
@@ -39,11 +41,12 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
       },
       EntityState = saveInfoItem.EntityState,
       Created = DateTime.UtcNow,
-      Columns = saveInfoItem.ChangedColumns.Where(e=>e.IsAuditable).Select(e => new AuditMongoValueEntity
+      Columns = saveInfoItem.ChangedColumns.Where(e => e.IsAuditable).Select(e => new AuditMongoValueEntity
       {
         PropName = e.PropName,
         Property = e.ColumnName,
         DataType = e.DataType,
+        IsChanged = e.IsChanged,
         NewValue = ConvertValue(e.NewValue),
         OldValue = ConvertValue(e.OldValue),
       }).ToList()
@@ -60,10 +63,15 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
 
     return value switch
     {
+      byte or short or int or long or bool or Guid or ObjectId => value.ToString(),
+      TimeSpan ts => ts.Ticks.ToString(),
       DateTime dateTime => dateTime.Ticks.ToString(),
-      _ => value.ToString()
+      decimal dec => dec.ToString(CultureInfo.InvariantCulture),
+      _ => SqlConvertedItem.ToValueString(logger, value)
     };
   }
+
+
 
   public async Task<AuditInfoItem[]> AuditItemsAsync<TPK>(string collectionName, TPK pkValue, string? schemaName = null)
   {
@@ -81,8 +89,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
       {
         foreach (var col in auditMongoEntity.Columns)
         {
-          var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity.Id}'");
-          aa.AddColumnEntry(new AuditInfoColumnItem(col.PropName, col.Property, col.DataType, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype)));
+          aa.AddColumnEntry(new AuditInfoColumnItem(col.PropName, col.Property, col.DataType, col.IsChanged, SqlConvertedItem.ConvertObjectToDataType(col.DataType, col.OldValue), SqlConvertedItem.ConvertObjectToDataType(col.DataType, col.NewValue)));
         }
       }
 
@@ -92,28 +99,6 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     return ll.ToArray();
   }
 
-  private object? ConvertToObject(string? value, string dataType)
-  {
-    if (string.IsNullOrEmpty(dataType))
-      throw new ArgumentNullException($"Data type is null.");
-
-    if (value == null || value == "null")
-      return null;
-
-    if (dataType == typeof(ObjectId).FullName)
-      return new ObjectId(value);
-
-    if (dataType == typeof(DateTime).FullName)
-      return new DateTime(Convert.ToInt64(value), DateTimeKind.Utc);
-
-    var type = Type.GetType(dataType);
-    if (type == null)
-      throw new Exception($"Cannot create data type '{dataType}'.");
-
-
-    var c = Convert.ChangeType(value, type);
-    return c;
-  }
 
   private static string GetObjectId(string collection, ObjectId pk) => $"{collection}.{pk}";
 

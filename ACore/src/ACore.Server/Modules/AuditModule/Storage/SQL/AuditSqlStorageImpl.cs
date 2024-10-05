@@ -67,7 +67,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
 
       foreach (var col in grItem.ToArray())
       {
-        auditEntryItem.AddColumnEntry(new AuditInfoColumnItem(col.AuditColumn.PropName, col.AuditColumn.ColumnName, col.AuditColumn.DataType, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject()));
+        auditEntryItem.AddColumnEntry(new AuditInfoColumnItem(col.AuditColumn.PropName, col.AuditColumn.ColumnName, col.AuditColumn.DataType, col.IsChanged, SqlConvertedItem.ConvertObjectToDataType(col.AuditColumn.DataType, col.GetOldValueObject()), SqlConvertedItem.ConvertObjectToDataType(col.AuditColumn.DataType, col.GetNewValueObject())));
       }
 
       res.Add(auditEntryItem);

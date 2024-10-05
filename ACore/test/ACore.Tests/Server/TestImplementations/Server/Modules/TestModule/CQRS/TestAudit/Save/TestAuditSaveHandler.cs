@@ -5,6 +5,7 @@ using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MongoDB.Bson;
+using TestAuditEntity = ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models.TestAuditEntity;
 
 namespace ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
 
@@ -21,12 +22,12 @@ public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
       switch (storage)
       {
         case TestModuleMongoStorageImpl:
-          var enMongo = TestPKMongoEntity.Create(request.Data);
-          allTask.Add(new SaveProcessExecutor(enMongo, storage, storage.SaveTestEntity<TestPKMongoEntity, ObjectId>(enMongo)));
+          var enMongo = TestAuditEntity.Create(request.Data);
+          allTask.Add(new SaveProcessExecutor(enMongo, storage, storage.SaveTestEntity<TestAuditEntity, ObjectId>(enMongo)));
           break;
         default:
-          var en = TestAuditEntity.Create(request.Data);
-          allTask.Add(new SaveProcessExecutor(en, storage, storage.SaveTestEntity<TestAuditEntity, int>(en)));
+          var en = Storages.SQL.Models.TestAuditEntity.Create(request.Data);
+          allTask.Add(new SaveProcessExecutor(en, storage, storage.SaveTestEntity<Storages.SQL.Models.TestAuditEntity, int>(en)));
           break;
       }
     }

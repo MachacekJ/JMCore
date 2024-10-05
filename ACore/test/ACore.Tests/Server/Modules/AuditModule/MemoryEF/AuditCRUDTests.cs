@@ -23,7 +23,7 @@ public class AuditTests : AuditTestsBase
   public async Task AddItemTest()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditCRUDTestHelper.AddItemAsyncTest(Mediator, GetTableName, GetColumnName); });
+    await RunTestAsync(method, async () => { await AuditCRUDTestHelper.AddItemAsyncTest<int>(Mediator, GetTableName, GetColumnName); });
   }
 
   [Fact]

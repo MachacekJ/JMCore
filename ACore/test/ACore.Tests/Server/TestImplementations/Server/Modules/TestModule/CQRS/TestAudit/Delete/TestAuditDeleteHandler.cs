@@ -4,6 +4,7 @@ using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using MongoDB.Bson;
+using TestAuditEntity = ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models.TestAuditEntity;
 
 namespace ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
 
@@ -20,11 +21,11 @@ public class TestAuditDeleteHandler<T>(IStorageResolver storageResolver)
       switch (storage)
       {
         case TestModuleMongoStorageImpl:
-          var t = storage.DeleteTestEntity<TestPKMongoEntity, ObjectId>((ObjectId)Convert.ChangeType(request.Id, typeof(ObjectId)));
+          var t = storage.DeleteTestEntity<TestAuditEntity, ObjectId>((ObjectId)Convert.ChangeType(request.Id, typeof(ObjectId)));
           allTask.Add(t);
           break;
         default:
-          var t2 = storage.DeleteTestEntity<TestAuditEntity, int>((int)Convert.ChangeType(request.Id, typeof(int)));
+          var t2 = storage.DeleteTestEntity<Storages.SQL.Models.TestAuditEntity, int>((int)Convert.ChangeType(request.Id, typeof(int)));
           allTask.Add(t2);
           break;
       }

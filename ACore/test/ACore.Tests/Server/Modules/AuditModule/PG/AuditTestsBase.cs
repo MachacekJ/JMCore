@@ -1,5 +1,6 @@
 ﻿using ACore.Server.Configuration;
 using ACore.Server.Modules.AuditModule.UserProvider;
+using ACore.Server.Storages.Definitions.Models;
 using ACore.Tests.Base.Models;
 using ACore.Tests.Server.Storages;
 using ACore.Tests.Server.TestImplementations.Server;
@@ -22,8 +23,8 @@ public class AuditTestsBase : StorageTestsBase
 
   protected override void RegisterServices(ServiceCollection sc)
   {
-    _dbName = TestData.GetDbName();
     base.RegisterServices(sc);
+    _dbName = TestData.GetDbName(StorageTypeEnum.Postgres);
     sc.AddDbContext<MasterDb>(opt => opt.UseNpgsql(string.Format(Configuration?["TestSettings:ConnectionStringPG"] ?? throw new InvalidOperationException(), "postgres")));
     sc.AddACoreTest(ot =>
     {

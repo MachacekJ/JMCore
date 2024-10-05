@@ -1,8 +1,6 @@
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 using ACore.Server.Modules.AuditModule.Models;
-using ACore.Server.Storages.CQRS;
-using ACore.Server.Storages.Models.SaveInfo;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
@@ -38,15 +36,15 @@ public static class AuditCRUDTestHelper
     // Assert
     var allData = (await mediator.Send(new TestNoAuditGetQuery())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestNoAuditData, int>(result, allData?.Values.ToArray());
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestNoAuditEntity, int>(getTableName(TestNoAuditEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(TestNoAuditEntityName), itemId))).ResultValue;
 
     resAuditItems.Should().HaveCount(0);
   }
 
-  public static async Task AddItemAsyncTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
+  public static async Task AddItemAsyncTest<TPK>(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
     // Arrange
-    var item = new TestAuditData<int>
+    var item = new TestAuditData<TPK>
     {
       Created = TestDateTime,
       Name = TestName,
@@ -54,42 +52,42 @@ public static class AuditCRUDTestHelper
     };
 
     // Action.
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
+    var result = await mediator.Send(new TestAuditSaveCommand<TPK>(item));
 
 
     // Assert.
-    var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
-    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
-
+    var allData = (await mediator.Send(new TestAuditGetQuery<TPK>())).ResultValue;
+    var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<TPK>, TPK>(result, allData);
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<TPK>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    
     resAuditItems.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(1);
     resAuditItems.Single().State.Should().Be(AuditInfoStateEnum.Added);
-
+    
     var auditItem = resAuditItems.Single();
     auditItem.Columns.Should().HaveCount(6);
     auditItem.Columns.All(c => c.IsChange).Should().Be(true);
-
+    
     var noAuditableColumn = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.NotAuditableColumn)));
     var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Id)));
     var aName = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Name)));
     var aCreated = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestAuditEntity.Created)));
-
+    
     noAuditableColumn.Should().BeNull();
-
+    
     aid.Should().NotBeNull();
     aName.Should().NotBeNull();
     aName?.NewValue.Should().NotBeNull();
-
+    
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.NewValue.Should().NotBeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
-
+    
     aid?.NewValue.Should().Be(itemId);
     aName?.NewValue.Should().Be(TestName);
-    new DateTime(Convert.ToInt64(aCreated.NewValue)).Should().Be(TestDateTime);
+    aCreated.NewValue.Should().Be(TestDateTime);
   }
 
   public static async Task UpdateItemAsyncTest(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
@@ -119,7 +117,7 @@ public static class AuditCRUDTestHelper
     await mediator.Send(new TestAuditSaveCommand<int>(item));
 
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Modified);
@@ -151,7 +149,7 @@ public static class AuditCRUDTestHelper
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
     aCreated.IsChange.Should().BeFalse();
-    aCreated.OldValue.Should().Be(TestDateTime.Ticks);
+    aCreated.OldValue.Should().Be(TestDateTime);
     aCreated.NewValue.Should().BeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
 
@@ -198,7 +196,7 @@ public static class AuditCRUDTestHelper
 
 
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Modified);
@@ -230,7 +228,7 @@ public static class AuditCRUDTestHelper
     // Assert.
     resultDelete.IsSuccess.Should().BeTrue();
 
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
     resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Deleted);
@@ -260,7 +258,7 @@ public static class AuditCRUDTestHelper
 
     aCreated.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(aCreated);
-    aCreated.OldValue.Should().Be(TestDateTime.Ticks);
+    aCreated.OldValue.Should().Be(TestDateTime);
     aCreated.NewValue.Should().BeNull();
     aCreated.DataType.ToLower().Should().NotContain("string");
 

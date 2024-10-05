@@ -1,11 +1,9 @@
 ﻿using ACore.Base.CQRS.Results;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
-using ACore.Server.Storages.Definitions.Models.PK;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 
-public class AuditGetQuery<TEntity, TPK>(string tableName, TPK pkValue, bool restoreEntity = false , string? schemaName = null) : AuditModuleRequest<Result<AuditGetQueryDataOut<TEntity, TPK>[]>>
-  where TEntity : PKEntity<TPK>
+public class AuditGetQuery<TPK>(string tableName, TPK pkValue, bool restoreEntity = false , string? schemaName = null) : AuditModuleRequest<Result<AuditGetQueryDataOut<TPK>[]>>
 {
   public string TableName => tableName;
   public string? SchemaName => schemaName;

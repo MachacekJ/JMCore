@@ -24,7 +24,7 @@ internal static class AuditModuleServiceExtensions
     if (options.Storages == null)
       throw new ArgumentException($"{nameof(options.Storages)} is null.");
 
-    services.AddDbMongoStorage<AuditModuleMongoStorageImpl>(options.Storages);
+    services.AddDbMongoStorage<AuditMongoStorageImpl>(options.Storages);
     services.AddDbPGStorage<AuditPGEFStorageImpl>(options.Storages);
     services.AddDbMemoryStorage<AuditSqlMemoryStorageImpl>(options.Storages, nameof(IAuditStorageModule));
   }
@@ -37,7 +37,7 @@ internal static class AuditModuleServiceExtensions
     if (opt.Storages == null)
       throw new ArgumentException($"{nameof(opt.Storages)} is null.");
 
-    await provider.ConfigureMongoStorage<IAuditStorageModule, AuditModuleMongoStorageImpl>(opt.Storages);
+    await provider.ConfigureMongoStorage<IAuditStorageModule, AuditMongoStorageImpl>(opt.Storages);
     await provider.ConfigurePGStorage<IAuditStorageModule, AuditPGEFStorageImpl>(opt.Storages);
     await provider.ConfigureMemoryStorage<IAuditStorageModule, AuditSqlMemoryStorageImpl>(opt.Storages);
   }

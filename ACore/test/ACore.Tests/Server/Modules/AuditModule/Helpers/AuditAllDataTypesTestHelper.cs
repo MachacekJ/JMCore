@@ -1,10 +1,8 @@
 using System.Text.Json;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
-using ACore.Server.Storages.CQRS;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
-using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using FluentAssertions;
 using MediatR;
 using Serilog.Events;
@@ -44,7 +42,7 @@ public static class AuditAllDataTypesTestHelper
     // Act.
     var result = await mediator.Send(new TestValueTypeSaveCommand(item));
     // Assert
-    
+
     var allData = (await mediator.Send(new TestValueTypeGetQuery())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestValueTypeData, int>(result, allData);
     itemId.Should().BeGreaterThan(0);
@@ -56,9 +54,9 @@ public static class AuditAllDataTypesTestHelper
     allData.Should().HaveCount(1);
 
     var savedItem = allData.Single();
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestValueTypeEntity, int>(getTableName(entityName), savedItem.Id))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(entityName), savedItem.Id))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
-    
+
     var auditItem = resAuditItems.Single();
     // 17 fields + 1 Id
     auditItem.Columns.Should().HaveCount(18);
@@ -69,16 +67,17 @@ public static class AuditAllDataTypesTestHelper
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.BigIntNull))).NewValue.Should().Be(item.BigIntNull);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Bit2))).NewValue.Should().Be(item.Bit2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Char2))).NewValue.Should().Be(item.Char2);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Date2))).NewValue.Should().Be(item.Date2.Ticks);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.DateTime2))).NewValue.Should().Be(item.DateTime2.Ticks);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Decimal2))).NewValue.Should().Be(JsonSerializer.Serialize(item.Decimal2));
+    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Date2))).NewValue.Should().Be(item.Date2);
+    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.DateTime2))).NewValue.Should().Be(item.DateTime2);
+    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Decimal2))).NewValue.Should().Be(item.Decimal2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.NChar2))).NewValue.Should().Be(item.NChar2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.NVarChar2))).NewValue.Should().Be(item.NVarChar2);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.SmallDateTime2))).NewValue.Should().Be(item.SmallDateTime2.Ticks);
+    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.SmallDateTime2))).NewValue.Should().Be(item.SmallDateTime2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.SmallInt2))).NewValue.Should().Be(item.SmallInt2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.TinyInt2))).NewValue.Should().Be(item.TinyInt2);
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.Guid2))).NewValue.Should().Be(item.Guid2);
-    auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.VarBinary2))).NewValue.Should().Be(JsonSerializer.Serialize(item.VarBinary2));
+    var newVal = auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.VarBinary2))).NewValue;
+    JsonSerializer.Serialize(newVal).Should().Be(JsonSerializer.Serialize(item.VarBinary2));
     auditItem.Columns.Single(a => a.ColumnName == getColumnName(entityName, nameof(TestValueTypeData.VarChar2))).NewValue.Should().Be(item.VarChar2);
   }
 }

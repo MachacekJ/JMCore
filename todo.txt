@@ -10,4 +10,5 @@
 5. Cache duration
 6. DB Transactions
 7. SaveTo storage provolat Notifikaci -> public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
-8. generic OldValue -> public record AuditInfoColumnItem(string PropName, string ColumnName, string DataType, bool IsChanged, object? OldValue, object? NewValue);
+8. test    case TimeSpan span:
+          value.NewValueLong = span.Ticks;

@@ -30,12 +30,6 @@ public class AuditInfoItem
   public void AddColumnEntry(AuditInfoColumnItem columnItem)
   => Columns.Add(columnItem);
   
-
-  public void SetEntityState(EntityState entityState)
-  {
-    EntityState = entityState;
-  }
-
   private void SetPK<TPK>(TPK pkValue)
   {
     ArgumentNullException.ThrowIfNull(pkValue);

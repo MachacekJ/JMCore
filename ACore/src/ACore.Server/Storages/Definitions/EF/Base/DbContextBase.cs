@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
 using ACore.Configuration;
 using ACore.Extensions;
 using ACore.Server.Configuration.CQRS.OptionsGet;
@@ -31,7 +32,6 @@ public abstract partial class DbContextBase(DbContextOptions options, IMediator 
   protected abstract EFStorageDefinition EFStorageDefinition { get; }
 
   protected abstract string ModuleName { get; }
-
 
   protected async Task Save<TEntity, TPK>(TEntity newData, string? hashToCheck = null)
     where TEntity : PKEntity<TPK>
@@ -164,7 +164,7 @@ public abstract partial class DbContextBase(DbContextOptions options, IMediator 
 
     throw new Exception($"No registered {nameof(DbSet<T>)} has not been found. Please call the function {nameof(RegisterDbSet)} in ctor.");
   }
-
+  
   #region id
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.

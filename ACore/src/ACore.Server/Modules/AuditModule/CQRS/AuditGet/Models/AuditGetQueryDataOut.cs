@@ -1,15 +1,13 @@
 using ACore.Server.Modules.AuditModule.Models;
-using ACore.Server.Storages.Definitions.Models.PK;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 
-public record AuditGetQueryDataOut<TEntity, TPK>(string TableName, string? SchemaName , TPK PrimaryKey, string UserId, DateTime Created, AuditInfoStateEnum State, AuditGetQueryColumnDataOut[] Columns)
-  where TEntity : PKEntity<TPK>
+public record AuditGetQueryDataOut<TPK>(string TableName, string? SchemaName , TPK PrimaryKey, string UserId, DateTime Created, AuditInfoStateEnum State, AuditGetQueryColumnDataOut[] Columns)
 {
-  public static AuditGetQueryDataOut<TEntity, TPK> Create(AuditInfoItem saveInfoItem)
+  public static AuditGetQueryDataOut<TPK> Create(AuditInfoItem saveInfoItem)
   {
-    return new AuditGetQueryDataOut<TEntity, TPK>(
+    return new AuditGetQueryDataOut<TPK>(
       saveInfoItem.TableName,
       saveInfoItem.SchemaName,
       saveInfoItem.GetPK<TPK>() ?? throw new Exception("Primary key is null."),
@@ -25,8 +23,7 @@ public record AuditGetQueryDataOut<TEntity, TPK>(string TableName, string? Schem
 
 public static class AuditGetQueryDataOutExtensions
 {
-  public static AuditGetQueryColumnDataOut? GetColumn<TEntity, TPK>(this AuditGetQueryDataOut<TEntity, TPK> auditValueData, string columnName)
-    where TEntity : PKEntity<TPK>
+  public static AuditGetQueryColumnDataOut? GetColumn<TPK>(this AuditGetQueryDataOut<TPK> auditValueData, string columnName)
   {
     return auditValueData.Columns.SingleOrDefault(e => e.ColumnName == columnName);
   }

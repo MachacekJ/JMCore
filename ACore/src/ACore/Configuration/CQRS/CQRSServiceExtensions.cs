@@ -1,6 +1,4 @@
-﻿using ACore.Base.CQRS;
-using ACore.Base.CQRS.Extensions;
-using ACore.Base.CQRS.Notifications;
+﻿using ACore.Base.CQRS.Extensions;
 using ACore.Base.CQRS.Pipelines;
 using FluentValidation;
 using MediatR;

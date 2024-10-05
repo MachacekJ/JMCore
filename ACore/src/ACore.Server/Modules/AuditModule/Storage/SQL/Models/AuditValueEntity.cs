@@ -10,7 +10,6 @@ internal class AuditValueEntity
 {
   [Key]
   public long Id { get; init; }
-  
   public long AuditId { get; init; }
   public int AuditColumnId { get; set; }
   public bool IsChanged { get; init; }

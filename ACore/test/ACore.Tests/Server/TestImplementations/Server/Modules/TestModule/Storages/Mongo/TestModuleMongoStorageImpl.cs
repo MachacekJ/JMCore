@@ -24,7 +24,7 @@ internal class TestModuleMongoStorageImpl : DbContextBase, ITestStorageModule
     RegisterDbSet(TestAudits);
   }
 
-  internal DbSet<TestPKMongoEntity> TestAudits { get; set; }
+  internal DbSet<TestAuditEntity> TestAudits { get; set; }
 
   public async Task SaveTestEntity<TEntity, TPK>(TEntity data, string? hashToCheck = null)
     where TEntity : PKEntity<TPK>
@@ -39,7 +39,7 @@ internal class TestModuleMongoStorageImpl : DbContextBase, ITestStorageModule
   {
     var res = typeof(TEntity) switch
     {
-      { } entityType when entityType == typeof(TestPKMongoEntity) => TestAudits as DbSet<TEntity>,
+      { } entityType when entityType == typeof(TestAuditEntity) => TestAudits as DbSet<TEntity>,
       _ => throw new Exception($"Unknown entity type {typeof(TEntity).Name}.")
     };
     return res ?? throw new ArgumentNullException(nameof(res), @"DbSet function returned null value.");
@@ -48,9 +48,9 @@ internal class TestModuleMongoStorageImpl : DbContextBase, ITestStorageModule
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     base.OnModelCreating(modelBuilder);
-    modelBuilder.Entity<TestPKMongoEntity>().ToCollection(DefaultNames.ObjectNameMapping[nameof(TestPKMongoEntity)].TableName);
-    modelBuilder.Entity<TestPKMongoEntity>().HasKey(p => p.Id);
-    modelBuilder.Entity<TestPKMongoEntity>(builder =>
+    modelBuilder.Entity<TestAuditEntity>().ToCollection(DefaultNames.ObjectNameMapping[nameof(TestAuditEntity)].TableName);
+    modelBuilder.Entity<TestAuditEntity>().HasKey(p => p.Id);
+    modelBuilder.Entity<TestAuditEntity>(builder =>
       builder.Property(entity => entity.Id).HasElementName("_id")
     );
   }

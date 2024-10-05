@@ -1,13 +1,10 @@
-using ACore.Base.CQRS;
 using ACore.Base.CQRS.Extensions;
-using ACore.Base.CQRS.Notifications;
 using Autofac;
 using ACore.Configuration;
 using ACore.Configuration.CQRS;
 using ACore.Server.Configuration.CQRS.OptionsGet;
 using ACore.Server.Modules.AuditModule.Configuration;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
-using ACore.Server.Modules.AuditModule.CQRS.NotificationHandlers;
 using ACore.Server.Modules.ICAMModule.Configuration;
 using ACore.Server.Modules.SettingsDbModule.Configuration;
 using ACore.Server.Storages.Configuration;
@@ -73,7 +70,7 @@ public static class ACoreServerServiceExtensions
   public static void ConfigureAutofacACoreServer(this ContainerBuilder containerBuilder)
   {
     containerBuilder.RegisterGeneric(typeof(AppOptionHandler<>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<,>)).AsImplementedInterfaces();
+    containerBuilder.RegisterGeneric(typeof(AuditGetHandler<>)).AsImplementedInterfaces();
   }
   
   private static void ValidateDependencyInConfiguration(ACoreServerOptions aCoreServerOptions)

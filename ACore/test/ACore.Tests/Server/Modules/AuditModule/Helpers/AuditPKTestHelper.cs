@@ -1,7 +1,6 @@
 using ACore.Base.CQRS.Results;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
-using ACore.Server.Storages.CQRS;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
 using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
@@ -19,6 +18,7 @@ using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.
 using FluentAssertions;
 using MediatR;
 using MongoDB.Bson;
+using TestAuditEntity = ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models.TestAuditEntity;
 
 namespace ACore.Tests.Server.Modules.AuditModule.Helpers;
 
@@ -28,8 +28,8 @@ public static class AuditPKTestHelper
   private const string TestPKGuidEntityName = nameof(TestPKGuidEntity);
   private const string TestPKStringEntityName = nameof(TestPKStringEntity);
   private const string TestPKLongEntityName = nameof(TestPKLongEntity);
-  private const string TestPKMongoEntityName = nameof(TestPKMongoEntity);
-  private const string TestAuditEntityName = nameof(TestAuditEntity);
+  private const string TestPKMongoEntityName = nameof(TestAuditEntity);
+  private const string TestAuditEntityName = nameof(TestImplementations.Server.Modules.TestModule.Storages.SQL.Models.TestAuditEntity);
 
   public static async Task IntPK(IMediator mediator, Func<string, string> getTableName, Func<string, string, string> getColumnName)
   {
@@ -48,7 +48,7 @@ public static class AuditPKTestHelper
     
  
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
     var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestPKLongEntity.Id)));
@@ -73,7 +73,7 @@ public static class AuditPKTestHelper
     
  
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestPKLongEntity, long>(getTableName(TestPKLongEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<long>(getTableName(TestPKLongEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
     var aid = auditItem.GetColumn(getColumnName(TestPKLongEntityName, nameof(TestPKLongEntity.Id)));
@@ -96,7 +96,7 @@ public static class AuditPKTestHelper
     var allData = (await mediator.Send(new TestPKGuidGetQuery())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestPKGuidData, Guid>(result, allData);
 
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestPKGuidEntity, Guid>(getTableName(TestPKGuidEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<Guid>(getTableName(TestPKGuidEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
     var aid = auditItem.GetColumn(getColumnName(TestPKGuidEntityName, nameof(TestPKGuidEntity.Id)));
@@ -119,7 +119,7 @@ public static class AuditPKTestHelper
     var allData = (await mediator.Send(new TestPKStringGetQuery())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestPKStringData, string>(result, allData);
 
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestPKStringEntity, string>(getTableName(TestPKStringEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<string>(getTableName(TestPKStringEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
     var aid = auditItem.GetColumn(getColumnName(TestPKStringEntityName, nameof(TestPKStringEntity.Id)));
@@ -155,12 +155,11 @@ public static class AuditPKTestHelper
     var allData = (await mediator.Send(new TestAuditGetQuery<ObjectId>())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<ObjectId>, ObjectId>(result, allData);
     
- 
     // Assert.
-    var resAuditItems = (await mediator.Send(new AuditGetQuery<TestPKMongoEntity, ObjectId>(getTableName(TestPKMongoEntityName), itemId))).ResultValue;
+    var resAuditItems = (await mediator.Send(new AuditGetQuery<ObjectId>(getTableName(TestPKMongoEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
-    var aid = auditItem.GetColumn(getColumnName(TestAuditEntityName, nameof(TestPKMongoEntity.Id)));
+    var aid = auditItem.GetColumn(getColumnName(TestPKMongoEntityName, nameof(TestAuditEntity.Id)));
     ArgumentNullException.ThrowIfNull(aid);
     aid.NewValue.Should().Be(itemId);
   }

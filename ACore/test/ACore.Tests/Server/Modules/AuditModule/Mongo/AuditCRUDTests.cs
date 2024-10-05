@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
 using ACore.Tests.Server.Modules.AuditModule.Helpers;
+using MongoDB.Bson;
 using Xunit;
 
 // ReSharper disable NullableWarningSuppressionIsUsed
 
-namespace ACore.Tests.Server.Modules.AuditModule.PG;
+namespace ACore.Tests.Server.Modules.AuditModule.Mongo;
 
 /// <summary>
 /// Test audit items when entity class contains audit attributes.
@@ -23,7 +24,7 @@ public class AuditTests : AuditTestsBase
   public async Task AddItemTest()
   {
     var method = MethodBase.GetCurrentMethod();
-    await RunTestAsync(method, async () => { await AuditCRUDTestHelper.AddItemAsyncTest<int>(Mediator, GetTableName, GetColumnName); });
+    await RunTestAsync(method, async () => { await AuditCRUDTestHelper.AddItemAsyncTest<ObjectId>(Mediator, GetTableName, GetColumnName); });
   }
 
   [Fact]

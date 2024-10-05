@@ -1,10 +1,7 @@
 ﻿using ACore.Server.Configuration;
-using ACore.Server.Modules.AuditModule.CQRS.NotificationHandlers;
 using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Definitions.Models;
 using ACore.Tests.Server.Storages;
-using Autofac;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACore.Tests.Server.Modules.SettingsDbModule;

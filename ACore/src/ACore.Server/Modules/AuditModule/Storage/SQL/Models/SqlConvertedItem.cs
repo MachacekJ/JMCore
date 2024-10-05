@@ -1,7 +1,10 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text.Json;
+using ACore.Extensions;
 using ACore.Server.Storages.Models.SaveInfo;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -112,10 +115,9 @@ internal class SqlConvertedItem(string propName, string columName, bool isChange
     return value;
   }
 
-  private static string ToValueString(ILogger logger, object value)
+  public static string ToValueString(ILogger logger, object value)
   {
     var valueString = JsonSerializer.Serialize(value);
-
     switch (value)
     {
       case byte[]:
@@ -129,5 +131,54 @@ internal class SqlConvertedItem(string propName, string columName, bool isChange
       logger.LogError("The value exceeded the maximum character length '{MaxStringSize}'. Value:{Value}", MaxStringSize, valueString);
 
     return valueString;
+  }
+
+  public static object? ConvertObjectToDataType(string dataType, object? value)
+  {
+    if (string.IsNullOrEmpty(dataType))
+      throw new ArgumentNullException($"Data type is null.");
+
+    if (value == null)
+      return null;
+
+    if (dataType == typeof(ObjectId).ACoreTypeName())
+      return new ObjectId(value.ToString());
+
+    if (dataType == typeof(DateTime).ACoreTypeName())
+      return new DateTime(Convert.ToInt64(value), DateTimeKind.Utc);
+
+    var type = Type.GetType(dataType);
+
+    if (dataType == typeof(byte[]).ACoreTypeName() && type != null)
+      return JsonSerializer.Deserialize(value.ToString() ?? throw new NullReferenceException(), type);
+    
+    if (type == null)
+      throw new Exception($"Cannot create data type '{dataType}'.");
+
+    var c = ChangeType(value, type);
+    return c;
+  }
+
+
+  public static object ChangeType(object value, Type conversionType)
+  {
+    if (conversionType == null)
+    {
+      throw new ArgumentNullException("conversionType");
+    }
+
+    if (conversionType.IsGenericType &&
+        conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+    {
+      if (value == null)
+      {
+        return null;
+      }
+
+      NullableConverter nullableConverter = new NullableConverter(conversionType);
+      conversionType = nullableConverter.UnderlyingType;
+    }
+
+    return Convert.ChangeType(value, conversionType);
   }
 }

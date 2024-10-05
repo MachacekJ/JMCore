@@ -19,16 +19,17 @@ namespace ACore.Tests.Base;
 
 public abstract class TestsBase
 {
-  private  IMediator? _mediator;
+  private IMediator? _mediator;
   private ServiceCollection _services = new();
-  private IConfigurationRoot? Configuration { get; set; }
+  protected IConfigurationRoot? Configuration { get; set; }
+
   protected IMediator Mediator
   {
     get => _mediator ?? throw new NullReferenceException();
     private set => _mediator = value;
   }
 
-  private TestData? TestData { get; set; }
+  protected static TestData TestData { get; set; } = new(null);
 
   private ILogger<TestsBase>? Log { get; set; }
   protected InMemorySink LogInMemorySink { get; set; } = new();
@@ -97,7 +98,6 @@ public abstract class TestsBase
 
   protected virtual void SetContainer(ContainerBuilder containerBuilder)
   {
-    
   }
 
   protected virtual void RegisterServices(ServiceCollection services)
@@ -111,7 +111,7 @@ public abstract class TestsBase
       .AddEnvironmentVariables();
     Configuration = builder.Build();
     services.AddSingleton<IConfiguration>(Configuration);
-    
+
 
     var logDir = Path.Combine(RootDir, "Logs");
     var serilog = new LoggerConfiguration()

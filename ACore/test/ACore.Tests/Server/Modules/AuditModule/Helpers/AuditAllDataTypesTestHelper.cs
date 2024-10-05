@@ -1,10 +1,10 @@
 using System.Text.Json;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Storages.CQRS;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestValueType.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using FluentAssertions;
 using MediatR;
 using Serilog.Events;
@@ -42,7 +42,7 @@ public static class AuditAllDataTypesTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestValueTypeSaveCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestValueTypeSaveCommand(item));
     // Assert
     
     var allData = (await mediator.Send(new TestValueTypeGetQuery())).ResultValue;

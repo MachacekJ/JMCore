@@ -1,7 +1,7 @@
 using ACore.Base.CQRS.Results;
 using ACore.Base.Modules.Configuration;
 
-namespace ACore.Base.CQRS.Helpers;
+namespace ACore.Base.CQRS.Pipelines.Helpers;
 
 public class PipelineBehaviorHelper<TResponse>
   where TResponse : Result

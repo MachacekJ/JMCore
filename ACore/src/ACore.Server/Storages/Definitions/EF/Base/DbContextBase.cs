@@ -1,11 +1,7 @@
 ﻿using System.Data;
-using System.Reflection;
 using ACore.Configuration;
 using ACore.Extensions;
 using ACore.Server.Configuration.CQRS.OptionsGet;
-using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbGet;
-using ACore.Server.Modules.SettingsDbModule.CQRS.SettingsDbSave;
-using ACore.Server.Modules.SettingsDbModule.Storage;
 using ACore.Server.Storages.Attributes;
 using ACore.Server.Storages.CQRS.Notifications;
 using ACore.Server.Storages.Definitions.EF.Base.Scripts;
@@ -17,19 +13,16 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using Guid = System.Guid;
 
 namespace ACore.Server.Storages.Definitions.EF.Base;
 
-public abstract class DbContextBase : DbContext, IStorage
+public abstract partial class DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger) : DbContext(options), IStorage
 {
-  private readonly DbContextOptions _options;
-  protected readonly ILogger<DbContextBase> Logger;
+  private readonly DbContextOptions _options = options;
+  protected readonly ILogger<DbContextBase> Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
   private readonly Dictionary<string, object> _registeredDbSets = [];
-  private readonly IMediator _mediator;
-
-  private string StorageVersionBaseSettingKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{nameof(ISettingsDbModuleStorage)}";
-  private string StorageVersionKey => $"StorageVersion_{Enum.GetName(typeof(StorageTypeEnum), StorageDefinition.Type)}_{ModuleName}";
 
   protected abstract DbScriptBase UpdateScripts { get; }
 
@@ -38,13 +31,6 @@ public abstract class DbContextBase : DbContext, IStorage
   protected abstract EFStorageDefinition EFStorageDefinition { get; }
 
   protected abstract string ModuleName { get; }
-
-  protected DbContextBase(DbContextOptions options, IMediator mediator, ILogger<DbContextBase> logger) : base(options)
-  {
-    _mediator = mediator;
-    _options = options;
-    Logger = logger ?? throw new ArgumentException($"{nameof(logger)} is null.");
-  }
 
 
   protected async Task Save<TEntity, TPK>(TEntity newData, string? hashToCheck = null)
@@ -58,8 +44,8 @@ public abstract class DbContextBase : DbContext, IStorage
     if (id == null)
       ArgumentNullException.ThrowIfNull(id);
 
-    var auditHelper = new AuditHelper<TEntity, TPK>(_mediator, Model, EFStorageDefinition, newData);
-    await auditHelper.Initialize();
+    var saveInfoHelper = new SaveInfoHelper<TEntity, TPK>(mediator, Model, EFStorageDefinition, newData);
+    await saveInfoHelper.Initialize();
 
     var dbSet = GetDbSet<TEntity>();
     var isNew = EFStorageDefinition.IsNew(id);
@@ -74,7 +60,7 @@ public abstract class DbContextBase : DbContext, IStorage
           throw new ArgumentNullException($"For update entity '{typeof(TEntity).Name}:{id}' is required a hash.");
 
         // Gets salt from global app settings.
-        var saltForHash = (await _mediator.Send(new AppOptionQuery<string>(OptionQueryEnum.HashSalt))).ResultValue ?? throw new Exception($"Mediator for {nameof(AppOptionQuery<string>)}.{Enum.GetName(OptionQueryEnum.HashSalt)} returned null value.");
+        var saltForHash = (await mediator.Send(new AppOptionQuery<string>(OptionQueryEnum.HashSalt))).ResultValue ?? throw new Exception($"Mediator for {nameof(AppOptionQuery<string>)}.{Enum.GetName(OptionQueryEnum.HashSalt)} returned null value.");
 
         if (string.IsNullOrEmpty(saltForHash))
           Logger.LogWarning($"Please configure salt for hash. Check application settings and paste hash string to section '{nameof(ACoreOptions)}.{nameof(ACoreOptions.SaltForHash)}'");
@@ -84,7 +70,7 @@ public abstract class DbContextBase : DbContext, IStorage
           throw new DBConcurrencyException($"Entity '{typeof(TEntity).Name}' with id '{id.ToString()}' has been changed.");
       }
 
-      await auditHelper.UpdateDbAction(existsEntity);
+      saveInfoHelper.UpdateDbAction(existsEntity);
       newData.Adapt(existsEntity);
     }
     else
@@ -94,12 +80,33 @@ public abstract class DbContextBase : DbContext, IStorage
       await dbSet.AddAsync(existsEntity);
     }
 
-    await SaveChangesAsync();
+    if (EFStorageDefinition.IsTransactionEnabled)
+    {
+      await using var transaction = await Database.BeginTransactionAsync();
+      try
+      {
+        await SaveInternal();
+        await transaction.CommitAsync();
+      }
+      catch (Exception ex)
+      {
+        await transaction.RollbackAsync();
+        throw new Exception($"Save entity '{existsEntity.GetType().ACoreTypeName()}' failed is rollback: Data {JsonConvert.SerializeObject(existsEntity)}", ex);
+      }
+    }
+    else
+      await SaveInternal();
 
-    await _mediator.Publish(new EntitySaveNotification<TEntity, TPK>(existsEntity, newData));
+    return;
 
-    if (isNew)
-      await auditHelper.InsertDbAction(existsEntity);
+    async Task SaveInternal()
+    {
+      await SaveChangesAsync();
+      if (isNew) saveInfoHelper.InsertDbAction(existsEntity);
+
+      if (saveInfoHelper.SaveInfoItem != null)
+        await mediator.Publish(new EntitySaveNotification(saveInfoHelper.SaveInfoItem));
+    }
   }
 
   protected async Task Delete<TEntity, TPK>(TPK id)
@@ -109,14 +116,16 @@ public abstract class DbContextBase : DbContext, IStorage
     if (id == null)
       throw new Exception($"{typeof(TEntity).Name}:{id} doesn't exist.");
 
-    var auditHelper = new AuditHelper<TEntity, TPK>(_mediator, Model, EFStorageDefinition, entityToDelete);
-    await auditHelper.Initialize();
+    var saveInfoHelper = new SaveInfoHelper<TEntity, TPK>(mediator, Model, EFStorageDefinition, entityToDelete);
+    await saveInfoHelper.Initialize();
 
     var dbSet = GetDbSet<TEntity>();
     dbSet.Remove(entityToDelete);
 
     await SaveChangesAsync();
-    await auditHelper.DeleteDbAction();
+    saveInfoHelper.DeleteDbAction();
+    if (saveInfoHelper.SaveInfoItem != null)
+      await mediator.Publish(new EntitySaveNotification(saveInfoHelper.SaveInfoItem));
   }
 
   protected void RegisterDbSet<T>(DbSet<T>? dbSet) where T : class
@@ -147,100 +156,6 @@ public abstract class DbContextBase : DbContext, IStorage
     }
   }
 
-  public async Task UpdateDatabase()
-  {
-    var allVersions = UpdateScripts.AllVersions.ToList();
-
-    var lastVersion = new Version("0.0.0.0");
-
-    // Get the latest implemented version, if any.
-    if (!await DbIsEmpty())
-    {
-      var ver = await _mediator.Send(new SettingsDbGetQuery(StorageDefinition.Type, StorageVersionKey));
-      if (ver is { IsSuccess: true, ResultValue: not null })
-        lastVersion = new Version(ver.ResultValue);
-    }
-
-    var updatedToVersion = new Version("0.0.0.0");
-
-    if (allVersions.Count != 0)
-    {
-      if (EFStorageDefinition.IsTransactionEnabled)
-      {
-        await using var transaction = await Database.BeginTransactionAsync();
-        updatedToVersion = await UpdateDatabase(allVersions, lastVersion);
-        try
-        {
-          await transaction.CommitAsync();
-        }
-        catch (Exception ex)
-        {
-          await transaction.RollbackAsync();
-          throw new Exception("UpdateDbAsync is rollback", ex);
-        }
-      }
-      else
-      {
-        updatedToVersion = await UpdateDatabase(allVersions, lastVersion);
-      }
-    }
-
-    if (this is ISettingsDbModuleStorage aa)
-    {
-      await aa.Setting_SaveAsync(StorageVersionKey, updatedToVersion.ToString(), true);
-      return;
-    }
-
-    await _mediator.Send(new SettingsDbSaveCommand(StorageDefinition.Type, StorageVersionKey, updatedToVersion.ToString(), true));
-  }
-
-  private async Task<Version> UpdateDatabase(List<DbVersionScriptsBase> allVersions, Version lastVersion)
-  {
-    var updatedToVersion = new Version("0.0.0.0");
-
-    foreach (var version in allVersions.Where(a => a.Version > lastVersion))
-    {
-      foreach (var script in version.AllScripts)
-      {
-        try
-        {
-          Logger.LogInformation("SQL scripts version " + version.Version + ":" +
-                                script);
-          await Database.ExecuteSqlRawAsync(script);
-          Logger.LogInformation("OK");
-        }
-        catch (Exception ex)
-        {
-          Logger.LogCritical(MethodBase.GetCurrentMethod()?.Name + " - Create tables in DB:", ex);
-
-          throw new Exception("UpdateDB error for script ->" + script, ex);
-        }
-      }
-
-      version.AfterScriptRunCode(this, _options, Logger);
-      updatedToVersion = version.Version;
-    }
-
-    return updatedToVersion;
-  }
-
-
-  private async Task<bool> DbIsEmpty()
-  {
-    var res = true;
-    try
-    {
-      var isSettingTable = await _mediator.Send(new SettingsDbGetQuery(StorageDefinition.Type, StorageVersionBaseSettingKey));
-      res = isSettingTable is { IsSuccess: true, ResultValue: null };
-    }
-    catch
-    {
-      Logger.LogDebug("Setting table has not been found.");
-    }
-
-    return res;
-  }
-
   protected DbSet<T> GetDbSet<T>() where T : class
   {
     var entityName = GetEntityTypeName<T>();
@@ -252,50 +167,6 @@ public abstract class DbContextBase : DbContext, IStorage
 
   #region id
 
-  /// <summary>
-  /// For some storage the id must be set manually.
-  /// e.g. <see cref="StorageTypeEnum.Memory"/>
-  /// </summary>
-  // private void SetNewId<TEntity, TPK>(TEntity obj)
-  //   where TEntity : PKEntity<TPK>
-  // {
-
-//     if (StorageDefinition.Type != StorageTypeEnum.Memory)
-//       return;
-//
-//     switch (obj)
-//     {
-//       case PKIntEntity intV:
-//         if (StorageDefinition.Type == StorageTypeEnum.Memory)
-//         {
-//           var db = GetDbSet<TEntity>();
-//           var id = !db.Any() ? 1 : db.Max(i => (i as PKIntEntity).Id) + 1;
-//           intV.Id = id;
-//         }
-//
-//         break;
-//       case PKLongEntity longV:
-//         if (StorageDefinition.Type == StorageTypeEnum.Memory)
-//         {
-//           var db = GetDbSet<TEntity>();
-// #pragma warning disable CS8602 // Dereference of a possibly null reference.
-//           var id = !db.Any() ? 1 : db.Max(i => (i as PKLongEntity).Id) + 1;
-// #pragma warning restore CS8602 // Dereference of a possibly null reference.
-//           longV.Id = id;
-//         }
-//
-//         break;
-//       case PKGuidEntity gV:
-//         gV.Id = Guid.NewGuid();
-//         break;
-//       case PKStringEntity stringEntity:
-//         stringEntity.Id = Guid.NewGuid().ToString();
-//         break;
-//       case PKMongoEntity stringEntity:
-//         stringEntity.Id = ObjectId.GenerateNewId();
-//         break;
-  //   }
-  //}
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
   private async Task<TEntity?> GetEntityById<TEntity, TPK>(TPK id)
     where TEntity : PKEntity<TPK>
@@ -322,6 +193,7 @@ public abstract class DbContextBase : DbContext, IStorage
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
   #endregion
+
 
   #region Break Save inheritance
 

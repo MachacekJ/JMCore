@@ -1,4 +1,4 @@
-﻿using ACore.Base.CQRS.Helpers;
+﻿using ACore.Base.CQRS.Pipelines.Helpers;
 using ACore.Base.CQRS.Results;
 using ACore.Configuration;
 using MediatR;

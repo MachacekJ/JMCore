@@ -4,11 +4,13 @@ using ACore.Server.Storages.Definitions.EF;
 using ACore.Server.Storages.Definitions.EF.Base;
 using ACore.Server.Storages.Definitions.EF.Base.Scripts;
 using ACore.Server.Storages.Definitions.EF.MongoStorage;
+using ACore.Server.Storages.Models.SaveInfo;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.EntityFrameworkCore.Extensions;
+
 
 namespace ACore.Server.Modules.AuditModule.Storage.Mongo;
 
@@ -19,26 +21,27 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
   protected override EFStorageDefinition EFStorageDefinition => new MongoStorageDefinition();
   protected override string ModuleName => nameof(IAuditStorageModule);
 
+  // ReSharper disable once UnusedAutoPropertyAccessor.Global
   public DbSet<AuditMongoEntity> Audits { get; set; }
 
-  public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
+  public async Task SaveAuditAsync(SaveInfoItem saveInfoItem)
   {
-    if (!auditEntryItem.ChangedColumns.Any())
+    if (saveInfoItem.IsAuditable == false || !saveInfoItem.ChangedColumns.Any())
       return;
-
-
+    
     var auditEntity = new AuditMongoEntity
     {
-      ObjectId = GetObjectId(auditEntryItem.TableName, new ObjectId(auditEntryItem.PkValueString)),
-      Version = auditEntryItem.Version,
+      ObjectId = GetObjectId(saveInfoItem.TableName, new ObjectId(saveInfoItem.PkValueString)),
+      Version = saveInfoItem.Version,
       User = new AuditMongoUserEntity
       {
-        Id = auditEntryItem.UserId
+        Id = saveInfoItem.UserId
       },
-      EntityState = auditEntryItem.EntityState,
+      EntityState = saveInfoItem.EntityState,
       Created = DateTime.UtcNow,
-      Columns = auditEntryItem.ChangedColumns.Select(e => new AuditMongoValueEntity
+      Columns = saveInfoItem.ChangedColumns.Where(e=>e.IsAuditable).Select(e => new AuditMongoValueEntity
       {
+        PropName = e.PropName,
         Property = e.ColumnName,
         DataType = e.DataType,
         NewValue = ConvertValue(e.NewValue),
@@ -62,16 +65,16 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
     };
   }
 
-  public async Task<AuditEntryItem[]> AuditItemsAsync<T>(string collectionName, T pkValue, string? schemaName = null)
+  public async Task<AuditInfoItem[]> AuditItemsAsync<TPK>(string collectionName, TPK pkValue, string? schemaName = null)
   {
     if (pkValue == null)
       throw new Exception("Primary key is null");
 
     var valuesTable = await Audits.Where(e => e.ObjectId == GetObjectId(collectionName, new ObjectId(pkValue.ToString()))).ToArrayAsync();
-    var ll = new List<AuditEntryItem>();
+    var ll = new List<AuditInfoItem>();
     foreach (var auditMongoEntity in valuesTable)
     {
-      var aa = new AuditEntryItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState, auditMongoEntity.User.Id);
+      var aa = new AuditInfoItem(collectionName, null, auditMongoEntity.Version, pkValue, auditMongoEntity.EntityState, auditMongoEntity.User.Id);
       aa.Created = auditMongoEntity.Created;
 
       if (auditMongoEntity.Columns != null)
@@ -79,7 +82,7 @@ internal class AuditModuleMongoStorageImpl(DbContextOptions<AuditModuleMongoStor
         foreach (var col in auditMongoEntity.Columns)
         {
           var coltype = col.DataType ?? throw new Exception($"Cannot create data type '{col.DataType}' from {nameof(AuditMongoValueEntity)}:'{auditMongoEntity.Id}'");
-          aa.AddColumnEntry(col.Property, col.DataType, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype));
+          aa.AddColumnEntry(new AuditInfoColumnItem(col.PropName, col.Property, col.DataType, col.IsChanged, ConvertToObject(col.OldValue, coltype), ConvertToObject(col.NewValue, coltype)));
         }
       }
 

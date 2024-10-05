@@ -1,12 +1,9 @@
-using ACore.Server.Storages.Definitions.Models.PK;
+using ACore.Server.Storages.Models.SaveInfo;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace ACore.Server.Storages.CQRS.Notifications;
 
-public class EntitySaveNotification<TEntity, TPK>(TEntity? oldEntity, TEntity? newEntity) : INotification
-  where TEntity : PKEntity<TPK>
+public class EntitySaveNotification(SaveInfoItem saveInfoItem) : INotification
 {
-  public TEntity? OldEntity => oldEntity;
-  public TEntity? NewEntity => newEntity;
+  public SaveInfoItem SaveInfo => saveInfoItem;
 }

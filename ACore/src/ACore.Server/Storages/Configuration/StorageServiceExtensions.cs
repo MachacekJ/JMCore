@@ -7,7 +7,7 @@ namespace ACore.Server.Storages.Configuration;
 public static class StorageServiceExtensions
 {
   private const string MemoryConnectionString = "memory";
-  
+
   public static void AddDbMongoStorage<T>(this IServiceCollection services, StorageOptions storageOptions)
     where T : DbContext
   {
@@ -26,7 +26,12 @@ public static class StorageServiceExtensions
     where T : DbContext
   {
     if (storageOptions is { UseMemoryStorage : true })
-      services.AddDbContext<T>(dbContextOptionsBuilder => dbContextOptionsBuilder.UseInMemoryDatabase(MemoryConnectionString + name + Guid.NewGuid()));
+    {
+      services.AddDbContext<T>(dbContextOptionsBuilder =>
+      {
+        dbContextOptionsBuilder.UseInMemoryDatabase(MemoryConnectionString + name + Guid.NewGuid());
+      });
+    }
   }
 
   public static async Task ConfigureMongoStorage<TIStorage, TImplementation>(this IServiceProvider provider, StorageOptions storageOptions)

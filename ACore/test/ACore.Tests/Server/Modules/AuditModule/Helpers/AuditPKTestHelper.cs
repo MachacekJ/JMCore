@@ -2,20 +2,20 @@ using ACore.Base.CQRS.Results;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 using ACore.Server.Storages.CQRS;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKGuid.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKLong.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestPKString.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.Mongo.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using FluentAssertions;
 using MediatR;
 using MongoDB.Bson;
@@ -40,7 +40,7 @@ public static class AuditPKTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
 
     // Assert.
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
@@ -65,7 +65,7 @@ public static class AuditPKTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestPKLongSaveCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestPKLongSaveCommand(item));
 
     // Assert.
     var allData = (await mediator.Send(new TestPKLongAuditGetQuery())).ResultValue;
@@ -76,7 +76,7 @@ public static class AuditPKTestHelper
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestPKLongEntity, long>(getTableName(TestPKLongEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     var auditItem = resAuditItems.Single();
-    var aid = auditItem.GetColumn(getColumnName(TestPKStringEntityName, nameof(TestPKLongEntity.Id)));
+    var aid = auditItem.GetColumn(getColumnName(TestPKLongEntityName, nameof(TestPKLongEntity.Id)));
     ArgumentNullException.ThrowIfNull(aid);
     aid.NewValue.Should().Be(itemId);
   }
@@ -90,7 +90,7 @@ public static class AuditPKTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestPKGuidSaveCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestPKGuidSaveCommand(item));
 
     // Assert.
     var allData = (await mediator.Send(new TestPKGuidGetQuery())).ResultValue;
@@ -113,7 +113,7 @@ public static class AuditPKTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestPKStringSaveCommand(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestPKStringSaveCommand(item));
 
     // Assert.
     var allData = (await mediator.Send(new TestPKStringGetQuery())).ResultValue;
@@ -149,7 +149,7 @@ public static class AuditPKTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestAuditSaveCommand<ObjectId>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<ObjectId>(item));
 
     // Assert.
     var allData = (await mediator.Send(new TestAuditGetQuery<ObjectId>())).ResultValue;

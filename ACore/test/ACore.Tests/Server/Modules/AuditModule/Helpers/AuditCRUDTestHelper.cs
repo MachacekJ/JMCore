@@ -2,14 +2,15 @@ using ACore.Server.Modules.AuditModule.CQRS.AuditGet;
 using ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 using ACore.Server.Modules.AuditModule.Models;
 using ACore.Server.Storages.CQRS;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Get;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Models;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Save;
-using ACore.Tests.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
+using ACore.Server.Storages.Models.SaveInfo;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Delete;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestAudit.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Get;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Models;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.CQRS.TestNoAudit.Save;
+using ACore.Tests.Server.TestImplementations.Server.Modules.TestModule.Storages.SQL.Models;
 using FluentAssertions;
 using MediatR;
 
@@ -32,7 +33,7 @@ public static class AuditCRUDTestHelper
     };
 
     // Action
-    var result = (await mediator.Send(new TestNoAuditSaveCommand(item, null))) as DbSaveResult;
+    var result = await mediator.Send(new TestNoAuditSaveCommand(item, null));
 
     // Assert
     var allData = (await mediator.Send(new TestNoAuditGetQuery())).ResultValue;
@@ -53,7 +54,7 @@ public static class AuditCRUDTestHelper
     };
 
     // Action.
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
 
 
     // Assert.
@@ -64,7 +65,7 @@ public static class AuditCRUDTestHelper
     resAuditItems.Should().NotBeNull();
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(1);
-    resAuditItems.Single().EntityState.Should().Be(AuditStateEnum.Added);
+    resAuditItems.Single().State.Should().Be(AuditInfoStateEnum.Added);
 
     var auditItem = resAuditItems.Single();
     auditItem.Columns.Should().HaveCount(6);
@@ -104,7 +105,7 @@ public static class AuditCRUDTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
 
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
@@ -121,10 +122,10 @@ public static class AuditCRUDTestHelper
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
-    resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
+    resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Modified);
 
 
-    var auditItem = resAuditItems.Single(a => a.EntityState == AuditStateEnum.Modified);
+    var auditItem = resAuditItems.Single(a => a.State == AuditInfoStateEnum.Modified);
     // only Name was changed
     auditItem.Columns.Should().HaveCount(6);
 
@@ -186,7 +187,7 @@ public static class AuditCRUDTestHelper
     };
 
     // Act.
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
 
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
@@ -200,10 +201,9 @@ public static class AuditCRUDTestHelper
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
-    resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Modified);
+    resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Modified);
 
-
-    var auditItem = resAuditItems.Single(a => a.EntityState == AuditStateEnum.Modified);
+    var auditItem = resAuditItems.Single(a => a.State == AuditInfoStateEnum.Modified);
     // only Name was changed
     auditItem.Columns.Should().HaveCount(6);
     auditItem.Columns.All(c => c.IsChange).Should().Be(false);
@@ -220,7 +220,7 @@ public static class AuditCRUDTestHelper
       NullValue = TestName
     };
 
-    var result = await mediator.Send(new TestAuditSaveCommand<int>(item)) as DbSaveResult;
+    var result = await mediator.Send(new TestAuditSaveCommand<int>(item));
     var allData = (await mediator.Send(new TestAuditGetQuery<int>())).ResultValue;
     var itemId = AuditAssertTestHelper.AssertSinglePrimaryKeyWithResult<TestAuditData<int>, int>(result, allData);
 
@@ -233,7 +233,7 @@ public static class AuditCRUDTestHelper
     var resAuditItems = (await mediator.Send(new AuditGetQuery<TestAuditEntity, int>(getTableName(TestAuditEntityName), itemId))).ResultValue;
     ArgumentNullException.ThrowIfNull(resAuditItems);
     resAuditItems.Should().HaveCount(2);
-    resAuditItems.Last().EntityState.Should().Be(AuditStateEnum.Deleted);
+    resAuditItems.Last().State.Should().Be(AuditInfoStateEnum.Deleted);
 
 
     var auditItem = resAuditItems.Last();

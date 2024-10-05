@@ -9,29 +9,28 @@ namespace ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 internal class AuditValueEntity
 {
   [Key]
-  public long Id { get; set; }
-
-  public bool IsChanged { get; set; }
-  public string DataType { get; set; } = string.Empty;
-  public long AuditId { get; set; }
+  public long Id { get; init; }
+  
+  public long AuditId { get; init; }
   public int AuditColumnId { get; set; }
-  public string? OldValueString { get; set; }
-  public string? NewValueString { get; set; }
-  public int? OldValueInt { get; set; }
-  public int? NewValueInt { get; set; }
-  public long? OldValueLong { get; set; }
-  public long? NewValueLong { get; set; }
-  public bool? OldValueBool { get; set; }
-  public bool? NewValueBool { get; set; }
-  public Guid? OldValueGuid { get; set; }
-  public Guid? NewValueGuid { get; set; }
+  public bool IsChanged { get; init; }
+  public string? OldValueString { get; init; }
+  public string? NewValueString { get; init; }
+  public int? OldValueInt { get; init; }
+  public int? NewValueInt { get; init; }
+  public long? OldValueLong { get; init; }
+  public long? NewValueLong { get; init; }
+  public bool? OldValueBool { get; init; }
+  public bool? NewValueBool { get; init; }
+  public Guid? OldValueGuid { get; init; }
+  public Guid? NewValueGuid { get; init; }
 
   [ForeignKey("AuditId")]
-  public AuditEntity Audit { get; set; }
+  public AuditEntity Audit { get; init; }
 
 
   [ForeignKey("AuditColumnId")]
-  public AuditColumnEntity AuditColumn { get; set; }
+  public AuditColumnEntity AuditColumn { get; init; }
 }
 
 internal static class AuditValueEntityExtensions

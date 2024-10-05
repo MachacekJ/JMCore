@@ -1,6 +1,6 @@
 using ACore.Server.Modules.AuditModule.UserProvider;
-using ACore.Tests.TestImplementations.Server;
-using ACore.Tests.TestImplementations.Server.Configuration;
+using ACore.Tests.Server.TestImplementations.Server;
+using ACore.Tests.Server.TestImplementations.Server.Configuration;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 

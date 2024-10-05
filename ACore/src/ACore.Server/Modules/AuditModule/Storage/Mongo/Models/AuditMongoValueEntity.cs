@@ -6,6 +6,10 @@ namespace ACore.Server.Modules.AuditModule.Storage.Mongo.Models;
 
 internal class AuditMongoValueEntity
 {
+  // property name
+  [BsonElement("pn")]
+  public string PropName { get; set; }
+  
   // name
   [BsonElement("n")]
   public string Property { get; set; }

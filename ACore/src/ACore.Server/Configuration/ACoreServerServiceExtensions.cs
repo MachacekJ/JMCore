@@ -74,8 +74,6 @@ public static class ACoreServerServiceExtensions
   {
     containerBuilder.RegisterGeneric(typeof(AppOptionHandler<>)).AsImplementedInterfaces();
     containerBuilder.RegisterGeneric(typeof(AuditGetHandler<,>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(EntitySaveNotificationHandler<,>)).AsImplementedInterfaces();
-    containerBuilder.RegisterGeneric(typeof(EntitySaveNotificationHandler2<,>)).AsImplementedInterfaces();
   }
   
   private static void ValidateDependencyInConfiguration(ACoreServerOptions aCoreServerOptions)

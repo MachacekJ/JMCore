@@ -34,6 +34,7 @@ internal class V1_0_0_1AuditTables : DbVersionScriptsBase
             audit_table_id INT NOT NULL
                 CONSTRAINT fk_audit_column__audit_table
                     REFERENCES audit_table(audit_table_id),
+            prop_name VARCHAR(255) NOT NULL,
             column_name VARCHAR(255) NOT NULL,
             data_type VARCHAR(1024) NOT NULL
         );

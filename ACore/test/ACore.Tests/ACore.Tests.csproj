@@ -38,7 +38,7 @@
 		<Folder Include="Client\ServicesT\" />
 		<Folder Include="Logs\" />
 		<Folder Include="Server\Configuration\" />
-		<Folder Include="TestImplementations\Server\Modules\TestModule\CQRS\TestPKLong\" />
+		<Folder Include="Server\Modules\AuditModule\Mongo\" />
 	</ItemGroup>
 
 	<ItemGroup>

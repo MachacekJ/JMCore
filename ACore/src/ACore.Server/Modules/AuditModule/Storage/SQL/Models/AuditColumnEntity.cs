@@ -13,6 +13,10 @@ internal class AuditColumnEntity
 
   [MaxLength(255)]
   [Required]
+  public string PropName { get; set; } = string.Empty;
+  
+  [MaxLength(255)]
+  [Required]
   public string ColumnName { get; set; } = string.Empty;
 
   [MaxLength(1024)]

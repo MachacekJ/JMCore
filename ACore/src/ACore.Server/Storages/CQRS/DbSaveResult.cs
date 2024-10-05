@@ -19,7 +19,7 @@ public class DbSaveResult : Result
 
   public static DbSaveResult SuccessWithValues(Dictionary<StorageTypeEnum, DbSaveResultData> pkValues) => new(pkValues);
 
-  public static DbSaveResult SuccessWithData(IEnumerable<SavingProcessData> data, string saltForHash = "")
+  public static DbSaveResult SuccessWithData(IEnumerable<SaveProcessExecutor> data, string saltForHash = "")
   {
     return SuccessWithValues(data.ToDictionary(
       k => k.Storage.StorageDefinition.Type,
@@ -29,7 +29,7 @@ public class DbSaveResult : Result
       )));
   }
 
-  public static DbSaveResult SuccessWithData<T>(IEnumerable<SavingProcessData<T>> data, string saltForHash = "") where T : class
+  public static DbSaveResult SuccessWithData<T>(IEnumerable<SaveProcessExecutor<T>> data, string saltForHash = "") where T : class
   {
     return SuccessWithValues(data.ToDictionary(
       k => k.Storage.StorageDefinition.Type,

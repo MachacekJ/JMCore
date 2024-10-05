@@ -10,7 +10,7 @@ public class MemoryEFStorageDefinition : EFStorageDefinition
   public override StorageTypeEnum Type => StorageTypeEnum.Memory;
   public override string DataAnnotationColumnNameKey => string.Empty;
   public override string DataAnnotationTableNameKey => string.Empty;
-  public override bool IsTransactionEnabled => true;
+  public override bool IsTransactionEnabled => false;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
   public override int GetNewIntId<TEntity, TPK>(DbSet<TEntity> dbSet)

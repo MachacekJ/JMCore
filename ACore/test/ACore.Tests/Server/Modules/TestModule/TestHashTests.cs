@@ -51,7 +51,7 @@
 //     };
 //
 //     // Act.
-//     var result = await mediator.Send(new TestValueTypeSaveCommand(item)) as DbSaveResult;
+//     var result = await mediator.Send(new TestValueTypeSaveCommand(item));
 //     
 //     // Assert
 //     ArgumentNullException.ThrowIfNull(result);

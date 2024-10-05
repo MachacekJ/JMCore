@@ -53,15 +53,18 @@ public class TestData
     public TestData(MemberInfo? method)
     {
         if (method == null)
-            throw new ArgumentException($"{nameof(TestData)}.{nameof(method)} is null");
+           return;
         
-        TestId = method.DeclaringType?.FullName!;
+        TestId = method.DeclaringType?.FullName ?? throw new ArgumentNullException(nameof(method));
     }
 
     public string GetDbName()
     {
         var testName = _shrinkStrings.Aggregate(TestName, (current, name)
             => current.Replace($"{name}_", string.Empty)).ToLower();
+        testName += Guid.NewGuid();
+        testName = testName.Replace("-", string.Empty);
+        
         if (testName.Length > MaximumLengthOfDb)
             testName = testName.Substring(testName.Length - MaximumLengthOfDb);
         return testName;

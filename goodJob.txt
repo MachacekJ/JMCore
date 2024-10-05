@@ -1,2 +1,5 @@
 https://github.com/axuno/SmartFormat
 https://www.youtube.com/watch?v=E8ilDMg7Dak
+
+
+https://www.milanjovanovic.tech/blog/how-to-use-ef-core-interceptors?utm_source=newsletter&utm_medium=email&utm_campaign=tnw110

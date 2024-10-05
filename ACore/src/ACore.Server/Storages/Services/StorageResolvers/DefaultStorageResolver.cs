@@ -41,7 +41,7 @@ public class DefaultStorageResolver : IStorageResolver
 
     try
     {
-      await implementation.Implementation.UpdateDatabase();
+      await implementation.Implementation.UpSchema();
     }
     catch (Exception e)
     {

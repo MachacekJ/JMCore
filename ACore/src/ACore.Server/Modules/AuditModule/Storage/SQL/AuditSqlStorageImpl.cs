@@ -6,6 +6,7 @@ using ACore.Server.Modules.AuditModule.Storage.SQL.Models;
 using ACore.Server.Storages;
 using ACore.Server.Storages.Definitions.EF.Base;
 using ACore.Server.Storages.Definitions.EF.Base.Scripts;
+using ACore.Server.Storages.Models.SaveInfo;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,8 @@ namespace ACore.Server.Modules.AuditModule.Storage.SQL;
 internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator mediator, ILogger<AuditSqlStorageImpl> logger)
   : DbContextBase(options, mediator, logger), IAuditStorageModule
 {
+  private readonly IMediator _mediator = mediator;
+
   private static CacheKey AuditColumnCacheKey(int tableId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditColumnEntity)), tableId.ToString());
   private static CacheKey AuditUserCacheKey(string userId) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditUserEntity)), userId);
   private static CacheKey AuditTableCacheKey(string tableName, string? schema, int version) => CacheKey.Create(CacheCategories.Entity, new CacheCategory(nameof(AuditTableEntity)), $"{tableName}-{schema ?? string.Empty}--{version}");
@@ -31,7 +34,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
   public DbSet<AuditTableEntity> AuditTables { get; set; }
   public DbSet<AuditValueEntity> AuditValues { get; set; }
 
-  public async Task<AuditEntryItem[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null)
+  public async Task<AuditInfoItem[]> AuditItemsAsync<T>(string tableName, T pkValue, string? schemaName = null)
   {
     AuditValueEntity[] auditValueEntities;
     if (typeof(T) == typeof(int) || typeof(T) == typeof(long))
@@ -39,7 +42,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     else
       auditValueEntities = await SelectVwAudits(tableName, schemaName).Where(i => i.Audit.PKValueString == Convert.ToString(pkValue)).ToArrayAsync();
 
-    var res = new List<AuditEntryItem>();
+    var res = new List<AuditInfoItem>();
     foreach (var grItem in auditValueEntities.GroupBy(e =>
                new
                {
@@ -57,14 +60,14 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       if (primaryKeyValue == null)
         throw new Exception("Primary key is null");
 
-      var auditEntryItem = new AuditEntryItem(grItem.Key.tableName, grItem.Key.schemaName, grItem.Key.version, primaryKeyValue, grItem.Key.entityState, grItem.Key.user)
+      var auditEntryItem = new AuditInfoItem(grItem.Key.tableName, grItem.Key.schemaName, grItem.Key.version, primaryKeyValue, grItem.Key.entityState, grItem.Key.user)
       {
         Created = grItem.Key.created
       };
 
       foreach (var col in grItem.ToArray())
       {
-        auditEntryItem.AddColumnEntry(col.AuditColumn.ColumnName, col.DataType, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject());
+        auditEntryItem.AddColumnEntry(new AuditInfoColumnItem(col.AuditColumn.PropName, col.AuditColumn.ColumnName, col.AuditColumn.DataType, col.IsChanged, col.GetOldValueObject(), col.GetNewValueObject()));
       }
 
       res.Add(auditEntryItem);
@@ -73,31 +76,32 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     return res.ToArray();
   }
 
-  public async Task SaveAuditAsync(AuditEntryItem auditEntryItem)
+  public async Task SaveAuditAsync(SaveInfoItem saveInfoItem)
   {
-    var valuesTable = auditEntryItem.ChangedColumns
-      .Select(change => AuditSqlValueItem.CreateValue(Logger, change))
-      .OfType<AuditSqlValueItem>().ToList();
+    if (saveInfoItem.IsAuditable == false || !saveInfoItem.ChangedColumns.Any())
+      return;
 
-    var auditTableId = await GetAuditTableIdAsync(auditEntryItem.TableName, auditEntryItem.SchemaName, auditEntryItem.Version);
-    var auditColumnIds = await GetAuditColumnIdAsync(auditTableId, valuesTable
-      .ToDictionary(k => k.AuditColumnName, v => v.DataType));
+    var valuesTable = saveInfoItem.ChangedColumns.Where(e => e.IsAuditable)
+      .Select(change => SqlConvertedItem.CreateValue(Logger, change)).ToList();
+
+    var auditTableId = await GetAuditTableIdAsync(saveInfoItem.TableName, saveInfoItem.SchemaName, saveInfoItem.Version);
+    var auditColumnIds = await AuditColumnId(auditTableId, valuesTable);
 
     var auditEntity = new AuditEntity
     {
       AuditTableId = auditTableId,
-      PKValue = auditEntryItem.PkValue,
-      PKValueString = auditEntryItem.PkValueString,
-      AuditUserId = await GetAuditUserIdAsync(auditEntryItem.UserId),
+      PKValue = saveInfoItem.PkValue,
+      PKValueString = saveInfoItem.PkValueString,
+      AuditUserId = await GetAuditUserIdAsync(saveInfoItem.UserId),
       DateTime = DateTime.UtcNow,
-      EntityState = auditEntryItem.EntityState,
+      EntityState = saveInfoItem.EntityState,
       AuditValues = new ObservableCollectionListSource<AuditValueEntity>()
     };
 
     foreach (var value in valuesTable)
     {
       var valueEntity = value.Adapt<AuditValueEntity>();
-      valueEntity.AuditColumnId = auditColumnIds[value.AuditColumnName];
+      valueEntity.AuditColumnId = auditColumnIds.First(e => e.PropName == value.PropName).Id;
       auditEntity.AuditValues.Add(valueEntity);
     }
 
@@ -109,7 +113,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
   {
     var keyCache = AuditUserCacheKey(userId);
 
-    var cacheValue = await mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
+    var cacheValue = await _mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
     if (cacheValue.ResultValue?.ObjectValue != null)
     {
       // This message is also used in unit test.
@@ -130,7 +134,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       Logger.LogDebug("New db value created:{GetAuditUserIdAsync}:{keyCache}:{userId}", nameof(GetAuditUserIdAsync), keyCache, userId);
     }
 
-    await mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, userEntity));
+    await _mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, userEntity));
     // This message is also used in unit test.
     Logger.LogDebug("Value saved to cache:{GetAuditUserIdAsync}:{keyCache}:{userId}", nameof(GetAuditUserIdAsync), keyCache, userId);
     return userEntity.Id;
@@ -140,7 +144,7 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
   {
     var keyCache = AuditTableCacheKey(tableName, tableSchema, version);
 
-    var cacheValue = await mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
+    var cacheValue = await _mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
     if (cacheValue.ResultValue?.ObjectValue != null)
     {
       // This message is also used in unit test.
@@ -164,43 +168,43 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       Logger.LogDebug("New db value created:{GetAuditTableIdAsync}:{keyCache}:{tableName}:{tableSchema}", nameof(GetAuditTableIdAsync), keyCache, tableName, tableSchema);
     }
 
-    await mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, tableEntity));
+    await _mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, tableEntity));
     // This message is also used in unit test.
     Logger.LogDebug("Value saved to cache:{GetAuditTableIdAsync}:{keyCache}:{tableName}:{tableSchema}", nameof(GetAuditTableIdAsync), keyCache, tableName, tableSchema);
     return tableEntity.Id;
   }
 
-  private async Task<Dictionary<string, int>> GetAuditColumnIdAsync(int tableId, Dictionary<string, string> columnNameWithTypes)
+  private async Task<List<(int Id, string PropName, string ColName, string DataType)>> AuditColumnId(int tableId, List<SqlConvertedItem> columns)
   {
     var keyCache = AuditColumnCacheKey(tableId);
-    var res = new Dictionary<string, int>();
+    var res = new List<(int Id, string PropName, string ColName, string DataType)>();
 
-    var cacheValue = await mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
+    var cacheValue = await _mediator.Send(new MemoryCacheModuleGetQuery(keyCache));
     if (cacheValue.ResultValue?.ObjectValue != null)
     {
       // This message is also used in unit test.
-      Logger.LogDebug("Value from cache:{GetAuditColumnIdAsync}:{keyCache}", nameof(GetAuditColumnIdAsync), keyCache);
-      res = (Dictionary<string, int>)cacheValue.ResultValue.ObjectValue;
+      Logger.LogDebug("Value from cache:{AuditColumnId}:{keyCache}", nameof(AuditColumnId), keyCache);
+      res = (List<(int, string, string, string)>)cacheValue.ResultValue.ObjectValue;
     }
 
     // Check if I have all columns from cache.
-    var missingColumnNamesInCache = new List<string>();
-    foreach (var columnName in columnNameWithTypes)
+    var missingColumnNamesInCache = new List<(string PropName, string ColName, string PropType)>();
+    foreach (var propName in columns)
     {
-      if (res.ContainsKey(columnName.Key))
+      if (res.Any(e => e.PropName == propName.PropName))
         continue;
 
-      missingColumnNamesInCache.Add(columnName.Key);
+      missingColumnNamesInCache.Add((propName.PropName, propName.ColumnName, propName.DataType));
       // This message is also used in unit test.
-      Logger.LogDebug("Missing value in cache:{GetAuditColumnIdAsync}:{keyCache}:{columnName}",
-        nameof(GetAuditColumnIdAsync), keyCache, columnName.Key);
+      Logger.LogDebug("Missing value in cache:{AuditColumnId}:{keyCache}:{propName}",
+        nameof(AuditColumnId), keyCache, propName.PropName);
     }
 
     if (missingColumnNamesInCache.Count == 0)
       return res; //All columns ids are saved in cache
 
     // I haven't a column in cache. Trying to get from DB.
-    var missingDbColumns = new List<string>();
+    var missingPropNames = new List<(string PropName, string ColName, string DataType)>();
     var dbColumnEntitiesForTable = await AuditColumns.Where(a => a.AuditTableId == tableId).ToListAsync();
 
     // Refresh response according to db.
@@ -209,45 +213,46 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
     {
       foreach (var auditColumnEntity in dbColumnEntitiesForTable)
       {
-        res.Add(auditColumnEntity.ColumnName, auditColumnEntity.Id);
+        res.Add((auditColumnEntity.Id, auditColumnEntity.PropName, auditColumnEntity.ColumnName, auditColumnEntity.DataType));
         // This message is also used in unit test.
-        Logger.LogDebug("Value added from DB to cache:{GetAuditColumnIdAsync}:{keyCache}:{ColumnName}"
-          , nameof(GetAuditColumnIdAsync), keyCache, auditColumnEntity.ColumnName);
+        Logger.LogDebug("Value added from DB to cache:{AuditColumnId}:{keyCache}:{propName}"
+          , nameof(AuditColumnId), keyCache, auditColumnEntity.PropName);
       }
 
       foreach (var missingDbColumn in missingColumnNamesInCache)
       {
         // New audit column is appeared for existing table, this column is not saved in db yet.
-        if (dbColumnEntitiesForTable.SingleOrDefault(a => a.ColumnName == missingDbColumn) == null)
-          missingDbColumns.Add(missingDbColumn);
+        if (dbColumnEntitiesForTable.SingleOrDefault(a => a.PropName == missingDbColumn.PropName) == null)
+          missingPropNames.Add(missingDbColumn);
       }
     }
     else
     {
       // New audit table is appeared.
-      missingDbColumns.AddRange(missingColumnNamesInCache);
+      missingPropNames.AddRange(missingColumnNamesInCache);
     }
 
-    if (missingDbColumns.Count > 0)
+    if (missingPropNames.Count > 0)
     {
       // I haven't a column in db. The columns must be saved in DB.
-      List<AuditColumnEntity> newDbColumnEntities = new List<AuditColumnEntity>();
-      foreach (var missingDbColumnName in missingDbColumns)
+      var newDbColumnEntities = new List<AuditColumnEntity>();
+      foreach (var propName in missingPropNames)
       {
-        if (!columnNameWithTypes.TryGetValue(missingDbColumnName, out var dataType))
-          throw new Exception($"Column {missingDbColumnName} has no datatype in dictionary.");
+        // if (!columnNameWithTypes.TryGetValue(propName, out var dataType))
+        //   throw new Exception($"Column {propName} has no datatype in dictionary.");
 
         var columnEntity = new AuditColumnEntity
         {
-          ColumnName = missingDbColumnName,
-          DataType = dataType,
+          PropName = propName.PropName,
+          ColumnName = propName.ColName,
+          DataType = propName.DataType,
           AuditTableId = tableId
         };
         newDbColumnEntities.Add(columnEntity);
         await AuditColumns.AddAsync(columnEntity);
         // This message is also used in unit test.
-        Logger.LogDebug("New db value created:{GetAuditColumnIdAsync}:{keyCache}:{missingDbColumnName}",
-          nameof(GetAuditColumnIdAsync), keyCache, missingDbColumnName);
+        Logger.LogDebug("New db value created:{AuditColumnId}:{keyCache}:{propName}",
+          nameof(AuditColumnId), keyCache, propName.PropName);
       }
 
       await SaveChangesAsync();
@@ -255,13 +260,13 @@ internal abstract class AuditSqlStorageImpl(DbContextOptions options, IMediator 
       // I must add columns id to response.
       foreach (var savedColumnEntity in newDbColumnEntities)
       {
-        res.Add(savedColumnEntity.ColumnName, savedColumnEntity.Id);
+        res.Add((savedColumnEntity.Id, savedColumnEntity.PropName, savedColumnEntity.ColumnName, savedColumnEntity.DataType));
       }
     }
 
-    await mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, res));
+    await _mediator.Send(new MemoryCacheModuleSaveCommand(keyCache, res));
     // This message is also used in unit test.
-    Logger.LogDebug("Value saved to cache:{GetAuditColumnIdAsync}:{keyCache}", nameof(GetAuditColumnIdAsync), keyCache);
+    Logger.LogDebug("Value saved to cache:{AuditColumnId}:{keyCache}", nameof(AuditColumnId), keyCache);
 
     return res;
   }

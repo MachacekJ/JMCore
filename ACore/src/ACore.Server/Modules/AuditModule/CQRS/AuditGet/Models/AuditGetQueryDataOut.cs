@@ -4,35 +4,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACore.Server.Modules.AuditModule.CQRS.AuditGet.Models;
 
-public class AuditGetQueryDataOut<TEntity, TPK>(string tableName)
+public record AuditGetQueryDataOut<TEntity, TPK>(string TableName, string? SchemaName , TPK PrimaryKey, string UserId, DateTime Created, AuditInfoStateEnum State, AuditGetQueryColumnDataOut[] Columns)
   where TEntity : PKEntity<TPK>
 {
-  public string TableName => tableName;
-  public string? SchemaName { get; set; }
-  public long? PKValue { get; set; }
-  public string? PKValueString { get; set; }
-  public string? UserId { get; set; }
-  public DateTime DateTime { get; set; }
-  public AuditStateEnum EntityState { get; set; }
-  public AuditGetQueryColumnDataOut[] Columns { get; set; } = [];
-  
-  public TPK PK { get; set; }
-
-  public static AuditGetQueryDataOut<TEntity, TPK> Create(AuditEntryItem auditEntryItem)
+  public static AuditGetQueryDataOut<TEntity, TPK> Create(AuditInfoItem saveInfoItem)
   {
-    return new AuditGetQueryDataOut<TEntity, TPK>(auditEntryItem.TableName)
-    {
-      DateTime = auditEntryItem.Created,
-      EntityState = auditEntryItem.EntityState.ToAuditStateEnum(),
-      UserId = auditEntryItem.UserId,
-      PKValueString = auditEntryItem.PkValueString,
-      PKValue = auditEntryItem.PkValue,
-      PK = auditEntryItem.GetPK<TPK>() ?? throw new Exception("Primary key is null."),
-      SchemaName = auditEntryItem.SchemaName,
-      Columns = auditEntryItem.ChangedColumns
-        .Select(e => new AuditGetQueryColumnDataOut(e.ColumnName, e.IsChanged, e.DataType, e.OldValue, e.NewValue))
-        .ToArray()
-    };
+    return new AuditGetQueryDataOut<TEntity, TPK>(
+      saveInfoItem.TableName,
+      saveInfoItem.SchemaName,
+      saveInfoItem.GetPK<TPK>() ?? throw new Exception("Primary key is null."),
+    saveInfoItem.UserId,
+    saveInfoItem.Created,
+    saveInfoItem.EntityState.ToAuditStateEnum(),
+    saveInfoItem.Columns
+      .Select(e => new AuditGetQueryColumnDataOut(e.PropName, e.ColumnName, e.IsChanged, e.DataType, e.OldValue, e.NewValue))
+      .ToArray()
+      );
   }
 }
 
@@ -44,15 +31,13 @@ public static class AuditGetQueryDataOutExtensions
     return auditValueData.Columns.SingleOrDefault(e => e.ColumnName == columnName);
   }
 
-  public static AuditStateEnum ToAuditStateEnum(this EntityState entityState)
+  public static AuditInfoStateEnum ToAuditStateEnum(this EntityState entityState)
   {
     return entityState switch
     {
-      EntityState.Added => AuditStateEnum.Added,
-      EntityState.Deleted => AuditStateEnum.Deleted,
-      EntityState.Detached => AuditStateEnum.Detached,
-      EntityState.Modified => AuditStateEnum.Modified,
-      EntityState.Unchanged => AuditStateEnum.Unchanged,
+      EntityState.Added => AuditInfoStateEnum.Added,
+      EntityState.Deleted => AuditInfoStateEnum.Deleted,
+      EntityState.Modified => AuditInfoStateEnum.Modified,
       _ => throw new ArgumentOutOfRangeException(nameof(entityState), entityState, null)
     };
   }

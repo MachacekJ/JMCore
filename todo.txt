@@ -6,5 +6,8 @@
 
 2. Hash data
 3. Extend audit audit about EntityName
-4. Audit log as INotification reciever
+4. Audit log as INotification reciever -> await mediator.Publish(new EntitySaveNotification<TEntity, TPK>(existsEntity, newData));
 5. Cache duration
+6. DB Transactions
+7. SaveTo storage provolat Notifikaci -> public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)
+8. generic OldValue -> public record AuditInfoColumnItem(string PropName, string ColumnName, string DataType, bool IsChanged, object? OldValue, object? NewValue);

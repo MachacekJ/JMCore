@@ -5,8 +5,7 @@
 --https://github.com/npgsql/efcore.pg/issues/2069
 
 2. Hash data
-3. Extend audit audit about EntityName
-4. Audit log as INotification reciever -> await mediator.Publish(new EntitySaveNotification<TEntity, TPK>(existsEntity, newData));
+
 5. Cache duration
 6. DB Transactions
 7. SaveTo storage provolat Notifikaci -> public class TestAuditSaveHandler<T>(IStorageResolver storageResolver)

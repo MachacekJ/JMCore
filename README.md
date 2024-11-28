@@ -15,14 +15,17 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 ## Technologies
 ### Backend
 - .NET 8
-- MSSQL
+- MSSQL, Postgres, MongoDB
 - Blazor WASM
+- Blazor Server
 - EF
   - Linq
   - Audit
 - OAuth2
 - MediatR
   - IPipelineBehavior
+- Autofac
+  - mainly for registration open generic type for MediatR -> IRequest,
 - Logging - Serilog
 - Localizations
 
@@ -34,8 +37,6 @@ POC for .NET 8 and Blazor and not ready for production !!! This is a "private" p
 - Logging
   - via MediatR - in memory
   - TODO - send log information to Server
-- Autofac
-  - mainly for registration open generic type for MediatR -> IRequest,
 ```
 containerBuilder.RegisterGeneric(typeof(HttpAuthorizedHandler<>)).AsImplementedInterfaces();
 containerBuilder.RegisterGeneric(typeof(HttpNonAuthorizedHandler<>)).AsImplementedInterfaces();
